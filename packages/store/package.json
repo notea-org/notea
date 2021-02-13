@@ -1,0 +1,13 @@
+{
+  "name": "@notea/store",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "fast-stream-to-buffer": "^1.0.0",
+    "minio": "^7.0.18"
+  },
+  "devDependencies": {
+    "@types/minio": "^7.0.7"
+  }
+}

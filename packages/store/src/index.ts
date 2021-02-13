@@ -1,0 +1,41 @@
+import { getEnv } from '@notea/shared/src/env'
+import { StoreS3 } from './providers/s3'
+
+export type StroageType = 'OSS' | 'MINIO' | 'AWS'
+
+export function createStore(
+  type = getEnv<StroageType>('STORE_TYPE'),
+  prefix = ''
+) {
+  switch (type) {
+    case 'OSS':
+      return new StoreS3({
+        endPoint: getEnv('STORE_END_POINT'),
+        accessKey: getEnv('STORE_ACCESS_KEY'),
+        secretKey: getEnv('STORE_SECRET_KEY'),
+        bucket: getEnv('STORE_BUCKET'),
+        pathStyle: false,
+        region: getEnv('STORE_REGION'),
+        prefix,
+      })
+    case 'AWS':
+      return new StoreS3({
+        endPoint: getEnv('STORE_END_POINT'),
+        accessKey: getEnv('STORE_ACCESS_KEY'),
+        secretKey: getEnv('STORE_SECRET_KEY'),
+        bucket: getEnv('STORE_BUCKET'),
+        prefix,
+      })
+    case 'MINIO':
+    default:
+      return new StoreS3({
+        endPoint: getEnv('STORE_END_POINT', 'localhost'),
+        accessKey: getEnv('STORE_ACCESS_KEY'),
+        secretKey: getEnv('STORE_SECRET_KEY'),
+        bucket: getEnv('STORE_BUCKET'),
+        port: getEnv('STORE_PORT', 9000),
+        useSSL: true,
+        prefix,
+      })
+  }
+}

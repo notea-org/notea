@@ -1,0 +1,58 @@
+{
+  "name": "notea",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc --pretty --noEmit",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext ts --ext tsx --ext js"
+  },
+  "repository": "notea-dev/notea",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run type-check"
+    }
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "npm run lint",
+      "npm run format"
+    ]
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "lodash": "^4.17.20",
+    "next": "latest",
+    "next-auth": "^3.4.1",
+    "next-connect": "^0.9.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "rich-markdown-editor": "^11.3.0-0",
+    "styled-components": "^5.2.1",
+    "tailwindcss": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/next-auth": "^3.1.24",
+    "@types/node": "^12.12.21",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^5.0.9",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "typescript": "4.0"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ]
+}
