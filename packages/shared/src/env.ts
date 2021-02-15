@@ -1,5 +1,3 @@
-import { isNumber } from 'lodash'
-
 export function getEnv<T>(env: string, defaultValue?: any): T {
   const value = process.env[env]
   if (!value) {
@@ -12,8 +10,8 @@ export function getEnv<T>(env: string, defaultValue?: any): T {
     result = false
   } else if (v === 'true') {
     result = true
-  } else if (isNumber(v)) {
-    result = v * 1
+  } else if (/^\d+$/.test(v)) {
+    result = (v as any) * 1
   } else {
     result = value
   }
