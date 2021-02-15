@@ -1,7 +1,5 @@
-import { Layout } from '../../components/layout'
+import IndexPage, { getServerSideProps } from '..'
 
-const PagePage = () => {
-  return <Layout></Layout>
-}
+export { getServerSideProps }
 
-export default PagePage
+export default IndexPage

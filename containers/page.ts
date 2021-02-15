@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 
@@ -10,13 +10,13 @@ export interface PageModel {
   content?: string
 }
 
-const usePage = () => {
+const usePage = (id?: string) => {
   const [page, setPage] = useState<PageModel>()
-  const { get, post } = useFetch(`/api/pages`)
+  const { get, post, response } = useFetch(`/api/pages`)
 
   const getById = async (id: string) => {
-    console.log(111, id)
     const data = await get(id)
+    console.log(111, response.headers)
 
     setPage({
       id: '0',
@@ -26,6 +26,12 @@ const usePage = () => {
       content: data,
     })
   }
+
+  useEffect(() => {
+    if (id) {
+      getById(id)
+    }
+  }, [id])
 
   const savePage = async (data: PageModel) => {
     await post({
