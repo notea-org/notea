@@ -18,7 +18,11 @@ export abstract class StoreProvider {
   /**
    * 获取签名 URL
    */
-  abstract getSignUrl(path: string): Promise<string>
+  abstract getSignUrl(
+    path: string,
+    expiry?: number,
+    requestDate?: Date
+  ): Promise<string>
 
   /**
    * 检测对象是否存在
@@ -59,18 +63,20 @@ export abstract class StoreProvider {
    * - 私有读
    */
   async getList() {
-    const content = (await this.getObject(this.path.getPageIndex()))[0] || ''
+    const content = (await this.getObject(this.path.getPageIndex())) || ''
     const list = content.split(',').filter(Boolean)
 
-    return list.map((id) => this.getSignUrl(this.path.getPageById(id)))
+    return list
   }
 
   /**
    * 增加到列表
    */
   async addToList(pageId: string) {
+    pageId = pageId.toString()
+
     const indexPath = this.path.getPageIndex()
-    let content = (await this.getObject(indexPath))[0] || ''
+    let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
     if (!ids.includes(pageId)) {
@@ -88,7 +94,7 @@ export abstract class StoreProvider {
    */
   async removeFromList(pageId: string) {
     const indexPath = this.path.getPageIndex()
-    let content = (await this.getObject(indexPath))[0] || ''
+    let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
     content = ids.filter((id) => id !== pageId).join(',')

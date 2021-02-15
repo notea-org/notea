@@ -1,11 +1,8 @@
-import md5 from 'md5';
-import { customAlphabet } from 'nanoid';
-
-export function genMd5(str: string, len = 8): string {
-  return md5(str).slice(0, len);
-}
+import { nanoid, customAlphabet } from 'nanoid'
 
 export const genFriendlyId = customAlphabet(
   '23456789abcdefghjkmnpqrstuvwxyz',
   4
-);
+)
+
+export const genId = () => nanoid(10)

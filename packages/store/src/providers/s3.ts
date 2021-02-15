@@ -19,6 +19,7 @@ export class StoreS3 extends StoreProvider {
       endPoint: config.endPoint,
       accessKey: config.accessKey,
       secretKey: config.secretKey,
+      useSSL: config.useSSL,
       region: config.region,
       port: config.port,
       pathStyle: config.pathStyle,
@@ -26,10 +27,13 @@ export class StoreS3 extends StoreProvider {
     this.config = config
   }
 
-  async getSignUrl(path: string) {
+  async getSignUrl(path: string, expiry?: number, requestDate?: Date) {
     return this.store.presignedGetObject(
       this.config.bucket,
-      this.path.getPath(path)
+      this.path.getPath(path),
+      expiry,
+      {},
+      requestDate
     )
   }
 
@@ -52,7 +56,7 @@ export class StoreS3 extends StoreProvider {
       )
       content = await streamToBuffer(result)
     } catch (err) {
-      if (err.name !== 'NoSuchKeyError') {
+      if (err.code !== 'NoSuchKey') {
         throw err
       }
     }
@@ -70,7 +74,7 @@ export class StoreS3 extends StoreProvider {
       )
       return result.metaData
     } catch (err) {
-      if (err.name !== 'NoSuchKeyError') {
+      if (err.code !== 'NoSuchKey') {
         throw err
       }
     }

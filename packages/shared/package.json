@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.20",
     "lzutf8": "^0.5.8",
-    "md5": "^2.3.0",
     "nanoid": "^3.1.20"
   },
   "devDependencies": {
-    "@types/md5": "^2.3.0"
+    "@types/lodash": "^4.14.168"
   }
 }

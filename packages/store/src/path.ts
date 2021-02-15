@@ -1,5 +1,3 @@
-import { genMd5 } from '@notea/shared/src/id'
-
 export class StorePath {
   prefix: string
 
@@ -12,10 +10,10 @@ export class StorePath {
   }
 
   getPageById(id: string) {
-    return `pages/${genMd5(id)}`
+    return `pages/${id}`
   }
 
   getPath(path?: string) {
-    return this.prefix + (path ? `/${path}` : '')
+    return this.prefix + path
   }
 }

@@ -4,11 +4,12 @@ import { StoreS3 } from './providers/s3'
 export type StroageType = 'OSS' | 'MINIO' | 'AWS'
 
 export function createStore(
-  type = getEnv<StroageType>('STORE_TYPE'),
-  prefix = ''
+  prefix = '',
+  type = getEnv<StroageType>('STORE_TYPE')
 ) {
   switch (type) {
     case 'OSS':
+      // todo: use oss
       return new StoreS3({
         endPoint: getEnv('STORE_END_POINT'),
         accessKey: getEnv('STORE_ACCESS_KEY'),
@@ -34,7 +35,7 @@ export function createStore(
         secretKey: getEnv('STORE_SECRET_KEY'),
         bucket: getEnv('STORE_BUCKET'),
         port: getEnv('STORE_PORT', 9000),
-        useSSL: true,
+        useSSL: getEnv('STORE_SSL', false),
         prefix,
       })
   }
