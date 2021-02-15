@@ -1,28 +1,25 @@
-import { useState } from 'react'
 import MarkdownEditor, { theme } from 'rich-markdown-editor'
 import { debounce } from 'lodash'
-import useFetch from 'use-http'
+import { PageState } from '../containers/page'
 
 export const Editor = () => {
-  const [content] = useState<string>()
-  const { post } = useFetch('/api/pages')
-  const postPage = debounce((value) => {
-    post({
-      id: 2,
+  const { savePage, page } = PageState.useContainer()
+
+  const onChange = debounce((value) => {
+    savePage({
+      id: '2',
       content: value,
-      meta: {
-        title: '测试标题',
-        pid: 0,
-        order: 0,
-      },
+      title: '测试标题',
+      pid: '0',
+      order: 0,
     })
   }, 1000)
 
   return (
     <MarkdownEditor
-      value={content}
+      value={page?.content || ''}
       onChange={(value) => {
-        postPage(value())
+        onChange(value())
       }}
       theme={{
         ...theme,
