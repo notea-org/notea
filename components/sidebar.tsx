@@ -2,7 +2,7 @@ import IconPlus from 'heroicons/react/outline/Plus'
 import IconSearch from 'heroicons/react/outline/Search'
 import IcoTrash from 'heroicons/react/outline/Trash'
 import IconMoon from 'heroicons/react/outline/Moon'
-import IconSun from 'heroicons/react/outline/Sun'
+// import IconSun from 'heroicons/react/outline/Sun'
 import { FC, HTMLProps } from 'react'
 import { useRouter } from 'next/router'
 
