@@ -12,9 +12,12 @@ const usePageList = (initData: PageModel[] = []) => {
   }, [])
 
   const addToList = (item: PageModel) => {
-    setList((prev) => {
-      return [...prev, item]
-    })
+    const curItem = list.find((i) => i.id === item.id)
+    if (!curItem) {
+      setList([...list, item])
+    } else if (curItem.title !== item.title) {
+      setList([...list.filter((i) => i.id !== item.id), item])
+    }
   }
   return { list, addToList }
 }

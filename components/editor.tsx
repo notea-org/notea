@@ -1,33 +1,59 @@
 import MarkdownEditor, { theme } from 'rich-markdown-editor'
 import { debounce } from 'lodash'
-import { PageState } from '../containers/page'
+import { PageModel, PageState } from '../containers/page'
+import { KeyboardEvent, useRef } from 'react'
+import TextareaAutosize from 'react-textarea-autosize'
+import { PageListState } from '../containers/page-list'
+import { useRouter } from 'next/router'
 
 export const Editor = () => {
   const { savePage, page } = PageState.useContainer()
+  const { addToList } = PageListState.useContainer()
+  const editorEl = useRef<MarkdownEditor>(null)
+  const router = useRouter()
 
-  const onChange = debounce((value) => {
-    savePage({
-      id: '2',
-      content: value,
-      title: '测试标题',
-      pid: '0',
-      order: 0,
-    })
-  }, 1000)
+  const onPageChange = debounce(async (p: Partial<PageModel>) => {
+    const item = await savePage(p)
+    addToList(item)
+    router.replace(`/page/${item.id}`)
+  }, 500)
+  const onInputTitle = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key.toLowerCase() === 'enter') {
+      event.stopPropagation()
+      event.preventDefault()
+      editorEl.current?.focusAtEnd()
+    }
+  }
 
   return (
-    <MarkdownEditor
-      value={page?.content || ''}
-      onChange={(value) => {
-        onChange(value())
-      }}
-      theme={{
-        ...theme,
-        fontFamily: 'inherit',
-      }}
-      onCreateLink={async () => {
-        return '1'
-      }}
-    ></MarkdownEditor>
+    <article>
+      <h1>
+        <TextareaAutosize
+          className="outline-none w-full resize-none block"
+          placeholder="新页面"
+          defaultValue={page.title}
+          onKeyDown={onInputTitle}
+          onChange={(event) => {
+            onPageChange({ title: event.target.value })
+          }}
+          autoFocus
+        />
+      </h1>
+      <MarkdownEditor
+        id={page.id}
+        ref={editorEl}
+        value={page.content}
+        onChange={(value) => {
+          onPageChange({ content: value() })
+        }}
+        theme={{
+          ...theme,
+          fontFamily: 'inherit',
+        }}
+        onCreateLink={async () => {
+          return '1'
+        }}
+      />
+    </article>
   )
 }

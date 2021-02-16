@@ -29,7 +29,7 @@ export function tryJSON<T>(str?: string | null): T | null {
   }
 }
 
-export function strDecompress(raw?: string) {
+export function strDecompress(raw?: string | null) {
   if (isNil(raw)) return null
 
   return decompress(raw, {

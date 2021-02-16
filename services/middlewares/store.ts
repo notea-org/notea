@@ -1,4 +1,4 @@
-import { createStore } from '@notea/store/src'
+import { createStore } from '@notea/store'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
 
 export async function useStore(

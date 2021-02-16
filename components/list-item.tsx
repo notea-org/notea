@@ -10,7 +10,7 @@ export const ListItem = ({ title, id }: PageModel) => {
           <span className="transform">
             <ArrowRight width="16" height="16" />
           </span>
-          <span>{title}</span>
+          <span>{title || 'Untitled'}</span>
         </a>
       </Link>
     </li>

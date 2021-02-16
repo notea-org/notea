@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js"
   },
-  "repository": "notea-dev/notea",
+  "repository": "qingwei-li/notea",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
@@ -33,6 +33,7 @@
     "next-connect": "^0.9.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-textarea-autosize": "^8.3.1",
     "rich-markdown-editor": "^11.3.0-0",
     "styled-components": "^5.2.1",
     "tailwindcss": "^2.0.3",

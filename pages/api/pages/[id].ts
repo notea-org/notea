@@ -2,7 +2,7 @@ import { api } from '../../../services/api'
 import { useAuth } from '../../../services/middlewares/auth'
 import { useStore } from '../../../services/middlewares/store'
 
-export default api
+export default api()
   .use(useAuth)
   .use(useStore)
   .delete(async (req, res) => {

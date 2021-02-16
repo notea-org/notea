@@ -1,12 +1,12 @@
-import { genId } from '@notea/shared/src/id'
-import { strCompress, strDecompress } from '@notea/shared/src/str'
+import { genId } from '@notea/shared/id'
+import { strCompress, strDecompress } from '@notea/shared/str'
 import { api } from '../../../services/api'
 import { useAuth } from '../../../services/middlewares/auth'
 import { useStore } from '../../../services/middlewares/store'
 
-const META_PREFIX = 'x-notea-'
+const PAGE_META_KEY = ['title', 'pid', 'order', 'icon']
 
-export default api
+export default api()
   .use(useAuth)
   .use(useStore)
   .get(async (req, res) => {
@@ -19,11 +19,9 @@ export default api
         const meta: Record<string, string> = {}
 
         if (metaData) {
-          for (const key in metaData) {
-            if (key.startsWith(META_PREFIX)) {
-              meta[key.replace(META_PREFIX, '')] = strDecompress(metaData[key])
-            }
-          }
+          PAGE_META_KEY.forEach((key) => {
+            meta[key] = strDecompress(metaData[key])
+          })
           meta.id = id
         }
 
@@ -44,14 +42,19 @@ export default api
       }
     }
     if (meta) {
-      for (const key in meta) {
-        metaData[META_PREFIX + key] = strCompress(meta[key].toString())
-      }
+      PAGE_META_KEY.forEach((key) => {
+        if (meta[key]) {
+          metaData[key] = strCompress(meta[key].toString())
+        }
+      })
     }
     await req.store.putObject(req.store.path.getPageById(id), content, {
       ...metaData,
       'content-type': 'text/markdown',
     })
     await req.store.addToList(id)
-    res.end('ok')
+    res.json({
+      id,
+      ...meta,
+    })
   })

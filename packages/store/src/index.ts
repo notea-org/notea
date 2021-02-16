@@ -1,4 +1,4 @@
-import { getEnv } from '@notea/shared/src/env'
+import { getEnv } from '@notea/shared/env'
 import { StoreS3 } from './providers/s3'
 
 export type StroageType = 'OSS' | 'MINIO' | 'AWS'
@@ -40,3 +40,5 @@ export function createStore(
       })
   }
 }
+
+export { StoreProvider } from './providers/base'

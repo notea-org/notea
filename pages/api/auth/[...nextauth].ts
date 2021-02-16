@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
-import { getEnv } from '@notea/shared/src/env'
+import { getEnv } from '@notea/shared/env'
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   return NextAuth(req, res, {

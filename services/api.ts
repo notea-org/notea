@@ -2,7 +2,7 @@ import nc from 'next-connect'
 import { onError, useError } from './middlewares/error'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { API } from './middlewares/error'
-import { StoreProvider } from '@notea/store/src/providers/base'
+import { StoreProvider } from '@notea/store'
 
 export type ApiRequest = NextApiRequest & {
   store: StoreProvider
@@ -15,6 +15,7 @@ export type ApiResponse = NextApiResponse & {
 
 export type ApiNext = () => void
 
-export const api = nc<ApiRequest, ApiResponse>({
-  onError,
-}).use(useError)
+export const api = () =>
+  nc<ApiRequest, ApiResponse>({
+    onError,
+  }).use(useError)
