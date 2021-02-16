@@ -35,7 +35,7 @@ function parseHeaders(headers: Headers) {
 
 const usePage = (id?: string) => {
   const [page, setPage] = useState<PageModel>({} as PageModel)
-  const { get, post, response } = useFetch('/api/pages')
+  const { get, post, response, cache } = useFetch('/api/pages')
 
   const getById = async (id: string) => {
     const content = await get(id)
@@ -60,6 +60,7 @@ const usePage = (id?: string) => {
   }, [id])
 
   const savePage = async (data: Partial<PageModel>): Promise<PageModel> => {
+    cache.delete(`url:/api/pages/${page?.id}||method:GET||body:`)
     const res = await post({
       id: data.id || page.id,
       meta: {
@@ -70,9 +71,9 @@ const usePage = (id?: string) => {
       },
       content: data.content || page.content,
     })
-    setPage({
-      ...res,
-    })
+
+    setPage(res)
+
     return res
   }
 

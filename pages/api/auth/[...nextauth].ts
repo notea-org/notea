@@ -21,8 +21,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
             return null
           }
 
-          console.log('ok')
-
           return {
             logged: true,
           }
