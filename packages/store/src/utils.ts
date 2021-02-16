@@ -1,4 +1,4 @@
-import { strCompress, strDecompress } from '@notea/shared/str'
+import { strCompress, strDecompress } from '@notea/shared'
 import { StroageType } from '.'
 
 export function createCacheHeader(type: 'cache' | 'no-cache' = 'cache') {

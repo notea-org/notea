@@ -1,14 +1,15 @@
 import MarkdownEditor, { theme } from 'rich-markdown-editor'
-import { debounce } from 'lodash'
-import { PageModel, PageState } from '../containers/page'
-import { KeyboardEvent, useRef } from 'react'
+import { PageModel, PageState } from 'containers/page'
+import { KeyboardEvent, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import { PageListState } from '../containers/page-list'
+import { PageListState } from 'containers/page-list'
 import { useRouter } from 'next/router'
+const debounce = require('debounce-async').default
 
 export const Editor = () => {
   const { savePage, page } = PageState.useContainer()
   const { addToList } = PageListState.useContainer()
+  const titleEl = useRef<HTMLTextAreaElement>(null)
   const editorEl = useRef<MarkdownEditor>(null)
   const router = useRouter()
 
@@ -25,10 +26,15 @@ export const Editor = () => {
     }
   }
 
+  useEffect(() => {
+    titleEl.current?.focus()
+  }, [page.id])
+
   return (
     <article>
       <h1>
         <TextareaAutosize
+          ref={titleEl}
           className="outline-none w-full resize-none block"
           placeholder="新页面"
           defaultValue={page.title}

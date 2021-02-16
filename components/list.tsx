@@ -1,5 +1,5 @@
 import { ListItem } from './list-item'
-import { PageListState } from '../containers/page-list'
+import { PageListState } from 'containers/page-list'
 
 export const List = () => {
   const { list } = PageListState.useContainer()

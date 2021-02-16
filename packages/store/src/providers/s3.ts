@@ -1,6 +1,6 @@
 import { StoreProvider, StoreProviderConfig } from './base'
 import { Client, ClientOptions } from 'minio'
-import { toBuffer, toStr } from '@notea/shared/str'
+import { toBuffer, toStr } from '@notea/shared'
 import { promisify } from 'util'
 
 const streamToBuffer = promisify(require('fast-stream-to-buffer'))

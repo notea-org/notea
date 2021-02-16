@@ -1,5 +1,4 @@
-import { getEnv } from '@notea/shared/env'
-import { strDecompress } from '@notea/shared/str'
+import { strDecompress, getEnv } from '@notea/shared'
 import { StroageType } from '@notea/store'
 import { useEffect, useState } from 'react'
 import { createContainer } from 'unstated-next'
@@ -52,6 +51,11 @@ const usePage = (id?: string) => {
   useEffect(() => {
     if (id) {
       getById(id)
+    } else {
+      setPage({
+        title: '',
+        content: '\n',
+      } as PageModel)
     }
   }, [id])
 
@@ -67,7 +71,6 @@ const usePage = (id?: string) => {
       content: data.content || page.content,
     })
     setPage({
-      ...page,
       ...res,
     })
     return res

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/client'
-import { Layout } from '../components/layout'
+import { Layout } from 'components/layout'
 
 const IndexPage = () => <Layout></Layout>
 

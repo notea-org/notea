@@ -1,8 +1,7 @@
-import { genId } from '@notea/shared/id'
-import { strCompress, strDecompress } from '@notea/shared/str'
-import { api } from '../../../services/api'
-import { useAuth } from '../../../services/middlewares/auth'
-import { useStore } from '../../../services/middlewares/store'
+import { genId, strCompress, strDecompress } from '@notea/shared'
+import { api } from 'services/api'
+import { useAuth } from 'services/middlewares/auth'
+import { useStore } from 'services/middlewares/store'
 
 const PAGE_META_KEY = ['title', 'pid', 'order', 'icon']
 

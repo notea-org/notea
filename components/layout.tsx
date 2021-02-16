@@ -1,7 +1,8 @@
 import { Editor } from './editor'
 import { List } from './list'
-import { PageListState } from '../containers/page-list'
-import { PageState } from '../containers/page'
+import { Sidebar } from './sidebar'
+import { PageListState } from 'containers/page-list'
+import { PageState } from 'containers/page'
 import { useRouter } from 'next/router'
 
 export const Layout = () => {
@@ -10,7 +11,9 @@ export const Layout = () => {
   return (
     <section className="flex h-screen">
       <PageListState.Provider initialState={[]}>
-        <aside className="w-10 bg-gray-200">toolbar</aside>
+        <aside className="w-10 bg-gray-200">
+          <Sidebar />
+        </aside>
         <section className="w-60 bg-gray-100 overflow-y-auto">
           <List />
         </section>
