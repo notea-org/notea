@@ -15,11 +15,5 @@ export default api()
   .get(async (req, res) => {
     const id = req.query.id as string
 
-    res.redirect(
-      await req.store.getSignUrl(
-        req.store.path.getPageById(id),
-        24 * 60 * 60,
-        new Date(new Date().toDateString())
-      )
-    )
+    res.redirect(await req.store.getSignUrl(req.store.path.getPageById(id)))
   })

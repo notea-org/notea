@@ -19,7 +19,7 @@ export const Layout = () => {
         </section>
         <main className="flex-auto overflow-y-auto">
           <nav className="fixed bg-white w-full z-10 p-2 text-sm">导航</nav>
-          <article className="m-auto pt-40 pb-40 prose prose-sm h-full">
+          <article className="m-auto prose prose-sm h-full">
             <PageState.Provider initialState={router.query.id as string}>
               <Editor />
             </PageState.Provider>

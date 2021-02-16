@@ -27,13 +27,10 @@ export class StoreS3 extends StoreProvider {
     this.config = config
   }
 
-  async getSignUrl(path: string, expiry?: number, requestDate?: Date) {
+  async getSignUrl(path: string) {
     return this.store.presignedGetObject(
       this.config.bucket,
-      this.path.getPath(path),
-      expiry,
-      {},
-      requestDate
+      this.path.getPath(path)
     )
   }
 

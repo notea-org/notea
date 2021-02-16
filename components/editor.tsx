@@ -4,7 +4,14 @@ import { KeyboardEvent, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { PageListState } from 'containers/page-list'
 import { useRouter } from 'next/router'
+import styled from 'styled-components'
 const debounce = require('debounce-async').default
+
+const StyledMarkdownEditor = styled(MarkdownEditor)`
+  .ProseMirror {
+    padding-bottom: 10rem;
+  }
+`
 
 export const Editor = () => {
   const { savePage, page } = PageState.useContainer()
@@ -31,7 +38,7 @@ export const Editor = () => {
   }, [page.id])
 
   return (
-    <article>
+    <article className="pt-40">
       <h1>
         <TextareaAutosize
           ref={titleEl}
@@ -45,7 +52,7 @@ export const Editor = () => {
           autoFocus
         />
       </h1>
-      <MarkdownEditor
+      <StyledMarkdownEditor
         id={page.id}
         ref={editorEl}
         value={page.content}
