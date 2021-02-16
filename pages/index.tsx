@@ -1,24 +1,19 @@
-import { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import { Layout } from 'components/layout'
+import { useRouter } from 'next/router'
 
-const IndexPage = () => <Layout></Layout>
+const IndexPage = () => {
+  const [session, loading] = useSession()
+  const router = useRouter()
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx)
+  if (loading) return null
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    }
+  if (!loading && !session) {
+    router.push('/api/auth/signin')
+    return null
   }
 
-  return {
-    props: {},
-  }
+  return <Layout></Layout>
 }
 
 export default IndexPage

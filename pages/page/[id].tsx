@@ -1,5 +1,3 @@
-import IndexPage, { getServerSideProps } from '..'
-
-export { getServerSideProps }
+import IndexPage from '..'
 
 export default IndexPage

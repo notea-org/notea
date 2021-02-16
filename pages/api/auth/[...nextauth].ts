@@ -17,9 +17,11 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         async authorize(credentials) {
           const { password } = credentials
 
-          if (password !== getEnv('PASSWORD')) {
+          if (password !== getEnv<string>('PASSWORD').toString()) {
             return null
           }
+
+          console.log('ok')
 
           return {
             logged: true,
