@@ -35,7 +35,7 @@ export function createStore(
         secretKey: getEnv('STORE_SECRET_KEY'),
         bucket: getEnv('STORE_BUCKET'),
         port: getEnv('STORE_PORT', 9000),
-        useSSL: getEnv('STORE_SSL', false),
+        useSSL: getEnv('STORE_SSL', true),
         prefix,
       })
   }

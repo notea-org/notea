@@ -1,6 +1,6 @@
 import { genId } from '@notea/shared'
 import { api } from 'services/api'
-import { parseMeta, toMeta } from 'services/getMeta'
+import { parseMeta, toMeta } from 'services/get-meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 

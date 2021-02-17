@@ -2,15 +2,17 @@ import { List } from './list'
 import { Sidebar } from './sidebar'
 import { PageListState } from 'containers/page-list'
 import { FC, HTMLProps } from 'react'
-import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
+import useFetch from 'use-http'
 
 export const Layout: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
-  const [session, loading] = useSession()
+  const { loading, error } = useFetch('/api/auth/user', {}, [])
   const router = useRouter()
 
-  if (!loading && !session) {
-    router.push('/api/auth/signin')
+  if (loading) return null
+
+  if (!loading && error) {
+    router.push(`/login?redirect=${router.asPath}`)
     return null
   }
 

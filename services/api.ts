@@ -3,10 +3,12 @@ import { onError, useError } from './middlewares/error'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { API } from './middlewares/error'
 import { StoreProvider } from '@notea/store'
+import { useSession } from './middlewares/session'
+import { Session } from 'next-iron-session'
 
 export type ApiRequest = NextApiRequest & {
   store: StoreProvider
-  user: any
+  session: Session
 }
 
 export type ApiResponse = NextApiResponse & {
@@ -18,4 +20,6 @@ export type ApiNext = () => void
 export const api = () =>
   nc<ApiRequest, ApiResponse>({
     onError,
-  }).use(useError)
+  })
+    .use(useError)
+    .use(useSession)
