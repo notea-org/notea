@@ -1,6 +1,4 @@
-import { strDecompress, getEnv } from '@notea/shared'
-import { StroageType } from '@notea/store'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 
@@ -13,51 +11,18 @@ export interface PageModel {
   icon?: string
 }
 
-function parseHeaders(headers: Headers) {
-  const page = {} as PageModel
-
-  switch (getEnv<StroageType>('STORE_TYPE')) {
-    case 'OSS':
-      // todo
-      break
-    case 'AWS':
-    case 'MINIO':
-    default:
-      page.title = strDecompress(headers.get('x-amz-meta-title'))
-      page.pid = strDecompress(headers.get('x-amz-meta-pid'))
-      page.icon = strDecompress(headers.get('x-amz-meta-icon'))
-      page.order = parseInt(strDecompress(headers.get('x-amz-meta-order')), 10)
-      break
-  }
-
-  return page
-}
-
-const usePage = (id?: string) => {
+const usePage = () => {
   const [page, setPage] = useState<PageModel>({} as PageModel)
-  const { get, post, response, cache } = useFetch('/api/pages')
+  const { get, post, cache } = useFetch('/api/pages')
 
   const getById = async (id: string) => {
-    const content = await get(id)
-    const { headers } = response
+    const res = await get(id)
 
-    setPage({
-      ...parseHeaders(headers),
-      id,
-      content,
-    })
-  }
-
-  useEffect(() => {
-    if (id) {
-      getById(id)
-    } else {
-      setPage({
-        title: '',
-        content: '\n',
-      } as PageModel)
+    if (!res.content) {
+      res.content = '\n'
     }
-  }, [id])
+    setPage(res)
+  }
 
   const savePage = async (data: Partial<PageModel>): Promise<PageModel> => {
     cache.delete(`url:/api/pages/${page?.id}||method:GET||body:`)
@@ -77,7 +42,7 @@ const usePage = (id?: string) => {
     return res
   }
 
-  return { page, getById, savePage }
+  return { page, getById, savePage, setPage }
 }
 
 export const PageState = createContainer(usePage)

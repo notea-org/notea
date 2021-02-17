@@ -27,7 +27,7 @@ export abstract class StoreProvider {
 
   /**
    * 获取对象内容
-   * @returns [content, res]
+   * @returns content
    */
   abstract getObject(path: string, isCompressed?: boolean): Promise<string>
 
@@ -38,6 +38,15 @@ export abstract class StoreProvider {
   abstract getObjectMeta(
     path: string
   ): Promise<Record<string, string> | undefined>
+
+  /**
+   * 获取对象和对象 Meta
+   * @returns [content, meta]
+   */
+  abstract getObjectAndMeta(
+    path: string,
+    isCompressed?: boolean
+  ): Promise<[string, Record<string, string> | undefined]>
 
   /**
    * 存储对象

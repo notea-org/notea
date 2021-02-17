@@ -77,6 +77,16 @@ export class StoreS3 extends StoreProvider {
     }
   }
 
+  async getObjectAndMeta(
+    path?: string,
+    isCompressed = false
+  ): Promise<[string, Record<string, string> | undefined]> {
+    return Promise.all([
+      this.getObject(path, isCompressed),
+      this.getObjectMeta(path),
+    ])
+  }
+
   async putObject(
     path: string,
     raw: string,

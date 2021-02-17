@@ -1,9 +1,8 @@
-import { genId, strCompress, strDecompress } from '@notea/shared'
+import { genId } from '@notea/shared'
 import { api } from 'services/api'
+import { parseMeta, toMeta } from 'services/getMeta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
-
-const PAGE_META_KEY = ['title', 'pid', 'order', 'icon']
 
 export default api()
   .use(useAuth)
@@ -15,14 +14,7 @@ export default api()
         const metaData = await req.store.getObjectMeta(
           req.store.path.getPageById(id)
         )
-        const meta: Record<string, string> = {}
-
-        if (metaData) {
-          PAGE_META_KEY.forEach((key) => {
-            meta[key] = strDecompress(metaData[key])
-          })
-          meta.id = id
-        }
+        const meta = toMeta(metaData)
 
         return meta
       })
@@ -31,7 +23,6 @@ export default api()
   })
   .post(async (req, res) => {
     const { content, meta } = req.body
-    const metaData: Record<string, string> = {}
     let id = req.body.id
 
     if (!id) {
@@ -40,20 +31,17 @@ export default api()
         id = genId()
       }
     }
-    if (meta) {
-      PAGE_META_KEY.forEach((key) => {
-        if (meta[key]) {
-          metaData[key] = strCompress(meta[key].toString())
-        }
-      })
+
+    const metaWithId = {
+      id,
+      ...meta,
     }
+    const metaData = parseMeta(metaWithId)
+
     await req.store.putObject(req.store.path.getPageById(id), content, {
       ...metaData,
       'content-type': 'text/markdown',
     })
     await req.store.addToList(id)
-    res.json({
-      id,
-      ...meta,
-    })
+    res.json(metaWithId)
   })

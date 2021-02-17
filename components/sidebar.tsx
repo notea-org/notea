@@ -33,7 +33,7 @@ export const Sidebar = () => {
 
       <ButtonItem
         onClick={() => {
-          router.push('/')
+          router.push('/page/new')
         }}
       >
         <IconPlus />

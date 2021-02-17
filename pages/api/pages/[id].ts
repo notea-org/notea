@@ -1,4 +1,5 @@
 import { api } from 'services/api'
+import { toMeta } from 'services/getMeta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 
@@ -15,5 +16,12 @@ export default api()
   .get(async (req, res) => {
     const id = req.query.id as string
 
-    res.redirect(await req.store.getSignUrl(req.store.path.getPageById(id)))
+    const [content, metaData] = await req.store.getObjectAndMeta(
+      req.store.path.getPageById(id)
+    )
+
+    res.json({
+      content,
+      ...toMeta(metaData),
+    })
   })

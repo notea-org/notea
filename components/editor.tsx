@@ -22,8 +22,9 @@ export const Editor = () => {
 
   const onPageChange = debounce(async (p: Partial<PageModel>) => {
     const item = await savePage(p)
+
+    await router.replace(`/page/${item.id}`)
     addToList(item)
-    router.replace(`/page/${item.id}`)
   }, 500)
   const onInputTitle = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key.toLowerCase() === 'enter') {
@@ -45,10 +46,12 @@ export const Editor = () => {
           className="outline-none w-full resize-none block"
           placeholder="新页面"
           defaultValue={page.title}
+          key={page.id}
           onKeyDown={onInputTitle}
           onChange={(event) => {
             onPageChange({ title: event.target.value })
           }}
+          maxLength={128}
           autoFocus
         />
       </h1>

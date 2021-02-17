@@ -1,8 +1,23 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useCallback, useEffect } from 'react'
 import 'tailwindcss/tailwind.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const handleRejection = useCallback((event) => {
+    if (event.reason === 'canceled') {
+      event.preventDefault()
+    }
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('unhandledrejection', handleRejection)
+
+    return () => {
+      window.removeEventListener('unhandledrejection', handleRejection)
+    }
+  }, [handleRejection])
+
   return (
     <>
       <Head>
