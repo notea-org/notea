@@ -1,19 +1,23 @@
 import { useRouter } from 'next/router'
 import { FormEvent } from 'react'
-import useFetch from 'use-http'
+import useFetch, { CachePolicies } from 'use-http'
 
 const LoginPage = () => {
   const { post } = useFetch('/api/auth/login', {
-    cache: 'no-cache',
+    cachePolicy: CachePolicies.NO_CACHE,
   })
   const router = useRouter()
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await post({
+    const data = await post({
       password: e.currentTarget.password.value,
     })
-    router.push((router.query.redirect as string) || '/')
+    if (data.isLoggedIn) {
+      router.push((router.query.redirect as string) || '/')
+    } else {
+      console.error(data)
+    }
   }
   return (
     <form

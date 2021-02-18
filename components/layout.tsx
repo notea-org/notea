@@ -12,6 +12,7 @@ export const Layout: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
 
   if (loading) return null
 
+  // todo: fix redirect login
   if (!loading && error) {
     router.push(`/login?redirect=${router.asPath}`)
     return null
