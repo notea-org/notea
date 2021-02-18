@@ -52,8 +52,9 @@ export const ListItem: FC<
     <li
       {...attrs}
       ref={innerRef}
-      className={cx('group hover:bg-gray-200', {
-        'bg-gray-200': snapshot.isDragging,
+      className={cx('group hover:bg-gray-300', {
+        'bg-gray-300': snapshot.isDragging,
+        'bg-gray-200': router.query.id === item.id,
       })}
     >
       <Link href={`/page/${item.id}`}>

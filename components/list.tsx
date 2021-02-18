@@ -8,8 +8,9 @@ import Tree, {
   TreeSourcePosition,
   TreeData,
 } from '@atlaskit/tree'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PageModel, PageState } from 'containers/page'
+import { getLocalStore, setLocalStore } from 'utils/local-store'
 
 function toTree(list: PageModel[] = [], prevItems: TreeData['items'] = {}) {
   const items: TreeData['items'] = {}
@@ -18,29 +19,33 @@ function toTree(list: PageModel[] = [], prevItems: TreeData['items'] = {}) {
     items,
   }
 
-  list.forEach((item) => {
-    const { id, pid = 'root' } = item
+  if (list.length) {
+    list.forEach((item) => {
+      const { id, pid = 'root' } = item
 
-    if (!id) {
-      return
-    }
-
-    items[id] = {
-      ...prevItems[id],
-      ...{ id, data: item, children: [] },
-      ...items[id],
-    }
-
-    if (!items[pid]) {
-      items[pid] = {
-        ...prevItems[pid],
-        id: pid,
-        children: [],
+      if (!id) {
+        return
       }
-    }
 
-    items[pid].children.push(id)
-  })
+      items[id] = {
+        ...prevItems[id],
+        ...{ id, data: item, children: [] },
+        ...items[id],
+      }
+
+      if (!items[pid]) {
+        items[pid] = {
+          ...prevItems[pid],
+          id: pid,
+          children: [],
+        }
+      }
+
+      items[pid].children.push(id)
+    })
+  } else {
+    tree.items = prevItems
+  }
 
   return tree
 }
@@ -48,19 +53,18 @@ function toTree(list: PageModel[] = [], prevItems: TreeData['items'] = {}) {
 export const List = () => {
   const { list } = PageListState.useContainer()
   const { updatePage } = PageState.useContainer()
-  const [tree, setTree] = useState(toTree())
+  const [tree, setTree] = useState(getLocalStore('TREE') || toTree())
   const [curId, setCurId] = useState<ItemId>()
 
-  useEffect(() => {
-    setTree(toTree(list, tree.items))
-  }, [list])
-
+  const updateTree = useCallback((data) => {
+    setTree(data)
+    setLocalStore('TREE', data)
+  }, [])
   const onExpand = (itemId: ItemId) => {
-    setTree(mutateTree(tree, itemId, { isExpanded: true }))
+    updateTree(mutateTree(tree, itemId, { isExpanded: true }))
   }
-
   const onCollapse = (itemId: ItemId) => {
-    setTree(mutateTree(tree, itemId, { isExpanded: false }))
+    updateTree(mutateTree(tree, itemId, { isExpanded: false }))
   }
   const onDragEnd = (
     source: TreeSourcePosition,
@@ -70,11 +74,15 @@ export const List = () => {
       return
     }
     const newTree = moveItemOnTree(tree, source, destination)
-    setTree(newTree)
+    updateTree(newTree)
     updatePage(curId as string, {
       pid: destination.parentId as string,
     })
   }
+
+  useEffect(() => {
+    updateTree(toTree(list, tree.items))
+  }, [list])
 
   return (
     <ul className="h-full text-sm">
