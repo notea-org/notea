@@ -8,7 +8,7 @@ export function parseMeta(meta?: Record<string, string>) {
   if (meta) {
     PAGE_META_KEY.forEach((key) => {
       if (meta[key]) {
-        metaData[key] = strCompress(meta[key].toString())
+        metaData[key] = strCompress(meta[key].toString()) || undefined
       }
     })
   }
@@ -21,7 +21,7 @@ export function toMeta(metaData?: Record<string, string>) {
 
   if (metaData) {
     PAGE_META_KEY.forEach((key) => {
-      meta[key] = strDecompress(metaData[key])
+      meta[key] = strDecompress(metaData[key]) || undefined
     })
   }
 
