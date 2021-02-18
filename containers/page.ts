@@ -42,7 +42,22 @@ const usePage = () => {
     return res
   }
 
-  return { page, getById, savePage, setPage }
+  const updatePage = async function (id: string, data: Partial<PageModel>) {
+    cache.delete(`url:/api/pages/${id}||method:GET||body:`)
+    const res = await post(id, {
+      meta: {
+        title: data.title,
+        pid: data.pid,
+        order: data.order,
+        icon: data.icon,
+      },
+      content: data.content,
+    })
+
+    return res
+  }
+
+  return { page, getById, savePage, setPage, updatePage }
 }
 
 export const PageState = createContainer(usePage)

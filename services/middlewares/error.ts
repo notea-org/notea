@@ -12,6 +12,11 @@ export const API_ERROR = {
     message: 'Not supported',
     description: '不支持的服务',
   },
+  NOT_FOUND: {
+    status: 404,
+    message: 'Not found',
+    description: '找不到该数据',
+  },
 }
 
 export class APIError {

@@ -4,6 +4,7 @@ import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
 import { FC, HTMLProps, ReactText } from 'react'
 import cx from 'classnames'
+import { useRouter } from 'next/router'
 
 const Button: FC<HTMLProps<HTMLSpanElement>> = ({
   children,
@@ -40,6 +41,13 @@ export const ListItem: FC<
   snapshot,
   ...attrs
 }) => {
+  const router = useRouter()
+
+  const onAddPage = (e: Event) => {
+    e.preventDefault()
+    router.push(`/page/new?pid=` + item.id)
+  }
+
   return (
     <li
       {...attrs}
@@ -49,7 +57,7 @@ export const ListItem: FC<
       })}
     >
       <Link href={`/page/${item.id}`}>
-        <a className="flex py-1.5 px-4 items-center ">
+        <a className="flex py-1.5 px-4 items-center">
           <Button
             className="mr-0.5"
             onClick={(e) => {
@@ -66,7 +74,10 @@ export const ListItem: FC<
             />
           </Button>
           <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
-          <Button className="opacity-0 group-hover:opacity-100">
+          <Button
+            onClick={onAddPage}
+            className="opacity-0 group-hover:opacity-100"
+          >
             <IconPlus width="16" height="16" />
           </Button>
         </a>

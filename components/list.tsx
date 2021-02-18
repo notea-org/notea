@@ -7,13 +7,12 @@ import Tree, {
   TreeDestinationPosition,
   TreeSourcePosition,
   TreeData,
-  TreeItem,
 } from '@atlaskit/tree'
 import { useEffect, useState } from 'react'
-import { PageModel } from 'containers/page'
+import { PageModel, PageState } from 'containers/page'
 
-function toTree(list: PageModel[] = []) {
-  const items: Record<string, TreeItem> = {}
+function toTree(list: PageModel[] = [], prevItems: TreeData['items'] = {}) {
+  const items: TreeData['items'] = {}
   const tree: TreeData = {
     rootId: 'root',
     items,
@@ -27,12 +26,14 @@ function toTree(list: PageModel[] = []) {
     }
 
     items[id] = {
+      ...prevItems[id],
       ...{ id, data: item, children: [] },
       ...items[id],
     }
 
     if (!items[pid]) {
       items[pid] = {
+        ...prevItems[pid],
         id: pid,
         children: [],
       }
@@ -46,10 +47,12 @@ function toTree(list: PageModel[] = []) {
 
 export const List = () => {
   const { list } = PageListState.useContainer()
+  const { updatePage } = PageState.useContainer()
   const [tree, setTree] = useState(toTree())
+  const [curId, setCurId] = useState<ItemId>()
 
   useEffect(() => {
-    setTree(toTree(list))
+    setTree(toTree(list, tree.items))
   }, [list])
 
   const onExpand = (itemId: ItemId) => {
@@ -59,7 +62,6 @@ export const List = () => {
   const onCollapse = (itemId: ItemId) => {
     setTree(mutateTree(tree, itemId, { isExpanded: false }))
   }
-
   const onDragEnd = (
     source: TreeSourcePosition,
     destination?: TreeDestinationPosition
@@ -69,6 +71,9 @@ export const List = () => {
     }
     const newTree = moveItemOnTree(tree, source, destination)
     setTree(newTree)
+    updatePage(curId as string, {
+      pid: destination.parentId as string,
+    })
   }
 
   return (
@@ -78,6 +83,7 @@ export const List = () => {
         onExpand={onExpand}
         onCollapse={onCollapse}
         onDragEnd={onDragEnd}
+        onDragStart={setCurId}
         tree={tree}
         isDragEnabled
         isNestingEnabled

@@ -21,7 +21,10 @@ export const Editor = () => {
   const router = useRouter()
 
   const onPageChange = debounce(async (p: Partial<PageModel>) => {
-    const item = await savePage(p)
+    const item = await savePage({
+      pid: router.query.pid as string,
+      ...p,
+    })
 
     await router.replace(`/page/${item.id}`)
     addToList(item)

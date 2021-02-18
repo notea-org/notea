@@ -11,10 +11,13 @@ const EditContainer = () => {
   const { getById, setPage } = PageState.useContainer()
   const query = router.query
   const id = query.id as string
+  const pid = query.pid as string
 
   useEffect(() => {
     if (id === 'new') {
-      router.replace(`/page/${genId()}?new`)
+      const url = `/page/${genId()}?new` + (pid ? `&pid=${pid}` : '')
+
+      router.replace(url)
     } else if (id && !has(query, 'new')) {
       getById(id)
     } else {
@@ -32,9 +35,7 @@ const EditContainer = () => {
 const EditPage = () => {
   return (
     <Layout>
-      <PageState.Provider>
-        <EditContainer></EditContainer>
-      </PageState.Provider>
+      <EditContainer />
     </Layout>
   )
 }
