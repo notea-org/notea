@@ -2,7 +2,7 @@ import { PageModel } from 'containers/page'
 import Link from 'next/link'
 import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
-import { FC, HTMLProps, ReactText } from 'react'
+import { FC, HTMLProps, ReactText, MouseEvent } from 'react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
 
@@ -43,7 +43,7 @@ export const ListItem: FC<
 }) => {
   const router = useRouter()
 
-  const onAddPage = (e: Event) => {
+  const onAddPage = (e: MouseEvent) => {
     e.preventDefault()
     router.push(`/page/new?pid=` + item.id)
   }
