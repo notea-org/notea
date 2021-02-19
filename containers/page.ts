@@ -3,61 +3,75 @@ import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 
 export interface PageModel {
-  id?: string
+  id: string
   title: string
   pid?: string
-  order: number
   content?: string
-  icon?: string
+  pic?: string
+  cid?: string[]
 }
 
 const usePage = () => {
   const [page, setPage] = useState<PageModel>({} as PageModel)
-  const { get, post, cache } = useFetch('/api/pages')
+  const { get, post, cache, response } = useFetch('/api/pages')
 
   const getById = async (id: string) => {
     const res = await get(id)
 
+    if (response.status === 404) {
+      throw res
+    }
+
     if (!res.content) {
       res.content = '\n'
     }
+
     setPage(res)
   }
 
-  const savePage = async (data: Partial<PageModel>): Promise<PageModel> => {
-    cache.delete(`url:/api/pages/${page?.id}||method:GET||body:`)
-    const res = await post({
-      id: data.id || page.id,
-      meta: {
-        title: data.title || page.title,
-        pid: data.pid || page.pid,
-        order: data.order || page.order,
-        icon: data.icon || page.icon,
-      },
-      content: data.content || page.content,
-    })
+  const savePage = async (data: Partial<PageModel>, isNew = false) => {
+    cache.delete(`url:/api/pages/${page.id}||method:GET||body:`)
+    let result = data
 
-    setPage(res)
+    if (isNew) {
+      result = await post({
+        id: page.id,
+        meta: {
+          title: data.title,
+          pid: data.pid,
+          pic: data.pic,
+          cid: data.cid,
+        },
+        content: data.content,
+      })
+    } else if (!data.content) {
+      await post(`/${page.id}/meta`, data)
+    } else {
+      await post(page.id, {
+        content: data.content,
+      })
+    }
+    const newPage: PageModel = {
+      ...page,
+      ...result,
+    }
 
-    return res
+    return newPage
   }
 
-  const updatePage = async function (id: string, data: Partial<PageModel>) {
+  const updatePageMeta = async function (id: string, data: Partial<PageModel>) {
     cache.delete(`url:/api/pages/${id}||method:GET||body:`)
-    const res = await post(id, {
-      meta: {
-        title: data.title,
-        pid: data.pid,
-        order: data.order,
-        icon: data.icon,
-      },
-      content: data.content,
+    const res = await post(`${id}/meta`, {
+      title: data.title,
+      pid: data.pid,
+      cid: data.cid,
+      pic: data.pic,
     })
 
     return res
   }
 
-  return { page, getById, savePage, setPage, updatePage }
+  return { page, getById, savePage, setPage, updatePageMeta }
 }
 
 export const PageState = createContainer(usePage)

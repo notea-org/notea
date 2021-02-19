@@ -10,7 +10,10 @@ export function toBuffer(raw: unknown, compressed = false): Buffer {
   return Buffer.from(compressed ? strCompress(str) : str)
 }
 
-export function toStr(buffer?: Buffer, deCompressed = false) {
+export function toStr(
+  buffer?: Buffer,
+  deCompressed = false
+): string | undefined {
   if (!buffer) return
 
   const str = buffer.toString()

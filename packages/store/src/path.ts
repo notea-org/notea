@@ -13,7 +13,7 @@ export class StorePath {
     return `pages/${id}`
   }
 
-  getPath(path?: string) {
-    return this.prefix + path
+  getPath(...paths: string[]) {
+    return this.prefix + paths.join('/')
   }
 }

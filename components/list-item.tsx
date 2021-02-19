@@ -14,7 +14,7 @@ const Button: FC<HTMLProps<HTMLSpanElement>> = ({
   return (
     <span
       {...attrs}
-      className={cx('p-0.5 rounded hover:bg-gray-300', className)}
+      className={cx('p-0.5 rounded hover:bg-gray-400', className)}
     >
       {children}
     </span>

@@ -1,10 +1,11 @@
 import { List } from './list'
 import { Sidebar } from './sidebar'
-import { PageListState } from 'containers/page-list'
+import { PageTreeState } from 'containers/page-tree'
 import { FC, HTMLProps } from 'react'
 import { useRouter } from 'next/router'
 import useFetch from 'use-http'
 import { PageState } from 'containers/page'
+import { getLocalStore } from 'utils/local-store'
 
 export const Layout: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
   const { loading, error } = useFetch('/api/auth/user', {}, [])
@@ -21,7 +22,7 @@ export const Layout: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
   return (
     <section className="flex h-screen">
       <PageState.Provider>
-        <PageListState.Provider initialState={[]}>
+        <PageTreeState.Provider initialState={getLocalStore('TREE')}>
           <aside className="w-10 bg-gray-200">
             <Sidebar />
           </aside>
@@ -34,7 +35,7 @@ export const Layout: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
               {children}
             </article>
           </main>
-        </PageListState.Provider>
+        </PageTreeState.Provider>
       </PageState.Provider>
     </section>
   )

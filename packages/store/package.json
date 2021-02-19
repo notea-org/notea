@@ -4,10 +4,8 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "fast-stream-to-buffer": "^1.0.0",
-    "minio": "^7.0.18"
+    "@cinwell/awos-js": "^2.0.1-alpha.3",
+    "fast-stream-to-buffer": "^1.0.0"
   },
-  "devDependencies": {
-    "@types/minio": "^7.0.7"
-  }
+  "devDependencies": {}
 }

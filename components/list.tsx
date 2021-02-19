@@ -1,65 +1,35 @@
 import { ListItem } from './list-item'
-import { PageListState } from 'containers/page-list'
+import { PageTreeState } from 'containers/page-tree'
 import Tree, {
   ItemId,
   moveItemOnTree,
   mutateTree,
+  TreeData,
   TreeDestinationPosition,
   TreeSourcePosition,
-  TreeData,
 } from '@atlaskit/tree'
-import { useCallback, useEffect, useState } from 'react'
-import { PageModel, PageState } from 'containers/page'
-import { getLocalStore, setLocalStore } from 'utils/local-store'
-
-function toTree(list: PageModel[] = [], prevItems: TreeData['items'] = {}) {
-  const items: TreeData['items'] = {}
-  const tree: TreeData = {
-    rootId: 'root',
-    items,
-  }
-
-  if (list.length) {
-    list.forEach((item) => {
-      const { id, pid = 'root' } = item
-
-      if (!id) {
-        return
-      }
-
-      items[id] = {
-        ...prevItems[id],
-        ...{ id, data: item, children: [] },
-        ...items[id],
-      }
-
-      if (!items[pid]) {
-        items[pid] = {
-          ...prevItems[pid],
-          id: pid,
-          children: [],
-        }
-      }
-
-      items[pid].children.push(id)
-    })
-  } else {
-    tree.items = prevItems
-  }
-
-  return tree
-}
+import { useState, useEffect } from 'react'
+import { PageState } from 'containers/page'
+import useFetch from 'use-http'
+import { forEach } from 'lodash'
 
 export const List = () => {
-  const { list } = PageListState.useContainer()
-  const { updatePage } = PageState.useContainer()
-  const [tree, setTree] = useState(getLocalStore('TREE') || toTree())
-  const [curId, setCurId] = useState<ItemId>()
+  const { tree, updateTree } = PageTreeState.useContainer()
+  const { updatePageMeta } = PageState.useContainer()
+  const [curId, setCurId] = useState<ItemId>(0)
+  const { get } = useFetch('/api/pages')
 
-  const updateTree = useCallback((data) => {
-    setTree(data)
-    setLocalStore('TREE', data)
+  useEffect(() => {
+    get().then((data: TreeData) => {
+      forEach(data.items, (item) => {
+        if (!item.isExpanded && tree.items[item.id]?.isExpanded) {
+          item.isExpanded = true
+        }
+      })
+      updateTree(data)
+    })
   }, [])
+
   const onExpand = (itemId: ItemId) => {
     updateTree(mutateTree(tree, itemId, { isExpanded: true }))
   }
@@ -74,19 +44,32 @@ export const List = () => {
       return
     }
     const newTree = moveItemOnTree(tree, source, destination)
+    const toPid = destination.parentId as string
+    const fromPid = source.parentId as string
+
     updateTree(newTree)
-    updatePage(curId as string, {
-      pid: destination.parentId as string,
+
+    Promise.all([
+      newTree.items[curId].data.pid !== toPid &&
+        updatePageMeta(curId as string, {
+          pid: toPid,
+        }),
+      updatePageMeta(toPid, {
+        cid: newTree.items[toPid].children as string[],
+      }),
+      fromPid !== toPid &&
+        updatePageMeta(fromPid, {
+          cid: newTree.items[fromPid].children as string[],
+        }),
+    ]).catch((e) => {
+      // todo: toast
+      console.error('更新错误', e)
     })
   }
 
-  useEffect(() => {
-    updateTree(toTree(list, tree.items))
-  }, [list])
-
   return (
     <ul className="h-full text-sm">
-      <li className="p-1.5 pl-4 text-gray-500">我的页面</li>
+      <li className="p-2 pl-4 text-gray-500">我的页面</li>
       <Tree
         onExpand={onExpand}
         onCollapse={onCollapse}
@@ -104,14 +87,14 @@ export const List = () => {
             onCollapse={onCollapse}
             isExpanded={item.isExpanded}
             innerRef={provided.innerRef}
-            item={item.data || {}}
+            item={{
+              ...item.data,
+              id: item.id,
+            }}
             snapshot={snapshot}
-          />
+          ></ListItem>
         )}
       ></Tree>
-      {/* {list.map((item) => (
-        <ListItem key={item.id} {...item}></ListItem>
-      ))} */}
     </ul>
   )
 }

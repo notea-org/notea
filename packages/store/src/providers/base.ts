@@ -1,8 +1,17 @@
 import { StorePath } from '../path'
-import { createCacheHeader } from '../utils'
 
 export interface StoreProviderConfig {
   prefix?: string
+}
+
+export interface ObjectOptions {
+  meta?: Map<string, any>
+  contentType?: string
+  headers?: {
+    cacheControl?: string
+    contentDisposition?: string
+    contentEncoding?: string
+  }
 }
 
 export abstract class StoreProvider {
@@ -18,7 +27,7 @@ export abstract class StoreProvider {
   /**
    * 获取签名 URL
    */
-  abstract getSignUrl(path: string): Promise<string>
+  abstract getSignUrl(path: string): Promise<string | null>
 
   /**
    * 检测对象是否存在
@@ -29,15 +38,16 @@ export abstract class StoreProvider {
    * 获取对象内容
    * @returns content
    */
-  abstract getObject(path: string, isCompressed?: boolean): Promise<string>
+  abstract getObject(
+    path: string,
+    isCompressed?: boolean
+  ): Promise<string | undefined>
 
   /**
    * 获取对象 Meta
    * @returns meta
    */
-  abstract getObjectMeta(
-    path: string
-  ): Promise<Record<string, string> | undefined>
+  abstract getObjectMeta(path: string): Promise<Map<string, string> | undefined>
 
   /**
    * 获取对象和对象 Meta
@@ -45,8 +55,12 @@ export abstract class StoreProvider {
    */
   abstract getObjectAndMeta(
     path: string,
+    metaKeys: string[],
     isCompressed?: boolean
-  ): Promise<[string, Record<string, string> | undefined]>
+  ): Promise<{
+    content?: string
+    meta?: Map<string, string>
+  }>
 
   /**
    * 存储对象
@@ -54,7 +68,7 @@ export abstract class StoreProvider {
   abstract putObject(
     path: string,
     raw: string,
-    headers?: Record<string, string>,
+    headers?: ObjectOptions,
     isCompressed?: boolean
   ): Promise<void>
 
@@ -62,6 +76,15 @@ export abstract class StoreProvider {
    * 删除对象
    */
   abstract deleteObject(path: string): Promise<void>
+
+  /**
+   * 复制对象，可用于更新 meta
+   */
+  abstract copyObject(
+    fromPath: string,
+    toPath: string,
+    options: ObjectOptions
+  ): Promise<void>
 
   /**
    * 页面列表
@@ -89,9 +112,7 @@ export abstract class StoreProvider {
     }
 
     content = ids.filter(Boolean).join(',')
-    await this.putObject(indexPath, content, {
-      ...createCacheHeader(),
-    })
+    await this.putObject(indexPath, content)
   }
 
   /**
@@ -103,8 +124,6 @@ export abstract class StoreProvider {
     const ids = content.split(',')
 
     content = ids.filter((id) => id !== pageId).join(',')
-    await this.putObject(indexPath, content, {
-      ...createCacheHeader(),
-    })
+    await this.putObject(indexPath, content)
   }
 }

@@ -11,32 +11,32 @@ export function createStore(
     case 'OSS':
       // todo: use oss
       return new StoreS3({
-        endPoint: getEnv('STORE_END_POINT'),
+        type: 'oss',
         accessKey: getEnv('STORE_ACCESS_KEY'),
         secretKey: getEnv('STORE_SECRET_KEY'),
-        bucket: getEnv('STORE_BUCKET'),
-        pathStyle: false,
-        region: getEnv('STORE_REGION'),
+        endPoint: getEnv('STORE_END_POINT'),
+        bucket: getEnv('STORE_BUCKET', 'notea'),
         prefix,
       })
     case 'AWS':
       return new StoreS3({
-        endPoint: getEnv('STORE_END_POINT'),
+        type: 'aws',
         accessKey: getEnv('STORE_ACCESS_KEY'),
         secretKey: getEnv('STORE_SECRET_KEY'),
-        bucket: getEnv('STORE_BUCKET'),
+        bucket: getEnv('STORE_BUCKET', 'notea'),
+        region: getEnv('STORE_REGION', 'us-east-1'),
         prefix,
       })
     case 'MINIO':
     default:
       return new StoreS3({
-        endPoint: getEnv('STORE_END_POINT', 'localhost'),
+        type: 'aws',
         accessKey: getEnv('STORE_ACCESS_KEY'),
         secretKey: getEnv('STORE_SECRET_KEY'),
-        bucket: getEnv('STORE_BUCKET'),
-        port: getEnv('STORE_PORT', 9000),
-        useSSL: getEnv('STORE_SSL', true),
+        endPoint: getEnv('STORE_END_POINT', 'http://localhost:9000'),
+        bucket: getEnv('STORE_BUCKET', 'notea'),
         prefix,
+        pathStyle: true,
       })
   }
 }

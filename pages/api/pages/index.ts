@@ -1,6 +1,7 @@
+import { TreeData } from '@atlaskit/tree'
 import { genId } from '@notea/shared'
 import { api } from 'services/api'
-import { parseMeta, toMeta } from 'services/get-meta'
+import { jsonToMeta, metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 
@@ -9,25 +10,48 @@ export default api()
   .use(useStore)
   .get(async (req, res) => {
     const list = await req.store.getList()
-    const listMeta = await Promise.all(
+    const tree: TreeData = {
+      rootId: 'root',
+      items: {},
+    }
+
+    await Promise.all(
       list.map(async (id) => {
         const metaData = await req.store.getObjectMeta(
           req.store.path.getPageById(id)
         )
-        const meta = toMeta(metaData)
+        const { cid, ...meta } = metaToJson(metaData)
 
-        return meta
+        delete meta.id
+        tree.items[id] = {
+          id,
+          data: meta,
+          children: cid || [],
+        }
+
+        return
       })
     )
-    res.json(listMeta.filter(Boolean))
+
+    if (!list.includes('root')) {
+      await req.store.putObject(req.store.path.getPageById('root'), '')
+      await req.store.addToList('root')
+      tree.items['root'] = {
+        id: 'root',
+        children: [],
+      }
+    }
+
+    res.json(tree)
   })
   .post(async (req, res) => {
-    const { content, meta } = req.body
-    let id = req.body.id
+    const { content = '\n', meta } = req.body
+    let { id } = req.body
+    const pagePath = req.store.path.getPageById(id)
 
     if (!id) {
       id = genId()
-      while (await req.store.hasObject(req.store.path.getPageById(id))) {
+      while (await req.store.hasObject(pagePath)) {
         id = genId()
       }
     }
@@ -36,12 +60,26 @@ export default api()
       id,
       ...meta,
     }
-    const metaData = parseMeta(metaWithId)
+    const metaData = jsonToMeta(metaWithId)
 
-    await req.store.putObject(req.store.path.getPageById(id), content, {
-      ...metaData,
-      'content-type': 'text/markdown',
+    await req.store.putObject(pagePath, content, {
+      contentType: 'text/markdown',
+      meta: metaData,
     })
+
     await req.store.addToList(id)
+    // Update parent meta
+    const parentPath = req.store.path.getPageById(meta.pid || 'root')
+    const parentMeta = metaToJson(await req.store.getObjectMeta(parentPath))
+    const cid = (parentMeta.cid || []).concat(id)
+    const newParentMeta = jsonToMeta({
+      ...parentMeta,
+      cid: cid.toString(),
+    })
+
+    await req.store.copyObject(parentPath, parentPath, {
+      meta: newParentMeta,
+    })
+
     res.json(metaWithId)
   })

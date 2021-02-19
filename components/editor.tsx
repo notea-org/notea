@@ -2,9 +2,10 @@ import MarkdownEditor, { theme } from 'rich-markdown-editor'
 import { PageModel, PageState } from 'containers/page'
 import { KeyboardEvent, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import { PageListState } from 'containers/page-list'
+import { PageTreeState } from 'containers/page-tree'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { has } from 'lodash'
 const debounce = require('debounce-async').default
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
@@ -15,19 +16,20 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
 
 export const Editor = () => {
   const { savePage, page } = PageState.useContainer()
-  const { addToList } = PageListState.useContainer()
+  const { addToTree } = PageTreeState.useContainer()
   const titleEl = useRef<HTMLTextAreaElement>(null)
   const editorEl = useRef<MarkdownEditor>(null)
   const router = useRouter()
 
-  const onPageChange = debounce(async (p: Partial<PageModel>) => {
-    const item = await savePage({
-      pid: router.query.pid as string,
-      ...p,
-    })
+  const onPageChange = debounce(async (data: Partial<PageModel>) => {
+    const isNew = has(router.query, 'new')
+    if (isNew) {
+      data.pid = (router.query.pid as string) || 'root'
+    }
+    const item = await savePage(data, isNew)
 
     await router.replace(`/page/${item.id}`)
-    addToList(item)
+    addToTree(item)
   }, 500)
   const onInputTitle = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key.toLowerCase() === 'enter') {

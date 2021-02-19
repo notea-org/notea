@@ -14,7 +14,7 @@ const LoginPage = () => {
       password: e.currentTarget.password.value,
     })
     if (data.isLoggedIn) {
-      router.push((router.query.redirect as string) || '/')
+      location.href = (router.query.redirect as string) || '/'
     } else {
       console.error(data)
     }
