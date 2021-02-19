@@ -6,7 +6,7 @@ import { FC, HTMLProps, ReactText, MouseEvent } from 'react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
 
-const Button: FC<HTMLProps<HTMLSpanElement>> = ({
+export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
   children,
   className,
   ...attrs
@@ -14,7 +14,10 @@ const Button: FC<HTMLProps<HTMLSpanElement>> = ({
   return (
     <span
       {...attrs}
-      className={cx('p-0.5 rounded hover:bg-gray-400', className)}
+      className={cx(
+        'p-0.5 rounded hover:bg-gray-400 cursor-pointer',
+        className
+      )}
     >
       {children}
     </span>
@@ -52,14 +55,14 @@ export const ListItem: FC<
     <li
       {...attrs}
       ref={innerRef}
-      className={cx('group hover:bg-gray-300', {
-        'bg-gray-300': snapshot.isDragging,
+      className={cx('group hover:bg-gray-300 text-gray-700', {
+        'shadow bg-gray-300': snapshot.isDragging,
         'bg-gray-200': router.query.id === item.id,
       })}
     >
       <Link href={`/page/${item.id}`}>
         <a className="flex py-1.5 px-4 items-center">
-          <Button
+          <ItemButton
             className="mr-0.5"
             onClick={(e) => {
               e.preventDefault()
@@ -73,14 +76,14 @@ export const ListItem: FC<
               width="16"
               height="16"
             />
-          </Button>
+          </ItemButton>
           <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
-          <Button
+          <ItemButton
             onClick={onAddPage}
             className="opacity-0 group-hover:opacity-100"
           >
             <IconPlus width="16" height="16" />
-          </Button>
+          </ItemButton>
         </a>
       </Link>
     </li>

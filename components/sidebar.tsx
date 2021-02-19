@@ -1,10 +1,10 @@
-import IconPlus from 'heroicons/react/outline/Plus'
 import IconSearch from 'heroicons/react/outline/Search'
 import IcoTrash from 'heroicons/react/outline/Trash'
 import IconMoon from 'heroicons/react/outline/Moon'
+import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
+
 // import IconSun from 'heroicons/react/outline/Sun'
 import { FC, HTMLProps } from 'react'
-import { useRouter } from 'next/router'
 
 const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
   const { children, ...attrs } = props
@@ -19,8 +19,6 @@ const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
 }
 
 export const Sidebar = () => {
-  const router = useRouter()
-
   return (
     <div className="h-full flex flex-col">
       <ButtonItem>
@@ -31,15 +29,10 @@ export const Sidebar = () => {
         <IcoTrash />
       </ButtonItem>
 
-      <ButtonItem
-        onClick={() => {
-          router.push('/page/new')
-        }}
-      >
-        <IconPlus />
-      </ButtonItem>
-
       <div className="mt-auto">
+        <ButtonItem>
+          <IconChevronDoubleLeft />
+        </ButtonItem>
         <ButtonItem>
           <IconMoon />
         </ButtonItem>

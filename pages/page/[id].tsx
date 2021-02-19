@@ -25,7 +25,6 @@ const EditContainer = () => {
 
   useEffect(() => {
     if (id === 'new') {
-      // todo: check list
       const url = `/page/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
       router.replace(url)

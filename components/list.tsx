@@ -1,4 +1,4 @@
-import { ListItem } from './list-item'
+import { ListItem, ItemButton } from './list-item'
 import { PageTreeState } from 'containers/page-tree'
 import Tree, {
   ItemId,
@@ -12,11 +12,14 @@ import { useState, useEffect } from 'react'
 import { PageState } from 'containers/page'
 import useFetch from 'use-http'
 import { forEach } from 'lodash'
+import IconPlus from 'heroicons/react/outline/Plus'
+import { useRouter } from 'next/router'
 
 export const List = () => {
   const { tree, updateTree } = PageTreeState.useContainer()
   const { updatePageMeta } = PageState.useContainer()
   const [curId, setCurId] = useState<ItemId>(0)
+  const router = useRouter()
   const { get } = useFetch('/api/pages')
 
   useEffect(() => {
@@ -69,7 +72,17 @@ export const List = () => {
 
   return (
     <ul className="h-full text-sm">
-      <li className="p-2 pl-4 text-gray-500">我的页面</li>
+      <li className="py-2 px-4 text-gray-500 flex">
+        <span className="flex-auto">我的页面</span>
+        <ItemButton
+          onClick={() => {
+            router.push('/page/new')
+          }}
+          className="hover:opacity-100 text-gray-700"
+        >
+          <IconPlus width="16" height="16" />
+        </ItemButton>
+      </li>
       <Tree
         onExpand={onExpand}
         onCollapse={onCollapse}

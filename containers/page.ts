@@ -56,6 +56,11 @@ const usePage = () => {
       ...result,
     }
 
+    // todo: title 没了
+    delete newPage.content
+
+    setPage(newPage)
+
     return newPage
   }
 

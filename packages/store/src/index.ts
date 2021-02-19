@@ -9,7 +9,6 @@ export function createStore(
 ) {
   switch (type) {
     case 'OSS':
-      // todo: use oss
       return new StoreS3({
         type: 'oss',
         accessKey: getEnv('STORE_ACCESS_KEY'),
