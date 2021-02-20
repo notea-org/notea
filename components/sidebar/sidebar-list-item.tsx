@@ -2,9 +2,9 @@ import { PageModel } from 'containers/page'
 import Link from 'next/link'
 import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
-import { FC, HTMLProps, ReactText, MouseEvent } from 'react'
+import { FC, HTMLProps, ReactText, MouseEvent, useCallback } from 'react'
 import cx from 'classnames'
-import { useRouter } from 'next/router'
+import router, { useRouter } from 'next/router'
 
 export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
   children,
@@ -24,7 +24,7 @@ export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
   )
 }
 
-export const ListItem: FC<
+const SidebarListItem: FC<
   HTMLProps<HTMLLIElement> & {
     item: PageModel
     innerRef: (el: HTMLElement | null) => void
@@ -44,12 +44,14 @@ export const ListItem: FC<
   snapshot,
   ...attrs
 }) => {
-  const router = useRouter()
-
-  const onAddPage = (e: MouseEvent) => {
-    e.preventDefault()
-    router.push(`/page/new?pid=` + item.id)
-  }
+  const { query } = useRouter()
+  const onAddPage = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault()
+      router.push(`/page/new?pid=` + item.id)
+    },
+    [item.id]
+  )
 
   return (
     <li
@@ -57,11 +59,11 @@ export const ListItem: FC<
       ref={innerRef}
       className={cx('group hover:bg-gray-300 text-gray-700', {
         'shadow bg-gray-300': snapshot.isDragging,
-        'bg-gray-200': router.query.id === item.id,
+        'bg-gray-200': query.id === item.id,
       })}
     >
       <Link href={`/page/${item.id}`}>
-        <a className="flex py-1.5 px-4 items-center">
+        <a className="flex py-1.5 px-2 items-center">
           <ItemButton
             className="mr-0.5"
             onClick={(e) => {
@@ -78,10 +80,7 @@ export const ListItem: FC<
             />
           </ItemButton>
           <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
-          <ItemButton
-            onClick={onAddPage}
-            className="opacity-0 group-hover:opacity-100"
-          >
+          <ItemButton onClick={onAddPage} className="hidden group-hover:block">
             <IconPlus width="16" height="16" />
           </ItemButton>
         </a>
@@ -89,3 +88,5 @@ export const ListItem: FC<
     </li>
   )
 }
+
+export default SidebarListItem

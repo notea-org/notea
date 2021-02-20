@@ -1,9 +1,9 @@
 import MarkdownEditor, { theme } from 'rich-markdown-editor'
 import { PageModel, PageState } from 'containers/page'
-import { KeyboardEvent, useEffect, useRef } from 'react'
+import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { PageTreeState } from 'containers/page-tree'
-import { useRouter } from 'next/router'
+import router from 'next/router'
 import styled from 'styled-components'
 import { has } from 'lodash'
 const debounce = require('debounce-async').default
@@ -14,30 +14,42 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
   }
 `
 
-export const Editor = () => {
+const debouncePageChange = debounce(async (cb: any) => {
+  return cb && cb()
+}, 500)
+
+const Editor = () => {
   const { savePage, page } = PageState.useContainer()
   const { addToTree } = PageTreeState.useContainer()
   const titleEl = useRef<HTMLTextAreaElement>(null)
   const editorEl = useRef<MarkdownEditor>(null)
-  const router = useRouter()
 
-  const onPageChange = debounce(async (data: Partial<PageModel>) => {
-    const isNew = has(router.query, 'new')
-    if (isNew) {
-      data.pid = (router.query.pid as string) || 'root'
-    }
-    const item = await savePage(data, isNew)
+  const onPageChange = useCallback(
+    (data: Partial<PageModel>) => {
+      debouncePageChange(async () => {
+        const isNew = has(router.query, 'new')
+        if (isNew) {
+          data.pid = (router.query.pid as string) || 'root'
+        }
+        const item = await savePage(data, isNew)
 
-    await router.replace(`/page/${item.id}`)
-    addToTree(item)
-  }, 500)
-  const onInputTitle = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key.toLowerCase() === 'enter') {
-      event.stopPropagation()
-      event.preventDefault()
-      editorEl.current?.focusAtEnd()
-    }
-  }
+        await router.replace(`/page/${item.id}`)
+        addToTree(item)
+      })
+    },
+    [addToTree, savePage]
+  )
+
+  const onInputTitle = useCallback(
+    (event: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key.toLowerCase() === 'enter') {
+        event.stopPropagation()
+        event.preventDefault()
+        editorEl.current?.focusAtEnd()
+      }
+    },
+    []
+  )
 
   useEffect(() => {
     titleEl.current?.focus()
@@ -78,3 +90,5 @@ export const Editor = () => {
     </article>
   )
 }
+
+export default Editor

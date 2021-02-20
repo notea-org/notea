@@ -1,24 +1,27 @@
-import { useRouter } from 'next/router'
-import { FormEvent } from 'react'
+import router from 'next/router'
+import { FormEvent, useCallback } from 'react'
 import useFetch, { CachePolicies } from 'use-http'
 
 const LoginPage = () => {
   const { post } = useFetch('/api/auth/login', {
     cachePolicy: CachePolicies.NO_CACHE,
   })
-  const router = useRouter()
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const data = await post({
-      password: e.currentTarget.password.value,
-    })
-    if (data.isLoggedIn) {
-      location.href = (router.query.redirect as string) || '/'
-    } else {
-      console.error(data)
-    }
-  }
+  const onSubmit = useCallback(
+    async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      const data = await post({
+        password: e.currentTarget.password.value,
+      })
+      if (data.isLoggedIn) {
+        location.href = (router.query.redirect as string) || '/'
+      } else {
+        console.error(data)
+      }
+    },
+    [post]
+  )
+
   return (
     <form
       className="flex w-full max-w-sm mx-auto space-x-3 pt-60"

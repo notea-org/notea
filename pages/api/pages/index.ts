@@ -1,5 +1,6 @@
 import { TreeData } from '@atlaskit/tree'
 import { genId } from '@notea/shared'
+import { StoreProvider } from 'packages/store/src'
 import { api } from 'services/api'
 import { jsonToMeta, metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
@@ -9,38 +10,7 @@ export default api()
   .use(useAuth)
   .use(useStore)
   .get(async (req, res) => {
-    const list = await req.store.getList()
-    const tree: TreeData = {
-      rootId: 'root',
-      items: {},
-    }
-
-    await Promise.all(
-      list.map(async (id) => {
-        const metaData = await req.store.getObjectMeta(
-          req.store.path.getPageById(id)
-        )
-        const { cid, ...meta } = metaToJson(metaData)
-
-        delete meta.id
-        tree.items[id] = {
-          id,
-          data: meta,
-          children: cid || [],
-        }
-
-        return
-      })
-    )
-
-    if (!list.includes('root')) {
-      await req.store.putObject(req.store.path.getPageById('root'), '')
-      await req.store.addToList('root')
-      tree.items['root'] = {
-        id: 'root',
-        children: [],
-      }
-    }
+    const tree: TreeData = await getTree(req.store)
 
     res.json(tree)
   })
@@ -83,3 +53,38 @@ export default api()
 
     res.json(metaWithId)
   })
+
+export async function getTree(store: StoreProvider) {
+  const list = await store.getList()
+  const tree: TreeData = {
+    rootId: 'root',
+    items: {},
+  }
+
+  await Promise.all(
+    list.map(async (id) => {
+      const metaData = await store.getObjectMeta(store.path.getPageById(id))
+      const { cid, ...meta } = metaToJson(metaData)
+
+      delete meta.id
+      tree.items[id] = {
+        id,
+        data: meta,
+        children: cid || [],
+      }
+
+      return
+    })
+  )
+
+  if (!list.includes('root')) {
+    await store.putObject(store.path.getPageById('root'), '')
+    await store.addToList('root')
+    tree.items['root'] = {
+      id: 'root',
+      children: [],
+    }
+  }
+
+  return tree
+}

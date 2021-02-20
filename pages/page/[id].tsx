@@ -1,59 +1,59 @@
 import { PageModel, PageState } from 'containers/page'
 import { has } from 'lodash'
-import { useRouter } from 'next/router'
-import { genId } from 'packages/shared'
-import { useEffect } from 'react'
-import { Editor } from 'components/editor'
-import { Layout } from 'components/layout'
+import router, { useRouter } from 'next/router'
+import { useCallback, useEffect } from 'react'
+import Editor from 'components/editor'
+import LayoutMain from 'components/layout/layout-main'
 import { PageTreeState } from 'containers/page-tree'
+import { IndexPageProps } from 'pages'
 
 const EditContainer = () => {
-  const router = useRouter()
-  const { tree } = PageTreeState.useContainer()
+  const { genNewId } = PageTreeState.useContainer()
   const { getById, setPage } = PageState.useContainer()
-  const query = router.query
-  const id = query.id as string
-  const pid = query.pid as string
+  const { query } = useRouter()
 
-  const genNewId = () => {
-    let newId = genId()
-    while (tree.items[newId]) {
-      newId = genId()
-    }
-    return newId
-  }
+  const loadPageById = useCallback(
+    (id: string) => {
+      const pid = router.query.pid as string
+
+      if (id === 'new') {
+        const url = `/page/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
+
+        router.replace(url)
+      } else if (id && !has(router.query, 'new')) {
+        getById(id).catch((msg) => {
+          if (msg.status === 404) {
+            // todo: toast
+            console.error('页面不存在')
+          }
+          router.push('/')
+        })
+      } else {
+        setPage({
+          id,
+          title: '',
+          content: '\n',
+        } as PageModel)
+      }
+    },
+    [genNewId, getById, setPage]
+  )
 
   useEffect(() => {
-    if (id === 'new') {
-      const url = `/page/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
-
-      router.replace(url)
-    } else if (id && !has(query, 'new')) {
-      getById(id).catch((msg) => {
-        if (msg.status === 404) {
-          // todo: toast
-          console.error('页面不存在')
-        }
-        router.push('/')
-      })
-    } else {
-      setPage({
-        id,
-        title: '',
-        content: '\n',
-      } as PageModel)
-    }
-  }, [id])
+    loadPageById(query.id as string)
+  }, [loadPageById, query.id])
 
   return <Editor />
 }
 
-const EditPage = () => {
+const EditPage = ({ tree }: IndexPageProps) => {
   return (
-    <Layout>
+    <LayoutMain tree={tree}>
       <EditContainer />
-    </Layout>
+    </LayoutMain>
   )
 }
 
 export default EditPage
+
+export { getServerSideProps } from '../index'

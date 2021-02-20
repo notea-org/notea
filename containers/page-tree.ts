@@ -1,8 +1,9 @@
 import { TreeData } from '@atlaskit/tree'
-import { isEmpty } from 'lodash'
-import { useState } from 'react'
+import { isEmpty, forEach } from 'lodash'
+import { genId } from 'packages/shared'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import { setLocalStore } from 'utils/local-store'
+import { getLocalStore, setLocalStore } from 'utils/local-store'
 import { PageModel } from './page'
 
 const DEFAULT_TREE: TreeData = {
@@ -15,51 +16,99 @@ const DEFAULT_TREE: TreeData = {
   },
 }
 
+const saveLocalTree = (data: TreeData) => {
+  const items: any = {}
+
+  forEach(data.items, (item) => {
+    items[item.id] = {
+      isExpanded: item.isExpanded,
+    }
+  })
+
+  setLocalStore('TREE_ITEMS', {
+    ...data,
+    items,
+  })
+}
+
 const usePageTree = (initData: TreeData = DEFAULT_TREE) => {
   const [tree, setTree] = useState<TreeData>(initData)
+  const treeRef = useRef(tree)
 
-  const updateTree = (data: TreeData) => {
+  useEffect(() => {
+    treeRef.current = tree
+  }, [tree])
+
+  const updateTree = useCallback((data: TreeData) => {
     setTree(data)
-    setLocalStore('TREE', data)
-  }
+    saveLocalTree(data)
+  }, [])
 
-  const addToTree = (item: PageModel) => {
-    const newItems: TreeData['items'] = {}
-    const parentItem = tree.items[item.pid || 'root']
-    const curItem = tree.items[item.id]
+  const initTree = useCallback(async () => {
+    const localTree = getLocalStore('TREE_ITEMS') || DEFAULT_TREE
 
-    if (!parentItem.children.includes(item.id)) {
-      newItems[parentItem.id] = {
-        ...parentItem,
-        children: [...parentItem.children, item.id],
-      }
-    }
-
-    if (!curItem) {
-      newItems[item.id] = {
-        id: item.id,
-        data: item,
-        children: [],
-      }
-    } else if (curItem.data.title !== item.title) {
-      newItems[item.id] = {
-        ...curItem,
-        data: item,
-      }
-    }
-
-    if (!isEmpty(newItems)) {
-      updateTree({
-        ...tree,
-        items: {
-          ...tree.items,
-          ...newItems,
-        },
+    setTree((prev) => {
+      forEach(prev.items, (item) => {
+        if (!item.isExpanded && localTree.items[item.id]?.isExpanded) {
+          item.isExpanded = true
+        }
       })
-    }
-  }
 
-  return { tree, addToTree, updateTree }
+      saveLocalTree(prev)
+
+      return prev
+    })
+  }, [])
+
+  const addToTree = useCallback(
+    (item: PageModel) => {
+      const newItems: TreeData['items'] = {}
+      const curTree = treeRef.current
+      const parentItem = curTree.items[item.pid || 'root']
+      const curItem = curTree.items[item.id]
+
+      if (!parentItem.children.includes(item.id)) {
+        newItems[parentItem.id] = {
+          ...parentItem,
+          children: [...parentItem.children, item.id],
+        }
+      }
+
+      if (!curItem) {
+        newItems[item.id] = {
+          id: item.id,
+          data: item,
+          children: [],
+        }
+      } else if (curItem.data.title !== item.title) {
+        newItems[item.id] = {
+          ...curItem,
+          data: item,
+        }
+      }
+
+      if (!isEmpty(newItems)) {
+        updateTree({
+          ...curTree,
+          items: {
+            ...curTree.items,
+            ...newItems,
+          },
+        })
+      }
+    },
+    [updateTree]
+  )
+
+  const genNewId = useCallback(() => {
+    let newId = genId()
+    while (treeRef.current.items[newId]) {
+      newId = genId()
+    }
+    return newId
+  }, [])
+
+  return { tree, addToTree, updateTree, initTree, genNewId }
 }
 
 export const PageTreeState = createContainer(usePageTree)

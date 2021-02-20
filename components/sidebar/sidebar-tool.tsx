@@ -4,7 +4,8 @@ import IconMoon from 'heroicons/react/outline/Moon'
 import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
 
 // import IconSun from 'heroicons/react/outline/Sun'
-import { FC, HTMLProps } from 'react'
+import { FC, HTMLProps, useCallback } from 'react'
+import { UIState } from 'containers/ui'
 
 const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
   const { children, ...attrs } = props
@@ -18,7 +19,12 @@ const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
   )
 }
 
-export const Sidebar = () => {
+const SidebarTool = () => {
+  const { toggleFoldSidebar } = UIState.useContainer()
+  const onFold = useCallback(() => {
+    toggleFoldSidebar()
+  }, [])
+
   return (
     <div className="h-full flex flex-col">
       <ButtonItem>
@@ -30,7 +36,7 @@ export const Sidebar = () => {
       </ButtonItem>
 
       <div className="mt-auto">
-        <ButtonItem>
+        <ButtonItem onClick={onFold}>
           <IconChevronDoubleLeft />
         </ButtonItem>
         <ButtonItem>
@@ -40,3 +46,5 @@ export const Sidebar = () => {
     </div>
   )
 }
+
+export default SidebarTool
