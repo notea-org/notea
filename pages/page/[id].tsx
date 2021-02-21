@@ -2,11 +2,16 @@ import { PageModel, PageState } from 'containers/page'
 import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
-import PageEditor from 'components/page-editor'
 import LayoutMain from 'components/layout/layout-main'
 import { PageTreeState } from 'containers/page-tree'
-import { IndexPageProps } from 'pages'
 import PageNav from 'components/page-nav'
+import dynamic from 'next/dynamic'
+import { GetServerSideProps, NextPage } from 'next'
+import { TreeData } from '@atlaskit/tree'
+import withTree from 'services/with-tree'
+import withUA from 'services/with-ua'
+
+const PageEditor = dynamic(() => import('components/page-editor'))
 
 const EditContainer = () => {
   const { genNewId } = PageTreeState.useContainer()
@@ -16,8 +21,9 @@ const EditContainer = () => {
   const loadPageById = useCallback(
     (id: string) => {
       const pid = router.query.pid as string
-
-      if (id === 'new') {
+      if (id === 'welcome') {
+        return
+      } else if (id === 'new') {
         const url = `/page/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
         router.replace(url, undefined, { shallow: true })
@@ -44,17 +50,19 @@ const EditContainer = () => {
     loadPageById(query.id as string)
   }, [loadPageById, query.id])
 
-  return (
+  return query.id !== 'welcome' ? (
     <>
       <PageNav />
       <article className="m-auto prose prose-sm h-full">
         <PageEditor />
       </article>
     </>
+  ) : (
+    <div>使用说明之类的</div>
   )
 }
 
-const EditPage = ({ tree }: IndexPageProps) => {
+const EditPage: NextPage<{ tree: TreeData }> = ({ tree }) => {
   return (
     <LayoutMain tree={tree}>
       <EditContainer />
@@ -64,4 +72,8 @@ const EditPage = ({ tree }: IndexPageProps) => {
 
 export default EditPage
 
-export { getServerSideProps } from 'services/init-tree'
+export const getServerSideProps: GetServerSideProps = withUA(
+  withTree(() => {
+    return {}
+  })
+)

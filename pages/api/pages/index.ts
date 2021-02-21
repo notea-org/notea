@@ -1,7 +1,7 @@
 import { TreeData } from '@atlaskit/tree'
 import { genId } from '@notea/shared'
 import { api } from 'services/api'
-import { getTree } from 'services/init-tree'
+import { getTree } from 'services/get-tree'
 import { jsonToMeta, metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'

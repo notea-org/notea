@@ -1,5 +1,6 @@
 import { createStore } from '@notea/store'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
+import { GetServerSidePropsContext } from 'next'
 
 export function useStore(req: ApiRequest, _res: ApiResponse, next: ApiNext) {
   applyStore(req)
@@ -12,12 +13,9 @@ function applyStore(req: ApiRequest) {
 }
 
 export function withStore(wrapperHandler: any) {
-  return async function handler(...args: any[]) {
-    const handlerType = args[0] && args[1] ? 'api' : 'ssr'
-    const req = handlerType === 'api' ? args[0] : args[0].req
+  return async function handler(ctx: GetServerSidePropsContext) {
+    applyStore(ctx.req)
 
-    applyStore(req)
-
-    return wrapperHandler(...args)
+    return wrapperHandler(ctx)
   }
 }

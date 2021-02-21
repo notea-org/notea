@@ -1,12 +1,11 @@
 import { UIState } from 'containers/ui'
+import { UserAgentState } from 'containers/useragent'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import 'tailwindcss/tailwind.css'
 
 const handleRejection = (event: any) => {
-  console.log(1)
-
   if (/^ResizeObserver/.test(event.message)) {
     // todo catch
     event.stopImmediatePropagation()
@@ -42,14 +41,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <UIState.Provider>
-      <Head>
-        <title>{pageProps.title || 'Notea'}</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Component {...pageProps} />
-    </UIState.Provider>
+    <UserAgentState.Provider initialState={pageProps.ua}>
+      <UIState.Provider>
+        <Head>
+          <title>{pageProps.title || 'Notea'}</title>
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
+        <Component {...pageProps} />
+      </UIState.Provider>
+    </UserAgentState.Provider>
   )
 }
 

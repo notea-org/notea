@@ -44,6 +44,7 @@
     "rich-markdown-editor": "^11.3.1",
     "styled-components": "^5.2.1",
     "tailwindcss": "^2.0.3",
+    "ua-parser-js": "^0.7.24",
     "unstated-next": "^1.1.0",
     "use-http": "^1.0.16"
   },
@@ -55,6 +56,7 @@
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "@types/styled-components": "^5.1.7",
+    "@types/ua-parser-js": "^0.7.35",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "autoprefixer": "^10.2.4",
