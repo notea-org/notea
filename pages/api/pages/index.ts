@@ -44,7 +44,7 @@ export default api()
     const cid = (parentMeta.cid || []).concat(id)
     const newParentMeta = jsonToMeta({
       ...parentMeta,
-      cid: cid.toString(),
+      cid: [...new Set(cid)].toString(),
     })
 
     await req.store.copyObject(parentPath, parentPath, {
