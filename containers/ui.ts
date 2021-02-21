@@ -2,9 +2,11 @@ import { isBoolean } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { getLocalStore, setLocalStore } from 'utils/local-store'
+import { UserAgentState } from './useragent'
 
 function useSidebar() {
-  const [isFoldSidebar, setFoldSidebar] = useState(false)
+  const { ua } = UserAgentState.useContainer()
+  const [isFoldSidebar, setFoldSidebar] = useState(ua.isMobileOnly)
 
   const toggleFoldSidebar = useCallback((state?: boolean) => {
     setFoldSidebar((prev) => (isBoolean(state) ? state : !prev))

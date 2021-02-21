@@ -25,7 +25,7 @@ export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
 }
 
 const SidebarListItem: FC<
-  HTMLProps<HTMLLIElement> & {
+   {
     item: PageModel
     innerRef: (el: HTMLElement | null) => void
     onExpand: (itemId?: ReactText) => void

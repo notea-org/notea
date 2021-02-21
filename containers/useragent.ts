@@ -9,10 +9,18 @@ export interface UserAgentType {
   isWechat: boolean
 }
 
-function useUserAgent(initState?: UserAgentType) {
-  const [ua, setUA] = useState(initState)
+function useUserAgent(
+  initState: UserAgentType = {
+    isMobile: false,
+    isMobileOnly: false,
+    isTablet: false,
+    isBrowser: true,
+    isWechat: false,
+  }
+) {
+  const [ua] = useState(initState)
 
-  return [ua, setUA]
+  return { ua }
 }
 
 export const UserAgentState = createContainer(useUserAgent)

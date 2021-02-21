@@ -53,7 +53,7 @@ const EditContainer = () => {
   return query.id !== 'welcome' ? (
     <>
       <PageNav />
-      <article className="m-auto prose prose-sm h-full">
+      <article className="m-auto prose">
         <PageEditor />
       </article>
     </>
