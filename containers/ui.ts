@@ -17,7 +17,7 @@ const DEFAULT_SPLIT_SIZES = [15, 85]
 
 function useSplit() {
   const [splitSizes, setSplitSizes] = useState(DEFAULT_SPLIT_SIZES)
-  const [splitRealSizes, setSplitRealSizes] = useState(DEFAULT_SPLIT_SIZES)
+  const [firstWidth, setFirstWidth] = useState<number>(-1)
 
   useEffect(() => {
     setSplitSizes(getLocalStore('SPLIT_SIZE') || DEFAULT_SPLIT_SIZES)
@@ -26,17 +26,20 @@ function useSplit() {
   const saveSplitSizes = useCallback((sizes: number[], width) => {
     setSplitSizes(sizes)
     setLocalStore('SPLIT_SIZE', sizes)
-    console.log(
-      width,
-      sizes.map((s) => s * width)
-    )
-    setSplitRealSizes(sizes.map((s) => s * width))
+    setFirstWidth((sizes[0] * width) / 100)
+  }, [])
+
+  const initFirstWidth = useCallback((width: number) => {
+    const initSizes = getLocalStore('SPLIT_SIZE') || DEFAULT_SPLIT_SIZES
+
+    setFirstWidth((initSizes[0] * width) / 100)
   }, [])
 
   return {
     splitSizes,
     saveSplitSizes,
-    splitRealSizes,
+    firstWidth,
+    initFirstWidth,
   }
 }
 

@@ -1,6 +1,6 @@
 import { UIState } from 'containers/ui'
 import Split from 'react-split'
-import { FC, HTMLProps, useCallback, useEffect, useRef } from 'react'
+import { FC, useCallback, useEffect, useRef } from 'react'
 
 const renderGutter = () => {
   const gutter = document.createElement('div')
@@ -14,29 +14,37 @@ const renderGutter = () => {
   return gutter
 }
 
-const Resizable: FC<
-  HTMLProps<
-    HTMLDivElement & {
-      width: number
-    }
-  >
-> = ({ width, children }) => {
+const Resizable: FC<{ width?: number }> = ({ width, children }) => {
   const splitRef = useRef<typeof Split>(null)
   const {
     isFoldSidebar,
     saveSplitSizes,
     splitSizes,
-    splitRealSizes,
+    firstWidth,
+    initFirstWidth,
   } = UIState.useContainer()
   const widthRef = useRef(width)
+  const firstWidthRef = useRef(firstWidth)
 
-  // todo width 还是不正确， 应该通过 setWidth?
   useEffect(() => {
+    firstWidthRef.current = firstWidth
+  }, [firstWidth])
+
+  useEffect(() => {
+    if (!width) return
+
     widthRef.current = width
-  }, [width])
+    if (firstWidthRef.current > -1) {
+      const firstSize = (firstWidthRef.current / width) * 100
+
+      splitRef.current?.split?.setSizes([firstSize, 100 - firstSize])
+    } else {
+      initFirstWidth(width)
+    }
+  }, [initFirstWidth, width])
+
   const updateSplitSizes = useCallback(
     (sizes: number[]) => {
-      console.log('w', widthRef.current)
       saveSplitSizes(sizes, widthRef.current)
     },
     [saveSplitSizes]

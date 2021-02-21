@@ -1,7 +1,6 @@
 import { PageTreeState } from 'containers/page-tree'
-import { FC, HTMLProps, useCallback, useRef } from 'react'
+import { FC, HTMLProps } from 'react'
 import { PageState } from 'containers/page'
-import Split from 'react-split'
 import { useResizeDetector } from 'react-resize-detector'
 import { TreeData } from '@atlaskit/tree'
 import Sidebar from 'components/sidebar/sidebar'
@@ -31,16 +30,9 @@ const LayoutMain: FC<
 }
 
 const MainWrapper: FC<HTMLProps<HTMLDivElement>> = ({ children }) => {
-  const splitRef = useRef<typeof Split>(null)
-  const { isFoldSidebar, splitSizes, splitRealSizes } = UIState.useContainer()
+  const { isFoldSidebar } = UIState.useContainer()
   const { ref, width } = useResizeDetector<HTMLDivElement>({
-    onResize: useCallback(
-      (width) => {
-        splitRef.current?.split?.setSizes(splitSizes)
-        console.log('res3et', splitSizes, splitRealSizes, width)
-      },
-      [splitSizes, splitRealSizes]
-    ),
+    handleHeight: false,
   })
 
   return (
