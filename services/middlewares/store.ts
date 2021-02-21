@@ -13,7 +13,11 @@ function applyStore(req: ApiRequest) {
 }
 
 export function withStore(wrapperHandler: any) {
-  return async function handler(ctx: GetServerSidePropsContext) {
+  return async function handler(
+    ctx: GetServerSidePropsContext & {
+      req: ApiRequest
+    }
+  ) {
     applyStore(ctx.req)
 
     return wrapperHandler(ctx)
