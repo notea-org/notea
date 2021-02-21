@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next'
 import { ApiRequest } from './api'
 import { getTree } from './get-tree'
+import { API } from './middlewares/error'
 import { withSession } from './middlewares/session'
 import { withStore } from './middlewares/store'
 // @atlaskit/tree 的依赖
@@ -26,9 +27,17 @@ export default function withTree(wrapperHandler: any) {
 
       resetServerContext()
 
+      let tree
+
+      try {
+        tree = await getTree(ctx.req.store)
+      } catch (error) {
+        return API.NOT_FOUND.throw(error.message)
+      }
+
       res.props = {
         ...res.props,
-        tree: await getTree(ctx.req.store),
+        tree,
       }
 
       return res
