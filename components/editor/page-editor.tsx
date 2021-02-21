@@ -1,6 +1,6 @@
 import MarkdownEditor from 'rich-markdown-editor'
 import { PageModel, PageState } from 'containers/page'
-import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
+import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { PageTreeState } from 'containers/page-tree'
 import router from 'next/router'
@@ -25,6 +25,7 @@ const PageEditor = () => {
   const { darkModeActive } = useDarkMode()
   const { savePage, page } = PageState.useContainer()
   const { addToTree } = PageTreeState.useContainer()
+  const [title, setTitle] = useState()
   const titleEl = useRef<HTMLTextAreaElement>(null)
   const editorEl = useRef<MarkdownEditor>(null)
 
@@ -35,6 +36,9 @@ const PageEditor = () => {
         if (isNew) {
           data.pid = (router.query.pid as string) || 'root'
         }
+        if (!data.title) {
+          data.title = title
+        }
         const item = await savePage(data, isNew)
         const pageUrl = `/page/${item.id}`
 
@@ -44,7 +48,7 @@ const PageEditor = () => {
         addToTree(item)
       })
     },
-    [addToTree, savePage]
+    [addToTree, savePage, title]
   )
 
   const onInputTitle = useCallback(
@@ -64,7 +68,9 @@ const PageEditor = () => {
 
   const onTitleChange = useCallback(
     (event) => {
-      onPageChange({ title: event.target.value })
+      const title = event.target.value
+      onPageChange({ title })
+      setTitle(title)
     },
     [onPageChange]
   )
