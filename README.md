@@ -1,6 +1,8 @@
-# Notea
+# Notea [WIP]
 
 > Self hosted note taking app stored on Amazon S3 or like.
+
+![screenshot](./assets/screenshot.png)
 
 ## Features
 
