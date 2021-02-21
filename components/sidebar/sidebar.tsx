@@ -1,13 +1,13 @@
 import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarPageList from 'components/sidebar/sidebar-list'
-import cx from 'classnames'
+import classNames from 'classnames'
 import { UIState } from 'containers/ui'
 
 const Sidebar = () => {
   const { isFoldSidebar } = UIState.useContainer()
 
   return (
-    <section className={cx('flex h-full')}>
+    <section className={classNames('flex h-full')}>
       <aside className="w-10 flex-none bg-gray-200">
         <SidebarTool />
       </aside>

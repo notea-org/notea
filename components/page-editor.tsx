@@ -18,7 +18,7 @@ const debouncePageChange = debounce(async (cb: any) => {
   return cb && cb()
 }, 500)
 
-const Editor = () => {
+const PageEditor = () => {
   const { savePage, page } = PageState.useContainer()
   const { addToTree } = PageTreeState.useContainer()
   const titleEl = useRef<HTMLTextAreaElement>(null)
@@ -32,8 +32,11 @@ const Editor = () => {
           data.pid = (router.query.pid as string) || 'root'
         }
         const item = await savePage(data, isNew)
+        const pageUrl = `/page/${item.id}`
 
-        await router.replace(`/page/${item.id}`)
+        if (router.asPath !== pageUrl) {
+          await router.replace(pageUrl, undefined, { shallow: true })
+        }
         addToTree(item)
       })
     },
@@ -91,4 +94,4 @@ const Editor = () => {
   )
 }
 
-export default Editor
+export default PageEditor

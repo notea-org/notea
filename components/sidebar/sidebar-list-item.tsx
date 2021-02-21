@@ -3,7 +3,7 @@ import Link from 'next/link'
 import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
 import { FC, HTMLProps, ReactText, MouseEvent, useCallback } from 'react'
-import cx from 'classnames'
+import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 
 export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
@@ -14,7 +14,7 @@ export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
   return (
     <span
       {...attrs}
-      className={cx(
+      className={classNames(
         'p-0.5 rounded hover:bg-gray-400 cursor-pointer',
         className
       )}
@@ -48,7 +48,7 @@ const SidebarListItem: FC<
   const onAddPage = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
-      router.push(`/page/new?pid=` + item.id)
+      router.push(`/page/new?pid=` + item.id, undefined, { shallow: true })
     },
     [item.id]
   )
@@ -57,12 +57,12 @@ const SidebarListItem: FC<
     <li
       {...attrs}
       ref={innerRef}
-      className={cx('group hover:bg-gray-300 text-gray-700', {
+      className={classNames('group hover:bg-gray-300 text-gray-700', {
         'shadow bg-gray-300': snapshot.isDragging,
         'bg-gray-200': query.id === item.id,
       })}
     >
-      <Link href={`/page/${item.id}`}>
+      <Link href={`/page/${item.id}`} shallow>
         <a className="flex py-1.5 px-2 items-center">
           <ItemButton
             className="mr-0.5"
@@ -72,7 +72,7 @@ const SidebarListItem: FC<
             }}
           >
             <IconArrowRight
-              className={cx('transition-transform transform', {
+              className={classNames('transition-transform transform', {
                 'rotate-90': isExpanded,
               })}
               width="16"

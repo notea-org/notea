@@ -68,11 +68,11 @@ const SideBarList = () => {
 
   return (
     <ul className="h-full text-sm">
-      <li className="py-2 px-4 text-gray-500 flex">
+      <li className="p-2 text-gray-500 flex">
         <span className="flex-auto">我的页面</span>
         <ItemButton
           onClick={() => {
-            router.push('/page/new')
+            router.push('/page/new', undefined, { shallow: true })
           }}
           className="hover:opacity-100 text-gray-700"
         >
