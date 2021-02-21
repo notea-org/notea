@@ -1,4 +1,4 @@
-import MarkdownEditor, { theme } from 'rich-markdown-editor'
+import MarkdownEditor from 'rich-markdown-editor'
 import { PageModel, PageState } from 'containers/page'
 import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
@@ -6,7 +6,9 @@ import { PageTreeState } from 'containers/page-tree'
 import router from 'next/router'
 import styled from 'styled-components'
 import { has } from 'lodash'
-const debounce = require('debounce-async').default
+import { darkTheme, lightTheme } from './theme'
+import { useDarkMode } from 'next-dark-mode'
+import debounceSync from 'debounce-async'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
@@ -15,11 +17,12 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
   }
 `
 
-const debouncePageChange = debounce(async (cb: any) => {
+const debouncePageChange = debounceSync(async (cb: any) => {
   return cb && cb()
 }, 500)
 
 const PageEditor = () => {
+  const { darkModeActive } = useDarkMode()
   const { savePage, page } = PageState.useContainer()
   const { addToTree } = PageTreeState.useContainer()
   const titleEl = useRef<HTMLTextAreaElement>(null)
@@ -59,19 +62,31 @@ const PageEditor = () => {
     titleEl.current?.focus()
   }, [page.id])
 
+  const onTitleChange = useCallback(
+    (event) => {
+      onPageChange({ title: event.target.value })
+    },
+    [onPageChange]
+  )
+
+  const onEditorChange = useCallback(
+    (value: () => string): void => {
+      onPageChange({ content: value() })
+    },
+    [onPageChange]
+  )
+
   return (
     <article className="pt-40 px-6">
       <h1>
         <TextareaAutosize
           ref={titleEl}
-          className="outline-none w-full resize-none block"
+          className="outline-none w-full resize-none block bg-transparent"
           placeholder="新页面"
           defaultValue={page.title}
           key={page.id}
           onKeyDown={onInputTitle}
-          onChange={(event) => {
-            onPageChange({ title: event.target.value })
-          }}
+          onChange={onTitleChange}
           maxLength={128}
           autoFocus
         />
@@ -80,13 +95,8 @@ const PageEditor = () => {
         id={page.id}
         ref={editorEl}
         value={page.content}
-        onChange={(value) => {
-          onPageChange({ content: value() })
-        }}
-        theme={{
-          ...theme,
-          fontFamily: 'inherit',
-        }}
+        onChange={onEditorChange}
+        theme={darkModeActive ? darkTheme : lightTheme}
         onCreateLink={async () => {
           return '1'
         }}

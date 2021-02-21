@@ -6,6 +6,9 @@ module.exports = {
       cursor: {
         'col-resize': 'col-resize',
       },
+      nightwind: {
+        typography: true,
+      },
     },
   },
   variants: {
@@ -14,5 +17,5 @@ module.exports = {
       backgroundColor: ['active'],
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('nightwind')],
 }

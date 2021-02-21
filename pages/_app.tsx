@@ -1,10 +1,11 @@
 import { UIState } from 'containers/ui'
 import { UserAgentState } from 'containers/useragent'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import 'tailwindcss/tailwind.css'
 import withDarkMode from 'next-dark-mode'
+import classNames from 'classnames'
 
 const handleRejection = (event: any) => {
   if (/^ResizeObserver/.test(event.message)) {
@@ -48,20 +49,26 @@ function MyApp({
   }, [])
 
   return (
-    <div className={darkMode?.darkModeActive ? 'dark' : 'light'}>
-      <UserAgentState.Provider initialState={pageProps.ua}>
-        <UIState.Provider>
-          <Head>
-            <title>{pageProps.title || 'Notea'}</title>
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-            />
-          </Head>
-          <Component {...pageProps} />
-        </UIState.Provider>
-      </UserAgentState.Provider>
+    <div
+      className={classNames({
+        dark: darkMode?.darkModeActive,
+      })}
+    >
+      <Head>
+        <title>{pageProps?.title || 'Notea'}</title>
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+      <div className="bg-gray-50 text-gray-800">
+        <UserAgentState.Provider initialState={pageProps?.ua}>
+          <UIState.Provider>
+            <Component {...pageProps} />
+          </UIState.Provider>
+        </UserAgentState.Provider>
+      </div>
     </div>
   )
 }

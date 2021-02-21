@@ -16,14 +16,8 @@ const BrowserSidebar: FC = () => {
 
   return (
     <section className="flex h-full">
-      <aside className="w-10 flex-none bg-gray-200">
-        <SidebarTool />
-      </aside>
-      {isFoldSidebar ? null : (
-        <section className="flex-grow bg-gray-100 overflow-y-auto">
-          <SideBarPageList />
-        </section>
-      )}
+      <SidebarTool />
+      {isFoldSidebar ? null : <SideBarPageList />}
     </section>
   )
 }
@@ -35,12 +29,8 @@ const MobileSidebar: FC = () => {
         'flex h-full transform absolute w-9/12 z-10 -translate-x-full'
       )}
     >
-      <aside className="w-10 flex-none bg-gray-200">
-        <SidebarTool />
-      </aside>
-      <section className="flex-grow bg-gray-100 overflow-y-auto">
-        <SideBarPageList />
-      </section>
+      <SidebarTool />
+      <SideBarPageList />
     </section>
   )
 }

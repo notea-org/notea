@@ -10,10 +10,13 @@ import { GetServerSideProps, NextPage } from 'next'
 import { TreeData } from '@atlaskit/tree'
 import withTree from 'services/with-tree'
 import withUA from 'services/with-ua'
+import classNames from 'classnames'
+import { useDarkMode } from 'next-dark-mode'
 
-const PageEditor = dynamic(() => import('components/page-editor'))
+const PageEditor = dynamic(() => import('components/editor/page-editor'))
 
 const EditContainer = () => {
+  const { darkModeActive } = useDarkMode()
   const { genNewId } = PageTreeState.useContainer()
   const { getById, setPage } = PageState.useContainer()
   const { query } = useRouter()
@@ -53,7 +56,11 @@ const EditContainer = () => {
   return query.id !== 'welcome' ? (
     <>
       <PageNav />
-      <article className="m-auto prose">
+      <article
+        className={classNames('m-auto prose', {
+          'prose-dark': darkModeActive,
+        })}
+      >
         <PageEditor />
       </article>
     </>

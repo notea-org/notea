@@ -24,18 +24,16 @@ export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
   )
 }
 
-const SidebarListItem: FC<
-   {
-    item: PageModel
-    innerRef: (el: HTMLElement | null) => void
-    onExpand: (itemId?: ReactText) => void
-    onCollapse: (itemId?: ReactText) => void
-    isExpanded: boolean
-    snapshot: {
-      isDragging: boolean
-    }
+const SidebarListItem: FC<{
+  item: PageModel
+  innerRef: (el: HTMLElement | null) => void
+  onExpand: (itemId?: ReactText) => void
+  onCollapse: (itemId?: ReactText) => void
+  isExpanded: boolean
+  snapshot: {
+    isDragging: boolean
   }
-> = ({
+}> = ({
   item,
   innerRef,
   onExpand,
@@ -65,7 +63,7 @@ const SidebarListItem: FC<
       <Link href={`/page/${item.id}`} shallow>
         <a className="flex py-1.5 px-2 items-center">
           <ItemButton
-            className="mr-0.5"
+            className="mr-1"
             onClick={(e) => {
               e.preventDefault()
               isExpanded ? onCollapse(item.id) : onExpand(item.id)
@@ -76,12 +74,11 @@ const SidebarListItem: FC<
                 'rotate-90': isExpanded,
               })}
               width="16"
-              height="16"
             />
           </ItemButton>
           <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
           <ItemButton onClick={onAddPage} className="hidden group-hover:block">
-            <IconPlus width="16" height="16" />
+            <IconPlus width="16" />
           </ItemButton>
         </a>
       </Link>

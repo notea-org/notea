@@ -47,12 +47,12 @@ const ButtonTheme = () => {
   } = useDarkMode()
 
   const onToggleThemeMode = useCallback(() => {
-    if (darkModeActive) {
+    if (autoModeActive) {
       switchToLightMode()
-    } else if (autoModeActive) {
-      switchToDarkMode()
-    } else {
+    } else if (darkModeActive) {
       switchToAutoMode()
+    } else {
+      switchToDarkMode()
     }
   }, [
     autoModeActive,
@@ -64,12 +64,12 @@ const ButtonTheme = () => {
 
   return (
     <ButtonItem onClick={onToggleThemeMode}>
-      {darkModeActive ? (
-        <IconSun />
-      ) : autoModeActive ? (
+      {autoModeActive ? (
+        <IconGlobe />
+      ) : darkModeActive ? (
         <IconMoon />
       ) : (
-        <IconGlobe />
+        <IconSun />
       )}
     </ButtonItem>
   )
@@ -77,7 +77,7 @@ const ButtonTheme = () => {
 
 const SidebarTool = () => {
   return (
-    <div className="h-full flex flex-col">
+    <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
       <ButtonItem>
         <IconSearch />
       </ButtonItem>
@@ -90,7 +90,7 @@ const SidebarTool = () => {
         <ButtonMenu></ButtonMenu>
         <ButtonTheme></ButtonTheme>
       </div>
-    </div>
+    </aside>
   )
 }
 

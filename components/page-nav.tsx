@@ -29,7 +29,7 @@ const PageNav = () => {
 
   return (
     <nav
-      className={classNames('fixed bg-white w-full z-10 p-2 text-sm flex', {
+      className={classNames('fixed bg-gray-50 w-full z-10 p-2 text-sm flex', {
         shadow: ua.isMobileOnly,
       })}
     >

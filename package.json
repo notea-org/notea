@@ -37,6 +37,7 @@
     "next-connect": "^0.9.1",
     "next-dark-mode": "^2.3.2",
     "next-iron-session": "^4.1.11",
+    "nightwind": "^1.1.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-resize-detector": "^6.6.0",

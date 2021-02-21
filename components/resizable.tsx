@@ -6,9 +6,9 @@ const renderGutter = () => {
   const gutter = document.createElement('div')
   const line = document.createElement('div')
 
-  gutter.className = 'gutter group cursor-col-resize -ml-1.5 px-1.5'
+  gutter.className = 'group cursor-col-resize -ml-1.5 px-1.5'
   line.className =
-    'transition-colors delay-150 group-hover:bg-gray-300 w-1 h-full'
+    'transition-colors delay-150 group-hover:bg-gray-300 dark:group-hover:bg-gray-500 w-1 h-full'
   gutter.appendChild(line)
 
   return gutter

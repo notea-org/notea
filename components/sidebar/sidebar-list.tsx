@@ -67,16 +67,16 @@ const SideBarList = () => {
   )
 
   return (
-    <ul className="h-full text-sm">
+    <ul className="h-full text-sm flex-grow bg-gray-100 overflow-y-auto">
       <li className="p-2 text-gray-500 flex">
         <span className="flex-auto">我的页面</span>
         <ItemButton
           onClick={() => {
             router.push('/page/new', undefined, { shallow: true })
           }}
-          className="hover:opacity-100 text-gray-700"
+          className="text-gray-700"
         >
-          <IconPlus width="16" height="16" />
+          <IconPlus width="16" />
         </ItemButton>
       </li>
       <Tree
