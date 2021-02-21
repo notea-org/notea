@@ -15,6 +15,8 @@
 - Link: https://notea.vercel.app
 - Password: notea
 
+Data is stored in https://play.minio.io:9000/notea/
+
 ## Quickstart
 
 1. [Choose Storage](#storage)
