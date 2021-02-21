@@ -53,6 +53,11 @@
   dependencies:
     cross-fetch "3.0.6"
 
+"@assortment/darkmodejs@^1.2.0":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@assortment/darkmodejs/-/darkmodejs-1.2.1.tgz#b021f6d2c5b19d22115bbbc81711adb52322e066"
+  integrity sha512-kP8ZJKG4BluaYSAwsM3u6s4Zoa2NjUaQbKDBefhpYTyWuGxc+OeNvndsVZz4CIvCcUAMXbu9FX9HeKptfoMkOg==
+
 "@atlaskit/tree@^8.2.0":
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/tree/-/tree-8.2.0.tgz#92acb031ad7708901adc46897ff3c4677801e845"
@@ -3348,6 +3353,14 @@ next-connect@^0.9.1:
   dependencies:
     trouter "^3.1.0"
 
+next-dark-mode@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/next-dark-mode/-/next-dark-mode-2.3.2.tgz#6cd26882877165d8d76b5893eb1f8d02204e27d1"
+  integrity sha512-fZ1JqridBJH+mR76c/fVudGQzO9mRNw0YXrN48cFpIsZDja8898SerjWTlWYVAYCyBkMQXetkjkh/cZKpDszpA==
+  dependencies:
+    "@assortment/darkmodejs" "^1.2.0"
+    nookies "^2.5.0"
+
 next-iron-session@^4.1.11:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/next-iron-session/-/next-iron-session-4.1.11.tgz#f783fd3a3a819ab5dd47542560cca0afa9460e5f"
@@ -3476,6 +3489,14 @@ node-releases@^1.1.69, node-releases@^1.1.70:
   version "1.1.70"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.70.tgz#66e0ed0273aa65666d7fe78febe7634875426a08"
   integrity sha512-Slf2s69+2/uAD79pVVQo8uSiC34+g8GWY8UH2Qtqv34ZfhYrxpYpfzs9Js9d6O0mbDmALuxaTlplnBTnSELcrw==
+
+nookies@^2.5.0:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/nookies/-/nookies-2.5.2.tgz#cc55547efa982d013a21475bd0db0c02c1b35b27"
+  integrity sha512-x0TRSaosAEonNKyCrShoUaJ5rrT5KHRNZ5DwPCuizjgrnkpE5DRf3VL7AyyQin4htict92X1EQ7ejDbaHDVdYA==
+  dependencies:
+    cookie "^0.4.1"
+    set-cookie-parser "^2.4.6"
 
 noop-logger@^0.1.1:
   version "0.1.1"
@@ -4642,6 +4663,11 @@ set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
   integrity sha1-BF+XgtARrppoA93TgrJDkrPYkPc=
+
+set-cookie-parser@^2.4.6:
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.4.7.tgz#7baf76cbcd454b888ad6bed250d66af729f4f4c5"
+  integrity sha512-VaSdYN1DlYuKOzBKqhYJnwaPeirZdNNUNmYdnp9/6Umr9s8amidctYitrX2Gk8wCqiBuiG5mpOYCiVhG5o4iMQ==
 
 setimmediate@^1.0.4:
   version "1.0.5"

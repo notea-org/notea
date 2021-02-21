@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import 'tailwindcss/tailwind.css'
+import withDarkMode from 'next-dark-mode'
 
 const handleRejection = (event: any) => {
   if (/^ResizeObserver/.test(event.message)) {
@@ -32,7 +33,13 @@ if (typeof window !== 'undefined') {
   window.addEventListener('error', handleRejection)
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({
+  Component,
+  pageProps,
+  darkMode,
+}: AppProps & {
+  darkMode: any
+}) {
   useEffect(() => {
     return () => {
       window.removeEventListener('unhandledrejection', handleRejection)
@@ -41,20 +48,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <UserAgentState.Provider initialState={pageProps.ua}>
-      <UIState.Provider>
-        <Head>
-          <title>{pageProps.title || 'Notea'}</title>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-          />
-        </Head>
-        <Component {...pageProps} />
-      </UIState.Provider>
-    </UserAgentState.Provider>
+    <div className={darkMode?.darkModeActive ? 'dark' : 'light'}>
+      <UserAgentState.Provider initialState={pageProps.ua}>
+        <UIState.Provider>
+          <Head>
+            <title>{pageProps.title || 'Notea'}</title>
+            <meta charSet="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+            />
+          </Head>
+          <Component {...pageProps} />
+        </UIState.Provider>
+      </UserAgentState.Provider>
+    </div>
   )
 }
 
-export default MyApp
+export default withDarkMode(MyApp)

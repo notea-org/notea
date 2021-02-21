@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { has } from 'lodash'
 const debounce = require('debounce-async').default
 
-// todo fix bottom
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
     min-height: calc(100vh - 14rem);

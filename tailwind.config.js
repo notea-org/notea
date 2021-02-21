@@ -1,6 +1,6 @@
 module.exports = {
   purge: ['./**/*.tsx'],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     extend: {
       cursor: {
