@@ -1,10 +1,5 @@
-const withTM = require('next-transpile-modules')([
-  'heroicons/react/outline',
-  '@notea/shared',
-  '@notea/store',
-])
-module.exports = withTM({
-  async rewrites() {
+module.exports = {
+  rewrites() {
     return [
       {
         source: '/',
@@ -12,7 +7,7 @@ module.exports = withTM({
       },
     ]
   },
-  async redirects() {
+  redirects() {
     return [
       {
         source: '/page',
@@ -21,4 +16,13 @@ module.exports = withTM({
       },
     ]
   },
-})
+  webpack(config, { defaultLoaders }) {
+    config.module.rules.push({
+      test: /\.jsx/,
+      use: [defaultLoaders.babel],
+      include: [/node_modules\/heroicons/],
+    })
+
+    return config
+  },
+}

@@ -68,7 +68,6 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
-    "next-transpile-modules": "^6.3.0",
     "postcss": "^8.2.6",
     "prettier": "^2.2.1",
     "typescript": "4.0"

@@ -13,7 +13,7 @@ export interface PageModel {
 
 const usePage = () => {
   const [page, setPage] = useState<PageModel>({} as PageModel)
-  const { get, post, cache } = useFetch('/api/pages')
+  const { get, post, cache, abort, loading } = useFetch('/api/pages')
 
   const getById = useCallback(
     async (id: string) => {
@@ -34,6 +34,10 @@ const usePage = () => {
 
   const savePage = useCallback(
     async (data: Partial<PageModel>, isNew = false) => {
+      if (loading) {
+        abort()
+      }
+
       cache.delete(`url:/api/pages/${page.id}||method:GET||body:`)
       let result = data
 
@@ -66,7 +70,7 @@ const usePage = () => {
 
       return newPage
     },
-    [cache, page, post]
+    [abort, cache, loading, page, post]
   )
 
   const updatePageMeta = useCallback(
