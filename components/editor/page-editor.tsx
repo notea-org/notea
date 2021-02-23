@@ -9,6 +9,7 @@ import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
 import { useDarkMode } from 'next-dark-mode'
 import debounceSync from 'debounce-async'
+import useFetch from 'use-http'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
@@ -62,6 +63,17 @@ const PageEditor = () => {
     []
   )
 
+  const upload = useFetch('/api/file/upload')
+  const onUploadImage = useCallback(
+    async (file) => {
+      const data = new FormData()
+      data.append('file', file)
+      const result = await upload.post(data)
+      return result.url
+    },
+    [upload]
+  )
+
   useEffect(() => {
     titleEl.current?.focus()
   }, [page.id])
@@ -103,6 +115,7 @@ const PageEditor = () => {
         value={page.content}
         onChange={onEditorChange}
         theme={darkModeActive ? darkTheme : lightTheme}
+        uploadImage={onUploadImage}
         onCreateLink={async () => {
           return '1'
         }}

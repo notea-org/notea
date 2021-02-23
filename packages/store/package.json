@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@cinwell/awos-js": "^2.0.1-alpha.3",
+    "awos-js": "^2.0.3",
     "fast-stream-to-buffer": "^1.0.0"
   },
   "devDependencies": {}

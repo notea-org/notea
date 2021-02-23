@@ -1,6 +1,7 @@
 import { ObjectOptions, StoreProvider, StoreProviderConfig } from './base'
 import { toBuffer, toStr } from '@notea/shared'
-import { Client } from '@cinwell/awos-js'
+import { Client } from 'awos-js'
+import { isBuffer } from 'lodash'
 
 export interface S3Config extends StoreProviderConfig {
   bucket: string
@@ -105,13 +106,13 @@ export class StoreS3 extends StoreProvider {
 
   async putObject(
     path: string,
-    raw: string,
+    raw: string | Buffer,
     options?: ObjectOptions,
     isCompressed?: boolean
   ) {
     await this.store.put(
       this.path.getPath(path),
-      toBuffer(raw, isCompressed),
+      isBuffer(raw) ? raw : toBuffer(raw, isCompressed),
       options
     )
   }

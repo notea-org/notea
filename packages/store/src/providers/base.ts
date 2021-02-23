@@ -67,7 +67,7 @@ export abstract class StoreProvider {
    */
   abstract putObject(
     path: string,
-    raw: string,
+    raw: string | Buffer,
     headers?: ObjectOptions,
     isCompressed?: boolean
   ): Promise<void>

@@ -13,6 +13,10 @@ export class StorePath {
     return `pages/${id}`
   }
 
+  getFileByName(name: string) {
+    return `files/${name}`
+  }
+
   getPath(...paths: string[]) {
     return this.prefix + paths.join('/')
   }

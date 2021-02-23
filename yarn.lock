@@ -210,18 +210,6 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@cinwell/awos-js@^2.0.1-alpha.3":
-  version "2.0.1-alpha.3"
-  resolved "https://registry.yarnpkg.com/@cinwell/awos-js/-/awos-js-2.0.1-alpha.3.tgz#9057f8ee1838c2e76afe12942b87553d70d4d741"
-  integrity sha512-mny2VGJsViezaiKYcDdIX6ZFH2NtGI7o5j5afkoEk+qenP9gK+eM+Et9Q/siydron2R4bWcWN3siUOM/tUVmGA==
-  dependencies:
-    ali-oss "^6.1.0"
-    assert "^1.4.1"
-    async-retry "^1.2.3"
-    aws-sdk "^2.412.0"
-    lodash "^4.17.11"
-    remove "^0.1.5"
-
 "@emotion/is-prop-valid@^0.8.8":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -396,6 +384,13 @@
   version "2.2.11"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.11.tgz#2521cc86f69d15c5b90664e4829d84566052c1cf"
   integrity sha512-2koNhpWm3DgWRp5tpkiJ8JGc1xTn2q0l+jUNUE7oMKXUf5NpI9AIdC4kbjGNFBdHtcxBD18LAksoudAVhFKCjw==
+
+"@types/formidable@^1.0.32":
+  version "1.0.32"
+  resolved "https://registry.yarnpkg.com/@types/formidable/-/formidable-1.0.32.tgz#d9a7eefbaa995a4486ec4e3960e9552e68b3f33c"
+  integrity sha512-jOAB5+GFW+C+2xdvUcpd/CnYg2rD5xCyagJLBJU+9PB4a/DKmsAqS9yZI3j/Q9zwvM7ztPHaAIH1ijzp4cezdQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/hast@^2.0.0":
   version "2.3.1"
@@ -866,6 +861,18 @@ autoprefixer@^10.2.4:
     fraction.js "^4.0.13"
     normalize-range "^0.1.2"
     postcss-value-parser "^4.1.0"
+
+awos-js@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/awos-js/-/awos-js-2.0.3.tgz#eeae2910ff40c0abf27d6c23fe33dbb06da6aa77"
+  integrity sha512-1sKIyj2ebNMUlXxCmxfVdre5tCnk26318jo/+LNBTUP/pQG6oKKGqUTv3yeyugusAGQA9T4IlTk3P0+kNYQglg==
+  dependencies:
+    ali-oss "^6.1.0"
+    assert "^1.4.1"
+    async-retry "^1.2.3"
+    aws-sdk "^2.412.0"
+    lodash "^4.17.11"
+    remove "^0.1.5"
 
 aws-sdk@^2.412.0:
   version "2.847.0"
@@ -2238,6 +2245,11 @@ flatted@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.1.1.tgz#c4b489e80096d9df1dfc97c79871aea7c617c469"
   integrity sha512-zAoAQiudy+r5SvnSw3KJy5os/oRJYHzrzja/tBDqrZtNhUw8bt6y8OBzMWcjWr+8liV8Eb6yOhw8WZ7VFZ5ZzA==
+
+formidable@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.2.2.tgz#bf69aea2972982675f00865342b982986f6b8dd9"
+  integrity sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==
 
 formstream@^1.1.0:
   version "1.1.0"

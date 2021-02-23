@@ -30,6 +30,7 @@
     "core-js": "^3.8.3",
     "dayjs": "^1.10.4",
     "debounce-async": "^0.0.2",
+    "formidable": "^1.2.2",
     "heroicons": "^0.4.2",
     "lodash": "^4.17.20",
     "md5": "^2.3.0",
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",
+    "@types/formidable": "^1.0.32",
     "@types/lodash": "^4.14.168",
     "@types/md5": "^2.3.0",
     "@types/node": "^12.12.21",
