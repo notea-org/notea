@@ -1,6 +1,6 @@
 import MarkdownEditor from 'rich-markdown-editor'
 import { PageModel, PageState } from 'containers/page'
-import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { KeyboardEvent, useCallback, useRef, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import { PageTreeState } from 'containers/page-tree'
 import router from 'next/router'
@@ -27,7 +27,6 @@ const PageEditor = () => {
   const { savePage, page } = PageState.useContainer()
   const { addToTree } = PageTreeState.useContainer()
   const [title, setTitle] = useState()
-  const titleEl = useRef<HTMLTextAreaElement>(null)
   const editorEl = useRef<MarkdownEditor>(null)
 
   const onPageChange = useCallback(
@@ -74,10 +73,6 @@ const PageEditor = () => {
     [upload]
   )
 
-  useEffect(() => {
-    titleEl.current?.focus()
-  }, [page.id])
-
   const onTitleChange = useCallback(
     (event) => {
       const title = event.target.value
@@ -98,7 +93,6 @@ const PageEditor = () => {
     <article className="pt-40 px-6">
       <h1>
         <TextareaAutosize
-          ref={titleEl}
           className="outline-none w-full resize-none block bg-transparent"
           placeholder="新页面"
           defaultValue={page.title}
