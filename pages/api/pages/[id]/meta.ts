@@ -10,7 +10,10 @@ export default api()
     const id = req.body.id || req.query.id
     const pagePath = req.store.path.getPageById(id)
     const oldMeta = await req.store.getObjectMeta(pagePath)
-    let meta = jsonToMeta(req.body)
+    let meta = jsonToMeta({
+      ...req.body,
+      date: new Date().toISOString(),
+    })
 
     if (oldMeta) {
       meta = new Map([...oldMeta, ...meta])

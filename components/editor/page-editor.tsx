@@ -36,7 +36,7 @@ const PageEditor = () => {
         if (isNew) {
           data.pid = (router.query.pid as string) || 'root'
         }
-        if (!data.title) {
+        if (!data.title && title) {
           data.title = title
         }
         const item = await savePage(data, isNew)

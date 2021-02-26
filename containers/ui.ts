@@ -1,7 +1,7 @@
 import { isBoolean } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import { getLocalStore, setLocalStore } from 'utils/local-store'
+import { uiStore } from 'utils/local-store'
 import { UserAgentState } from './useragent'
 
 function useSidebar() {
@@ -22,17 +22,20 @@ function useSplit() {
   const [firstWidth, setFirstWidth] = useState<number>(-1)
 
   useEffect(() => {
-    setSplitSizes(getLocalStore('SPLIT_SIZE') || DEFAULT_SPLIT_SIZES)
+    uiStore.getItem<number[]>('split_size').then((res) => {
+      setSplitSizes(res ? res : DEFAULT_SPLIT_SIZES)
+    })
   }, [])
 
   const saveSplitSizes = useCallback((sizes: number[], width) => {
     setSplitSizes(sizes)
-    setLocalStore('SPLIT_SIZE', sizes)
+    uiStore.setItem('split_size', sizes)
     setFirstWidth((sizes[0] * width) / 100)
   }, [])
 
-  const initFirstWidth = useCallback((width: number) => {
-    const initSizes = getLocalStore('SPLIT_SIZE') || DEFAULT_SPLIT_SIZES
+  const initFirstWidth = useCallback(async (width: number) => {
+    const initSizes =
+      (await uiStore.getItem<number[]>('split_size')) || DEFAULT_SPLIT_SIZES
 
     setFirstWidth((initSizes[0] * width) / 100)
   }, [])

@@ -65,7 +65,6 @@ const usePage = () => {
       }
 
       delete newPage.content
-
       setPage(newPage)
 
       return newPage

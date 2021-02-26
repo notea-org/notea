@@ -1,6 +1,14 @@
 import { strCompress, strDecompress } from 'packages/shared'
 
-export const PAGE_META_KEY = ['title', 'pid', 'id', 'share', 'cid', 'pic']
+export const PAGE_META_KEY = [
+  'title',
+  'pid',
+  'id',
+  'share',
+  'cid',
+  'pic',
+  'date',
+]
 const ARRAY_KEYS = ['cid']
 
 export function jsonToMeta(meta?: Record<string, string | undefined>) {

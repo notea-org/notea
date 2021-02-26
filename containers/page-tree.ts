@@ -3,7 +3,7 @@ import { isEmpty, forEach } from 'lodash'
 import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import { getLocalStore, setLocalStore } from 'utils/local-store'
+import { uiStore } from 'utils/local-store'
 import { PageModel } from './page'
 
 const DEFAULT_TREE: TreeData = {
@@ -25,7 +25,7 @@ const saveLocalTree = (data: TreeData) => {
     }
   })
 
-  setLocalStore('TREE_ITEMS', {
+  uiStore.setItem('tree_items', {
     ...data,
     items,
   })
@@ -45,7 +45,8 @@ const usePageTree = (initData: TreeData = DEFAULT_TREE) => {
   }, [])
 
   const initTree = useCallback(async () => {
-    const localTree = getLocalStore('TREE_ITEMS') || DEFAULT_TREE
+    const localTree =
+      (await uiStore.getItem<TreeData>('tree_items')) || DEFAULT_TREE
 
     setTree((prev) => {
       forEach(prev.items, (item) => {

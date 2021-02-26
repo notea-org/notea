@@ -1,3 +1,4 @@
+import { strCompress } from 'packages/shared'
 import { api } from 'services/api'
 import { metaToJson, PAGE_META_KEY } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
@@ -40,6 +41,10 @@ export default api()
     const { content } = req.body
     const pagePath = req.store.path.getPageById(id)
     const oldMeta = await req.store.getObjectMeta(pagePath)
+
+    if (oldMeta) {
+      oldMeta.set('date', strCompress(new Date().toISOString()))
+    }
 
     await req.store.putObject(pagePath, content, {
       contentType: 'text/markdown',

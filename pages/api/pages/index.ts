@@ -26,11 +26,12 @@ export default api()
       }
     }
 
-    const metaWithId = {
+    const metaWithModel = {
       id,
+      date: new Date().toISOString(),
       ...meta,
     }
-    const metaData = jsonToMeta(metaWithId)
+    const metaData = jsonToMeta(metaWithModel)
 
     await req.store.putObject(pagePath, content, {
       contentType: 'text/markdown',
@@ -51,5 +52,5 @@ export default api()
       meta: newParentMeta,
     })
 
-    res.json(metaWithId)
+    res.json(metaWithModel)
   })
