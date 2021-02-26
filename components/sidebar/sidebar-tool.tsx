@@ -25,14 +25,18 @@ const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
 }
 
 const ButtonMenu = () => {
-  const { toggleFoldSidebar } = UIState.useContainer()
+  const { toggleFoldSidebar, isFoldSidebar } = UIState.useContainer()
   const onFold = useCallback(() => {
     toggleFoldSidebar()
   }, [toggleFoldSidebar])
 
   return (
     <ButtonItem onClick={onFold}>
-      <IconChevronDoubleLeft />
+      <IconChevronDoubleLeft
+        className={classNames('transform transition-transform', {
+          'rotate-180': isFoldSidebar,
+        })}
+      />
     </ButtonItem>
   )
 }

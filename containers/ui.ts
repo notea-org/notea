@@ -4,6 +4,16 @@ import { createContainer } from 'unstated-next'
 import { uiStore } from 'utils/local-store'
 import { UserAgentState } from './useragent'
 
+function useDocumentTitle() {
+  const [documentTitle, setDocumentTitle] = useState('Notea')
+
+  const updateDocumentTitle = useCallback((text: string) => {
+    setDocumentTitle(text ? `${text} - Notea` : 'Notea')
+  }, [])
+
+  return { documentTitle, updateDocumentTitle }
+}
+
 function useSidebar() {
   const { ua } = UserAgentState.useContainer()
   const [isFoldSidebar, setFoldSidebar] = useState(ua.isMobileOnly)
@@ -52,6 +62,7 @@ function useUI() {
   return {
     ...useSidebar(),
     ...useSplit(),
+    ...useDocumentTitle(),
   }
 }
 

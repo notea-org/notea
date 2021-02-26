@@ -54,23 +54,30 @@ function MyApp({
         dark: darkMode?.darkModeActive,
       })}
     >
-      <Head>
-        <title>{pageProps?.title || 'Notea'}</title>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
-        />
-      </Head>
       <div className="bg-gray-50 text-gray-800">
         <UserAgentState.Provider initialState={pageProps?.ua}>
           <UIState.Provider>
+            <DocumentHead />
             <Component {...pageProps} />
           </UIState.Provider>
         </UserAgentState.Provider>
       </div>
     </div>
   )
+
+  function DocumentHead() {
+    const { documentTitle } = UIState.useContainer()
+    return (
+      <Head>
+        <title>{documentTitle}</title>
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+    )
+  }
 }
 
 export default withDarkMode(MyApp)

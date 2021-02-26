@@ -12,13 +12,15 @@ import withTree from 'services/with-tree'
 import withUA from 'services/with-ua'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
+import { UIState } from 'containers/ui'
 
 const PageEditor = dynamic(() => import('components/editor/page-editor'))
 
 const EditContainer = () => {
+  const { updateDocumentTitle } = UIState.useContainer()
   const { darkModeActive } = useDarkMode()
   const { genNewId } = PageTreeState.useContainer()
-  const { getById, setPage } = PageState.useContainer()
+  const { getById, setPage, page } = PageState.useContainer()
   const { query } = useRouter()
 
   const loadPageById = useCallback(
@@ -52,6 +54,10 @@ const EditContainer = () => {
   useEffect(() => {
     loadPageById(query.id as string)
   }, [loadPageById, query.id])
+
+  useEffect(() => {
+    updateDocumentTitle(page.title)
+  }, [page.title, updateDocumentTitle])
 
   return query.id !== 'welcome' ? (
     <>
