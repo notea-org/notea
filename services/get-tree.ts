@@ -11,7 +11,7 @@ export async function getTree(store: StoreProvider) {
 
   await Promise.all(
     list.map(async (id) => {
-      const metaData = await store.getObjectMeta(store.path.getPageById(id))
+      const metaData = await store.getObjectMeta(store.path.getNoteById(id))
       const { cid, ...meta } = metaToJson(metaData)
 
       delete meta.id
@@ -26,7 +26,7 @@ export async function getTree(store: StoreProvider) {
   )
 
   if (!list.includes('root')) {
-    await store.putObject(store.path.getPageById('root'), '')
+    await store.putObject(store.path.getNoteById('root'), '')
     await store.addToList('root')
     tree.items['root'] = {
       id: 'root',

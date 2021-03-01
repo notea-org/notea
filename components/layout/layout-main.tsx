@@ -1,6 +1,6 @@
-import { PageTreeState } from 'containers/page-tree'
+import { NoteTreeState } from 'containers/tree'
 import { FC, useCallback } from 'react'
-import { PageState } from 'containers/page'
+import { NoteState } from 'containers/note'
 import { useResizeDetector } from 'react-resize-detector'
 import { TreeData } from '@atlaskit/tree'
 import Sidebar from 'components/sidebar/sidebar'
@@ -23,15 +23,15 @@ const LayoutMain: FC<{
   const { ua } = UserAgentState.useContainer()
 
   return (
-    <PageState.Provider>
-      <PageTreeState.Provider initialState={tree}>
+    <NoteState.Provider>
+      <NoteTreeState.Provider initialState={tree}>
         {ua?.isMobileOnly ? (
           <MobileMainWrapper>{children}</MobileMainWrapper>
         ) : (
           <MainWrapper>{children}</MainWrapper>
         )}
-      </PageTreeState.Provider>
-    </PageState.Provider>
+      </NoteTreeState.Provider>
+    </NoteState.Provider>
   )
 }
 

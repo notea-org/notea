@@ -5,12 +5,12 @@ export class StorePath {
     this.prefix = prefix
   }
 
-  getPageIndex() {
-    return `page_index`
+  getNoteIndex() {
+    return `note_index`
   }
 
-  getPageById(id: string) {
-    return `pages/${id}`
+  getNoteById(id: string) {
+    return `notes/${id}`
   }
 
   getFileByName(name: string) {

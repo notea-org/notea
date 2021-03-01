@@ -17,11 +17,11 @@ export default api()
   .post(async (req, res) => {
     const { content = '\n', meta } = req.body
     let { id } = req.body
-    const pagePath = req.store.path.getPageById(id)
+    const notePath = req.store.path.getNoteById(id)
 
     if (!id) {
       id = genId()
-      while (await req.store.hasObject(pagePath)) {
+      while (await req.store.hasObject(notePath)) {
         id = genId()
       }
     }
@@ -33,14 +33,14 @@ export default api()
     }
     const metaData = jsonToMeta(metaWithModel)
 
-    await req.store.putObject(pagePath, content, {
+    await req.store.putObject(notePath, content, {
       contentType: 'text/markdown',
       meta: metaData,
     })
 
     await req.store.addToList(id)
     // Update parent meta
-    const parentPath = req.store.path.getPageById(meta.pid || 'root')
+    const parentPath = req.store.path.getNoteById(meta.pid || 'root')
     const parentMeta = metaToJson(await req.store.getObjectMeta(parentPath))
     const cid = (parentMeta.cid || []).concat(id)
     const newParentMeta = jsonToMeta({

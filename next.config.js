@@ -3,14 +3,14 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/page/welcome',
+        destination: '/note/welcome',
       },
     ]
   },
   redirects() {
     return [
       {
-        source: '/page',
+        source: '/note',
         destination: '/',
         permanent: true,
       },

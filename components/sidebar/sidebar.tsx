@@ -1,5 +1,5 @@
 import SidebarTool from 'components/sidebar/sidebar-tool'
-import SideBarPageList from 'components/sidebar/sidebar-list'
+import SideBarNoteList from 'components/sidebar/sidebar-list'
 import { UIState } from 'containers/ui'
 import { FC } from 'react'
 import { UserAgentState } from 'containers/useragent'
@@ -17,7 +17,7 @@ const BrowserSidebar: FC = () => {
   return (
     <section className="flex h-full">
       <SidebarTool />
-      {isFoldSidebar ? null : <SideBarPageList />}
+      {isFoldSidebar ? null : <SideBarNoteList />}
     </section>
   )
 }
@@ -30,7 +30,7 @@ const MobileSidebar: FC = () => {
       )}
     >
       <SidebarTool />
-      <SideBarPageList />
+      <SideBarNoteList />
     </section>
   )
 }

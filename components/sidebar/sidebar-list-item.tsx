@@ -1,4 +1,4 @@
-import { PageModel } from 'containers/page'
+import { NoteModel } from 'containers/note'
 import Link from 'next/link'
 import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
@@ -25,7 +25,7 @@ export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
 }
 
 const SidebarListItem: FC<{
-  item: PageModel
+  item: NoteModel
   innerRef: (el: HTMLElement | null) => void
   onExpand: (itemId?: ReactText) => void
   onCollapse: (itemId?: ReactText) => void
@@ -43,10 +43,10 @@ const SidebarListItem: FC<{
   ...attrs
 }) => {
   const { query } = useRouter()
-  const onAddPage = useCallback(
+  const onAddNote = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
-      router.push(`/page/new?pid=` + item.id, undefined, { shallow: true })
+      router.push(`/note/new?pid=` + item.id, undefined, { shallow: true })
     },
     [item.id]
   )
@@ -60,7 +60,7 @@ const SidebarListItem: FC<{
         'bg-gray-200': query.id === item.id,
       })}
     >
-      <Link href={`/page/${item.id}`} shallow>
+      <Link href={`/note/${item.id}`} shallow>
         <a className="flex py-1.5 px-2 items-center">
           <ItemButton
             className="mr-1"
@@ -77,7 +77,7 @@ const SidebarListItem: FC<{
             />
           </ItemButton>
           <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
-          <ItemButton onClick={onAddPage} className="hidden group-hover:block">
+          <ItemButton onClick={onAddNote} className="hidden group-hover:block">
             <IconPlus width="16" />
           </ItemButton>
         </a>

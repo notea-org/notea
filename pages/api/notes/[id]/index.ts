@@ -9,11 +9,11 @@ export default api()
   .use(useStore)
   .delete(async (req, res) => {
     const id = req.query.id as string
-    const pagePath = req.store.path.getPageById(id)
+    const notePath = req.store.path.getNoteById(id)
 
     await Promise.all([
-      req.store.deleteObject(pagePath),
-      req.store.removeFromList(pagePath),
+      req.store.deleteObject(notePath),
+      req.store.removeFromList(notePath),
     ])
 
     res.end()
@@ -22,7 +22,7 @@ export default api()
     const id = req.query.id as string
 
     const { content, meta } = await req.store.getObjectAndMeta(
-      req.store.path.getPageById(id),
+      req.store.path.getNoteById(id),
       PAGE_META_KEY
     )
 
@@ -39,14 +39,14 @@ export default api()
   .post(async (req, res) => {
     const id = req.query.id as string
     const { content } = req.body
-    const pagePath = req.store.path.getPageById(id)
-    const oldMeta = await req.store.getObjectMeta(pagePath)
+    const notePath = req.store.path.getNoteById(id)
+    const oldMeta = await req.store.getObjectMeta(notePath)
 
     if (oldMeta) {
       oldMeta.set('date', strCompress(new Date().toISOString()))
     }
 
-    await req.store.putObject(pagePath, content, {
+    await req.store.putObject(notePath, content, {
       contentType: 'text/markdown',
       meta: oldMeta,
     })

@@ -8,8 +8,8 @@ export default api()
   .use(useStore)
   .post(async (req, res) => {
     const id = req.body.id || req.query.id
-    const pagePath = req.store.path.getPageById(id)
-    const oldMeta = await req.store.getObjectMeta(pagePath)
+    const notePath = req.store.path.getNoteById(id)
+    const oldMeta = await req.store.getObjectMeta(notePath)
     let meta = jsonToMeta({
       ...req.body,
       date: new Date().toISOString(),
@@ -19,7 +19,7 @@ export default api()
       meta = new Map([...oldMeta, ...meta])
     }
 
-    await req.store.copyObject(pagePath, pagePath, {
+    await req.store.copyObject(notePath, notePath, {
       meta,
       contentType: 'text/markdown',
     })
@@ -28,8 +28,8 @@ export default api()
   })
   .get(async (req, res) => {
     const id = req.body.id || req.query.id
-    const pagePath = req.store.path.getPageById(id)
-    const meta = await req.store.getObjectMeta(pagePath)
+    const notePath = req.store.path.getNoteById(id)
+    const meta = await req.store.getObjectMeta(notePath)
 
     res.json(metaToJson(meta))
   })

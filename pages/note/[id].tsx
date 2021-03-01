@@ -1,10 +1,10 @@
-import { PageModel, PageState } from 'containers/page'
+import { NoteModel, NoteState } from 'containers/note'
 import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import LayoutMain from 'components/layout/layout-main'
-import { PageTreeState } from 'containers/page-tree'
-import PageNav from 'components/page-nav'
+import { NoteTreeState } from 'containers/tree'
+import NoteNav from 'components/note-nav'
 import dynamic from 'next/dynamic'
 import { GetServerSideProps, NextPage } from 'next'
 import { TreeData } from '@atlaskit/tree'
@@ -14,22 +14,22 @@ import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
 import { UIState } from 'containers/ui'
 
-const PageEditor = dynamic(() => import('components/editor/page-editor'))
+const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
 const EditContainer = () => {
   const { updateDocumentTitle } = UIState.useContainer()
   const { darkModeActive } = useDarkMode()
-  const { genNewId } = PageTreeState.useContainer()
-  const { getById, setPage, page } = PageState.useContainer()
+  const { genNewId } = NoteTreeState.useContainer()
+  const { getById, setNote, note } = NoteState.useContainer()
   const { query } = useRouter()
 
-  const loadPageById = useCallback(
+  const loadNoteById = useCallback(
     (id: string) => {
       const pid = router.query.pid as string
       if (id === 'welcome') {
         return
       } else if (id === 'new') {
-        const url = `/page/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
+        const url = `/note/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
@@ -41,33 +41,33 @@ const EditContainer = () => {
           router.push('/', undefined, { shallow: true })
         })
       } else {
-        setPage({
+        setNote({
           id,
           title: '',
           content: '\n',
-        } as PageModel)
+        } as NoteModel)
       }
     },
-    [genNewId, getById, setPage]
+    [genNewId, getById, setNote]
   )
 
   useEffect(() => {
-    loadPageById(query.id as string)
-  }, [loadPageById, query.id])
+    loadNoteById(query.id as string)
+  }, [loadNoteById, query.id])
 
   useEffect(() => {
-    updateDocumentTitle(page.title)
-  }, [page.title, updateDocumentTitle])
+    updateDocumentTitle(note.title)
+  }, [note.title, updateDocumentTitle])
 
   return query.id !== 'welcome' ? (
     <>
-      <PageNav />
+      <NoteNav />
       <article
         className={classNames('m-auto prose', {
           'prose-dark': darkModeActive,
         })}
       >
-        <PageEditor />
+        <NoteEditor />
       </article>
     </>
   ) : (
@@ -75,7 +75,7 @@ const EditContainer = () => {
   )
 }
 
-const EditPage: NextPage<{ tree: TreeData }> = ({ tree }) => {
+const EditNotePage: NextPage<{ tree: TreeData }> = ({ tree }) => {
   return (
     <LayoutMain tree={tree}>
       <EditContainer />
@@ -83,7 +83,7 @@ const EditPage: NextPage<{ tree: TreeData }> = ({ tree }) => {
   )
 }
 
-export default EditPage
+export default EditNotePage
 
 export const getServerSideProps: GetServerSideProps = withUA(
   withTree(() => {

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 
-export interface PageModel {
+export interface NoteModel {
   id: string
   title: string
   pid?: string
@@ -11,9 +11,9 @@ export interface PageModel {
   cid?: string[]
 }
 
-const usePage = () => {
-  const [page, setPage] = useState<PageModel>({} as PageModel)
-  const { get, post, cache, abort, loading } = useFetch('/api/pages')
+const useNote = () => {
+  const [note, setNote] = useState<NoteModel>({} as NoteModel)
+  const { get, post, cache, abort, loading } = useFetch('/api/notes')
 
   const getById = useCallback(
     async (id: string) => {
@@ -27,23 +27,23 @@ const usePage = () => {
         res.content = '\n'
       }
 
-      setPage(res)
+      setNote(res)
     },
     [get]
   )
 
-  const savePage = useCallback(
-    async (data: Partial<PageModel>, isNew = false) => {
+  const saveNote = useCallback(
+    async (data: Partial<NoteModel>, isNew = false) => {
       if (loading) {
         abort()
       }
 
-      cache.delete(`url:/api/pages/${page.id}||method:GET||body:`)
+      cache.delete(`url:/api/notes/${note.id}||method:GET||body:`)
       let result = data
 
       if (isNew) {
         result = await post({
-          id: page.id,
+          id: note.id,
           meta: {
             title: data.title,
             pid: data.pid,
@@ -53,28 +53,28 @@ const usePage = () => {
           content: data.content,
         })
       } else if (!data.content) {
-        await post(`/${page.id}/meta`, data)
+        await post(`/${note.id}/meta`, data)
       } else {
-        await post(page.id, {
+        await post(note.id, {
           content: data.content,
         })
       }
-      const newPage: PageModel = {
-        ...page,
+      const newNote: NoteModel = {
+        ...note,
         ...result,
       }
 
-      delete newPage.content
-      setPage(newPage)
+      delete newNote.content
+      setNote(newNote)
 
-      return newPage
+      return newNote
     },
-    [abort, cache, loading, page, post]
+    [abort, cache, loading, note, post]
   )
 
-  const updatePageMeta = useCallback(
-    async function (id: string, data: Partial<PageModel>) {
-      cache.delete(`url:/api/pages/${id}||method:GET||body:`)
+  const updateNoteMeta = useCallback(
+    async function (id: string, data: Partial<NoteModel>) {
+      cache.delete(`url:/api/notes/${id}||method:GET||body:`)
       const res = await post(`${id}/meta`, {
         title: data.title,
         pid: data.pid,
@@ -87,7 +87,7 @@ const usePage = () => {
     [cache, post]
   )
 
-  return { page, getById, savePage, setPage, updatePageMeta }
+  return { note, getById, saveNote, setNote, updateNoteMeta }
 }
 
-export const PageState = createContainer(usePage)
+export const NoteState = createContainer(useNote)

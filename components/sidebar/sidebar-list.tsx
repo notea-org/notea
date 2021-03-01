@@ -1,5 +1,5 @@
 import SidebarListItem, { ItemButton } from './sidebar-list-item'
-import { PageTreeState } from 'containers/page-tree'
+import { NoteTreeState } from 'containers/tree'
 import Tree, {
   ItemId,
   moveItemOnTree,
@@ -8,13 +8,13 @@ import Tree, {
   TreeSourcePosition,
 } from '@atlaskit/tree'
 import { useState, useEffect, useCallback } from 'react'
-import { PageState } from 'containers/page'
+import { NoteState } from 'containers/note'
 import IconPlus from 'heroicons/react/outline/Plus'
 import router from 'next/router'
 
 const SideBarList = () => {
-  const { tree, updateTree, initTree } = PageTreeState.useContainer()
-  const { updatePageMeta } = PageState.useContainer()
+  const { tree, updateTree, initTree } = NoteTreeState.useContainer()
+  const { updateNoteMeta } = NoteState.useContainer()
   const [curId, setCurId] = useState<ItemId>(0)
 
   useEffect(() => {
@@ -48,14 +48,14 @@ const SideBarList = () => {
 
       Promise.all([
         newTree.items[curId].data.pid !== toPid &&
-          updatePageMeta(curId as string, {
+          updateNoteMeta(curId as string, {
             pid: toPid,
           }),
-        updatePageMeta(toPid, {
+        updateNoteMeta(toPid, {
           cid: newTree.items[toPid].children as string[],
         }),
         fromPid !== toPid &&
-          updatePageMeta(fromPid, {
+          updateNoteMeta(fromPid, {
             cid: newTree.items[fromPid].children as string[],
           }),
       ]).catch((e) => {
@@ -63,7 +63,7 @@ const SideBarList = () => {
         console.error('更新错误', e)
       })
     },
-    [curId, tree, updatePageMeta, updateTree]
+    [curId, tree, updateNoteMeta, updateTree]
   )
 
   return (
@@ -72,7 +72,7 @@ const SideBarList = () => {
         <span className="flex-auto">我的页面</span>
         <ItemButton
           onClick={() => {
-            router.push('/page/new', undefined, { shallow: true })
+            router.push('/note/new', undefined, { shallow: true })
           }}
           className="text-gray-700"
         >

@@ -1,8 +1,8 @@
 import MarkdownEditor from 'rich-markdown-editor'
-import { PageModel, PageState } from 'containers/page'
+import { NoteModel, NoteState } from 'containers/note'
 import { KeyboardEvent, useCallback, useRef, useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
-import { PageTreeState } from 'containers/page-tree'
+import { NoteTreeState } from 'containers/tree'
 import router from 'next/router'
 import styled from 'styled-components'
 import { has } from 'lodash'
@@ -18,20 +18,20 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
   }
 `
 
-const debouncePageChange = debounceSync(async (cb: any) => {
+const debounceNoteChange = debounceSync(async (cb: any) => {
   return cb && cb()
 }, 500)
 
-const PageEditor = () => {
+const NoteEditor = () => {
   const { darkModeActive } = useDarkMode()
-  const { savePage, page } = PageState.useContainer()
-  const { addToTree } = PageTreeState.useContainer()
+  const { saveNote, note } = NoteState.useContainer()
+  const { addToTree } = NoteTreeState.useContainer()
   const [title, setTitle] = useState()
   const editorEl = useRef<MarkdownEditor>(null)
 
-  const onPageChange = useCallback(
-    (data: Partial<PageModel>) => {
-      debouncePageChange(async () => {
+  const onNoteChange = useCallback(
+    (data: Partial<NoteModel>) => {
+      debounceNoteChange(async () => {
         const isNew = has(router.query, 'new')
         if (isNew) {
           data.pid = (router.query.pid as string) || 'root'
@@ -39,16 +39,16 @@ const PageEditor = () => {
         if (!data.title && title) {
           data.title = title
         }
-        const item = await savePage(data, isNew)
-        const pageUrl = `/page/${item.id}`
+        const item = await saveNote(data, isNew)
+        const noteUrl = `/note/${item.id}`
 
-        if (router.asPath !== pageUrl) {
-          await router.replace(pageUrl, undefined, { shallow: true })
+        if (router.asPath !== noteUrl) {
+          await router.replace(noteUrl, undefined, { shallow: true })
         }
         addToTree(item)
       })
     },
-    [addToTree, savePage, title]
+    [addToTree, saveNote, title]
   )
 
   const onInputTitle = useCallback(
@@ -76,17 +76,17 @@ const PageEditor = () => {
   const onTitleChange = useCallback(
     (event) => {
       const title = event.target.value
-      onPageChange({ title })
+      onNoteChange({ title })
       setTitle(title)
     },
-    [onPageChange]
+    [onNoteChange]
   )
 
   const onEditorChange = useCallback(
     (value: () => string): void => {
-      onPageChange({ content: value() })
+      onNoteChange({ content: value() })
     },
-    [onPageChange]
+    [onNoteChange]
   )
 
   return (
@@ -95,8 +95,8 @@ const PageEditor = () => {
         <TextareaAutosize
           className="outline-none w-full resize-none block bg-transparent"
           placeholder="新页面"
-          defaultValue={page.title}
-          key={page.id}
+          defaultValue={note.title}
+          key={note.id}
           onKeyDown={onInputTitle}
           onChange={onTitleChange}
           maxLength={128}
@@ -104,9 +104,9 @@ const PageEditor = () => {
         />
       </h1>
       <StyledMarkdownEditor
-        id={page.id}
+        id={note.id}
         ref={editorEl}
-        value={page.content}
+        value={note.content}
         onChange={onEditorChange}
         theme={darkModeActive ? darkTheme : lightTheme}
         uploadImage={onUploadImage}
@@ -118,4 +118,4 @@ const PageEditor = () => {
   )
 }
 
-export default PageEditor
+export default NoteEditor

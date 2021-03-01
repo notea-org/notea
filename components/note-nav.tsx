@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { PageState } from 'containers/page'
+import { NoteState } from 'containers/note'
 import { UIState } from 'containers/ui'
 import { UserAgentState } from 'containers/useragent'
 import IconMenu from 'heroicons/react/outline/Menu'
@@ -23,8 +23,8 @@ const MenuButton = () => {
   )
 }
 
-const PageNav = () => {
-  const { page } = PageState.useContainer()
+const NoteNav = () => {
+  const { note } = NoteState.useContainer()
   const { ua } = UserAgentState.useContainer()
 
   return (
@@ -34,8 +34,8 @@ const PageNav = () => {
       })}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
-      <span>{page.title}</span>
+      <span>{note.title}</span>
     </nav>
   )
 }
-export default PageNav
+export default NoteNav

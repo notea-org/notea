@@ -4,7 +4,7 @@ import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { uiStore } from 'utils/local-store'
-import { PageModel } from './page'
+import { NoteModel } from './note'
 
 const DEFAULT_TREE: TreeData = {
   rootId: 'root',
@@ -31,7 +31,7 @@ const saveLocalTree = (data: TreeData) => {
   })
 }
 
-const usePageTree = (initData: TreeData = DEFAULT_TREE) => {
+const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
   const [tree, setTree] = useState<TreeData>(initData)
   const treeRef = useRef(tree)
 
@@ -62,7 +62,7 @@ const usePageTree = (initData: TreeData = DEFAULT_TREE) => {
   }, [])
 
   const addToTree = useCallback(
-    (item: PageModel) => {
+    (item: NoteModel) => {
       const newItems: TreeData['items'] = {}
       const curTree = treeRef.current
       const parentItem = curTree.items[item.pid || 'root']
@@ -112,4 +112,4 @@ const usePageTree = (initData: TreeData = DEFAULT_TREE) => {
   return { tree, addToTree, updateTree, initTree, genNewId }
 }
 
-export const PageTreeState = createContainer(usePageTree)
+export const NoteTreeState = createContainer(useNoteTree)

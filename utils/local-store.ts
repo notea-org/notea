@@ -4,6 +4,6 @@ export const uiStore = localforage.createInstance({
   name: 'notea-ui',
 })
 
-export const pageStore = localforage.createInstance({
-  name: 'notea-pages',
+export const noteStore = localforage.createInstance({
+  name: 'notea-notes',
 })

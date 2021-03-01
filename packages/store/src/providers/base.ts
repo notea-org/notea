@@ -91,7 +91,7 @@ export abstract class StoreProvider {
    * - 私有读
    */
   async getList() {
-    const content = (await this.getObject(this.path.getPageIndex())) || ''
+    const content = (await this.getObject(this.path.getNoteIndex())) || ''
     const list = content.split(',').filter(Boolean)
 
     return list
@@ -100,15 +100,15 @@ export abstract class StoreProvider {
   /**
    * 增加到列表
    */
-  async addToList(pageId: string) {
-    pageId = pageId.toString()
+  async addToList(noteId: string) {
+    noteId = noteId.toString()
 
-    const indexPath = this.path.getPageIndex()
+    const indexPath = this.path.getNoteIndex()
     let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
-    if (!ids.includes(pageId)) {
-      ids.push(pageId)
+    if (!ids.includes(noteId)) {
+      ids.push(noteId)
     }
 
     content = ids.filter(Boolean).join(',')
@@ -118,12 +118,12 @@ export abstract class StoreProvider {
   /**
    * 从列表移除
    */
-  async removeFromList(pageId: string) {
-    const indexPath = this.path.getPageIndex()
+  async removeFromList(noteId: string) {
+    const indexPath = this.path.getNoteIndex()
     let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
-    content = ids.filter((id) => id !== pageId).join(',')
+    content = ids.filter((id) => id !== noteId).join(',')
     await this.putObject(indexPath, content)
   }
 }
