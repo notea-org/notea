@@ -2,7 +2,7 @@ import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarNoteList from 'components/sidebar/sidebar-list'
 import { UIState } from 'containers/ui'
 import { FC } from 'react'
-import { UserAgentState } from 'containers/useragent'
+import { UserAgentState } from 'containers/ui/ua'
 import classNames from 'classnames'
 
 const Sidebar: FC = () => {
