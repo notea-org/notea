@@ -1,6 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
+import { wrap, Remote } from 'comlink'
+import { NoteWorkerApi } from 'workers/note.worker'
 
 export interface NoteModel {
   id: string
@@ -9,11 +11,25 @@ export interface NoteModel {
   content?: string
   pic?: string
   cid?: string[]
+  date?: string
 }
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
   const { get, post, cache, abort, loading } = useFetch('/api/notes')
+
+  const NoteWorkerRef = useRef<Worker>()
+  const NoteWorkerApiRef = useRef<Remote<NoteWorkerApi>>()
+
+  useEffect(() => {
+    NoteWorkerRef.current = new Worker('workers/note.worker', {
+      type: 'module',
+    })
+    NoteWorkerApiRef.current = wrap(NoteWorkerRef.current)
+    return () => {
+      NoteWorkerRef.current?.terminate()
+    }
+  }, [])
 
   const getById = useCallback(
     async (id: string) => {
@@ -87,7 +103,11 @@ const useNote = () => {
     [cache, post]
   )
 
-  return { note, getById, saveNote, setNote, updateNoteMeta }
+  const initNote = useCallback(() => {
+    NoteWorkerApiRef.current?.checkAllNotes()
+  }, [])
+
+  return { note, getById, saveNote, setNote, updateNoteMeta, initNote }
 }
 
 export const NoteState = createContainer(useNote)

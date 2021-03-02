@@ -14,12 +14,12 @@ import router from 'next/router'
 
 const SideBarList = () => {
   const { tree, updateTree, initTree } = NoteTreeState.useContainer()
-  const { updateNoteMeta } = NoteState.useContainer()
+  const { updateNoteMeta, initNote } = NoteState.useContainer()
   const [curId, setCurId] = useState<ItemId>(0)
 
   useEffect(() => {
-    initTree()
-  }, [initTree])
+    initTree().then(() => initNote())
+  }, [initNote, initTree])
 
   const onExpand = useCallback(
     (itemId: ItemId) => {

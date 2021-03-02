@@ -22,6 +22,10 @@ const saveLocalTree = (data: TreeData) => {
   forEach(data.items, (item) => {
     items[item.id] = {
       isExpanded: item.isExpanded,
+      id: item.id,
+      data: {
+        date: item.data.date,
+      },
     }
   })
 
