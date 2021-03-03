@@ -4,27 +4,31 @@ import IconMoon from 'heroicons/react/outline/Moon'
 import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
 import IconSun from 'heroicons/react/outline/Sun'
 import IconGlobe from 'heroicons/react/outline/Globe'
-import { FC, HTMLProps, useCallback } from 'react'
+import { forwardRef, HTMLProps, useCallback } from 'react'
 import { UIState } from 'containers/ui'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
 import { SearchState } from 'containers/search'
 import Search from 'components/search'
+import HotkeyTooltip from 'components/hotkey-tooltip'
 
-const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
-  const { children, className, ...attrs } = props
-  return (
-    <div
-      {...attrs}
-      className={classNames(
-        'block p-3 text-gray-500 hover:text-gray-800 cursor-pointer',
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
-}
+const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
+  (props, ref) => {
+    const { children, className, ...attrs } = props
+    return (
+      <div
+        {...attrs}
+        ref={ref}
+        className={classNames(
+          'block p-3 text-gray-500 hover:text-gray-800 cursor-pointer',
+          className
+        )}
+      >
+        {children}
+      </div>
+    )
+  }
+)
 
 const ButtonMenu = () => {
   const {
@@ -87,9 +91,11 @@ const ButtonSearch = () => {
   const { openModal } = SearchState.useContainer()
 
   return (
-    <ButtonItem onClick={openModal}>
-      <IconSearch />
-    </ButtonItem>
+    <HotkeyTooltip text="Search" keys={['cmd', 'p']}>
+      <ButtonItem onClick={openModal} aria-label="search">
+        <IconSearch />
+      </ButtonItem>
+    </HotkeyTooltip>
   )
 }
 
