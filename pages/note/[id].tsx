@@ -17,7 +17,7 @@ import { UIState } from 'containers/ui'
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
 const EditContainer = () => {
-  const { updateDocumentTitle } = UIState.useContainer()
+  const { title } = UIState.useContainer()
   const { darkModeActive } = useDarkMode()
   const { genNewId } = NoteTreeState.useContainer()
   const { getById, setNote, note } = NoteState.useContainer()
@@ -56,8 +56,8 @@ const EditContainer = () => {
   }, [loadNoteById, query.id])
 
   useEffect(() => {
-    updateDocumentTitle(note.title)
-  }, [note.title, updateDocumentTitle])
+    title.updateTitle(note.title)
+  }, [note.title, title])
 
   return query.id !== 'welcome' ? (
     <>

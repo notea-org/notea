@@ -8,6 +8,8 @@ import { FC, HTMLProps, useCallback } from 'react'
 import { UIState } from 'containers/ui'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
+import { SearchState } from 'containers/search'
+import Search from 'components/search'
 
 const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
   const { children, className, ...attrs } = props
@@ -25,16 +27,18 @@ const ButtonItem: FC<HTMLProps<HTMLDivElement>> = (props) => {
 }
 
 const ButtonMenu = () => {
-  const { toggleFoldSidebar, isFoldSidebar } = UIState.useContainer()
+  const {
+    sidebar: { toggleFold, isFold },
+  } = UIState.useContainer()
   const onFold = useCallback(() => {
-    toggleFoldSidebar()
-  }, [toggleFoldSidebar])
+    toggleFold()
+  }, [toggleFold])
 
   return (
     <ButtonItem onClick={onFold}>
       <IconChevronDoubleLeft
         className={classNames('transform transition-transform', {
-          'rotate-180': isFoldSidebar,
+          'rotate-180': isFold,
         })}
       />
     </ButtonItem>
@@ -79,12 +83,22 @@ const ButtonTheme = () => {
   )
 }
 
+const ButtonSearch = () => {
+  const { openModal } = SearchState.useContainer()
+
+  return (
+    <ButtonItem onClick={openModal}>
+      <IconSearch />
+    </ButtonItem>
+  )
+}
+
 const SidebarTool = () => {
   return (
     <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
-      <ButtonItem>
-        <IconSearch />
-      </ButtonItem>
+      <Search />
+
+      <ButtonSearch />
 
       <ButtonItem>
         <IcoTrash />

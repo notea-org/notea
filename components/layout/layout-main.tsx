@@ -7,8 +7,8 @@ import Sidebar from 'components/sidebar/sidebar'
 import { UIState } from 'containers/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
-import { UserAgentState } from 'containers/useragent'
 import classNames from 'classnames'
+import { SearchState } from 'containers/search'
 
 const StyledWrapper = styled.div`
   .gutter {
@@ -20,29 +20,33 @@ const StyledWrapper = styled.div`
 const LayoutMain: FC<{
   tree: TreeData
 }> = ({ children, tree }) => {
-  const { ua } = UserAgentState.useContainer()
+  const { ua } = UIState.useContainer()
 
   return (
-    <NoteState.Provider>
-      <NoteTreeState.Provider initialState={tree}>
-        {ua?.isMobileOnly ? (
-          <MobileMainWrapper>{children}</MobileMainWrapper>
-        ) : (
-          <MainWrapper>{children}</MainWrapper>
-        )}
-      </NoteTreeState.Provider>
-    </NoteState.Provider>
+    <SearchState.Provider>
+      <NoteState.Provider>
+        <NoteTreeState.Provider initialState={tree}>
+          {ua?.isMobileOnly ? (
+            <MobileMainWrapper>{children}</MobileMainWrapper>
+          ) : (
+            <MainWrapper>{children}</MainWrapper>
+          )}
+        </NoteTreeState.Provider>
+      </NoteState.Provider>
+    </SearchState.Provider>
   )
 }
 
 const MainWrapper: FC = ({ children }) => {
-  const { isFoldSidebar } = UIState.useContainer()
+  const {
+    sidebar: { isFold },
+  } = UIState.useContainer()
   const { ref, width } = useResizeDetector<HTMLDivElement>({
     handleHeight: false,
   })
 
   return (
-    <StyledWrapper disabled={isFoldSidebar} ref={ref}>
+    <StyledWrapper disabled={isFold} ref={ref}>
       <Resizable width={width}>
         <Sidebar />
         <main className="flex-grow overflow-y-auto">{children}</main>
@@ -52,16 +56,18 @@ const MainWrapper: FC = ({ children }) => {
 }
 
 const MobileMainWrapper: FC = ({ children }) => {
-  const { isFoldSidebar, toggleFoldSidebar } = UIState.useContainer()
+  const {
+    sidebar: { isFold, toggleFold },
+  } = UIState.useContainer()
 
   const onFold = useCallback(() => {
-    toggleFoldSidebar(true)
-  }, [toggleFoldSidebar])
+    toggleFold(true)
+  }, [toggleFold])
 
   return (
     <StyledWrapper
       className={classNames('flex h-screen relative transform transition-all', {
-        'translate-x-3/4': !isFoldSidebar,
+        'translate-x-3/4': !isFold,
       })}
       disabled={true}
     >

@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       display: ['group-hover'],
       backgroundColor: ['active'],
+      borderWidth: ['last'],
     },
   },
   plugins: [require('@tailwindcss/typography'), require('nightwind')],

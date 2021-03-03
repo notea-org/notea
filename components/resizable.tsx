@@ -16,47 +16,46 @@ const renderGutter = () => {
 
 const Resizable: FC<{ width?: number }> = ({ width, children }) => {
   const splitRef = useRef<typeof Split>(null)
-  const {
-    isFoldSidebar,
-    saveSplitSizes,
-    splitSizes,
-    firstWidth,
-    initFirstWidth,
-  } = UIState.useContainer()
+  const ui = UIState.useContainer()
   const widthRef = useRef(width)
-  const firstWidthRef = useRef(firstWidth)
+  const UISplitRef = useRef(ui.split)
 
   useEffect(() => {
-    firstWidthRef.current = firstWidth
-  }, [firstWidth])
+    UISplitRef.current = ui.split
+  }, [ui.split])
 
   useEffect(() => {
+    widthRef.current = width
+
     if (!width) return
 
-    widthRef.current = width
-    if (firstWidthRef.current > -1) {
-      const firstSize = (firstWidthRef.current / width) * 100
+    const split = UISplitRef.current
+
+    if (split.firstWidth > -1) {
+      const firstSize = (split.firstWidth / width) * 100
 
       splitRef.current?.split?.setSizes([firstSize, 100 - firstSize])
+      if (ui.sidebar.isFold) {
+        splitRef.current?.split?.collapse(0)
+      }
     } else {
-      initFirstWidth(width)
+      split.initFirstWidth(width)
     }
-  }, [initFirstWidth, width])
+  }, [ui.sidebar.isFold, width])
 
   const updateSplitSizes = useCallback(
     (sizes: number[]) => {
-      saveSplitSizes(sizes, widthRef.current)
+      ui.split.saveSizes(sizes, widthRef.current)
     },
-    [saveSplitSizes]
+    [ui.split]
   )
 
   return (
     <Split
       ref={splitRef}
       className="flex h-screen"
-      minSize={isFoldSidebar ? 40 : 300}
-      collapsed={isFoldSidebar ? 0 : undefined}
-      sizes={splitSizes}
+      minSize={ui.sidebar.isFold ? 40 : 300}
+      sizes={ui.split.sizes}
       gutter={renderGutter}
       onDragEnd={updateSplitSizes}
     >

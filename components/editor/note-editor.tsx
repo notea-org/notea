@@ -8,8 +8,8 @@ import styled from 'styled-components'
 import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
 import { useDarkMode } from 'next-dark-mode'
-import debounceSync from 'debounce-async'
 import useFetch from 'use-http'
+import { useDebouncedCallback } from 'use-debounce'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
@@ -18,10 +18,6 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
   }
 `
 
-const debounceNoteChange = debounceSync(async (cb: any) => {
-  return cb && cb()
-}, 500)
-
 const NoteEditor = () => {
   const { darkModeActive } = useDarkMode()
   const { saveNote, note } = NoteState.useContainer()
@@ -29,26 +25,24 @@ const NoteEditor = () => {
   const [title, setTitle] = useState()
   const editorEl = useRef<MarkdownEditor>(null)
 
-  const onNoteChange = useCallback(
-    (data: Partial<NoteModel>) => {
-      debounceNoteChange(async () => {
-        const isNew = has(router.query, 'new')
-        if (isNew) {
-          data.pid = (router.query.pid as string) || 'root'
-        }
-        if (!data.title && title) {
-          data.title = title
-        }
-        const item = await saveNote(data, isNew)
-        const noteUrl = `/note/${item.id}`
+  const onNoteChange = useDebouncedCallback(
+    async (data: Partial<NoteModel>) => {
+      const isNew = has(router.query, 'new')
+      if (isNew) {
+        data.pid = (router.query.pid as string) || 'root'
+      }
+      if (!data.title && title) {
+        data.title = title
+      }
+      const item = await saveNote(data, isNew)
+      const noteUrl = `/note/${item.id}`
 
-        if (router.asPath !== noteUrl) {
-          await router.replace(noteUrl, undefined, { shallow: true })
-        }
-        addToTree(item)
-      })
+      if (router.asPath !== noteUrl) {
+        await router.replace(noteUrl, undefined, { shallow: true })
+      }
+      addToTree(item)
     },
-    [addToTree, saveNote, title]
+    500
   )
 
   const onInputTitle = useCallback(
@@ -76,7 +70,7 @@ const NoteEditor = () => {
   const onTitleChange = useCallback(
     (event) => {
       const title = event.target.value
-      onNoteChange({ title })
+      onNoteChange.callback({ title })
       setTitle(title)
     },
     [onNoteChange]
@@ -84,7 +78,7 @@ const NoteEditor = () => {
 
   const onEditorChange = useCallback(
     (value: () => string): void => {
-      onNoteChange({ content: value() })
+      onNoteChange.callback({ content: value() })
     },
     [onNoteChange]
   )

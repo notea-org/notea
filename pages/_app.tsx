@@ -1,5 +1,4 @@
 import { UIState } from 'containers/ui'
-import { UserAgentState } from 'containers/useragent'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
@@ -20,7 +19,7 @@ const handleRejection = (event: any) => {
 if (typeof window !== 'undefined') {
   const handleRejection = (event: any) => {
     // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
-    // 但实际这个错误对性能并没有影响
+    // 但实际这个错误对性能没有影响
     // see https://github.com/atlassian/react-beautiful-dnd/issues/1548
     if (/^ResizeObserver/.test(event.message)) {
       event.stopImmediatePropagation()
@@ -42,11 +41,17 @@ function MyApp({
   darkMode: any
 }) {
   useEffect(() => {
+    if (darkMode?.darkModeActive) {
+      document.querySelector('html')?.classList.add('dark')
+    } else {
+      document.querySelector('html')?.classList.remove('dark')
+    }
+
     return () => {
       window.removeEventListener('unhandledrejection', handleRejection)
       window.removeEventListener('error', handleRejection)
     }
-  }, [])
+  }, [darkMode?.darkModeActive])
 
   return (
     <div
@@ -55,21 +60,19 @@ function MyApp({
       })}
     >
       <div className="bg-gray-50 text-gray-800">
-        <UserAgentState.Provider initialState={pageProps?.ua}>
-          <UIState.Provider>
-            <DocumentHead />
-            <Component {...pageProps} />
-          </UIState.Provider>
-        </UserAgentState.Provider>
+        <UIState.Provider initialState={{ ua: pageProps?.ua }}>
+          <DocumentHead />
+          <Component {...pageProps} />
+        </UIState.Provider>
       </div>
     </div>
   )
 
   function DocumentHead() {
-    const { documentTitle } = UIState.useContainer()
+    const { title } = UIState.useContainer()
     return (
       <Head>
-        <title>{documentTitle}</title>
+        <title>{title.value}</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"

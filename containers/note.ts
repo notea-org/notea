@@ -16,7 +16,7 @@ export interface NoteModel {
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
-  const { get, post, cache, abort, loading } = useFetch('/api/notes')
+  const { get, post, cache, abort } = useFetch('/api/notes')
 
   const NoteWorkerRef = useRef<Worker>()
   const NoteWorkerApiRef = useRef<Remote<NoteWorkerApi>>()
@@ -50,10 +50,9 @@ const useNote = () => {
 
   const saveNote = useCallback(
     async (data: Partial<NoteModel>, isNew = false) => {
-      if (loading) {
-        abort()
-      }
+      abort()
 
+      // todo: 不应该调用内部方法
       cache.delete(`url:/api/notes/${note.id}||method:GET||body:`)
       let result = data
 
@@ -80,12 +79,14 @@ const useNote = () => {
         ...result,
       }
 
+      NoteWorkerApiRef.current?.saveNote(newNote.id, newNote)
+
       delete newNote.content
       setNote(newNote)
 
       return newNote
     },
-    [abort, cache, loading, note, post]
+    [abort, cache, note, post]
   )
 
   const updateNoteMeta = useCallback(

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { createContainer } from 'unstated-next'
 
 export interface UserAgentType {
   isMobile: boolean
@@ -9,7 +8,7 @@ export interface UserAgentType {
   isWechat: boolean
 }
 
-function useUserAgent(
+export function useUA(
   initState: UserAgentType = {
     isMobile: false,
     isMobileOnly: false,
@@ -20,7 +19,5 @@ function useUserAgent(
 ) {
   const [ua] = useState(initState)
 
-  return { ua }
+  return ua
 }
-
-export const UserAgentState = createContainer(useUserAgent)

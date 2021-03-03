@@ -8,4 +8,4 @@ declare module 'heroicons/react/outline/*' {
 
 declare module 'react-split'
 
-declare module 'debounce-async'
+declare module 'remove-markdown'

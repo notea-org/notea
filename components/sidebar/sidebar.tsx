@@ -2,22 +2,21 @@ import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarNoteList from 'components/sidebar/sidebar-list'
 import { UIState } from 'containers/ui'
 import { FC } from 'react'
-import { UserAgentState } from 'containers/ui/ua'
 import classNames from 'classnames'
 
 const Sidebar: FC = () => {
-  const { ua } = UserAgentState.useContainer()
+  const { ua } = UIState.useContainer()
 
   return ua?.isMobileOnly ? <MobileSidebar /> : <BrowserSidebar />
 }
 
 const BrowserSidebar: FC = () => {
-  const { isFoldSidebar } = UIState.useContainer()
+  const { sidebar } = UIState.useContainer()
 
   return (
     <section className="flex h-full">
       <SidebarTool />
-      {isFoldSidebar ? null : <SideBarNoteList />}
+      {sidebar.isFold ? null : <SideBarNoteList />}
     </section>
   )
 }

@@ -1,19 +1,18 @@
 import classNames from 'classnames'
 import { NoteState } from 'containers/note'
 import { UIState } from 'containers/ui'
-import { UserAgentState } from 'containers/useragent'
 import IconMenu from 'heroicons/react/outline/Menu'
 import { useCallback, MouseEvent } from 'react'
 
 const MenuButton = () => {
-  const { toggleFoldSidebar } = UIState.useContainer()
+  const { sidebar } = UIState.useContainer()
 
   const onToggleFold = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation()
-      toggleFoldSidebar()
+      sidebar.toggleFold()
     },
-    [toggleFoldSidebar]
+    [sidebar]
   )
 
   return (
@@ -25,7 +24,7 @@ const MenuButton = () => {
 
 const NoteNav = () => {
   const { note } = NoteState.useContainer()
-  const { ua } = UserAgentState.useContainer()
+  const { ua } = UIState.useContainer()
 
   return (
     <nav
