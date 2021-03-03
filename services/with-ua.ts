@@ -1,4 +1,4 @@
-import { UserAgentType } from 'containers/useragent'
+import { UserAgentType } from 'containers/ui/ua'
 import { GetServerSidePropsContext } from 'next'
 import UAParser from 'ua-parser-js'
 
