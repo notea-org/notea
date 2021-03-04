@@ -2,27 +2,12 @@ import { NoteModel } from 'containers/note'
 import Link from 'next/link'
 import IconArrowRight from 'heroicons/react/outline/ChevronRight'
 import IconPlus from 'heroicons/react/outline/Plus'
-import { FC, HTMLProps, ReactText, MouseEvent, useCallback } from 'react'
+import React, { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
-
-export const ItemButton: FC<HTMLProps<HTMLSpanElement>> = ({
-  children,
-  className,
-  ...attrs
-}) => {
-  return (
-    <span
-      {...attrs}
-      className={classNames(
-        'p-0.5 rounded hover:bg-gray-400 cursor-pointer',
-        className
-      )}
-    >
-      {children}
-    </span>
-  )
-}
+import HotkeyTooltip from 'components/hotkey-tooltip'
+import SidebarItemMenu from './sidebar-item-menu'
+import SidebarItemButton from './sidebar-item-button'
 
 const SidebarListItem: FC<{
   item: NoteModel
@@ -60,28 +45,40 @@ const SidebarListItem: FC<{
         'bg-gray-200': query.id === item.id,
       })}
     >
-      <Link href={`/note/${item.id}`} shallow>
-        <a className="flex py-1.5 px-2 items-center">
-          <ItemButton
-            className="mr-1"
-            onClick={(e) => {
-              e.preventDefault()
-              isExpanded ? onCollapse(item.id) : onExpand(item.id)
-            }}
+      <div className="flex py-1.5 px-2 items-center overflow-hidden">
+        <Link href={`/note/${item.id}`} shallow>
+          <a className="flex flex-grow truncate">
+            <SidebarItemButton
+              className="mr-1"
+              onClick={(e) => {
+                e.preventDefault()
+                isExpanded ? onCollapse(item.id) : onExpand(item.id)
+              }}
+            >
+              <IconArrowRight
+                className={classNames('transition-transform transform', {
+                  'rotate-90': isExpanded,
+                })}
+                width="16"
+              />
+            </SidebarItemButton>
+            <span className="flex-grow truncate">
+              {item.title || 'Untitled'}
+            </span>
+          </a>
+        </Link>
+
+        <SidebarItemMenu />
+
+        <HotkeyTooltip text="新建子页面">
+          <SidebarItemButton
+            onClick={onAddNote}
+            className="hidden group-hover:block"
           >
-            <IconArrowRight
-              className={classNames('transition-transform transform', {
-                'rotate-90': isExpanded,
-              })}
-              width="16"
-            />
-          </ItemButton>
-          <span className="flex-grow truncate">{item.title || 'Untitled'}</span>
-          <ItemButton onClick={onAddNote} className="hidden group-hover:block">
             <IconPlus width="16" />
-          </ItemButton>
-        </a>
-      </Link>
+          </SidebarItemButton>
+        </HotkeyTooltip>
+      </div>
     </li>
   )
 }

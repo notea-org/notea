@@ -49,7 +49,7 @@ const MainWrapper: FC = ({ children }) => {
     <StyledWrapper disabled={isFold} ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="flex-grow overflow-y-auto">{children}</main>
+        <main className="relative flex-grow h-screen">{children}</main>
       </Resizable>
     </StyledWrapper>
   )

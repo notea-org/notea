@@ -1,4 +1,4 @@
-import SidebarListItem, { ItemButton } from './sidebar-list-item'
+import SidebarListItem from './sidebar-list-item'
 import { NoteTreeState } from 'containers/tree'
 import Tree, {
   ItemId,
@@ -11,6 +11,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { NoteState } from 'containers/note'
 import IconPlus from 'heroicons/react/outline/Plus'
 import router from 'next/router'
+import HotkeyTooltip from 'components/hotkey-tooltip'
+import SidebarItemButton from './sidebar-item-button'
 
 const SideBarList = () => {
   const { tree, updateTree, initTree } = NoteTreeState.useContainer()
@@ -70,14 +72,16 @@ const SideBarList = () => {
     <ul className="h-full text-sm flex-grow bg-gray-100 overflow-y-auto">
       <li className="p-2 text-gray-500 flex">
         <span className="flex-auto">我的页面</span>
-        <ItemButton
-          onClick={() => {
-            router.push('/note/new', undefined, { shallow: true })
-          }}
-          className="text-gray-700"
-        >
-          <IconPlus width="16" />
-        </ItemButton>
+        <HotkeyTooltip text="新建页面" keys={['cmd', 'n']}>
+          <SidebarItemButton
+            onClick={() => {
+              router.push('/note/new', undefined, { shallow: true })
+            }}
+            className="text-gray-700"
+          >
+            <IconPlus width="16" />
+          </SidebarItemButton>
+        </HotkeyTooltip>
       </li>
       <Tree
         onExpand={onExpand}

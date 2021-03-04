@@ -1,4 +1,5 @@
 module.exports = {
+  important: '#notea',
   purge: ['./**/*.tsx'],
   darkMode: 'class',
   theme: {

@@ -62,13 +62,13 @@ const EditContainer = () => {
   return query.id !== 'welcome' ? (
     <>
       <NoteNav />
-      <article
-        className={classNames('m-auto prose', {
+      <section
+        className={classNames('overflow-y-scroll h-full', {
           'prose-dark': darkModeActive,
         })}
       >
         <NoteEditor />
-      </article>
+      </section>
     </>
   ) : (
     <div>使用说明之类的</div>

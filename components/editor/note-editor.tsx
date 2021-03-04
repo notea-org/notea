@@ -84,7 +84,7 @@ const NoteEditor = () => {
   )
 
   return (
-    <article className="pt-40 px-6">
+    <article className="pt-40 px-6 m-auto prose">
       <h1>
         <TextareaAutosize
           className="outline-none w-full resize-none block bg-transparent"

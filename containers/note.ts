@@ -16,7 +16,7 @@ export interface NoteModel {
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
-  const { get, post, cache, abort } = useFetch('/api/notes')
+  const { get, post, cache, abort, loading } = useFetch('/api/notes')
 
   const NoteWorkerRef = useRef<Worker>()
   const NoteWorkerApiRef = useRef<Remote<NoteWorkerApi>>()
@@ -108,7 +108,7 @@ const useNote = () => {
     NoteWorkerApiRef.current?.checkAllNotes()
   }, [])
 
-  return { note, getById, saveNote, setNote, updateNoteMeta, initNote }
+  return { note, getById, saveNote, setNote, updateNoteMeta, initNote, loading }
 }
 
 export const NoteState = createContainer(useNote)

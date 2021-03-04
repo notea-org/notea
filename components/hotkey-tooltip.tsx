@@ -15,10 +15,15 @@ const Title: FC<{
 
 const HotkeyTooltip: FC<{
   text: string
-  keys: string[]
-}> = ({ text, keys, children }) => {
+  keys?: string[]
+}> = ({ text, keys = [], children }) => {
   return (
-    <Tooltip title={<Title text={text} keys={keys} />} placement="right">
+    <Tooltip
+      enterDelay={200}
+      TransitionProps={{ timeout: 0 }}
+      title={<Title text={text} keys={keys} />}
+      placement="right"
+    >
       {children as any}
     </Tooltip>
   )

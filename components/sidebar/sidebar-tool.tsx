@@ -20,7 +20,7 @@ const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
         {...attrs}
         ref={ref}
         className={classNames(
-          'block p-3 text-gray-500 hover:text-gray-800 cursor-pointer',
+          'block m-3 text-gray-500 hover:text-gray-800 cursor-pointer',
           className
         )}
       >
@@ -39,13 +39,15 @@ const ButtonMenu = () => {
   }, [toggleFold])
 
   return (
-    <ButtonItem onClick={onFold}>
-      <IconChevronDoubleLeft
-        className={classNames('transform transition-transform', {
-          'rotate-180': isFold,
-        })}
-      />
-    </ButtonItem>
+    <HotkeyTooltip text="折叠侧边栏" keys={['cmd', '\\']}>
+      <ButtonItem onClick={onFold}>
+        <IconChevronDoubleLeft
+          className={classNames('transform transition-transform', {
+            'rotate-180': isFold,
+          })}
+        />
+      </ButtonItem>
+    </HotkeyTooltip>
   )
 }
 
@@ -75,15 +77,17 @@ const ButtonTheme = () => {
   ])
 
   return (
-    <ButtonItem onClick={onToggleThemeMode}>
-      {autoModeActive ? (
-        <IconGlobe />
-      ) : darkModeActive ? (
-        <IconMoon />
-      ) : (
-        <IconSun />
-      )}
-    </ButtonItem>
+    <HotkeyTooltip text="切换主题">
+      <ButtonItem onClick={onToggleThemeMode}>
+        {autoModeActive ? (
+          <IconGlobe />
+        ) : darkModeActive ? (
+          <IconMoon />
+        ) : (
+          <IconSun />
+        )}
+      </ButtonItem>
+    </HotkeyTooltip>
   )
 }
 
