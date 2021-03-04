@@ -4,7 +4,7 @@ class MyDocument extends Document {
     return (
       <Html className="nightwind overflow-hidden">
         <Head />
-        <body id="notea">
+        <body>
           <Main />
           <NextScript />
         </body>

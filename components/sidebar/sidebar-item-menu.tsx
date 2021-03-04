@@ -6,24 +6,37 @@ import SidebarItemButton from './sidebar-item-button'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
 import IconPaperAirplane from 'heroicons/react/outline/PaperAirplane'
+import { NoteModel, NoteState } from 'containers/note'
+
+enum MENU_HANDLER_NAME {
+  REMOVE_NOTE,
+  SHARE_NOTE,
+  COPY_LINK,
+}
 
 const MENU_LIST = [
   {
     text: '删除',
     icon: <IconTrash />,
+    handler: MENU_HANDLER_NAME.REMOVE_NOTE,
   },
   {
     text: '创建分享',
     icon: <IconPaperAirplane />,
+    handler: MENU_HANDLER_NAME.SHARE_NOTE,
   },
   {
     text: '拷贝链接',
     icon: <IconClipboardCopy />,
+    handler: MENU_HANDLER_NAME.COPY_LINK,
   },
 ]
 
-const SidebarItemMenu: FC = () => {
+const SidebarItemMenu: FC<{
+  note: NoteModel
+}> = ({ note }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null)
+  const { removeNote } = NoteState.useContainer()
 
   const handleClick = useCallback((event: MouseEvent) => {
     event.preventDefault()
@@ -33,6 +46,25 @@ const SidebarItemMenu: FC = () => {
   const handleClose = useCallback(() => {
     setAnchorEl(null)
   }, [])
+
+  const doRemoveNote = useCallback(() => {
+    handleClose()
+    removeNote(note.id)
+  }, [handleClose, note.id, removeNote])
+
+  const doShareNote = useCallback(() => {
+    handleClose()
+  }, [handleClose])
+
+  const doCopyLink = useCallback(() => {
+    handleClose()
+  }, [handleClose])
+
+  const MENU_HANDLER = {
+    [MENU_HANDLER_NAME.REMOVE_NOTE]: doRemoveNote,
+    [MENU_HANDLER_NAME.COPY_LINK]: doCopyLink,
+    [MENU_HANDLER_NAME.SHARE_NOTE]: doShareNote,
+  }
 
   return (
     <>
@@ -54,14 +86,9 @@ const SidebarItemMenu: FC = () => {
         }}
       >
         {MENU_LIST.map((item) => (
-          <MenuItem
-            classes={{
-              root: 'text-xs',
-            }}
-            key={item.text}
-          >
-            <span className="w-4 mr-2">{item.icon}</span>
-            <span>{item.text}</span>
+          <MenuItem key={item.text} onClick={MENU_HANDLER[item.handler]}>
+            <span className="text-xs w-4 mr-2">{item.icon}</span>
+            <span className="text-xs">{item.text}</span>
           </MenuItem>
         ))}
       </Menu>

@@ -68,7 +68,7 @@ const SidebarListItem: FC<{
           </a>
         </Link>
 
-        <SidebarItemMenu />
+        <SidebarItemMenu note={item} />
 
         <HotkeyTooltip text="新建子页面">
           <SidebarItemButton

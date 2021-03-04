@@ -24,15 +24,15 @@ const LayoutMain: FC<{
 
   return (
     <SearchState.Provider>
-      <NoteState.Provider>
-        <NoteTreeState.Provider initialState={tree}>
+      <NoteTreeState.Provider initialState={tree}>
+        <NoteState.Provider>
           {ua?.isMobileOnly ? (
             <MobileMainWrapper>{children}</MobileMainWrapper>
           ) : (
             <MainWrapper>{children}</MainWrapper>
           )}
-        </NoteTreeState.Provider>
-      </NoteState.Provider>
+        </NoteState.Provider>
+      </NoteTreeState.Provider>
     </SearchState.Provider>
   )
 }

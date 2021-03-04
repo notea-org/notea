@@ -1,5 +1,5 @@
 import { TreeData } from '@atlaskit/tree'
-import { isEmpty, forEach } from 'lodash'
+import { isEmpty, forEach, clone } from 'lodash'
 import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
@@ -105,6 +105,21 @@ const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
     [updateTree]
   )
 
+  const removeFromTree = useCallback(
+    (itemId: string) => {
+      const curTree = treeRef.current
+      const newItems = clone(curTree.items)
+
+      delete newItems[itemId]
+
+      updateTree({
+        ...curTree,
+        items: newItems,
+      })
+    },
+    [updateTree]
+  )
+
   const genNewId = useCallback(() => {
     let newId = genId()
     while (treeRef.current.items[newId]) {
@@ -113,7 +128,7 @@ const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
     return newId
   }, [])
 
-  return { tree, addToTree, updateTree, initTree, genNewId }
+  return { tree, addToTree, removeFromTree, updateTree, initTree, genNewId }
 }
 
 export const NoteTreeState = createContainer(useNoteTree)

@@ -2,7 +2,6 @@ import MarkdownEditor from 'rich-markdown-editor'
 import { NoteModel, NoteState } from 'containers/note'
 import { KeyboardEvent, useCallback, useRef, useState } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
-import { NoteTreeState } from 'containers/tree'
 import router from 'next/router'
 import styled from 'styled-components'
 import { has } from 'lodash'
@@ -21,7 +20,6 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
 const NoteEditor = () => {
   const { darkModeActive } = useDarkMode()
   const { saveNote, note } = NoteState.useContainer()
-  const { addToTree } = NoteTreeState.useContainer()
   const [title, setTitle] = useState()
   const editorEl = useRef<MarkdownEditor>(null)
 
@@ -40,7 +38,6 @@ const NoteEditor = () => {
       if (router.asPath !== noteUrl) {
         await router.replace(noteUrl, undefined, { shallow: true })
       }
-      addToTree(item)
     },
     500
   )

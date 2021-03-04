@@ -3,6 +3,7 @@ import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 import { wrap, Remote } from 'comlink'
 import { NoteWorkerApi } from 'workers/note.worker'
+import { NoteTreeState } from 'containers/tree'
 
 export interface NoteModel {
   id: string
@@ -16,7 +17,8 @@ export interface NoteModel {
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
-  const { get, post, cache, abort, loading } = useFetch('/api/notes')
+  const { get, post, cache, abort, loading, del } = useFetch('/api/notes')
+  const { addToTree, removeFromTree } = NoteTreeState.useContainer()
 
   const NoteWorkerRef = useRef<Worker>()
   const NoteWorkerApiRef = useRef<Remote<NoteWorkerApi>>()
@@ -83,10 +85,10 @@ const useNote = () => {
 
       delete newNote.content
       setNote(newNote)
-
+      addToTree(newNote)
       return newNote
     },
-    [abort, cache, note, post]
+    [abort, addToTree, cache, note, post]
   )
 
   const updateNoteMeta = useCallback(
@@ -108,7 +110,24 @@ const useNote = () => {
     NoteWorkerApiRef.current?.checkAllNotes()
   }, [])
 
-  return { note, getById, saveNote, setNote, updateNoteMeta, initNote, loading }
+  const removeNote = useCallback(
+    async (id: string) => {
+      await del(id)
+      removeFromTree(id)
+    },
+    [del, removeFromTree]
+  )
+
+  return {
+    note,
+    getById,
+    saveNote,
+    removeNote,
+    setNote,
+    updateNoteMeta,
+    initNote,
+    loading,
+  }
 }
 
 export const NoteState = createContainer(useNote)
