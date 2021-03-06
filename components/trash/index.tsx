@@ -1,35 +1,35 @@
-import { SearchState } from 'containers/search'
 import { FC } from 'react'
 import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
-import SearchItem from './search-item'
+import TrashItem from './trash-item'
 import { NoteModel } from 'containers/note'
+import { TrashState } from 'containers/trash'
 
-const Search: FC = () => {
+const Trash: FC = () => {
   const {
     isOpen,
     closeModal,
     filterNotes,
     keyword,
     list,
-  } = SearchState.useContainer()
+  } = TrashState.useContainer()
 
   return (
     <FilterModal open={isOpen} onClose={closeModal}>
       <FilterModalInput
-        placeholder={'Search note'}
+        placeholder="Search note in trash"
         doFilter={filterNotes}
         keyword={keyword}
       />
       <FilterModalList
         items={list}
         ItemComponent={(item: NoteModel) => (
-          <SearchItem note={item} keyword={keyword} key={item.id} />
+          <TrashItem note={item} keyword={keyword} key={item.id} />
         )}
       />
     </FilterModal>
   )
 }
 
-export default Search
+export default Trash

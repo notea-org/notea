@@ -3,14 +3,15 @@ import { FC, ReactNode } from 'react'
 const BoldText: FC<{
   text?: string
   keyword?: string
-}> = ({ text = '', keyword = '' }) => {
+  maxLen?: number
+}> = ({ text = '', keyword = '', maxLen = 80 }) => {
   let start = 0
   let end = 0
   const texts: ReactNode[] = []
   const indexContent = text.search(keyword)
 
   start = indexContent < 11 ? 0 : indexContent - 10
-  end = start === 0 ? 70 : indexContent + keyword.length + 80
+  end = start === 0 ? maxLen - 10 : indexContent + keyword.length + maxLen
 
   if (text && end > text.length) {
     end = text.length

@@ -7,7 +7,7 @@ import { UserAgentType, useUA } from './ua'
 function useUI({ ua }: { ua?: UserAgentType } = {}) {
   return {
     ua: useUA(ua),
-    sidebar: useSidebar(),
+    sidebar: useSidebar(ua?.isMobileOnly),
     split: useSplit(),
     title: useTitle(),
   }

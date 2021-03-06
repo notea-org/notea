@@ -5,7 +5,7 @@ import { FC } from 'react'
 import { NoteStoreItem } from 'utils/local-store'
 import BoldText from 'components/filter-modal/bold-text'
 
-const SearchItem: FC<{
+const TrashItem: FC<{
   note: NoteStoreItem
   keyword?: string
 }> = ({ note, keyword }) => {
@@ -33,4 +33,4 @@ const SearchItem: FC<{
   )
 }
 
-export default SearchItem
+export default TrashItem

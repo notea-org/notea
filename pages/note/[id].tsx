@@ -3,11 +3,10 @@ import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import LayoutMain from 'components/layout/layout-main'
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState, TreeModel } from 'containers/tree'
 import NoteNav from 'components/note-nav'
 import dynamic from 'next/dynamic'
 import { GetServerSideProps, NextPage } from 'next'
-import { TreeData } from '@atlaskit/tree'
 import withTree from 'services/with-tree'
 import withUA from 'services/with-ua'
 import classNames from 'classnames'
@@ -75,7 +74,7 @@ const EditContainer = () => {
   )
 }
 
-const EditNotePage: NextPage<{ tree: TreeData }> = ({ tree }) => {
+const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   return (
     <LayoutMain tree={tree}>
       <EditContainer />

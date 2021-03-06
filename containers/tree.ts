@@ -1,22 +1,34 @@
-import { TreeData } from '@atlaskit/tree'
-import { isEmpty, forEach, clone } from 'lodash'
+import { mutateTree, TreeData, TreeItem } from '@atlaskit/tree'
+import { isEmpty, forEach } from 'lodash'
 import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { NOTE_DELETED } from 'shared/meta'
 import { createContainer } from 'unstated-next'
 import { uiStore } from 'utils/local-store'
 import { NoteModel } from './note'
 
-const DEFAULT_TREE: TreeData = {
+export interface TreeItemModel extends TreeItem {
+  id: string
+  data: NoteModel
+  children: string[]
+}
+export interface TreeModel extends TreeData {
+  rootId: string
+  items: Record<string, TreeItemModel>
+}
+
+const DEFAULT_TREE: TreeModel = {
   rootId: 'root',
   items: {
     root: {
       id: 'root',
       children: [],
+      data: {} as NoteModel,
     },
   },
 }
 
-const saveLocalTree = (data: TreeData) => {
+const saveLocalTree = (data: TreeModel) => {
   const items: any = {}
 
   forEach(data.items, (item) => {
@@ -35,27 +47,31 @@ const saveLocalTree = (data: TreeData) => {
   })
 }
 
-const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
-  const [tree, setTree] = useState<TreeData>(initData)
+const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
+  const [tree, setTree] = useState<TreeModel>(initData)
   const treeRef = useRef(tree)
 
   useEffect(() => {
     treeRef.current = tree
   }, [tree])
 
-  const updateTree = useCallback((data: TreeData) => {
+  const updateTree = useCallback((data: TreeModel) => {
     setTree(data)
     saveLocalTree(data)
   }, [])
 
   const initTree = useCallback(async () => {
     const localTree =
-      (await uiStore.getItem<TreeData>('tree_items')) || DEFAULT_TREE
+      (await uiStore.getItem<TreeModel>('tree_items')) || DEFAULT_TREE
 
     setTree((prev) => {
+      const deletedIds: string[] = []
       forEach(prev.items, (item) => {
         if (!item.isExpanded && localTree.items[item.id]?.isExpanded) {
           item.isExpanded = true
+        }
+        if (item.data.deleted) {
+          deletedIds.push(item.id)
         }
       })
 
@@ -67,7 +83,7 @@ const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
 
   const addToTree = useCallback(
     (item: NoteModel) => {
-      const newItems: TreeData['items'] = {}
+      const newItems: TreeModel['items'] = {}
       const curTree = treeRef.current
       const parentItem = curTree.items[item.pid || 'root']
       const curItem = curTree.items[item.id]
@@ -107,15 +123,14 @@ const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
 
   const removeFromTree = useCallback(
     (itemId: string) => {
-      const curTree = treeRef.current
-      const newItems = clone(curTree.items)
-
-      delete newItems[itemId]
-
-      updateTree({
-        ...curTree,
-        items: newItems,
-      })
+      updateTree(
+        mutateTree(treeRef.current, itemId, {
+          data: {
+            ...treeRef.current.items[itemId].data,
+            deleted: NOTE_DELETED.DELETED,
+          },
+        }) as TreeModel
+      )
     },
     [updateTree]
   )
@@ -128,7 +143,14 @@ const useNoteTree = (initData: TreeData = DEFAULT_TREE) => {
     return newId
   }, [])
 
-  return { tree, addToTree, removeFromTree, updateTree, initTree, genNewId }
+  return {
+    tree,
+    addToTree,
+    removeFromTree,
+    updateTree,
+    initTree,
+    genNewId,
+  }
 }
 
 export const NoteTreeState = createContainer(useNoteTree)

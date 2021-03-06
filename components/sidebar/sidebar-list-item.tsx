@@ -45,9 +45,9 @@ const SidebarListItem: FC<{
         'bg-gray-200': query.id === item.id,
       })}
     >
-      <div className="flex py-1.5 px-2 items-center overflow-hidden">
+      <div className="flex px-2 items-center overflow-hidden">
         <Link href={`/note/${item.id}`} shallow>
-          <a className="flex flex-grow truncate">
+          <a className="flex flex-grow truncate py-1.5">
             <SidebarItemButton
               className="mr-1"
               onClick={(e) => {

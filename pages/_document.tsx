@@ -1,10 +1,11 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+
 class MyDocument extends Document {
   render() {
     return (
-      <Html className="nightwind overflow-hidden">
+      <Html className="nightwind">
         <Head />
-        <body>
+        <body className="overflow-hidden">
           <Main />
           <NextScript />
         </body>

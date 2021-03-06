@@ -1,10 +1,11 @@
-import { TreeData } from '@atlaskit/tree'
+import { NoteModel } from 'containers/note'
+import { TreeModel } from 'containers/tree'
 import { StoreProvider } from 'packages/store/src'
 import { metaToJson } from './meta'
 
 export async function getTree(store: StoreProvider) {
   const list = await store.getList()
-  const tree: TreeData = {
+  const tree: TreeModel = {
     rootId: 'root',
     items: {},
   }
@@ -17,7 +18,7 @@ export async function getTree(store: StoreProvider) {
       delete meta.id
       tree.items[id] = {
         id,
-        data: meta,
+        data: meta as NoteModel,
         children: cid || [],
       }
 
@@ -27,10 +28,11 @@ export async function getTree(store: StoreProvider) {
 
   if (!list.includes('root')) {
     await store.putObject(store.path.getNoteById('root'), '')
-    await store.addToList('root')
+    await store.addToList(['root'])
     tree.items['root'] = {
       id: 'root',
       children: [],
+      data: {} as NoteModel,
     }
   }
 

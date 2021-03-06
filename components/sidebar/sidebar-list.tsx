@@ -1,5 +1,5 @@
 import SidebarListItem from './sidebar-list-item'
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState, TreeModel } from 'containers/tree'
 import Tree, {
   ItemId,
   moveItemOnTree,
@@ -16,23 +16,23 @@ import SidebarItemButton from './sidebar-item-button'
 
 const SideBarList = () => {
   const { tree, updateTree, initTree } = NoteTreeState.useContainer()
-  const { updateNoteMeta, initNote } = NoteState.useContainer()
+  const { updateNoteMeta, initAllNotes } = NoteState.useContainer()
   const [curId, setCurId] = useState<ItemId>(0)
 
   useEffect(() => {
-    initTree().then(() => initNote())
-  }, [initNote, initTree])
+    initTree().then(() => initAllNotes())
+  }, [initAllNotes, initTree])
 
   const onExpand = useCallback(
     (itemId: ItemId) => {
-      updateTree(mutateTree(tree, itemId, { isExpanded: true }))
+      updateTree(mutateTree(tree, itemId, { isExpanded: true }) as TreeModel)
     },
     [tree, updateTree]
   )
 
   const onCollapse = useCallback(
     (itemId: ItemId) => {
-      updateTree(mutateTree(tree, itemId, { isExpanded: false }))
+      updateTree(mutateTree(tree, itemId, { isExpanded: false }) as TreeModel)
     },
     [tree, updateTree]
   )
@@ -42,7 +42,7 @@ const SideBarList = () => {
       if (!destination) {
         return
       }
-      const newTree = moveItemOnTree(tree, source, destination)
+      const newTree = moveItemOnTree(tree, source, destination) as TreeModel
       const toPid = destination.parentId as string
       const fromPid = source.parentId as string
 
@@ -54,11 +54,11 @@ const SideBarList = () => {
             pid: toPid,
           }),
         updateNoteMeta(toPid, {
-          cid: newTree.items[toPid].children as string[],
+          cid: newTree.items[toPid].children,
         }),
         fromPid !== toPid &&
           updateNoteMeta(fromPid, {
-            cid: newTree.items[fromPid].children as string[],
+            cid: newTree.items[fromPid].children,
           }),
       ]).catch((e) => {
         // todo: toast

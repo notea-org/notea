@@ -1,8 +1,9 @@
 import { strCompress } from 'packages/shared'
 import { api } from 'services/api'
-import { metaToJson, PAGE_META_KEY } from 'services/meta'
+import { metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
+import { PAGE_META_KEY } from 'shared/meta'
 
 export default api()
   .use(useAuth)
@@ -11,9 +12,10 @@ export default api()
     const id = req.query.id as string
     const notePath = req.store.path.getNoteById(id)
 
+    // todo 父节点的 cid 也要清空
     await Promise.all([
       req.store.deleteObject(notePath),
-      req.store.removeFromList(notePath),
+      req.store.removeFromList([id]),
     ])
 
     res.end()

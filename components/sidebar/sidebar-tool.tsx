@@ -1,5 +1,5 @@
 import IconSearch from 'heroicons/react/outline/Search'
-import IcoTrash from 'heroicons/react/outline/Trash'
+import IconTrash from 'heroicons/react/outline/Trash'
 import IconMoon from 'heroicons/react/outline/Moon'
 import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
 import IconSun from 'heroicons/react/outline/Sun'
@@ -11,6 +11,8 @@ import { useDarkMode } from 'next-dark-mode'
 import { SearchState } from 'containers/search'
 import Search from 'components/search'
 import HotkeyTooltip from 'components/hotkey-tooltip'
+import { TrashState } from 'containers/trash'
+import Trash from 'components/trash'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -103,16 +105,25 @@ const ButtonSearch = () => {
   )
 }
 
+const ButtonTrash = () => {
+  const { openModal } = TrashState.useContainer()
+
+  return (
+    <HotkeyTooltip text="Trash" keys={['cmd', 'q']}>
+      <ButtonItem onClick={openModal} aria-label="trash">
+        <IconTrash />
+      </ButtonItem>
+    </HotkeyTooltip>
+  )
+}
+
 const SidebarTool = () => {
   return (
     <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
       <Search />
-
       <ButtonSearch />
-
-      <ButtonItem>
-        <IcoTrash />
-      </ButtonItem>
+      <Trash />
+      <ButtonTrash />
 
       <div className="mt-auto">
         <ButtonMenu></ButtonMenu>

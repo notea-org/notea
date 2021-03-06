@@ -4,6 +4,7 @@ import useFetch from 'use-http'
 import { wrap, Remote } from 'comlink'
 import { NoteWorkerApi } from 'workers/note.worker'
 import { NoteTreeState } from 'containers/tree'
+import { NOTE_DELETED, NOTE_SHARED } from 'shared/meta'
 
 export interface NoteModel {
   id: string
@@ -13,11 +14,13 @@ export interface NoteModel {
   pic?: string
   cid?: string[]
   date?: string
+  deleted: NOTE_DELETED
+  shared: NOTE_SHARED
 }
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
-  const { get, post, cache, abort, loading, del } = useFetch('/api/notes')
+  const { get, post, cache, abort, loading } = useFetch('/api/notes')
   const { addToTree, removeFromTree } = NoteTreeState.useContainer()
 
   const NoteWorkerRef = useRef<Worker>()
@@ -106,16 +109,18 @@ const useNote = () => {
     [cache, post]
   )
 
-  const initNote = useCallback(() => {
+  const initAllNotes = useCallback(() => {
     NoteWorkerApiRef.current?.checkAllNotes()
   }, [])
 
   const removeNote = useCallback(
     async (id: string) => {
-      await del(id)
+      await post(`${id}/meta`, {
+        deleted: NOTE_DELETED.DELETED,
+      })
       removeFromTree(id)
     },
-    [del, removeFromTree]
+    [post, removeFromTree]
   )
 
   return {
@@ -125,7 +130,7 @@ const useNote = () => {
     removeNote,
     setNote,
     updateNoteMeta,
-    initNote,
+    initAllNotes,
     loading,
   }
 }

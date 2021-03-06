@@ -1,14 +1,14 @@
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState, TreeModel } from 'containers/tree'
 import { FC, useCallback } from 'react'
 import { NoteState } from 'containers/note'
 import { useResizeDetector } from 'react-resize-detector'
-import { TreeData } from '@atlaskit/tree'
 import Sidebar from 'components/sidebar/sidebar'
 import { UIState } from 'containers/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import classNames from 'classnames'
 import { SearchState } from 'containers/search'
+import { TrashState } from 'containers/trash'
 
 const StyledWrapper = styled.div`
   .gutter {
@@ -18,21 +18,23 @@ const StyledWrapper = styled.div`
 `
 
 const LayoutMain: FC<{
-  tree: TreeData
+  tree: TreeModel
 }> = ({ children, tree }) => {
   const { ua } = UIState.useContainer()
 
   return (
     <SearchState.Provider>
-      <NoteTreeState.Provider initialState={tree}>
-        <NoteState.Provider>
-          {ua?.isMobileOnly ? (
-            <MobileMainWrapper>{children}</MobileMainWrapper>
-          ) : (
-            <MainWrapper>{children}</MainWrapper>
-          )}
-        </NoteState.Provider>
-      </NoteTreeState.Provider>
+      <TrashState.Provider>
+        <NoteTreeState.Provider initialState={tree}>
+          <NoteState.Provider>
+            {ua?.isMobileOnly ? (
+              <MobileMainWrapper>{children}</MobileMainWrapper>
+            ) : (
+              <MainWrapper>{children}</MainWrapper>
+            )}
+          </NoteState.Provider>
+        </NoteTreeState.Provider>
+      </TrashState.Provider>
     </SearchState.Provider>
   )
 }

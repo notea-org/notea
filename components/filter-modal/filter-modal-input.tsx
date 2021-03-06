@@ -1,13 +1,15 @@
 import { FC, useEffect, useRef } from 'react'
 import IconSearch from 'heroicons/react/outline/Search'
-import { SearchState } from 'containers/search'
 import { useDebouncedCallback } from 'use-debounce'
 
-const SearchInput: FC = () => {
-  const { setKeyword, keyword } = SearchState.useContainer()
+const FilterModalInput: FC<{
+  doFilter: (keyword: string) => void
+  keyword?: string
+  placeholder: string
+}> = ({ doFilter, keyword, placeholder }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const doSearch = useDebouncedCallback((value: string) => {
-    setKeyword(value)
+  const debouncedFilter = useDebouncedCallback((value: string) => {
+    doFilter(value)
   }, 300)
 
   useEffect(() => {
@@ -22,12 +24,12 @@ const SearchInput: FC = () => {
         defaultValue={keyword}
         type="text"
         className="appearance-none w-full outline-none ml-2 bg-transparent"
-        placeholder="Search note"
+        placeholder={placeholder}
         autoFocus
-        onChange={(e) => doSearch.callback(e.target.value)}
+        onChange={(e) => debouncedFilter.callback(e.target.value)}
       />
     </div>
   )
 }
 
-export default SearchInput
+export default FilterModalInput

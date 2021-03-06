@@ -1,4 +1,3 @@
-import { TreeData } from '@atlaskit/tree'
 import { genId } from '@notea/shared'
 import { api } from 'services/api'
 import { getTree } from 'services/get-tree'
@@ -10,13 +9,13 @@ export default api()
   .use(useAuth)
   .use(useStore)
   .get(async (req, res) => {
-    const tree: TreeData = await getTree(req.store)
+    const tree = await getTree(req.store)
 
     res.json(tree)
   })
   .post(async (req, res) => {
     const { content = '\n', meta } = req.body
-    let { id } = req.body
+    let id = req.body.id as string
     const notePath = req.store.path.getNoteById(id)
 
     if (!id) {
@@ -38,7 +37,7 @@ export default api()
       meta: metaData,
     })
 
-    await req.store.addToList(id)
+    await req.store.addToList([id])
     // Update parent meta
     const parentPath = req.store.path.getNoteById(meta.pid || 'root')
     const parentMeta = metaToJson(await req.store.getObjectMeta(parentPath))

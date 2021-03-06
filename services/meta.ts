@@ -1,15 +1,12 @@
+import { isNil, toNumber } from 'lodash'
 import { strCompress, strDecompress } from 'packages/shared'
-
-export const PAGE_META_KEY = [
-  'title',
-  'pid',
-  'id',
-  'share',
-  'cid',
-  'pic',
-  'date',
-]
-const ARRAY_KEYS = ['cid']
+import {
+  PAGE_META_KEY,
+  ARRAY_KEYS,
+  NOTE_DELETED,
+  NOTE_SHARED,
+  NUMBER_KEYS,
+} from 'shared/meta'
 
 export function jsonToMeta(meta?: Record<string, string | undefined>) {
   const metaData: Map<string, string> = new Map()
@@ -34,14 +31,20 @@ export function metaToJson(metaData?: Map<string, string>) {
     PAGE_META_KEY.forEach((key) => {
       const value = metaData.get(key)
 
-      if (value) {
+      if (!isNil(value)) {
         const strValue = strDecompress(value) || undefined
 
         if (ARRAY_KEYS.includes(key)) {
           meta[key] = strValue.split(',') || []
+        } else if (NUMBER_KEYS.includes(key)) {
+          meta[key] = toNumber(strValue)
         } else {
           meta[key] = strValue
         }
+      } else if (key === 'deleted') {
+        meta[key] = NOTE_DELETED.NORMAL
+      } else if (key === 'shared') {
+        meta[key] = NOTE_SHARED.PRIVATE
       }
     })
   }

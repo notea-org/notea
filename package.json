@@ -43,6 +43,7 @@
     "next-iron-session": "^4.1.11",
     "nightwind": "^1.1.6",
     "react": "^17.0.1",
+    "react-div-100vh": "^0.5.6",
     "react-dom": "^17.0.1",
     "react-resize-detector": "^6.6.0",
     "react-split": "^2.0.9",

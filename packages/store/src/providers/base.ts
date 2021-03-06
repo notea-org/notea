@@ -1,3 +1,4 @@
+import { pull, union } from 'lodash'
 import { StorePath } from '../path'
 
 export interface StoreProviderConfig {
@@ -100,30 +101,24 @@ export abstract class StoreProvider {
   /**
    * 增加到列表
    */
-  async addToList(noteId: string) {
-    noteId = noteId.toString()
-
+  async addToList(noteIds: string[]) {
     const indexPath = this.path.getNoteIndex()
     let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
-    if (!ids.includes(noteId)) {
-      ids.push(noteId)
-    }
-
-    content = ids.filter(Boolean).join(',')
+    content = union(ids, noteIds).filter(Boolean).join(',')
     await this.putObject(indexPath, content)
   }
 
   /**
    * 从列表移除
    */
-  async removeFromList(noteId: string) {
+  async removeFromList(noteIds: string[]) {
     const indexPath = this.path.getNoteIndex()
     let content = (await this.getObject(indexPath)) || ''
     const ids = content.split(',')
 
-    content = ids.filter((id) => id !== noteId).join(',')
+    content = pull(ids, ...noteIds).join(',')
     await this.putObject(indexPath, content)
   }
 }

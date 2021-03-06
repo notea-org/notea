@@ -3,7 +3,7 @@ import { createContainer } from 'unstated-next'
 import { noteStore, NoteStoreItem } from 'utils/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
 
-function useSearchData() {
+function useTrashData() {
   const [list, setList] = useState<NoteStoreItem[]>()
   const [keyword, setKeyword] = useState<string>()
 
@@ -44,11 +44,11 @@ function useFilterModal() {
   return { isOpen, openModal, closeModal }
 }
 
-function useSearch() {
+function useTrash() {
   return {
     ...useFilterModal(),
-    ...useSearchData(),
+    ...useTrashData(),
   }
 }
 
-export const SearchState = createContainer(useSearch)
+export const TrashState = createContainer(useTrash)
