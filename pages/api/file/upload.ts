@@ -4,6 +4,7 @@ import { useStore } from 'services/middlewares/store'
 import { IncomingForm } from 'formidable'
 import { readFileSync } from 'fs'
 import dayjs from 'dayjs'
+import { getPathFileByName } from 'services/note-path'
 
 export const config = {
   api: {
@@ -26,7 +27,7 @@ export default api()
 
     const file = data.files.file
     const buffer = readFileSync(file.path)
-    const filePath = req.store.path.getFileByName(
+    const filePath = getPathFileByName(
       `${dayjs().format('YYYY/MM/DD')}/${file.name}`
     )
 

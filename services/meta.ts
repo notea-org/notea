@@ -2,7 +2,6 @@ import { isNil, toNumber } from 'lodash'
 import { strCompress, strDecompress } from 'packages/shared'
 import {
   PAGE_META_KEY,
-  ARRAY_KEYS,
   NOTE_DELETED,
   NOTE_SHARED,
   NUMBER_KEYS,
@@ -34,9 +33,7 @@ export function metaToJson(metaData?: Map<string, string>) {
       if (!isNil(value)) {
         const strValue = strDecompress(value) || undefined
 
-        if (ARRAY_KEYS.includes(key)) {
-          meta[key] = strValue.split(',') || []
-        } else if (NUMBER_KEYS.includes(key)) {
+        if (NUMBER_KEYS.includes(key)) {
           meta[key] = toNumber(strValue)
         } else {
           meta[key] = strValue

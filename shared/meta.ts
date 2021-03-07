@@ -13,7 +13,6 @@ type PAGE_META_KEY =
   | 'pid'
   | 'id'
   | 'shared'
-  | 'cid'
   | 'pic'
   | 'date'
   | 'deleted'
@@ -23,12 +22,9 @@ export const PAGE_META_KEY: PAGE_META_KEY[] = [
   'pid',
   'id',
   'shared',
-  'cid',
   'pic',
   'date',
   'deleted',
 ]
-
-export const ARRAY_KEYS: PAGE_META_KEY[] = ['cid']
 
 export const NUMBER_KEYS: PAGE_META_KEY[] = ['deleted', 'shared']

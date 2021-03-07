@@ -40,12 +40,12 @@ export class StoreS3 extends StoreProvider {
   }
 
   async getSignUrl(path: string) {
-    return this.store.signatureUrl(this.path.getPath(path))
+    return this.store.signatureUrl(this.getPath(path))
   }
 
   async hasObject(path: string) {
     try {
-      const data = await this.store.head(this.path.getPath(path))
+      const data = await this.store.head(this.getPath(path))
 
       return !!data
     } catch (e) {
@@ -57,7 +57,7 @@ export class StoreS3 extends StoreProvider {
     let content
 
     try {
-      const result = await this.store.getAsBuffer(this.path.getPath(path))
+      const result = await this.store.getAsBuffer(this.getPath(path))
       content = result?.content
     } catch (err) {
       if (err.code !== 'NoSuchKey') {
@@ -70,7 +70,7 @@ export class StoreS3 extends StoreProvider {
 
   async getObjectMeta(path: string) {
     try {
-      const result = await this.store.head(this.path.getPath(path))
+      const result = await this.store.head(this.getPath(path))
       return result || undefined
     } catch (err) {
       if (err.code !== 'NoSuchKey') {
@@ -89,10 +89,7 @@ export class StoreS3 extends StoreProvider {
     let meta
 
     try {
-      const result = await this.store.getAsBuffer(
-        this.path.getPath(path),
-        metaKeys
-      )
+      const result = await this.store.getAsBuffer(this.getPath(path), metaKeys)
       content = result?.content
       meta = result?.meta
     } catch (err) {
@@ -111,21 +108,17 @@ export class StoreS3 extends StoreProvider {
     isCompressed?: boolean
   ) {
     await this.store.put(
-      this.path.getPath(path),
+      this.getPath(path),
       isBuffer(raw) ? raw : toBuffer(raw, isCompressed),
       options
     )
   }
 
   async deleteObject(path: string) {
-    await this.store.del(this.path.getPath(path))
+    await this.store.del(this.getPath(path))
   }
 
   async copyObject(fromPath: string, toPath: string, options: ObjectOptions) {
-    await this.store.copy(
-      this.path.getPath(toPath),
-      this.path.getPath(fromPath),
-      options
-    )
+    await this.store.copy(this.getPath(toPath), this.getPath(fromPath), options)
   }
 }

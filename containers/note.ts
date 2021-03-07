@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
-import { wrap, Remote } from 'comlink'
-import { NoteWorkerApi } from 'workers/note.worker'
 import { NoteTreeState } from 'containers/tree'
 import { NOTE_DELETED, NOTE_SHARED } from 'shared/meta'
+import { useNoteWorker } from 'workers/note'
 
 export interface NoteModel {
   id: string
@@ -22,19 +21,7 @@ const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
   const { get, post, cache, abort, loading } = useFetch('/api/notes')
   const { addToTree, removeFromTree } = NoteTreeState.useContainer()
-
-  const NoteWorkerRef = useRef<Worker>()
-  const NoteWorkerApiRef = useRef<Remote<NoteWorkerApi>>()
-
-  useEffect(() => {
-    NoteWorkerRef.current = new Worker('workers/note.worker', {
-      type: 'module',
-    })
-    NoteWorkerApiRef.current = wrap(NoteWorkerRef.current)
-    return () => {
-      NoteWorkerRef.current?.terminate()
-    }
-  }, [])
+  const noteWorker = useNoteWorker()
 
   const getById = useCallback(
     async (id: string) => {
@@ -84,14 +71,14 @@ const useNote = () => {
         ...result,
       }
 
-      NoteWorkerApiRef.current?.saveNote(newNote.id, newNote)
-
+      noteWorker.current?.saveNote(newNote.id, newNote)
       delete newNote.content
       setNote(newNote)
       addToTree(newNote)
+
       return newNote
     },
-    [abort, addToTree, cache, note, post]
+    [abort, addToTree, cache, note, noteWorker, post]
   )
 
   const updateNoteMeta = useCallback(
@@ -110,8 +97,8 @@ const useNote = () => {
   )
 
   const initAllNotes = useCallback(() => {
-    NoteWorkerApiRef.current?.checkAllNotes()
-  }, [])
+    noteWorker.current?.checkAllNotes()
+  }, [noteWorker])
 
   const removeNote = useCallback(
     async (id: string) => {

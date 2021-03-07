@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
 import { ApiRequest } from './api'
-import { getTree } from './get-tree'
 import { API } from './middlewares/error'
 import { withSession } from './middlewares/session'
 import { withStore } from './middlewares/store'
@@ -30,7 +29,7 @@ export default function withTree(wrapperHandler: any) {
       let tree
 
       try {
-        tree = await getTree(ctx.req.store)
+        tree = await ctx.req.treeStore.get()
       } catch (error) {
         return API.NOT_FOUND.throw(error.message)
       }

@@ -1,22 +1,17 @@
 import { genId } from '@notea/shared'
 import { api } from 'services/api'
-import { getTree } from 'services/get-tree'
-import { jsonToMeta, metaToJson } from 'services/meta'
+import { jsonToMeta } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
+import { getPathNoteById } from 'services/note-path'
 
 export default api()
   .use(useAuth)
   .use(useStore)
-  .get(async (req, res) => {
-    const tree = await getTree(req.store)
-
-    res.json(tree)
-  })
   .post(async (req, res) => {
     const { content = '\n', meta } = req.body
     let id = req.body.id as string
-    const notePath = req.store.path.getNoteById(id)
+    const notePath = getPathNoteById(id)
 
     if (!id) {
       id = genId()
@@ -36,20 +31,7 @@ export default api()
       contentType: 'text/markdown',
       meta: metaData,
     })
-
-    await req.store.addToList([id])
-    // Update parent meta
-    const parentPath = req.store.path.getNoteById(meta.pid || 'root')
-    const parentMeta = metaToJson(await req.store.getObjectMeta(parentPath))
-    const cid = (parentMeta.cid || []).concat(id)
-    const newParentMeta = jsonToMeta({
-      ...parentMeta,
-      cid: [...new Set(cid)].toString(),
-    })
-
-    await req.store.copyObject(parentPath, parentPath, {
-      meta: newParentMeta,
-    })
+    await req.treeStore.addItem(id, meta.pid)
 
     res.json(metaWithModel)
   })

@@ -2,12 +2,11 @@ import SidebarListItem from './sidebar-list-item'
 import { NoteTreeState, TreeModel } from 'containers/tree'
 import Tree, {
   ItemId,
-  moveItemOnTree,
   mutateTree,
   TreeDestinationPosition,
   TreeSourcePosition,
 } from '@atlaskit/tree'
-import { useState, useEffect, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import { NoteState } from 'containers/note'
 import IconPlus from 'heroicons/react/outline/Plus'
 import router from 'next/router'
@@ -15,9 +14,8 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemButton from './sidebar-item-button'
 
 const SideBarList = () => {
-  const { tree, updateTree, initTree } = NoteTreeState.useContainer()
-  const { updateNoteMeta, initAllNotes } = NoteState.useContainer()
-  const [curId, setCurId] = useState<ItemId>(0)
+  const { tree, updateTree, initTree, moveTree } = NoteTreeState.useContainer()
+  const { initAllNotes } = NoteState.useContainer()
 
   useEffect(() => {
     initTree().then(() => initAllNotes())
@@ -39,33 +37,15 @@ const SideBarList = () => {
 
   const onDragEnd = useCallback(
     (source: TreeSourcePosition, destination?: TreeDestinationPosition) => {
-      if (!destination) {
-        return
-      }
-      const newTree = moveItemOnTree(tree, source, destination) as TreeModel
-      const toPid = destination.parentId as string
-      const fromPid = source.parentId as string
-
-      updateTree(newTree)
-
-      Promise.all([
-        newTree.items[curId].data.pid !== toPid &&
-          updateNoteMeta(curId as string, {
-            pid: toPid,
-          }),
-        updateNoteMeta(toPid, {
-          cid: newTree.items[toPid].children,
-        }),
-        fromPid !== toPid &&
-          updateNoteMeta(fromPid, {
-            cid: newTree.items[fromPid].children,
-          }),
-      ]).catch((e) => {
+      moveTree({
+        source,
+        destination,
+      }).catch((e) => {
         // todo: toast
         console.error('更新错误', e)
       })
     },
-    [curId, tree, updateNoteMeta, updateTree]
+    [moveTree]
   )
 
   return (
@@ -87,7 +67,6 @@ const SideBarList = () => {
         onExpand={onExpand}
         onCollapse={onCollapse}
         onDragEnd={onDragEnd}
-        onDragStart={setCurId}
         tree={tree}
         isDragEnabled
         isNestingEnabled

@@ -1,6 +1,3 @@
-import { pull, union } from 'lodash'
-import { StorePath } from '../path'
-
 export interface StoreProviderConfig {
   prefix?: string
 }
@@ -18,12 +15,13 @@ export interface ObjectOptions {
 export abstract class StoreProvider {
   constructor({ prefix }: StoreProviderConfig) {
     this.prefix = prefix
-    this.path = new StorePath(prefix)
   }
 
   prefix?: string
 
-  path: StorePath
+  getPath(...paths: string[]) {
+    return this.prefix + paths.join('/')
+  }
 
   /**
    * 获取签名 URL
@@ -86,39 +84,4 @@ export abstract class StoreProvider {
     toPath: string,
     options: ObjectOptions
   ): Promise<void>
-
-  /**
-   * 页面列表
-   * - 私有读
-   */
-  async getList() {
-    const content = (await this.getObject(this.path.getNoteIndex())) || ''
-    const list = content.split(',').filter(Boolean)
-
-    return list
-  }
-
-  /**
-   * 增加到列表
-   */
-  async addToList(noteIds: string[]) {
-    const indexPath = this.path.getNoteIndex()
-    let content = (await this.getObject(indexPath)) || ''
-    const ids = content.split(',')
-
-    content = union(ids, noteIds).filter(Boolean).join(',')
-    await this.putObject(indexPath, content)
-  }
-
-  /**
-   * 从列表移除
-   */
-  async removeFromList(noteIds: string[]) {
-    const indexPath = this.path.getNoteIndex()
-    let content = (await this.getObject(indexPath)) || ''
-    const ids = content.split(',')
-
-    content = pull(ids, ...noteIds).join(',')
-    await this.putObject(indexPath, content)
-  }
 }

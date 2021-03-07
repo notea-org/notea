@@ -1,8 +1,7 @@
 import { expose } from 'comlink'
 import { noteStore, NoteStoreItem, uiStore } from 'utils/local-store'
-import { map, pull } from 'lodash'
+import { keys, pull } from 'lodash'
 import { NoteModel } from 'containers/note'
-import dayjs from 'dayjs'
 import removeMarkdown from 'remove-markdown'
 import { TreeModel } from 'containers/tree'
 
@@ -18,6 +17,9 @@ const noteWorker: NoteWorkerApi = {
   saveNote,
 }
 
+/**
+ * 清除本地存储中未使用的 note
+ */
 async function checkAllNotes() {
   const tree = await uiStore.getItem<TreeModel>('tree_items')
 
@@ -25,10 +27,7 @@ async function checkAllNotes() {
 
   delete tree.items.root
 
-  const notes = await Promise.all(
-    map(tree.items, async (item) => fetchNote(item.id, item.data.date))
-  )
-  const noteIds = notes.map((n) => n?.id)
+  const noteIds = keys(tree.items)
   const localNoteIds = await noteStore.keys()
   const unusedNoteIds = pull(localNoteIds, ...noteIds)
 
@@ -37,11 +36,17 @@ async function checkAllNotes() {
   )
 }
 
-async function fetchNote(id: string, expiredDate?: string) {
+export async function fetchNote(id: string) {
+  if (id === 'root') {
+    return {
+      id: 'root',
+    } as NoteStoreItem
+  }
+
   const note = await noteStore.getItem<NoteStoreItem>(id)
 
-  if (note && expiredDate && dayjs(note.date).isSame(expiredDate)) {
-    return
+  if (note) {
+    return note
   }
 
   const res = await fetch(`/api/notes/${id}`)

@@ -3,6 +3,7 @@ import { api } from 'services/api'
 import { metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
+import { getPathNoteById } from 'services/note-path'
 import { PAGE_META_KEY } from 'shared/meta'
 
 export default api()
@@ -10,12 +11,11 @@ export default api()
   .use(useStore)
   .delete(async (req, res) => {
     const id = req.query.id as string
-    const notePath = req.store.path.getNoteById(id)
+    const notePath = getPathNoteById(id)
 
-    // todo 父节点的 cid 也要清空
     await Promise.all([
       req.store.deleteObject(notePath),
-      req.store.removeFromList([id]),
+      req.treeStore.removeItem(id),
     ])
 
     res.end()
@@ -24,7 +24,7 @@ export default api()
     const id = req.query.id as string
 
     const { content, meta } = await req.store.getObjectAndMeta(
-      req.store.path.getNoteById(id),
+      getPathNoteById(id),
       PAGE_META_KEY
     )
 
@@ -41,7 +41,7 @@ export default api()
   .post(async (req, res) => {
     const id = req.query.id as string
     const { content } = req.body
-    const notePath = req.store.path.getNoteById(id)
+    const notePath = getPathNoteById(id)
     const oldMeta = await req.store.getObjectMeta(notePath)
 
     if (oldMeta) {
