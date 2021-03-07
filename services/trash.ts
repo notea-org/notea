@@ -1,4 +1,5 @@
 import { TreeItemModel, TreeModel } from 'containers/tree'
+import { forEach, pull } from 'lodash'
 import { StoreProvider } from 'packages/store/src'
 import { getPathTrash } from './note-path'
 
@@ -38,7 +39,16 @@ export class TrashStore {
   async removeItem(id: string) {
     const items = await this.get()
 
-    delete items[id]
+    if (items[id]) {
+      delete items[id]
+    } else {
+      forEach(items, (item) => {
+        if (item.children.includes(id)) {
+          pull(item.children, id)
+          return false
+        }
+      })
+    }
 
     return this.set(items)
   }

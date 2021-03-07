@@ -1,12 +1,19 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { Modal, ModalProps } from '@material-ui/core'
 import { UIState } from 'containers/ui'
 
 const FilterModal: FC<{
   open: ModalProps['open']
   onClose: ModalProps['onClose']
-}> = ({ open, onClose, children }) => {
+  onOpen?: () => void
+}> = ({ open, onClose, onOpen, children }) => {
   const { ua } = UIState.useContainer()
+
+  useEffect(() => {
+    if (open && onOpen) {
+      onOpen()
+    }
+  }, [open, onOpen])
 
   return (
     <Modal

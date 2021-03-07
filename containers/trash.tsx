@@ -1,44 +1,51 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
-import { noteStore, NoteStoreItem } from 'utils/local-store'
+import { NoteStoreItem } from 'services/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
-import useFetch from 'use-http'
-import { map } from 'lodash'
+import useFetch, { CachePolicies } from 'use-http'
+import { flatten, map, union } from 'lodash'
+import NoteStoreAPI from 'services/local-store/note'
+
+async function findNotes(noteIds: string[], keyword?: string) {
+  const data = [] as NoteStoreItem[]
+  const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
+
+  await Promise.all(
+    map(noteIds, async (id) => {
+      const note = await NoteStoreAPI.fetchNote(id)
+      if (!note) return
+      if (!re || re.test(note.rawContent || '') || re.test(note.title || '')) {
+        data.push(note)
+      }
+    })
+  )
+
+  return data
+}
 
 function useTrashData() {
-  const [noteIds, setNoteIds] = useState<string[]>()
+  const [noteIds, setNoteIds] = useState<string[]>([])
   const [keyword, setKeyword] = useState<string>()
-  const { get, data } = useFetch('/api/trash')
   const [filterData, setFilterData] = useState<NoteStoreItem[]>()
-
-  const initTrash = useCallback(async () => {
-    await get()
-    setNoteIds(data)
-  }, [data, get])
+  const { get } = useFetch('/api/trash', {
+    cachePolicy: CachePolicies.NO_CACHE,
+  })
 
   const filterNotes = useCallback(
     async (keyword?: string) => {
       setKeyword(keyword)
-
-      const data = [] as NoteStoreItem[]
-      const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
-
-      map(noteIds, async (id) => {
-        const note = await noteStore.getItem<NoteStoreItem>(id)
-        if (!note) return
-        if (
-          !re ||
-          re.test(note.rawContent || '') ||
-          re.test(note.title || '')
-        ) {
-          data.push(note)
-        }
-      })
-
-      setFilterData(data)
+      setFilterData(await findNotes(noteIds, keyword))
     },
     [noteIds]
   )
+
+  const initTrash = useCallback(async () => {
+    const data = await get()
+    const ids = union(flatten(map(data, (item) => [item.id, ...item.children])))
+
+    setNoteIds(ids)
+    setFilterData(await findNotes(ids))
+  }, [get])
 
   return { filterData, keyword, filterNotes, initTrash }
 }

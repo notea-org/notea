@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { uiStore } from 'utils/local-store'
+import { uiStore } from 'services/local-store'
 
 const DEFAULT_SPLIT_SIZES = [15, 85]
 

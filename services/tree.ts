@@ -55,6 +55,7 @@ export class TreeStore {
 
   async removeItem(id: string) {
     const tree = await this.get()
+    const item = tree.items[id]
 
     forEach(tree.items, (item) => {
       if (item.children.includes(id)) {
@@ -62,6 +63,8 @@ export class TreeStore {
         return false
       }
     })
+    delete tree.items[id]
+    await this.trash.addItem(item)
 
     return this.set(tree)
   }

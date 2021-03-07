@@ -11,9 +11,9 @@ import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteModel } from './note'
-import { useNoteWorker } from 'workers/note'
 import useFetch from 'use-http'
 import { TreeItemMutation } from '@atlaskit/tree/dist/types/utils/tree'
+import NoteStoreAPI from 'services/local-store/note'
 
 export interface TreeItemModel extends TreeItem {
   id: string
@@ -38,7 +38,6 @@ export const DEFAULT_TREE: TreeModel = {
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { post } = useFetch('/api/tree')
   const [tree, setTree] = useState<TreeModel>(initData)
-  const noteWorker = useNoteWorker()
   const treeRef = useRef(tree)
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   }, [tree])
 
   const initTree = useCallback(async () => {
-    if (!noteWorker) return
     const curTree = treeRef.current
     const newItems = {} as TreeModel['items']
 
@@ -54,7 +52,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       map(curTree.items, async (item) => {
         newItems[item.id] = {
           ...item,
-          data: await noteWorker?.fetchNote(item.id),
+          data: await NoteStoreAPI.fetchNote(item.id),
         }
       })
     )
@@ -63,8 +61,8 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       ...curTree,
       items: newItems,
     })
-    noteWorker?.checkAllNotes(newItems)
-  }, [noteWorker])
+    NoteStoreAPI.checkAllNotes(newItems)
+  }, [])
 
   const addToTree = useCallback((item: NoteModel) => {
     const newItems: TreeModel['items'] = {}

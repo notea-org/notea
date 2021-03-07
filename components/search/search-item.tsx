@@ -2,7 +2,7 @@ import { SearchState } from 'containers/search'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
-import { NoteStoreItem } from 'utils/local-store'
+import { NoteStoreItem } from 'services/local-store'
 import BoldText from 'components/filter-modal/bold-text'
 
 const SearchItem: FC<{

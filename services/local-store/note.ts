@@ -1,26 +1,12 @@
-import { expose } from 'comlink'
-import { noteStore, NoteStoreItem } from 'utils/local-store'
+import { noteStore, NoteStoreItem } from 'services/local-store'
 import { keys, pull } from 'lodash'
 import { NoteModel } from 'containers/note'
 import removeMarkdown from 'remove-markdown'
 import { TreeModel } from 'containers/tree'
-
-export interface NoteWorkerApi {
-  checkAllNotes: typeof checkAllNotes
-  fetchNote: typeof fetchNote
-  saveNote: typeof saveNote
-}
-
-const noteWorker: NoteWorkerApi = {
-  checkAllNotes,
-  fetchNote,
-  saveNote,
-}
-
 /**
  * 清除本地存储中未使用的 note
  */
-async function checkAllNotes(items: TreeModel['items']) {
+export async function checkAllNotes(items: TreeModel['items']) {
   const noteIds = keys(items)
   const localNoteIds = await noteStore.keys()
   const unusedNoteIds = pull(localNoteIds, ...noteIds)
@@ -53,11 +39,17 @@ export async function fetchNote(id: string) {
   return
 }
 
-async function saveNote(id: string, note: NoteModel) {
+export async function saveNote(id: string, note: NoteModel) {
   return noteStore.setItem<NoteStoreItem>(id, {
     ...note,
     rawContent: removeMarkdown(note.content).replace(/\\/g, ''),
   })
 }
 
-expose(noteWorker)
+const NoteStoreAPI = {
+  checkAllNotes,
+  fetchNote,
+  saveNote,
+}
+
+export default NoteStoreAPI

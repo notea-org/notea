@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
-import { noteStore, NoteStoreItem } from 'utils/local-store'
+import { noteStore, NoteStoreItem } from 'services/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
 
 function useSearchData() {

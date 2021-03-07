@@ -16,12 +16,8 @@ const Trash: FC = () => {
     filterData,
   } = TrashState.useContainer()
 
-  useEffect(() => {
-    initTrash()
-  }, [initTrash])
-
   return (
-    <FilterModal open={isOpen} onClose={closeModal}>
+    <FilterModal open={isOpen} onClose={closeModal} onOpen={initTrash}>
       <FilterModalInput
         placeholder="Search note in trash"
         doFilter={filterNotes}

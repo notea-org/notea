@@ -9,7 +9,10 @@ export default api()
     res.json(await req.treeStore.get())
   })
   .post(async (req, res) => {
-    const { action, data } = req.body
+    const { action, data } = req.body as {
+      action: 'move' | 'mutate'
+      data: any
+    }
 
     switch (action) {
       case 'move':

@@ -3,7 +3,7 @@ import { createContainer } from 'unstated-next'
 import useFetch from 'use-http'
 import { NoteTreeState } from 'containers/tree'
 import { NOTE_DELETED, NOTE_SHARED } from 'shared/meta'
-import { useNoteWorker } from 'workers/note'
+import NoteStoreAPI from 'services/local-store/note'
 
 export interface NoteModel {
   id: string
@@ -21,7 +21,6 @@ const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
   const { get, post, cache, abort, loading } = useFetch('/api/notes')
   const { addToTree, removeFromTree } = NoteTreeState.useContainer()
-  const noteWorker = useNoteWorker()
 
   const getById = useCallback(
     async (id: string) => {
@@ -71,14 +70,14 @@ const useNote = () => {
         ...result,
       }
 
-      noteWorker.current?.saveNote(newNote.id, newNote)
+      NoteStoreAPI.saveNote(newNote.id, newNote)
       delete newNote.content
       setNote(newNote)
       addToTree(newNote)
 
       return newNote
     },
-    [abort, addToTree, cache, note, noteWorker, post]
+    [abort, addToTree, cache, note, post]
   )
 
   const updateNoteMeta = useCallback(
