@@ -2,32 +2,45 @@ import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 import { noteStore, NoteStoreItem } from 'utils/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
+import useFetch from 'use-http'
+import { map } from 'lodash'
 
 function useTrashData() {
-  const [list, setList] = useState<NoteStoreItem[]>()
+  const [noteIds, setNoteIds] = useState<string[]>()
   const [keyword, setKeyword] = useState<string>()
+  const { get, data } = useFetch('/api/trash')
+  const [filterData, setFilterData] = useState<NoteStoreItem[]>()
 
-  const filterNotes = useCallback(async (keyword?: string) => {
-    setKeyword(keyword)
+  const initTrash = useCallback(async () => {
+    await get()
+    setNoteIds(data)
+  }, [data, get])
 
-    if (!keyword) {
-      setList([])
-      return
-    }
+  const filterNotes = useCallback(
+    async (keyword?: string) => {
+      setKeyword(keyword)
 
-    const data = [] as NoteStoreItem[]
-    const re = new RegExp(escapeStringRegexp(keyword))
+      const data = [] as NoteStoreItem[]
+      const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
 
-    await noteStore.iterate<NoteStoreItem, void>((note) => {
-      if (re.test(note.rawContent || '') || re.test(note.title || '')) {
-        data.push(note)
-      }
-    })
+      map(noteIds, async (id) => {
+        const note = await noteStore.getItem<NoteStoreItem>(id)
+        if (!note) return
+        if (
+          !re ||
+          re.test(note.rawContent || '') ||
+          re.test(note.title || '')
+        ) {
+          data.push(note)
+        }
+      })
 
-    setList(data)
-  }, [])
+      setFilterData(data)
+    },
+    [noteIds]
+  )
 
-  return { list, keyword, filterNotes }
+  return { filterData, keyword, filterNotes, initTrash }
 }
 
 function useFilterModal() {

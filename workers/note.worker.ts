@@ -1,5 +1,5 @@
 import { expose } from 'comlink'
-import { noteStore, NoteStoreItem, uiStore } from 'utils/local-store'
+import { noteStore, NoteStoreItem } from 'utils/local-store'
 import { keys, pull } from 'lodash'
 import { NoteModel } from 'containers/note'
 import removeMarkdown from 'remove-markdown'
@@ -20,14 +20,8 @@ const noteWorker: NoteWorkerApi = {
 /**
  * 清除本地存储中未使用的 note
  */
-async function checkAllNotes() {
-  const tree = await uiStore.getItem<TreeModel>('tree_items')
-
-  if (!tree) return
-
-  delete tree.items.root
-
-  const noteIds = keys(tree.items)
+async function checkAllNotes(items: TreeModel['items']) {
+  const noteIds = keys(items)
   const localNoteIds = await noteStore.keys()
   const unusedNoteIds = pull(localNoteIds, ...noteIds)
 

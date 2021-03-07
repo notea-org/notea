@@ -16,5 +16,5 @@ export function useNoteWorker() {
     }
   }, [])
 
-  return NoteWorkerApiRef
+  return NoteWorkerApiRef.current
 }

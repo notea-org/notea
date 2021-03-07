@@ -3,6 +3,7 @@ import { jsonToMeta, metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 import { getPathNoteById } from 'services/note-path'
+import { NOTE_DELETED } from 'shared/meta'
 
 export default api()
   .use(useAuth)
@@ -18,6 +19,16 @@ export default api()
 
     if (oldMeta) {
       meta = new Map([...oldMeta, ...meta])
+
+      // 处理删除情况
+      const { deleted } = req.body
+      if (oldMeta.get('deleted') !== deleted) {
+        if (deleted === NOTE_DELETED.DELETED) {
+          await req.treeStore.removeItem(id)
+        } else if (deleted === NOTE_DELETED.NORMAL) {
+          await req.treeStore.addItem(id, req.body.pid)
+        }
+      }
     }
 
     await req.store.copyObject(notePath, notePath, {

@@ -1,8 +1,10 @@
-import { moveItemOnTree } from '@atlaskit/tree'
+import { moveItemOnTree, mutateTree } from '@atlaskit/tree'
+import { TreeItemMutation } from '@atlaskit/tree/dist/types/utils/tree'
 import { DEFAULT_TREE, TreeModel } from 'containers/tree'
 import { forEach, pull, union } from 'lodash'
 import { StoreProvider } from 'packages/store/src'
 import { getPathTree } from './note-path'
+import { TrashStore } from './trash'
 
 interface movePosition {
   parentId: string
@@ -12,10 +14,12 @@ interface movePosition {
 export class TreeStore {
   store: StoreProvider
   treePath: string
+  trash: TrashStore
 
   constructor(store: StoreProvider) {
     this.store = store
     this.treePath = getPathTree()
+    this.trash = new TrashStore(store)
   }
 
   async get() {
@@ -70,5 +74,11 @@ export class TreeStore {
     ) as TreeModel
 
     return this.set(tree)
+  }
+
+  async mutateItem(id: string, data: TreeItemMutation) {
+    const tree = await this.get()
+
+    return this.set(mutateTree(tree, id, data) as TreeModel)
   }
 }

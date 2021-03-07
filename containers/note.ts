@@ -96,10 +96,6 @@ const useNote = () => {
     [cache, post]
   )
 
-  const initAllNotes = useCallback(() => {
-    noteWorker.current?.checkAllNotes()
-  }, [noteWorker])
-
   const removeNote = useCallback(
     async (id: string) => {
       await post(`${id}/meta`, {
@@ -117,7 +113,6 @@ const useNote = () => {
     removeNote,
     setNote,
     updateNoteMeta,
-    initAllNotes,
     loading,
   }
 }

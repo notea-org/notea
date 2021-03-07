@@ -6,15 +6,14 @@ import {
   TreeItem,
   TreeSourcePosition,
 } from '@atlaskit/tree'
-import { isEmpty, forEach, union, map } from 'lodash'
+import { isEmpty, forEach, union, map, without } from 'lodash'
 import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { NOTE_DELETED } from 'shared/meta'
 import { createContainer } from 'unstated-next'
-import { uiStore } from 'utils/local-store'
 import { NoteModel } from './note'
 import { useNoteWorker } from 'workers/note'
 import useFetch from 'use-http'
+import { TreeItemMutation } from '@atlaskit/tree/dist/types/utils/tree'
 
 export interface TreeItemModel extends TreeItem {
   id: string
@@ -36,22 +35,6 @@ export const DEFAULT_TREE: TreeModel = {
   },
 }
 
-const saveLocalTree = (data: TreeModel) => {
-  const items: any = {}
-
-  forEach(data.items, (item) => {
-    items[item.id] = {
-      isExpanded: item.isExpanded,
-      id: item.id,
-    }
-  })
-
-  uiStore.setItem('tree_items', {
-    ...data,
-    items,
-  })
-}
-
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { post } = useFetch('/api/tree')
   const [tree, setTree] = useState<TreeModel>(initData)
@@ -62,84 +45,71 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     treeRef.current = tree
   }, [tree])
 
-  const updateTree = useCallback((data: TreeModel) => {
-    setTree(data)
-    saveLocalTree(data)
-  }, [])
-
   const initTree = useCallback(async () => {
-    const localTree =
-      (await uiStore.getItem<TreeModel>('tree_items')) || DEFAULT_TREE
+    if (!noteWorker) return
     const curTree = treeRef.current
     const newItems = {} as TreeModel['items']
 
     await Promise.all(
       map(curTree.items, async (item) => {
-        if (!item.isExpanded && localTree.items[item.id]?.isExpanded) {
-          item.isExpanded = true
-        }
-
         newItems[item.id] = {
           ...item,
-          data: await noteWorker.current?.fetchNote(item.id),
+          data: await noteWorker?.fetchNote(item.id),
         }
       })
     )
 
-    updateTree({
+    setTree({
       ...curTree,
       items: newItems,
     })
-  }, [noteWorker, updateTree])
+    noteWorker?.checkAllNotes(newItems)
+  }, [noteWorker])
 
-  const addToTree = useCallback(
-    (item: NoteModel) => {
-      const newItems: TreeModel['items'] = {}
-      const curTree = treeRef.current
-      const curItem = curTree.items[item.id]
-      const parentItem = treeRef.current.items[item.pid || 'root']
+  const addToTree = useCallback((item: NoteModel) => {
+    const newItems: TreeModel['items'] = {}
+    const curTree = treeRef.current
+    const curItem = curTree.items[item.id]
+    const parentItem = treeRef.current.items[item.pid || 'root']
 
-      parentItem.children = union(parentItem.children, [item.id])
+    parentItem.children = union(parentItem.children, [item.id])
 
-      if (!curItem) {
-        newItems[item.id] = {
-          id: item.id,
-          data: item,
-          children: [],
-        }
-      } else if (curItem.data?.title !== item.title) {
-        newItems[item.id] = {
-          ...curItem,
-          data: item,
-        }
+    if (!curItem) {
+      newItems[item.id] = {
+        id: item.id,
+        data: item,
+        children: [],
       }
-
-      if (!isEmpty(newItems)) {
-        updateTree({
-          ...curTree,
-          items: {
-            ...curTree.items,
-            ...newItems,
-          },
-        })
+    } else if (curItem.data?.title !== item.title) {
+      newItems[item.id] = {
+        ...curItem,
+        data: item,
       }
-    },
-    [updateTree]
-  )
+    }
 
-  const removeFromTree = useCallback(
-    (itemId: string) => {
-      updateTree(
-        mutateTree(treeRef.current, itemId, {
-          data: {
-            ...treeRef.current.items[itemId].data,
-            deleted: NOTE_DELETED.DELETED,
-          },
-        }) as TreeModel
-      )
-    },
-    [updateTree]
-  )
+    if (!isEmpty(newItems)) {
+      setTree({
+        ...curTree,
+        items: {
+          ...curTree.items,
+          ...newItems,
+        },
+      })
+    }
+  }, [])
+
+  const removeFromTree = useCallback((id: string) => {
+    forEach(treeRef.current.items, (item) => {
+      if (item.children.includes(id)) {
+        setTree(
+          mutateTree(treeRef.current, item.id, {
+            children: without(item.children, id),
+          }) as TreeModel
+        )
+        return false
+      }
+    })
+  }, [])
 
   const genNewId = useCallback(() => {
     let newId = genId()
@@ -149,7 +119,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     return newId
   }, [])
 
-  const moveTree = useCallback(
+  const moveItem = useCallback(
     async (data: {
       source: TreeSourcePosition
       destination?: TreeDestinationPosition
@@ -162,24 +132,43 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
         treeRef.current,
         data.source,
         data.destination
-      )
+      ) as TreeModel
 
-      updateTree(newTree as TreeModel)
-      await post('move', data)
+      setTree(newTree)
+      await post({
+        action: 'move',
+        data,
+      })
 
       return
     },
-    [post, updateTree]
+    [post]
+  )
+
+  const mutateItem = useCallback(
+    async (data: TreeItemMutation) => {
+      const tree = mutateTree(
+        treeRef.current,
+        data.id as string,
+        data
+      ) as TreeModel
+      setTree(tree)
+      await post({
+        action: 'mutate',
+        data,
+      })
+    },
+    [post]
   )
 
   return {
     tree,
     addToTree,
     removeFromTree,
-    updateTree,
     initTree,
     genNewId,
-    moveTree,
+    moveItem,
+    mutateItem,
   }
 }
 

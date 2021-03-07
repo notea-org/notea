@@ -1,43 +1,46 @@
 import SidebarListItem from './sidebar-list-item'
-import { NoteTreeState, TreeModel } from 'containers/tree'
+import { NoteTreeState } from 'containers/tree'
 import Tree, {
   ItemId,
-  mutateTree,
   TreeDestinationPosition,
   TreeSourcePosition,
 } from '@atlaskit/tree'
 import { useEffect, useCallback } from 'react'
-import { NoteState } from 'containers/note'
 import IconPlus from 'heroicons/react/outline/Plus'
 import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemButton from './sidebar-item-button'
 
 const SideBarList = () => {
-  const { tree, updateTree, initTree, moveTree } = NoteTreeState.useContainer()
-  const { initAllNotes } = NoteState.useContainer()
+  const { tree, initTree, moveItem, mutateItem } = NoteTreeState.useContainer()
 
   useEffect(() => {
-    initTree().then(() => initAllNotes())
-  }, [initAllNotes, initTree])
+    initTree()
+  }, [initTree])
 
   const onExpand = useCallback(
-    (itemId: ItemId) => {
-      updateTree(mutateTree(tree, itemId, { isExpanded: true }) as TreeModel)
+    (id: ItemId) => {
+      mutateItem({
+        id,
+        isExpanded: true,
+      })
     },
-    [tree, updateTree]
+    [mutateItem]
   )
 
   const onCollapse = useCallback(
-    (itemId: ItemId) => {
-      updateTree(mutateTree(tree, itemId, { isExpanded: false }) as TreeModel)
+    (id: ItemId) => {
+      mutateItem({
+        id,
+        isExpanded: false,
+      })
     },
-    [tree, updateTree]
+    [mutateItem]
   )
 
   const onDragEnd = useCallback(
     (source: TreeSourcePosition, destination?: TreeDestinationPosition) => {
-      moveTree({
+      moveItem({
         source,
         destination,
       }).catch((e) => {
@@ -45,7 +48,7 @@ const SideBarList = () => {
         console.error('更新错误', e)
       })
     },
-    [moveTree]
+    [moveItem]
   )
 
   return (
