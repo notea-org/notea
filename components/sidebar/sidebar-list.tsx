@@ -74,6 +74,7 @@ const SideBarList = () => {
             onCollapse={onCollapse}
             isExpanded={item.isExpanded}
             innerRef={provided.innerRef}
+            hasChildren={!!item.children.length}
             item={{
               ...item.data,
               id: item.id,

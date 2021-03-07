@@ -62,7 +62,6 @@ function removeItem(tree: TreeModel, id: string) {
       return false
     }
   })
-  delete tree.items[id]
 
   return clone(tree)
 }

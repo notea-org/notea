@@ -11,7 +11,6 @@ export interface NoteModel {
   pid?: string
   content?: string
   pic?: string
-  cid?: string[]
   date?: string
   deleted: NOTE_DELETED
   shared: NOTE_SHARED
@@ -66,7 +65,6 @@ const useNote = () => {
           title: data.title,
           pid: data.pid,
           pic: data.pic,
-          cid: data.cid,
         },
         content: data.content,
       })

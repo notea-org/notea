@@ -14,6 +14,7 @@ const SidebarListItem: FC<{
   onExpand: (itemId?: ReactText) => void
   onCollapse: (itemId?: ReactText) => void
   isExpanded: boolean
+  hasChildren: boolean
   snapshot: {
     isDragging: boolean
   }
@@ -24,6 +25,7 @@ const SidebarListItem: FC<{
   onCollapse,
   isExpanded,
   snapshot,
+  hasChildren,
   ...attrs
 }) => {
   const { query } = useRouter()
@@ -78,6 +80,10 @@ const SidebarListItem: FC<{
           ></IconButton>
         </HotkeyTooltip>
       </div>
+
+      {!hasChildren && isExpanded && (
+        <div className="ml-8 py-1.5 text-gray-400">No pages inside</div>
+      )}
     </li>
   )
 }
