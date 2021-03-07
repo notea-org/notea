@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'

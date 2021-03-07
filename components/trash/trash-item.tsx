@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { FC } from 'react'
 import { NoteStoreItem } from 'services/local-store'
 import BoldText from 'components/filter-modal/bold-text'
+import IconButton from 'components/icon-button'
 
 const TrashItem: FC<{
   note: NoteStoreItem
@@ -12,10 +13,10 @@ const TrashItem: FC<{
   const { closeModal } = SearchState.useContainer()
 
   return (
-    <li className="border-b border-gray-100 hover:bg-gray-200 last:border-0 cursor-pointer">
+    <li className="border-b border-gray-100 hover:bg-gray-200 last:border-0 cursor-pointer py-2 px-4 flex">
       <Link href={`/note/${note.id}`}>
         <a
-          className="py-2 px-4 block text-xs text-gray-500"
+          className=" block text-xs text-gray-500 flex-grow"
           onClick={closeModal}
         >
           <h4 className="text-sm font-bold">
@@ -29,6 +30,9 @@ const TrashItem: FC<{
           </time>
         </a>
       </Link>
+
+      <IconButton icon="Reply"></IconButton>
+      <IconButton icon="Trash"></IconButton>
     </li>
   )
 }

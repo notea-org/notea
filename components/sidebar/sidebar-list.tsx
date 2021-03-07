@@ -6,10 +6,9 @@ import Tree, {
   TreeSourcePosition,
 } from '@atlaskit/tree'
 import { useEffect, useCallback } from 'react'
-import IconPlus from 'heroicons/react/outline/Plus'
 import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import SidebarItemButton from './sidebar-item-button'
+import IconButton from 'components/icon-button'
 
 const SideBarList = () => {
   const { tree, initTree, moveItem, mutateItem } = NoteTreeState.useContainer()
@@ -56,14 +55,13 @@ const SideBarList = () => {
       <li className="p-2 text-gray-500 flex">
         <span className="flex-auto">我的页面</span>
         <HotkeyTooltip text="新建页面" keys={['cmd', 'n']}>
-          <SidebarItemButton
+          <IconButton
+            icon="Plus"
             onClick={() => {
               router.push('/note/new', undefined, { shallow: true })
             }}
             className="text-gray-700"
-          >
-            <IconPlus width="16" />
-          </SidebarItemButton>
+          ></IconButton>
         </HotkeyTooltip>
       </li>
       <Tree

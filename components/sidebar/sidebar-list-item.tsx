@@ -1,13 +1,11 @@
 import { NoteModel } from 'containers/note'
 import Link from 'next/link'
-import IconArrowRight from 'heroicons/react/outline/ChevronRight'
-import IconPlus from 'heroicons/react/outline/Plus'
 import React, { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemMenu from './sidebar-item-menu'
-import SidebarItemButton from './sidebar-item-button'
+import IconButton from 'components/icon-button'
 
 const SidebarListItem: FC<{
   item: NoteModel
@@ -48,20 +46,17 @@ const SidebarListItem: FC<{
       <div className="flex px-2 items-center overflow-hidden">
         <Link href={`/note/${item.id}`} shallow>
           <a className="flex flex-grow truncate py-1.5">
-            <SidebarItemButton
+            <IconButton
               className="mr-1"
+              icon="ChevronRight"
+              iconClassName={classNames('transition-transform transform', {
+                'rotate-90': isExpanded,
+              })}
               onClick={(e) => {
                 e.preventDefault()
                 isExpanded ? onCollapse(item.id) : onExpand(item.id)
               }}
-            >
-              <IconArrowRight
-                className={classNames('transition-transform transform', {
-                  'rotate-90': isExpanded,
-                })}
-                width="16"
-              />
-            </SidebarItemButton>
+            ></IconButton>
             <span className="flex-grow truncate">
               {item.title || 'Untitled'}
             </span>
@@ -71,12 +66,11 @@ const SidebarListItem: FC<{
         <SidebarItemMenu note={item} />
 
         <HotkeyTooltip text="新建子页面">
-          <SidebarItemButton
+          <IconButton
+            icon="Plus"
             onClick={onAddNote}
             className="hidden group-hover:block"
-          >
-            <IconPlus width="16" />
-          </SidebarItemButton>
+          ></IconButton>
         </HotkeyTooltip>
       </div>
     </li>

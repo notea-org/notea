@@ -1,12 +1,11 @@
 import { Menu, MenuItem } from '@material-ui/core'
 import React, { FC, useState, MouseEvent, useCallback } from 'react'
-import IconDotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import SidebarItemButton from './sidebar-item-button'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
 import IconPaperAirplane from 'heroicons/react/outline/PaperAirplane'
 import { NoteModel, NoteState } from 'containers/note'
+import IconButton from 'components/icon-button'
 
 enum MENU_HANDLER_NAME {
   REMOVE_NOTE,
@@ -69,12 +68,11 @@ const SidebarItemMenu: FC<{
   return (
     <>
       <HotkeyTooltip text="删除、分享等操作">
-        <SidebarItemButton
+        <IconButton
+          icon="DotsHorizontal"
           onClick={handleClick}
           className="hidden group-hover:block"
-        >
-          <IconDotsHorizontal width="16" />
-        </SidebarItemButton>
+        ></IconButton>
       </HotkeyTooltip>
 
       <Menu
