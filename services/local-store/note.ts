@@ -2,7 +2,8 @@ import { noteStore, NoteStoreItem } from 'services/local-store'
 import { keys, pull } from 'lodash'
 import { NoteModel } from 'containers/note'
 import removeMarkdown from 'remove-markdown'
-import { TreeModel } from 'containers/tree'
+import { TreeModel } from 'shared/tree'
+
 /**
  * 清除本地存储中未使用的 note
  */

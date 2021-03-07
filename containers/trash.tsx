@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteStoreItem } from 'services/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
 import useFetch, { CachePolicies } from 'use-http'
-import { flatten, map, union } from 'lodash'
+import { flatten, map, union, without } from 'lodash'
 import NoteStoreAPI from 'services/local-store/note'
 
 async function findNotes(noteIds: string[], keyword?: string) {
@@ -27,16 +27,42 @@ function useTrashData() {
   const [noteIds, setNoteIds] = useState<string[]>([])
   const [keyword, setKeyword] = useState<string>()
   const [filterData, setFilterData] = useState<NoteStoreItem[]>()
-  const { get } = useFetch('/api/trash', {
+  const { get, post } = useFetch('/api/trash', {
     cachePolicy: CachePolicies.NO_CACHE,
   })
 
-  const filterNotes = useCallback(
-    async (keyword?: string) => {
-      setKeyword(keyword)
-      setFilterData(await findNotes(noteIds, keyword))
+  const filterNotes = useCallback(async (keyword?: string) => {
+    setKeyword(keyword)
+  }, [])
+
+  useEffect(() => {
+    findNotes(noteIds, keyword).then(setFilterData)
+  }, [noteIds, keyword])
+
+  const restoreNote = useCallback(
+    async (id: string) => {
+      await post({
+        action: 'restore',
+        data: {
+          id,
+        },
+      })
+      setNoteIds((prev) => without(prev, id))
     },
-    [noteIds]
+    [post]
+  )
+
+  const deleteNote = useCallback(
+    async (id: string) => {
+      await post({
+        action: 'delete',
+        data: {
+          id,
+        },
+      })
+      setNoteIds((prev) => without(prev, id))
+    },
+    [post]
   )
 
   const initTrash = useCallback(async () => {
@@ -47,7 +73,14 @@ function useTrashData() {
     setFilterData(await findNotes(ids))
   }, [get])
 
-  return { filterData, keyword, filterNotes, initTrash }
+  return {
+    filterData,
+    keyword,
+    filterNotes,
+    initTrash,
+    restoreNote,
+    deleteNote,
+  }
 }
 
 function useFilterModal() {

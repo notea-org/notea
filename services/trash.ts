@@ -1,6 +1,6 @@
-import { TreeItemModel, TreeModel } from 'containers/tree'
 import { forEach, pull } from 'lodash'
 import { StoreProvider } from 'packages/store/src'
+import { TreeModel, TreeItemModel } from 'shared/tree'
 import { getPathTrash } from './note-path'
 
 export class TrashStore {

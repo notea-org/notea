@@ -19,25 +19,27 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
 
 const NoteEditor = () => {
   const { darkModeActive } = useDarkMode()
-  const { saveNote, note } = NoteState.useContainer()
+  const { updateNote, createNote, note } = NoteState.useContainer()
   const [title, setTitle] = useState()
   const editorEl = useRef<MarkdownEditor>(null)
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
       const isNew = has(router.query, 'new')
-      if (isNew) {
-        data.pid = (router.query.pid as string) || 'root'
-      }
+
       if (!data.title && title) {
         data.title = title
       }
-      const item = await saveNote(data, isNew)
-      const noteUrl = `/note/${item.id}`
+      if (isNew) {
+        data.pid = (router.query.pid as string) || 'root'
+        const item = await createNote(data)
+        const noteUrl = `/note/${item.id}`
 
-      if (router.asPath !== noteUrl) {
-        await router.replace(noteUrl, undefined, { shallow: true })
+        if (router.asPath !== noteUrl) {
+          await router.replace(noteUrl, undefined, { shallow: true })
+        }
       }
+      await updateNote(data)
     },
     500
   )

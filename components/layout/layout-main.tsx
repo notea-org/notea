@@ -1,4 +1,4 @@
-import { NoteTreeState, TreeModel } from 'containers/tree'
+import { NoteTreeState } from 'containers/tree'
 import { FC, useCallback } from 'react'
 import { NoteState } from 'containers/note'
 import { useResizeDetector } from 'react-resize-detector'
@@ -9,6 +9,7 @@ import Resizable from 'components/resizable'
 import classNames from 'classnames'
 import { SearchState } from 'containers/search'
 import { TrashState } from 'containers/trash'
+import { TreeModel } from 'shared/tree'
 
 const StyledWrapper = styled.div`
   .gutter {

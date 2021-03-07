@@ -6,6 +6,7 @@ import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemMenu from './sidebar-item-menu'
 import IconButton from 'components/icon-button'
+import { NoteTreeState } from 'containers/tree'
 
 const SidebarListItem: FC<{
   item: NoteModel
@@ -26,12 +27,16 @@ const SidebarListItem: FC<{
   ...attrs
 }) => {
   const { query } = useRouter()
+  const { mutateItem } = NoteTreeState.useContainer()
   const onAddNote = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
       router.push(`/note/new?pid=` + item.id, undefined, { shallow: true })
+      mutateItem(item.id, {
+        isExpanded: true,
+      })
     },
-    [item.id]
+    [item.id, mutateItem]
   )
 
   return (
@@ -69,7 +74,7 @@ const SidebarListItem: FC<{
           <IconButton
             icon="Plus"
             onClick={onAddNote}
-            className="hidden group-hover:block"
+            className="ml-1 hidden group-hover:block"
           ></IconButton>
         </HotkeyTooltip>
       </div>

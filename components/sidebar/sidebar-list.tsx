@@ -1,10 +1,6 @@
 import SidebarListItem from './sidebar-list-item'
 import { NoteTreeState } from 'containers/tree'
-import Tree, {
-  ItemId,
-  TreeDestinationPosition,
-  TreeSourcePosition,
-} from '@atlaskit/tree'
+import Tree from '@atlaskit/tree'
 import { useEffect, useCallback } from 'react'
 import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
@@ -18,9 +14,8 @@ const SideBarList = () => {
   }, [initTree])
 
   const onExpand = useCallback(
-    (id: ItemId) => {
-      mutateItem({
-        id,
+    (id) => {
+      mutateItem(id, {
         isExpanded: true,
       })
     },
@@ -28,9 +23,8 @@ const SideBarList = () => {
   )
 
   const onCollapse = useCallback(
-    (id: ItemId) => {
-      mutateItem({
-        id,
+    (id) => {
+      mutateItem(id, {
         isExpanded: false,
       })
     },
@@ -38,7 +32,7 @@ const SideBarList = () => {
   )
 
   const onDragEnd = useCallback(
-    (source: TreeSourcePosition, destination?: TreeDestinationPosition) => {
+    (source, destination) => {
       moveItem({
         source,
         destination,

@@ -22,7 +22,7 @@ const HotkeyTooltip: FC<{
       enterDelay={200}
       TransitionProps={{ timeout: 0 }}
       title={<Title text={text} keys={keys} />}
-      placement="right"
+      placement="bottom-start"
     >
       {children as any}
     </Tooltip>

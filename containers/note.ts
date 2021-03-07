@@ -20,7 +20,7 @@ export interface NoteModel {
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
   const { get, post, cache, abort, loading } = useFetch('/api/notes')
-  const { addToTree, removeFromTree } = NoteTreeState.useContainer()
+  const { addItem, removeItem, mutateItem } = NoteTreeState.useContainer()
 
   const getById = useCallback(
     async (id: string) => {
@@ -39,32 +39,37 @@ const useNote = () => {
     [get]
   )
 
-  const saveNote = useCallback(
-    async (data: Partial<NoteModel>, isNew = false) => {
-      abort()
+  const removeNote = useCallback(
+    async (id: string) => {
+      await post(`${id}/meta`, {
+        deleted: NOTE_DELETED.DELETED,
+      })
+      removeItem(id)
+    },
+    [post, removeItem]
+  )
 
-      // todo: 不应该调用内部方法
-      cache.delete(`url:/api/notes/${note.id}||method:GET||body:`)
-      let result = data
+  const clearRequest = useCallback(() => {
+    abort()
 
-      if (isNew) {
-        result = await post({
-          id: note.id,
-          meta: {
-            title: data.title,
-            pid: data.pid,
-            pic: data.pic,
-            cid: data.cid,
-          },
-          content: data.content,
-        })
-      } else if (!data.content) {
-        await post(`/${note.id}/meta`, data)
-      } else {
-        await post(note.id, {
-          content: data.content,
-        })
-      }
+    // todo: 不应该调用内部方法
+    cache.delete(`url:/api/notes/${note.id}||method:GET||body:`)
+  }, [abort, cache, note.id])
+
+  const createNote = useCallback(
+    async (data: Partial<NoteModel>) => {
+      clearRequest()
+
+      const result = await post({
+        id: note.id,
+        meta: {
+          title: data.title,
+          pid: data.pid,
+          pic: data.pic,
+          cid: data.cid,
+        },
+        content: data.content,
+      })
       const newNote: NoteModel = {
         ...note,
         ...result,
@@ -73,45 +78,46 @@ const useNote = () => {
       NoteStoreAPI.saveNote(newNote.id, newNote)
       delete newNote.content
       setNote(newNote)
-      addToTree(newNote)
+      addItem(newNote)
 
       return newNote
     },
-    [abort, addToTree, cache, note, post]
+    [addItem, clearRequest, note, post]
   )
 
-  const updateNoteMeta = useCallback(
-    async function (id: string, data: Partial<NoteModel>) {
-      cache.delete(`url:/api/notes/${id}||method:GET||body:`)
-      const res = await post(`${id}/meta`, {
-        title: data.title,
-        pid: data.pid,
-        cid: data.cid,
-        pic: data.pic,
-      })
+  const updateNote = useCallback(
+    async (data: Partial<NoteModel>) => {
+      clearRequest()
 
-      return res
-    },
-    [cache, post]
-  )
+      if (!data.content) {
+        await post(`/${note.id}/meta`, data)
+      } else {
+        await post(note.id, {
+          content: data.content,
+        })
+      }
+      const newNote: NoteModel = {
+        ...note,
+        ...data,
+      }
 
-  const removeNote = useCallback(
-    async (id: string) => {
-      await post(`${id}/meta`, {
-        deleted: NOTE_DELETED.DELETED,
+      NoteStoreAPI.saveNote(newNote.id, newNote)
+      delete newNote.content
+      setNote(newNote)
+      mutateItem(newNote.id, {
+        data: newNote,
       })
-      removeFromTree(id)
     },
-    [post, removeFromTree]
+    [mutateItem, clearRequest, note, post]
   )
 
   return {
     note,
     getById,
-    saveNote,
+    createNote,
+    updateNote,
     removeNote,
     setNote,
-    updateNoteMeta,
     loading,
   }
 }

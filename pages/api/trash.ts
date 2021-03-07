@@ -1,5 +1,5 @@
 import { api, ApiRequest } from 'services/api'
-import { jsonToMeta } from 'services/meta'
+import { jsonToMeta, metaToJson } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 import { getPathNoteById } from 'services/note-path'
@@ -43,6 +43,7 @@ async function deleteNote(req: ApiRequest, id: string) {
 async function restoreNote(req: ApiRequest, id: string) {
   const notePath = getPathNoteById(id)
   const oldMeta = await req.store.getObjectMeta(notePath)
+  const oldMetaJson = metaToJson(oldMeta)
   let meta = jsonToMeta({
     date: new Date().toISOString(),
     deleted: NOTE_DELETED.NORMAL.toString(),
@@ -56,4 +57,8 @@ async function restoreNote(req: ApiRequest, id: string) {
     contentType: 'text/markdown',
   })
   await req.treeStore.trash.removeItem(id)
+  await req.treeStore.addItem(
+    id,
+    oldMetaJson.deleted === NOTE_DELETED.DELETED ? oldMetaJson.pid : 'root'
+  )
 }

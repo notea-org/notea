@@ -12,6 +12,7 @@ export default api()
     const id = req.body.id || req.query.id
     const notePath = getPathNoteById(id)
     const oldMeta = await req.store.getObjectMeta(notePath)
+    const oldMetaJson = metaToJson(oldMeta)
     let meta = jsonToMeta({
       ...req.body,
       date: new Date().toISOString(),
@@ -22,7 +23,7 @@ export default api()
 
       // 处理删除情况
       const { deleted } = req.body
-      if (oldMeta.get('deleted') !== deleted) {
+      if (oldMetaJson.deleted !== deleted) {
         if (deleted === NOTE_DELETED.DELETED) {
           await req.treeStore.removeItem(id)
         } else if (deleted === NOTE_DELETED.NORMAL) {

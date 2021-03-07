@@ -1,15 +1,12 @@
-import { moveItemOnTree, mutateTree } from '@atlaskit/tree'
-import { TreeItemMutation } from '@atlaskit/tree/dist/types/utils/tree'
-import { DEFAULT_TREE, TreeModel } from 'containers/tree'
-import { forEach, pull, union } from 'lodash'
 import { StoreProvider } from 'packages/store/src'
+import TreeActions, {
+  DEFAULT_TREE,
+  movePosition,
+  TreeItemModel,
+  TreeModel,
+} from 'shared/tree'
 import { getPathTree } from './note-path'
 import { TrashStore } from './trash'
-
-interface movePosition {
-  parentId: string
-  index: number
-}
 
 export class TreeStore {
   store: StoreProvider
@@ -41,47 +38,27 @@ export class TreeStore {
   async addItem(id: string, parentId = 'root') {
     const tree = await this.get()
 
-    tree.items[id] = {
-      id,
-      children: [],
-    }
-
-    const parentItem = tree.items[parentId]
-
-    parentItem.children = union(parentItem.children, [id])
-
-    return this.set(tree)
+    return this.set(TreeActions.addItem(tree, id, parentId))
   }
 
   async removeItem(id: string) {
     const tree = await this.get()
     const item = tree.items[id]
 
-    forEach(tree.items, (item) => {
-      if (item.children.includes(id)) {
-        pull(item.children, id)
-        return false
-      }
-    })
-    delete tree.items[id]
     await this.trash.addItem(item)
 
-    return this.set(tree)
+    return this.set(TreeActions.removeItem(tree, id))
   }
 
   async moveItem(source: movePosition, destination: movePosition) {
-    const tree = moveItemOnTree(
-      await this.get(),
-      source,
-      destination
-    ) as TreeModel
-
-    return this.set(tree)
-  }
-
-  async mutateItem(id: string, data: TreeItemMutation) {
     const tree = await this.get()
 
-    return this.set(mutateTree(tree, id, data) as TreeModel)
+    return this.set(TreeActions.moveItem(tree, source, destination))
+  }
+
+  async mutateItem(id: string, data: TreeItemModel) {
+    const tree = await this.get()
+
+    return this.set(TreeActions.mutateItem(tree, id, data))
   }
 }
