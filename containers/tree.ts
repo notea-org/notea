@@ -95,6 +95,23 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     setTree(TreeActions.deleteItem(treeRef.current, id))
   }, [])
 
+  const getPaths = useCallback((note: NoteModel) => {
+    const tree = treeRef.current
+    const paths = [] as NoteModel[]
+
+    while (note.pid && note.pid !== 'root') {
+      const curData = tree.items[note.pid].data
+      if (curData) {
+        note = curData
+        paths.push(note)
+      } else {
+        break
+      }
+    }
+
+    return paths
+  }, [])
+
   return {
     tree,
     initTree,
@@ -105,6 +122,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     mutateItem,
     restoreItem,
     deleteItem,
+    getPaths,
     initLoaded,
   }
 }

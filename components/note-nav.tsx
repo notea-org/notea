@@ -4,6 +4,9 @@ import { UIState } from 'containers/ui'
 import IconMenu from 'heroicons/react/outline/Menu'
 import { useCallback, MouseEvent } from 'react'
 import { CircularProgress } from '@material-ui/core'
+import { NoteTreeState } from 'containers/tree'
+import { Breadcrumbs } from '@material-ui/core'
+import Link from 'next/link'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -26,6 +29,7 @@ const MenuButton = () => {
 const NoteNav = () => {
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
+  const { getPaths } = NoteTreeState.useContainer()
 
   return (
     <nav
@@ -37,8 +41,20 @@ const NoteNav = () => {
       )}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
-      <span className="flex-auto">{note.title}</span>
-
+      <span className="flex-auto">
+        <Breadcrumbs className="text-gray-800" aria-label="breadcrumb">
+          {getPaths(note)
+            .reverse()
+            .map((path) => (
+              <Link key={path.id} href={`/note/${path.id}`}>
+                <a className="hover:bg-gray-200 px-1 py-0.5 rounded">
+                  {path.title}
+                </a>
+              </Link>
+            ))}
+          <span>{note.title}</span>
+        </Breadcrumbs>
+      </span>
       <div
         className={classNames('mr-2 transition-opacity delay-100', {
           'opacity-0': !loading,
