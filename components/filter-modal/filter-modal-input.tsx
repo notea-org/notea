@@ -10,7 +10,7 @@ const FilterModalInput: FC<{
   const inputRef = useRef<HTMLInputElement>(null)
   const debouncedFilter = useDebouncedCallback((value: string) => {
     doFilter(value)
-  }, 300)
+  }, 200)
 
   useEffect(() => {
     inputRef.current?.select()

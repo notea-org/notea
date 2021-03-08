@@ -20,7 +20,7 @@ const FilterModal: FC<{
       open={open}
       onClose={onClose}
       style={{ top: ua.isMobileOnly ? 0 : '10vh' }}
-      className="w-full m-auto md:w-1/2 lg:w-1/3"
+      className="w-full m-auto lg:w-1/2 xl:w-1/3"
     >
       <div className="bg-gray-50 text-gray-800 outline-none rounded overflow-auto">
         {children}

@@ -1,55 +1,69 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
-import { NoteStoreItem } from 'services/local-store'
 import escapeStringRegexp from 'escape-string-regexp'
 import useFetch, { CachePolicies } from 'use-http'
-import { flatten, map, union, without } from 'lodash'
-import NoteStoreAPI from 'services/local-store/note'
-
-async function findNotes(noteIds: string[], keyword?: string) {
-  const data = [] as NoteStoreItem[]
-  const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
-
-  await Promise.all(
-    map(noteIds, async (id) => {
-      const note = await NoteStoreAPI.fetchNote(id)
-      if (!note) return
-      if (!re || re.test(note.rawContent || '') || re.test(note.title || '')) {
-        data.push(note)
-      }
-    })
-  )
-
-  return data
-}
+import { map, reduce, some } from 'lodash'
+import { NoteTreeState } from './tree'
+import TreeActions from 'shared/tree'
+import { NoteModel } from './note'
 
 function useTrashData() {
-  const [noteIds, setNoteIds] = useState<string[]>([])
   const [keyword, setKeyword] = useState<string>()
-  const [filterData, setFilterData] = useState<NoteStoreItem[]>()
-  const { get, post } = useFetch('/api/trash', {
+  const [filterData, setFilterData] = useState<NoteModel[]>()
+  const { tree, restoreItem } = NoteTreeState.useContainer()
+  const { post } = useFetch('/api/trash', {
     cachePolicy: CachePolicies.NO_CACHE,
   })
 
-  const filterNotes = useCallback(async (keyword?: string) => {
-    setKeyword(keyword)
-  }, [])
+  const getDeletedNotes = useCallback(() => {
+    const items = TreeActions.getUnusedItems(tree)
+    const notes = map(items, (item) => item.data)
 
-  useEffect(() => {
-    findNotes(noteIds, keyword).then(setFilterData)
-  }, [noteIds, keyword])
+    return notes
+  }, [tree])
+
+  const filterNotes = useCallback(
+    async (keyword?: string) => {
+      const notes = getDeletedNotes()
+      const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
+      const data = reduce<NoteModel | undefined, NoteModel[]>(
+        notes,
+        (acc, note) => {
+          if (!note) return acc
+          if (!re || re.test(note.title)) {
+            return [...acc, note]
+          }
+          return acc
+        },
+        []
+      )
+
+      setKeyword(keyword)
+      setFilterData(data)
+    },
+    [getDeletedNotes]
+  )
 
   const restoreNote = useCallback(
-    async (id: string) => {
+    async (note: NoteModel) => {
+      const notes = getDeletedNotes()
+      // 父页面被删除时，恢复页面的 parent 改成 root
+      if (!note.pid || some(notes, (n) => n && n.id === note.pid)) {
+        note.pid = 'root'
+      }
+
       await post({
         action: 'restore',
         data: {
-          id,
+          id: note.id,
+          parentId: note.pid,
         },
       })
-      setNoteIds((prev) => without(prev, id))
+      restoreItem(note.id, note.pid)
+
+      return note
     },
-    [post]
+    [post, getDeletedNotes, restoreItem]
   )
 
   const deleteNote = useCallback(
@@ -60,24 +74,14 @@ function useTrashData() {
           id,
         },
       })
-      setNoteIds((prev) => without(prev, id))
     },
     [post]
   )
-
-  const initTrash = useCallback(async () => {
-    const data = await get()
-    const ids = union(flatten(map(data, (item) => [item.id, ...item.children])))
-
-    setNoteIds(ids)
-    setFilterData(await findNotes(ids))
-  }, [get])
 
   return {
     filterData,
     keyword,
     filterNotes,
-    initTrash,
     restoreNote,
     deleteNote,
   }

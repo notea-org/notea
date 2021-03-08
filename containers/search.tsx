@@ -19,7 +19,7 @@ function useSearchData() {
     const re = new RegExp(escapeStringRegexp(keyword))
 
     await noteStore.iterate<NoteStoreItem, void>((note) => {
-      if (re.test(note.rawContent || '') || re.test(note.title || '')) {
+      if (re.test(note.rawContent || '') || re.test(note.title)) {
         data.push(note)
       }
     })

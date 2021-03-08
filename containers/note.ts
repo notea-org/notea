@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import useFetch from 'use-http'
+import useFetch, { CachePolicies } from 'use-http'
 import { NoteTreeState } from 'containers/tree'
 import { NOTE_DELETED, NOTE_SHARED } from 'shared/meta'
 import NoteStoreAPI from 'services/local-store/note'
@@ -18,7 +18,9 @@ export interface NoteModel {
 
 const useNote = () => {
   const [note, setNote] = useState<NoteModel>({} as NoteModel)
-  const { get, post, cache, abort, loading } = useFetch('/api/notes')
+  const { get, post, abort, loading } = useFetch('/api/notes', {
+    cachePolicy: CachePolicies.NO_CACHE,
+  })
   const { addItem, removeItem, mutateItem } = NoteTreeState.useContainer()
 
   const getById = useCallback(
@@ -50,10 +52,7 @@ const useNote = () => {
 
   const clearRequest = useCallback(() => {
     abort()
-
-    // todo: 不应该调用内部方法
-    cache.delete(`url:/api/notes/${note.id}||method:GET||body:`)
-  }, [abort, cache, note.id])
+  }, [abort])
 
   const createNote = useCallback(
     async (data: Partial<NoteModel>) => {

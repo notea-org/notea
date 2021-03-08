@@ -7,6 +7,7 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemMenu from './sidebar-item-menu'
 import IconButton from 'components/icon-button'
 import { NoteTreeState } from 'containers/tree'
+import { Skeleton } from '@material-ui/lab'
 
 const SidebarListItem: FC<{
   item: NoteModel
@@ -29,7 +30,7 @@ const SidebarListItem: FC<{
   ...attrs
 }) => {
   const { query } = useRouter()
-  const { mutateItem } = NoteTreeState.useContainer()
+  const { mutateItem, initLoaded } = NoteTreeState.useContainer()
   const onAddNote = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
@@ -42,15 +43,16 @@ const SidebarListItem: FC<{
   )
 
   return (
-    <li
-      {...attrs}
-      ref={innerRef}
-      className={classNames('group hover:bg-gray-300 text-gray-700', {
-        'shadow bg-gray-300': snapshot.isDragging,
-        'bg-gray-200': query.id === item.id,
-      })}
-    >
-      <div className="flex px-2 items-center overflow-hidden">
+    <li {...attrs} ref={innerRef}>
+      <div
+        className={classNames(
+          'group flex px-2 items-center overflow-hidden hover:bg-gray-300 text-gray-700',
+          {
+            'shadow bg-gray-300': snapshot.isDragging,
+            'bg-gray-200': query.id === item.id,
+          }
+        )}
+      >
         <Link href={`/note/${item.id}`} shallow>
           <a className="flex flex-grow truncate py-1.5">
             <IconButton
@@ -65,7 +67,11 @@ const SidebarListItem: FC<{
               }}
             ></IconButton>
             <span className="flex-grow truncate">
-              {item.title || 'Untitled'}
+              {initLoaded ? (
+                item.title || 'Untitled'
+              ) : (
+                <Skeleton width={80} variant="text" />
+              )}
             </span>
           </a>
         </Link>
@@ -82,7 +88,13 @@ const SidebarListItem: FC<{
       </div>
 
       {!hasChildren && isExpanded && (
-        <div className="ml-8 py-1.5 text-gray-400">No pages inside</div>
+        <div className="ml-8 py-1.5 text-gray-400">
+          {initLoaded ? (
+            'No pages inside'
+          ) : (
+            <Skeleton width={80} variant="text" />
+          )}
+        </div>
       )}
     </li>
   )

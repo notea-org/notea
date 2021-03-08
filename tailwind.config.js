@@ -8,6 +8,7 @@ module.exports = {
       },
       nightwind: {
         typography: true,
+        colorClasses: ['divide', 'placeholder'],
       },
     },
   },

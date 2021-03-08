@@ -6,17 +6,14 @@ import TreeActions, {
   TreeModel,
 } from 'shared/tree'
 import { getPathTree } from './note-path'
-import { TrashStore } from './trash'
 
 export class TreeStore {
   store: StoreProvider
   treePath: string
-  trash: TrashStore
 
   constructor(store: StoreProvider) {
     this.store = store
     this.treePath = getPathTree()
-    this.trash = new TrashStore(store)
   }
 
   async get() {
@@ -43,9 +40,6 @@ export class TreeStore {
 
   async removeItem(id: string) {
     const tree = await this.get()
-    const item = tree.items[id]
-
-    await this.trash.addItem(item)
 
     return this.set(TreeActions.removeItem(tree, id))
   }
@@ -60,5 +54,17 @@ export class TreeStore {
     const tree = await this.get()
 
     return this.set(TreeActions.mutateItem(tree, id, data))
+  }
+
+  async restoreItem(id: string, parentId: string) {
+    const tree = await this.get()
+
+    return this.set(TreeActions.restoreItem(tree, id, parentId))
+  }
+
+  async getUnusedItems() {
+    const tree = await this.get()
+
+    return TreeActions.getUnusedItems(tree)
   }
 }

@@ -23,12 +23,8 @@ export default api()
 
       // 处理删除情况
       const { deleted } = req.body
-      if (oldMetaJson.deleted !== deleted) {
-        if (deleted === NOTE_DELETED.DELETED) {
-          await req.treeStore.removeItem(id)
-        } else if (deleted === NOTE_DELETED.NORMAL) {
-          await req.treeStore.addItem(id, req.body.pid)
-        }
+      if (oldMetaJson.deleted !== deleted && deleted === NOTE_DELETED.DELETED) {
+        await req.treeStore.removeItem(id)
       }
     }
 

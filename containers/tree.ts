@@ -10,6 +10,7 @@ import TreeActions, { DEFAULT_TREE, movePosition, TreeModel } from 'shared/tree'
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { post } = useFetch('/api/tree')
   const [tree, setTree] = useState<TreeModel>(initData)
+  const [initLoaded, setInitLoaded] = useState<boolean>(false)
   const treeRef = useRef(tree)
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       ...curTree,
       items: newItems,
     })
+    setInitLoaded(true)
     NoteStoreAPI.checkAllNotes(newItems)
   }, [])
 
@@ -85,6 +87,10 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     [post]
   )
 
+  const restoreItem = useCallback((id: string, pid: string) => {
+    setTree(TreeActions.restoreItem(treeRef.current, id, pid))
+  }, [])
+
   return {
     tree,
     initTree,
@@ -93,6 +99,8 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     removeItem,
     moveItem,
     mutateItem,
+    restoreItem,
+    initLoaded,
   }
 }
 

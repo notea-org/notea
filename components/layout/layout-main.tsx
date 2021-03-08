@@ -7,8 +7,6 @@ import { UIState } from 'containers/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import classNames from 'classnames'
-import { SearchState } from 'containers/search'
-import { TrashState } from 'containers/trash'
 import { TreeModel } from 'shared/tree'
 
 const StyledWrapper = styled.div`
@@ -24,19 +22,15 @@ const LayoutMain: FC<{
   const { ua } = UIState.useContainer()
 
   return (
-    <SearchState.Provider>
-      <TrashState.Provider>
-        <NoteTreeState.Provider initialState={tree}>
-          <NoteState.Provider>
-            {ua?.isMobileOnly ? (
-              <MobileMainWrapper>{children}</MobileMainWrapper>
-            ) : (
-              <MainWrapper>{children}</MainWrapper>
-            )}
-          </NoteState.Provider>
-        </NoteTreeState.Provider>
-      </TrashState.Provider>
-    </SearchState.Provider>
+    <NoteTreeState.Provider initialState={tree}>
+      <NoteState.Provider>
+        {ua?.isMobileOnly ? (
+          <MobileMainWrapper>{children}</MobileMainWrapper>
+        ) : (
+          <MainWrapper>{children}</MainWrapper>
+        )}
+      </NoteState.Provider>
+    </NoteTreeState.Provider>
   )
 }
 

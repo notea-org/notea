@@ -10,7 +10,7 @@ const FilterModalList: FC<{
   items?: any[]
 }> = ({ ItemComponent, items }) => {
   return items?.length ? (
-    <StyledList className="border-t border-gray-100 overflow-auto">
+    <StyledList className="border-t border-gray-100 overflow-auto divide-y divide-gray-100">
       {items?.map((item) => ItemComponent(item))}
     </StyledList>
   ) : null

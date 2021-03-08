@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
@@ -12,12 +12,17 @@ const Trash: FC = () => {
     closeModal,
     filterNotes,
     keyword,
-    initTrash,
     filterData,
   } = TrashState.useContainer()
 
+  useEffect(() => {
+    if (isOpen) {
+      filterNotes()
+    }
+  }, [isOpen, filterNotes])
+
   return (
-    <FilterModal open={isOpen} onClose={closeModal} onOpen={initTrash}>
+    <FilterModal open={isOpen} onClose={closeModal}>
       <FilterModalInput
         placeholder="Search note in trash"
         doFilter={filterNotes}

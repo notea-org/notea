@@ -120,10 +120,15 @@ const ButtonTrash = () => {
 const SidebarTool = () => {
   return (
     <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
-      <Search />
-      <ButtonSearch />
-      <Trash />
-      <ButtonTrash />
+      <SearchState.Provider>
+        <ButtonSearch />
+        <Search />
+      </SearchState.Provider>
+
+      <TrashState.Provider>
+        <ButtonTrash />
+        <Trash />
+      </TrashState.Provider>
 
       <div className="mt-auto">
         <ButtonMenu></ButtonMenu>

@@ -1,5 +1,5 @@
 import { api, ApiRequest } from 'services/api'
-import { jsonToMeta, metaToJson } from 'services/meta'
+import { jsonToMeta } from 'services/meta'
 import { useAuth } from 'services/middlewares/auth'
 import { useStore } from 'services/middlewares/store'
 import { getPathNoteById } from 'services/note-path'
@@ -9,12 +9,15 @@ export default api()
   .use(useAuth)
   .use(useStore)
   .get(async (req, res) => {
-    res.json(await req.treeStore.trash.get())
+    res.json(await req.treeStore.getUnusedItems())
   })
   .post(async (req, res) => {
     const { action, data } = req.body as {
       action: 'delete' | 'restore'
-      data: any
+      data: {
+        id: string
+        parentId?: string
+      }
     }
 
     switch (action) {
@@ -23,7 +26,7 @@ export default api()
         break
 
       case 'restore':
-        await restoreNote(req, data.id)
+        await restoreNote(req, data.id, data.parentId)
         break
 
       default:
@@ -37,13 +40,12 @@ async function deleteNote(req: ApiRequest, id: string) {
   const notePath = getPathNoteById(id)
 
   await req.store.deleteObject(notePath)
-  await req.treeStore.trash.removeItem(id)
+  await req.treeStore.removeItem(id)
 }
 
-async function restoreNote(req: ApiRequest, id: string) {
+async function restoreNote(req: ApiRequest, id: string, parentId = 'root') {
   const notePath = getPathNoteById(id)
   const oldMeta = await req.store.getObjectMeta(notePath)
-  const oldMetaJson = metaToJson(oldMeta)
   let meta = jsonToMeta({
     date: new Date().toISOString(),
     deleted: NOTE_DELETED.NORMAL.toString(),
@@ -56,9 +58,5 @@ async function restoreNote(req: ApiRequest, id: string) {
     meta,
     contentType: 'text/markdown',
   })
-  await req.treeStore.trash.removeItem(id)
-  await req.treeStore.addItem(
-    id,
-    oldMetaJson.deleted === NOTE_DELETED.DELETED ? oldMetaJson.pid : 'root'
-  )
+  await req.treeStore.restoreItem(id, parentId)
 }

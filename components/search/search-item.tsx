@@ -12,7 +12,7 @@ const SearchItem: FC<{
   const { closeModal } = SearchState.useContainer()
 
   return (
-    <li className="border-b border-gray-100 hover:bg-gray-200 last:border-0 cursor-pointer">
+    <li className="hover:bg-gray-200 cursor-pointer">
       <Link href={`/note/${note.id}`}>
         <a
           className="py-2 px-4 block text-xs text-gray-500"
