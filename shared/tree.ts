@@ -104,6 +104,13 @@ function getUnusedItems(tree: TreeModel) {
   return unusedItems
 }
 
+function deleteItem(tree: TreeModel, id: string) {
+  tree = clone(tree)
+  delete tree.items[id]
+
+  return tree
+}
+
 const flattenTree = (tree: TreeModel): TreeItemModel[] => {
   if (!tree.items[tree.rootId]) {
     return []
@@ -131,6 +138,7 @@ const TreeActions = {
   moveItem,
   restoreItem,
   getUnusedItems,
+  deleteItem,
 }
 
 export default TreeActions

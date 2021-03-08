@@ -91,6 +91,10 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     setTree(TreeActions.restoreItem(treeRef.current, id, pid))
   }, [])
 
+  const deleteItem = useCallback((id: string) => {
+    setTree(TreeActions.deleteItem(treeRef.current, id))
+  }, [])
+
   return {
     tree,
     initTree,
@@ -100,6 +104,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     moveItem,
     mutateItem,
     restoreItem,
+    deleteItem,
     initLoaded,
   }
 }

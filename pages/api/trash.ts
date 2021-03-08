@@ -8,9 +8,6 @@ import { NOTE_DELETED } from 'shared/meta'
 export default api()
   .use(useAuth)
   .use(useStore)
-  .get(async (req, res) => {
-    res.json(await req.treeStore.getUnusedItems())
-  })
   .post(async (req, res) => {
     const { action, data } = req.body as {
       action: 'delete' | 'restore'
@@ -40,7 +37,7 @@ async function deleteNote(req: ApiRequest, id: string) {
   const notePath = getPathNoteById(id)
 
   await req.store.deleteObject(notePath)
-  await req.treeStore.removeItem(id)
+  await req.treeStore.deleteItem(id)
 }
 
 async function restoreNote(req: ApiRequest, id: string, parentId = 'root') {

@@ -10,7 +10,7 @@ import { NoteModel } from './note'
 function useTrashData() {
   const [keyword, setKeyword] = useState<string>()
   const [filterData, setFilterData] = useState<NoteModel[]>()
-  const { tree, restoreItem } = NoteTreeState.useContainer()
+  const { tree, restoreItem, deleteItem } = NoteTreeState.useContainer()
   const { post } = useFetch('/api/trash', {
     cachePolicy: CachePolicies.NO_CACHE,
   })
@@ -48,7 +48,11 @@ function useTrashData() {
     async (note: NoteModel) => {
       const notes = getDeletedNotes()
       // 父页面被删除时，恢复页面的 parent 改成 root
-      if (!note.pid || some(notes, (n) => n && n.id === note.pid)) {
+      if (
+        !note.pid ||
+        !tree.items[note.pid] ||
+        some(notes, (n) => n && n.id === note.pid)
+      ) {
         note.pid = 'root'
       }
 
@@ -63,7 +67,7 @@ function useTrashData() {
 
       return note
     },
-    [post, getDeletedNotes, restoreItem]
+    [post, getDeletedNotes, restoreItem, tree]
   )
 
   const deleteNote = useCallback(
@@ -74,8 +78,9 @@ function useTrashData() {
           id,
         },
       })
+      deleteItem(id)
     },
-    [post]
+    [deleteItem, post]
   )
 
   return {

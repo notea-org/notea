@@ -62,9 +62,9 @@ export class TreeStore {
     return this.set(TreeActions.restoreItem(tree, id, parentId))
   }
 
-  async getUnusedItems() {
+  async deleteItem(id: string) {
     const tree = await this.get()
 
-    return TreeActions.getUnusedItems(tree)
+    return this.set(TreeActions.deleteItem(tree, id))
   }
 }
