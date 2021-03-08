@@ -4,6 +4,7 @@ import IconMoon from 'heroicons/react/outline/Moon'
 import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
 import IconSun from 'heroicons/react/outline/Sun'
 import IconGlobe from 'heroicons/react/outline/Globe'
+import IconInbox from 'heroicons/react/outline/Inbox'
 import { forwardRef, HTMLProps, useCallback } from 'react'
 import { UIState } from 'containers/ui'
 import classNames from 'classnames'
@@ -117,6 +118,16 @@ const ButtonTrash = () => {
   )
 }
 
+const ButtonDailyNotes = () => {
+  return (
+    <HotkeyTooltip text="Daily Notes" keys={['cmd', `\``]}>
+      <ButtonItem aria-label="daily notes">
+        <IconInbox />
+      </ButtonItem>
+    </HotkeyTooltip>
+  )
+}
+
 const SidebarTool = () => {
   return (
     <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
@@ -129,6 +140,8 @@ const SidebarTool = () => {
         <ButtonTrash />
         <Trash />
       </TrashState.Provider>
+
+      <ButtonDailyNotes />
 
       <div className="mt-auto">
         <ButtonMenu></ButtonMenu>

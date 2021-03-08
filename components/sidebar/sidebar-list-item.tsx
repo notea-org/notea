@@ -54,7 +54,7 @@ const SidebarListItem: FC<{
         )}
       >
         <Link href={`/note/${item.id}`} shallow>
-          <a className="flex flex-grow truncate py-1.5">
+          <a className="flex flex-1 truncate py-1.5">
             <IconButton
               className="mr-1"
               icon="ChevronRight"
@@ -66,7 +66,7 @@ const SidebarListItem: FC<{
                 isExpanded ? onCollapse(item.id) : onExpand(item.id)
               }}
             ></IconButton>
-            <span className="flex-grow truncate">
+            <span className="flex-1 truncate">
               {initLoaded ? (
                 item.title || 'Untitled'
               ) : (
