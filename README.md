@@ -4,6 +4,8 @@
 
 ![screenshot](./assets/screenshot.png)
 
+Fork and install **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** to automatically update your repo.
+
 ## Features
 
 - One-click deploy to Vercel/Netlify or deploy to host with Docker
