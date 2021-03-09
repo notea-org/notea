@@ -1,23 +1,18 @@
 import { FC, ReactNode } from 'react'
+import { searchRangeText } from 'shared/text'
 
 const BoldText: FC<{
   text?: string
   keyword?: string
   maxLen?: number
 }> = ({ text = '', keyword = '', maxLen = 80 }) => {
-  let start = 0
-  let end = 0
   const texts: ReactNode[] = []
-  const indexContent = text.search(keyword)
-
-  start = indexContent < 11 ? 0 : indexContent - 10
-  end = start === 0 ? maxLen - 10 : indexContent + keyword.length + maxLen
-
-  if (text && end > text.length) {
-    end = text.length
-  }
-
-  const blocks = text.substring(start, end).split(keyword)
+  const result = searchRangeText({
+    text,
+    keyword,
+    maxLen,
+  })
+  const blocks = result.split(keyword)
 
   blocks.forEach((block, index) => {
     texts.push(

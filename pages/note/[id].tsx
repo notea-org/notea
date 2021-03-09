@@ -13,6 +13,7 @@ import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
 import { UIState } from 'containers/ui'
 import { TreeModel } from 'shared/tree'
+import Link from 'next/link'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
@@ -71,7 +72,12 @@ const EditContainer = () => {
       </section>
     </>
   ) : (
-    <div>使用说明之类的</div>
+    <div>
+      使用说明之类的
+      <Link href="/note/new">
+        <a>Create Note</a>
+      </Link>
+    </div>
   )
 }
 

@@ -21,7 +21,12 @@ const useNote = () => {
   const { get, post, abort, loading } = useFetch('/api/notes', {
     cachePolicy: CachePolicies.NO_CACHE,
   })
-  const { addItem, removeItem, mutateItem } = NoteTreeState.useContainer()
+  const {
+    addItem,
+    removeItem,
+    mutateItem,
+    genNewId,
+  } = NoteTreeState.useContainer()
 
   const getById = useCallback(
     async (id: string) => {
@@ -59,7 +64,7 @@ const useNote = () => {
       clearRequest()
 
       const result = await post({
-        id: note.id,
+        id: data.id || note.id,
         meta: {
           title: data.title,
           pid: data.pid,
@@ -80,6 +85,24 @@ const useNote = () => {
       return newNote
     },
     [addItem, clearRequest, note, post]
+  )
+
+  const createNoteWithTitle = useCallback(
+    async (title: NoteModel['title']) => {
+      const id = genNewId()
+      const note = await post({
+        id,
+        meta: {
+          title,
+        },
+      })
+
+      NoteStoreAPI.saveNote(note.id, note)
+      addItem(note)
+
+      return note
+    },
+    [addItem, genNewId, post]
   )
 
   const updateNote = useCallback(
@@ -112,6 +135,7 @@ const useNote = () => {
     note,
     getById,
     createNote,
+    createNoteWithTitle,
     updateNote,
     removeNote,
     setNote,

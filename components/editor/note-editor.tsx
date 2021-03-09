@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
 import { useDarkMode } from 'next-dark-mode'
-import useFetch from 'use-http'
 import { useDebouncedCallback } from 'use-debounce'
+import useEditorState from './editor-state'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
@@ -18,6 +18,12 @@ const StyledMarkdownEditor = styled(MarkdownEditor)`
 `
 
 const NoteEditor = () => {
+  const {
+    onSearchLink,
+    onCreateLink,
+    onClickLink,
+    onUploadImage,
+  } = useEditorState()
   const { darkModeActive } = useDarkMode()
   const { updateNote, createNote, note } = NoteState.useContainer()
   const [title, setTitle] = useState()
@@ -53,17 +59,6 @@ const NoteEditor = () => {
       }
     },
     []
-  )
-
-  const upload = useFetch('/api/file/upload')
-  const onUploadImage = useCallback(
-    async (file) => {
-      const data = new FormData()
-      data.append('file', file)
-      const result = await upload.post(data)
-      return result.url
-    },
-    [upload]
   )
 
   const onTitleChange = useCallback(
@@ -103,9 +98,9 @@ const NoteEditor = () => {
         onChange={onEditorChange}
         theme={darkModeActive ? darkTheme : lightTheme}
         uploadImage={onUploadImage}
-        onCreateLink={async () => {
-          return '1'
-        }}
+        onSearchLink={onSearchLink}
+        onCreateLink={onCreateLink}
+        onClickLink={onClickLink}
       />
     </article>
   )
