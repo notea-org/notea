@@ -25,7 +25,7 @@ Data is stored in https://play.minio.io:9000/notea/
 
 ## Deploy
 
-### Vercel
+### Vercel(Recommanded)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FQingWei-Li%2Fnotea&env=STORE_TYPE,STORE_ACCESS_KEY,STORE_SECRET_KEY,STORE_BUCKET,STORE_END_POINT,PASSWORD&envDescription=Refer%20to%20the%20docs%20to%20set%20environment%20variables&envLink=https%3A%2F%2Fgithub.com%2FQingWei-Li%2Fnotea%23environment-variables&project-name=notea)
 
