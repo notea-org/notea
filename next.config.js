@@ -1,6 +1,7 @@
-const WorkerPlugin = require('worker-plugin')
+const withPWA = require('next-pwa')
+const runtimeCaching = require('next-pwa/cache')
 
-module.exports = {
+module.exports = withPWA({
   rewrites() {
     return [
       {
@@ -18,22 +19,17 @@ module.exports = {
       },
     ]
   },
-  webpack(config, { defaultLoaders, isServer }) {
+  webpack(config, { defaultLoaders }) {
     config.module.rules.push({
       test: /\.jsx/,
       use: [defaultLoaders.babel],
       include: [/node_modules\/heroicons/],
     })
 
-    if (!isServer) {
-      config.plugins.push(
-        new WorkerPlugin({
-          // use "self" as the global object when receiving hot updates.
-          globalObject: 'self',
-        })
-      )
-    }
-
     return config
   },
-}
+  pwa: {
+    dest: 'public',
+    runtimeCaching,
+  },
+})
