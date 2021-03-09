@@ -21,6 +21,18 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#2B5797" />
           <meta name="msapplication-tap-highlight" content="no" />
           <meta name="theme-color" content="#ffffff" />
+
+          <link
+            rel="apple-touch-icon"
+            sizes="192x192"
+            href="/static/icons/icon-192x192.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="128x128"
+            href="/static/icons/icon-128x128.png"
+          />
           <link rel="manifest" href="/static/manifest.json" />
         </Head>
         <body className="overflow-hidden">
