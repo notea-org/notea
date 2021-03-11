@@ -36,6 +36,7 @@ export default api()
     res.json({
       content,
       ...jsonMeta,
+      id,
     })
   })
   .post(async (req, res) => {

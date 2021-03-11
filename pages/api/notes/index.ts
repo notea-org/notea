@@ -15,7 +15,7 @@ export default api()
 
     if (!id) {
       id = genId()
-      while (await req.store.hasObject(notePath)) {
+      while (await req.store.hasObject(getPathNoteById(id))) {
         id = genId()
       }
     }
