@@ -1,5 +1,6 @@
 import { api } from 'services/api'
 import { useStore } from 'services/middlewares/store'
+import { getPathFileByName } from 'services/note-path'
 
 export const config = {
   api: {
@@ -12,10 +13,12 @@ export default api()
   .get(async (req, res) => {
     if (req.query.file) {
       const signUrl = await req.store.getSignUrl(
-        (req.query.file as string[]).join('/')
+        getPathFileByName((req.query.file as string[]).join('/')),
+        31536000
       )
+
       if (signUrl) {
-        res.redirect(signUrl)
+        res.redirect(signUrl.replace(/^http:/, ''))
         return
       }
     }

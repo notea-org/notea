@@ -26,7 +26,7 @@ export abstract class StoreProvider {
   /**
    * 获取签名 URL
    */
-  abstract getSignUrl(path: string): Promise<string | null>
+  abstract getSignUrl(path: string, expires: number): Promise<string | null>
 
   /**
    * 检测对象是否存在

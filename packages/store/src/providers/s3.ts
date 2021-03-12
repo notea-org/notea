@@ -39,8 +39,10 @@ export class StoreS3 extends StoreProvider {
     this.config = config
   }
 
-  async getSignUrl(path: string) {
-    return this.store.signatureUrl(this.getPath(path))
+  async getSignUrl(path: string, expires = 600) {
+    return this.store.signatureUrl(this.getPath(path), {
+      expires,
+    })
   }
 
   async hasObject(path: string) {

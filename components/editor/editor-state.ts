@@ -23,7 +23,7 @@ const onSearchLink = async (keyword: string) => {
 const useEditorState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
-  const upload = useFetch('/api/file/upload')
+  const upload = useFetch('/api/upload')
 
   const onCreateLink = useCallback(
     async (title) => {
