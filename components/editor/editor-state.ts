@@ -3,7 +3,7 @@ import { searchNote } from 'containers/search'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { searchRangeText } from 'shared/text'
-import useFetch from 'use-http'
+import useFetch, { CachePolicies } from 'use-http'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword)
@@ -23,7 +23,9 @@ const onSearchLink = async (keyword: string) => {
 const useEditorState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
-  const upload = useFetch('/api/upload')
+  const upload = useFetch('/api/upload', {
+    cachePolicy: CachePolicies.NO_CACHE,
+  })
 
   const onCreateLink = useCallback(
     async (title) => {
