@@ -1,5 +1,5 @@
 import 'tailwindcss/tailwind.css'
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'

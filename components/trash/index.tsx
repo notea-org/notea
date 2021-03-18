@@ -3,8 +3,8 @@ import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
 import TrashItem from './trash-item'
-import { NoteModel } from 'containers/note'
-import { TrashState } from 'containers/trash'
+import { NoteModel } from 'libs/web/state/note'
+import { TrashState } from 'libs/web/state/trash'
 
 const Trash: FC = () => {
   const {

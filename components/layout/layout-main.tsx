@@ -1,13 +1,13 @@
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState } from 'libs/web/state/tree'
 import { FC, useCallback } from 'react'
-import { NoteState } from 'containers/note'
+import { NoteState } from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import classNames from 'classnames'
-import { TreeModel } from 'shared/tree'
+import { TreeModel } from 'libs/shared/tree'
 
 const StyledWrapper = styled.div`
   .gutter {

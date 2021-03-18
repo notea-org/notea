@@ -1,7 +1,7 @@
 import { createStore } from '@notea/store'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
 import { GetServerSidePropsContext } from 'next'
-import { TreeStore } from 'services/tree'
+import { TreeStore } from 'libs/server/tree'
 
 export function useStore(req: ApiRequest, _res: ApiResponse, next: ApiNext) {
   applyStore(req)

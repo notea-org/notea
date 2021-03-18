@@ -1,9 +1,9 @@
-import { api } from 'services/api'
-import { jsonToMeta, metaToJson } from 'services/meta'
-import { useAuth } from 'services/middlewares/auth'
-import { useStore } from 'services/middlewares/store'
-import { getPathNoteById } from 'services/note-path'
-import { NOTE_DELETED } from 'shared/meta'
+import { api } from 'libs/server/api'
+import { jsonToMeta, metaToJson } from 'libs/server/meta'
+import { useAuth } from 'libs/server/middlewares/auth'
+import { useStore } from 'libs/server/middlewares/store'
+import { getPathNoteById } from 'libs/server/note-path'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
 export default api()
   .use(useAuth)
@@ -33,7 +33,7 @@ export default api()
       contentType: 'text/markdown',
     })
 
-    res.end()
+    res.status(204).end()
   })
   .get(async (req, res) => {
     const id = req.body.id || req.query.id

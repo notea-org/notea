@@ -1,6 +1,6 @@
-import { api } from 'services/api'
-import { useStore } from 'services/middlewares/store'
-import { getPathFileByName } from 'services/note-path'
+import { api } from 'libs/server/api'
+import { useStore } from 'libs/server/middlewares/store'
+import { getPathFileByName } from 'libs/server/note-path'
 
 export const config = {
   api: {

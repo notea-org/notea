@@ -1,6 +1,6 @@
-import { api } from 'services/api'
-import { useAuth } from 'services/middlewares/auth'
-import { useStore } from 'services/middlewares/store'
+import { api } from 'libs/server/api'
+import { useAuth } from 'libs/server/middlewares/auth'
+import { useStore } from 'libs/server/middlewares/store'
 
 export default api()
   .use(useAuth)

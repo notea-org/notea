@@ -4,13 +4,19 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteModel } from './note'
 import useFetch from 'use-http'
-import NoteStoreAPI from 'services/local-store/note'
-import TreeActions, { DEFAULT_TREE, movePosition, TreeModel } from 'shared/tree'
+import TreeActions, {
+  DEFAULT_TREE,
+  movePosition,
+  TreeModel,
+} from 'libs/shared/tree'
+import { useNoteAPI } from '../api/note'
+import { noteCache } from '../cache/note'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { post } = useFetch('/api/tree')
   const [tree, setTree] = useState<TreeModel>(initData)
   const [initLoaded, setInitLoaded] = useState<boolean>(false)
+  const { fetch: fetchNote } = useNoteAPI()
   const treeRef = useRef(tree)
 
   useEffect(() => {
@@ -25,7 +31,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       map(curTree.items, async (item) => {
         newItems[item.id] = {
           ...item,
-          data: await NoteStoreAPI.fetchNote(item.id),
+          data: await fetchNote(item.id),
         }
       })
     )
@@ -35,8 +41,8 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       items: newItems,
     })
     setInitLoaded(true)
-    NoteStoreAPI.checkAllNotes(newItems)
-  }, [])
+    await noteCache.checkItems(newItems)
+  }, [fetchNote])
 
   const addItem = useCallback((item: NoteModel) => {
     const tree = TreeActions.addItem(treeRef.current, item.id, item.pid)
@@ -100,7 +106,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     const paths = [] as NoteModel[]
 
     while (note.pid && note.pid !== 'root') {
-      const curData = tree.items[note.pid].data
+      const curData = tree.items[note.pid]?.data
       if (curData) {
         note = curData
         paths.push(note)

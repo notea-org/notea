@@ -5,7 +5,7 @@ import {
   NOTE_DELETED,
   NOTE_SHARED,
   NUMBER_KEYS,
-} from 'shared/meta'
+} from 'libs/shared/meta'
 
 export function jsonToMeta(meta?: Record<string, string | undefined>) {
   const metaData: Map<string, string> = new Map()

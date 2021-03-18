@@ -1,9 +1,9 @@
-import { api, ApiRequest } from 'services/api'
-import { jsonToMeta } from 'services/meta'
-import { useAuth } from 'services/middlewares/auth'
-import { useStore } from 'services/middlewares/store'
-import { getPathNoteById } from 'services/note-path'
-import { NOTE_DELETED } from 'shared/meta'
+import { api, ApiRequest } from 'libs/server/api'
+import { jsonToMeta } from 'libs/server/meta'
+import { useAuth } from 'libs/server/middlewares/auth'
+import { useStore } from 'libs/server/middlewares/store'
+import { getPathNoteById } from 'libs/server/note-path'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
 export default api()
   .use(useAuth)

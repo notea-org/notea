@@ -4,7 +4,7 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
 import IconPaperAirplane from 'heroicons/react/outline/PaperAirplane'
-import { NoteModel, NoteState } from 'containers/note'
+import { NoteModel, NoteState } from 'libs/web/state/note'
 import IconButton from 'components/icon-button'
 
 enum MENU_HANDLER_NAME {

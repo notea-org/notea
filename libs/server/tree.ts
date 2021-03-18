@@ -4,7 +4,7 @@ import TreeActions, {
   movePosition,
   TreeItemModel,
   TreeModel,
-} from 'shared/tree'
+} from 'libs/shared/tree'
 import { getPathTree } from './note-path'
 
 export class TreeStore {

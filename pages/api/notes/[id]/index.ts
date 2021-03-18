@@ -1,10 +1,10 @@
 import { strCompress } from 'packages/shared'
-import { api } from 'services/api'
-import { metaToJson } from 'services/meta'
-import { useAuth } from 'services/middlewares/auth'
-import { useStore } from 'services/middlewares/store'
-import { getPathNoteById } from 'services/note-path'
-import { PAGE_META_KEY } from 'shared/meta'
+import { api } from 'libs/server/api'
+import { metaToJson } from 'libs/server/meta'
+import { useAuth } from 'libs/server/middlewares/auth'
+import { useStore } from 'libs/server/middlewares/store'
+import { getPathNoteById } from 'libs/server/note-path'
+import { PAGE_META_KEY } from 'libs/shared/meta'
 
 export default api()
   .use(useAuth)
@@ -23,6 +23,12 @@ export default api()
   .get(async (req, res) => {
     const id = req.query.id as string
 
+    if (id === 'root') {
+      return res.json({
+        id,
+      })
+    }
+
     const { content, meta } = await req.store.getObjectAndMeta(
       getPathNoteById(id),
       PAGE_META_KEY
@@ -34,9 +40,9 @@ export default api()
     const jsonMeta = metaToJson(meta)
 
     res.json({
+      id,
       content,
       ...jsonMeta,
-      id,
     })
   })
   .post(async (req, res) => {
@@ -54,5 +60,5 @@ export default api()
       meta: oldMeta,
     })
 
-    res.end()
+    res.status(204).end()
   })

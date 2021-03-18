@@ -1,6 +1,6 @@
 import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarNoteList from 'components/sidebar/sidebar-list'
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 import { FC } from 'react'
 import classNames from 'classnames'
 

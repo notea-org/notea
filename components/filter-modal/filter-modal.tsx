@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Modal, ModalProps } from '@material-ui/core'
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 
 const FilterModal: FC<{
   open: ModalProps['open']

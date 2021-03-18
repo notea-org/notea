@@ -1,10 +1,10 @@
-import { SearchState } from 'containers/search'
+import { SearchState } from 'libs/web/state/search'
 import { FC } from 'react'
 import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
 import SearchItem from './search-item'
-import { NoteModel } from 'containers/note'
+import { NoteModel } from 'libs/web/state/note'
 
 const Search: FC = () => {
   const {

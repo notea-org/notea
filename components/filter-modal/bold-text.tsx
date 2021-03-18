@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react'
-import { searchRangeText } from 'shared/text'
+import { searchRangeText } from 'libs/shared/text'
 
 const BoldText: FC<{
   text?: string

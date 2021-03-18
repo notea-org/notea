@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { FC } from 'react'
-import { NoteStoreItem } from 'services/local-store'
+import { NoteCacheItem } from 'libs/web/cache'
 import BoldText from 'components/filter-modal/bold-text'
 import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import { TrashState } from 'containers/trash'
+import { TrashState } from 'libs/web/state/trash'
 
 const TrashItem: FC<{
-  note: NoteStoreItem
+  note: NoteCacheItem
   keyword?: string
 }> = ({ note, keyword }) => {
   const { closeModal, restoreNote, deleteNote } = TrashState.useContainer()

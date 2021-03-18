@@ -1,12 +1,12 @@
-import { SearchState } from 'containers/search'
+import { SearchState } from 'libs/web/state/search'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
-import { NoteStoreItem } from 'services/local-store'
+import { NoteCacheItem } from 'libs/web/cache'
 import BoldText from 'components/filter-modal/bold-text'
 
 const SearchItem: FC<{
-  note: NoteStoreItem
+  note: NoteCacheItem
   keyword?: string
 }> = ({ note, keyword }) => {
   const { closeModal } = SearchState.useContainer()

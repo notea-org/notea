@@ -1,27 +1,29 @@
-import { NoteModel, NoteState } from 'containers/note'
+import { NoteState } from 'libs/web/state/note'
 import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import LayoutMain from 'components/layout/layout-main'
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState } from 'libs/web/state/tree'
 import NoteNav from 'components/note-nav'
 import dynamic from 'next/dynamic'
 import { GetServerSideProps, NextPage } from 'next'
-import withTree from 'services/with-tree'
-import withUA from 'services/with-ua'
+import withTree from 'libs/server/with-tree'
+import withUA from 'libs/server/with-ua'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
-import { UIState } from 'containers/ui'
-import { TreeModel } from 'shared/tree'
+import { UIState } from 'libs/web/state/ui'
+import { TreeModel } from 'libs/shared/tree'
 import Link from 'next/link'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
 const EditContainer = () => {
-  const { title } = UIState.useContainer()
+  const {
+    title: { updateTitle },
+  } = UIState.useContainer()
   const { darkModeActive } = useDarkMode()
   const { genNewId } = NoteTreeState.useContainer()
-  const { getById, setNote, note } = NoteState.useContainer()
+  const { fetchNote, initNote, note } = NoteState.useContainer()
   const { query } = useRouter()
 
   const loadNoteById = useCallback(
@@ -34,7 +36,7 @@ const EditContainer = () => {
 
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
-        getById(id).catch((msg) => {
+        fetchNote(id).catch((msg) => {
           if (msg.status === 404) {
             // todo: toast
             console.error('页面不存在')
@@ -42,14 +44,13 @@ const EditContainer = () => {
           router.push('/', undefined, { shallow: true })
         })
       } else {
-        setNote({
+        initNote({
           id,
-          title: '',
           content: '\n',
-        } as NoteModel)
+        })
       }
     },
-    [genNewId, getById, setNote]
+    [fetchNote, genNewId, initNote]
   )
 
   useEffect(() => {
@@ -57,8 +58,8 @@ const EditContainer = () => {
   }, [loadNoteById, query.id])
 
   useEffect(() => {
-    title.updateTitle(note.title)
-  }, [note.title, title])
+    updateTitle(note?.title)
+  }, [note?.title, updateTitle])
 
   return query.id !== 'welcome' ? (
     <>

@@ -6,6 +6,10 @@ export function getPathTrash() {
   return `trash`
 }
 
+export function getSettings() {
+  return `settings`
+}
+
 export function getPathNoteById(id: string) {
   return `notes/${id}`
 }

@@ -5,15 +5,18 @@ import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
 import IconSun from 'heroicons/react/outline/Sun'
 import IconGlobe from 'heroicons/react/outline/Globe'
 import IconInbox from 'heroicons/react/outline/Inbox'
+import IconCog from 'heroicons/react/outline/Cog'
 import { forwardRef, HTMLProps, useCallback } from 'react'
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
-import { SearchState } from 'containers/search'
+import { SearchState } from 'libs/web/state/search'
 import Search from 'components/search'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import { TrashState } from 'containers/trash'
+import { TrashState } from 'libs/web/state/trash'
 import Trash from 'components/trash'
+import Link from 'next/link'
+import dayjs from 'dayjs'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -120,9 +123,23 @@ const ButtonTrash = () => {
 
 const ButtonDailyNotes = () => {
   return (
-    <HotkeyTooltip text="Daily Notes" keys={['cmd', `\``]}>
-      <ButtonItem aria-label="daily notes">
-        <IconInbox />
+    <Link href={`/note/${dayjs().format('YYYY-MM-DD')}`}>
+      <a>
+        <HotkeyTooltip text="Daily Notes" keys={['cmd', `\``]}>
+          <ButtonItem aria-label="daily notes">
+            <IconInbox />
+          </ButtonItem>
+        </HotkeyTooltip>
+      </a>
+    </Link>
+  )
+}
+
+const ButtonSettings = () => {
+  return (
+    <HotkeyTooltip text="Settings">
+      <ButtonItem aria-label="settings">
+        <IconCog />
       </ButtonItem>
     </HotkeyTooltip>
   )
@@ -142,6 +159,8 @@ const SidebarTool = () => {
       </TrashState.Provider>
 
       <ButtonDailyNotes />
+
+      <ButtonSettings />
 
       <div className="mt-auto">
         <ButtonMenu></ButtonMenu>

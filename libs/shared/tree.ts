@@ -1,5 +1,5 @@
 import { moveItemOnTree, mutateTree, TreeData, TreeItem } from '@atlaskit/tree'
-import { NoteModel } from 'containers/note'
+import { NoteModel } from 'libs/web/state/note'
 import {
   clone,
   filter,

@@ -1,4 +1,4 @@
-import { UIState } from 'containers/ui'
+import { UIState } from 'libs/web/state/ui'
 import Split from 'react-split'
 import { FC, useCallback, useEffect, useRef } from 'react'
 

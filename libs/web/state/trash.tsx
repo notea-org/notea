@@ -4,7 +4,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import useFetch, { CachePolicies } from 'use-http'
 import { map, reduce, some } from 'lodash'
 import { NoteTreeState } from './tree'
-import TreeActions from 'shared/tree'
+import TreeActions from 'libs/shared/tree'
 import { NoteModel } from './note'
 
 function useTrashData() {

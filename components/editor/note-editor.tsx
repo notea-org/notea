@@ -1,5 +1,5 @@
 import MarkdownEditor from 'rich-markdown-editor'
-import { NoteModel, NoteState } from 'containers/note'
+import { NoteModel, NoteState } from 'libs/web/state/note'
 import { KeyboardEvent, useCallback, useRef, useState } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
 import router from 'next/router'
@@ -39,13 +39,14 @@ const NoteEditor = () => {
       if (isNew) {
         data.pid = (router.query.pid as string) || 'root'
         const item = await createNote(data)
-        const noteUrl = `/note/${item.id}`
+        const noteUrl = `/note/${item?.id}`
 
         if (router.asPath !== noteUrl) {
           await router.replace(noteUrl, undefined, { shallow: true })
         }
+      } else {
+        await updateNote(data)
       }
-      await updateNote(data)
     },
     500
   )
@@ -83,8 +84,8 @@ const NoteEditor = () => {
         <TextareaAutosize
           className="outline-none w-full resize-none block bg-transparent"
           placeholder="新页面"
-          defaultValue={note.title}
-          key={note.id}
+          defaultValue={note?.title}
+          key={note?.id}
           onKeyDown={onInputTitle}
           onChange={onTitleChange}
           maxLength={128}
@@ -92,9 +93,9 @@ const NoteEditor = () => {
         />
       </h1>
       <StyledMarkdownEditor
-        id={note.id}
+        id={note?.id}
         ref={editorEl}
-        value={note.content}
+        value={note?.content}
         onChange={onEditorChange}
         theme={darkModeActive ? darkTheme : lightTheme}
         uploadImage={onUploadImage}

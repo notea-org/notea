@@ -1,10 +1,10 @@
 import classNames from 'classnames'
-import { NoteState } from 'containers/note'
-import { UIState } from 'containers/ui'
+import { NoteState } from 'libs/web/state/note'
+import { UIState } from 'libs/web/state/ui'
 import IconMenu from 'heroicons/react/outline/Menu'
 import { useCallback, MouseEvent } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState } from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
 import Link from 'next/link'
 
@@ -30,6 +30,11 @@ const NoteNav = () => {
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
+
+  if (!note) {
+    // todo
+    return null
+  }
 
   return (
     <nav

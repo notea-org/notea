@@ -1,8 +1,8 @@
-import { NoteState } from 'containers/note'
-import { searchNote } from 'containers/search'
+import { NoteState } from 'libs/web/state/note'
+import { searchNote } from 'libs/web/state/search'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import { searchRangeText } from 'shared/text'
+import { searchRangeText } from 'libs/shared/text'
 import useFetch, { CachePolicies } from 'use-http'
 
 const onSearchLink = async (keyword: string) => {

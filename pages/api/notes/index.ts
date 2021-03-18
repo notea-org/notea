@@ -1,17 +1,16 @@
 import { genId } from '@notea/shared'
-import { api } from 'services/api'
-import { jsonToMeta } from 'services/meta'
-import { useAuth } from 'services/middlewares/auth'
-import { useStore } from 'services/middlewares/store'
-import { getPathNoteById } from 'services/note-path'
+import { api } from 'libs/server/api'
+import { jsonToMeta } from 'libs/server/meta'
+import { useAuth } from 'libs/server/middlewares/auth'
+import { useStore } from 'libs/server/middlewares/store'
+import { getPathNoteById } from 'libs/server/note-path'
 
 export default api()
   .use(useAuth)
   .use(useStore)
   .post(async (req, res) => {
-    const { content = '\n', meta } = req.body
+    const { content = '\n', ...meta } = req.body
     let id = req.body.id as string
-    const notePath = getPathNoteById(id)
 
     if (!id) {
       id = genId()
@@ -27,7 +26,7 @@ export default api()
     }
     const metaData = jsonToMeta(metaWithModel)
 
-    await req.store.putObject(notePath, content, {
+    await req.store.putObject(getPathNoteById(id), content, {
       contentType: 'text/markdown',
       meta: metaData,
     })

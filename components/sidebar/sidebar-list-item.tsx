@@ -1,4 +1,4 @@
-import { NoteModel } from 'containers/note'
+import { NoteModel } from 'libs/web/state/note'
 import Link from 'next/link'
 import React, { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'
@@ -6,7 +6,7 @@ import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemMenu from './sidebar-item-menu'
 import IconButton from 'components/icon-button'
-import { NoteTreeState } from 'containers/tree'
+import { NoteTreeState } from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 
 const SidebarListItem: FC<{
@@ -18,6 +18,9 @@ const SidebarListItem: FC<{
   hasChildren: boolean
   snapshot: {
     isDragging: boolean
+  }
+  style?: {
+    paddingLeft: number
   }
 }> = ({
   item,
@@ -43,10 +46,12 @@ const SidebarListItem: FC<{
   )
 
   return (
-    <li {...attrs} ref={innerRef}>
-      <div
+    <>
+      <li
+        {...attrs}
+        ref={innerRef}
         className={classNames(
-          'group flex px-2 items-center overflow-hidden hover:bg-gray-300 text-gray-700',
+          'flex items-center group pr-2 overflow-hidden hover:bg-gray-300 text-gray-700',
           {
             'shadow bg-gray-300': snapshot.isDragging,
             'bg-gray-200': query.id === item.id,
@@ -54,7 +59,7 @@ const SidebarListItem: FC<{
         )}
       >
         <Link href={`/note/${item.id}`} shallow>
-          <a className="flex flex-1 truncate py-1.5">
+          <a className="flex flex-1 truncate px-2 py-1.5">
             <IconButton
               className="mr-1"
               icon="ChevronRight"
@@ -85,18 +90,23 @@ const SidebarListItem: FC<{
             className="ml-1 hidden group-hover:block"
           ></IconButton>
         </HotkeyTooltip>
-      </div>
+      </li>
 
       {!hasChildren && isExpanded && (
-        <div className="ml-8 py-1.5 text-gray-400">
+        <li
+          className="ml-8 py-1.5 text-gray-400 select-none"
+          style={{
+            paddingLeft: attrs.style?.paddingLeft,
+          }}
+        >
           {initLoaded ? (
             'No pages inside'
           ) : (
             <Skeleton width={80} variant="text" />
           )}
-        </div>
+        </li>
       )}
-    </li>
+    </>
   )
 }
 
