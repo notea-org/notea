@@ -41,7 +41,7 @@ export default api()
 
     res.json({
       id,
-      content,
+      content: content || '\n',
       ...jsonMeta,
     })
   })

@@ -1,6 +1,6 @@
 import MarkdownEditor from 'rich-markdown-editor'
 import { NoteModel, NoteState } from 'libs/web/state/note'
-import { KeyboardEvent, useCallback, useRef, useState } from 'react'
+import { KeyboardEvent, useCallback, useRef } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
 import router from 'next/router'
 import styled from 'styled-components'
@@ -26,19 +26,15 @@ const NoteEditor = () => {
   } = useEditorState()
   const { darkModeActive } = useDarkMode()
   const { updateNote, createNote, note } = NoteState.useContainer()
-  const [title, setTitle] = useState()
   const editorEl = useRef<MarkdownEditor>(null)
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
       const isNew = has(router.query, 'new')
 
-      if (!data.title && title) {
-        data.title = title
-      }
       if (isNew) {
         data.pid = (router.query.pid as string) || 'root'
-        const item = await createNote(data)
+        const item = await createNote({ ...note, ...data })
         const noteUrl = `/note/${item?.id}`
 
         if (router.asPath !== noteUrl) {
@@ -66,7 +62,6 @@ const NoteEditor = () => {
     (event) => {
       const title = event.target.value
       onNoteChange.callback({ title })
-      setTitle(title)
     },
     [onNoteChange]
   )

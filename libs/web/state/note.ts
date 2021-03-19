@@ -38,10 +38,7 @@ const useNote = () => {
         throw new Error(`找不到 note:${id}`)
       }
 
-      if (!result?.content) {
-        result.content = '\n'
-      }
-
+      result.content = result.content || '\n'
       setNote(result)
       await noteCache.setItem(id, result)
     },
@@ -58,13 +55,9 @@ const useNote = () => {
   )
 
   const createNote = useCallback(
-    async (data: Partial<NoteModel>) => {
+    async (body: Partial<NoteModel>) => {
       abort()
 
-      const body = {
-        id: data.id || note?.id,
-        ...data,
-      }
       const result = await create(body)
 
       if (!result) {
@@ -72,19 +65,15 @@ const useNote = () => {
         return
       }
 
-      const newNote: NoteModel = {
-        ...note,
-        ...result,
-      }
+      result.content = result.content || '\n'
+      await noteCache.setItem(result.id, result)
+      delete result.content
+      addItem(result)
+      setNote(result)
 
-      await noteCache.setItem(newNote.id, newNote)
-      delete newNote.content
-      setNote(newNote)
-      addItem(newNote)
-
-      return newNote
+      return result
     },
-    [abort, create, addItem, note]
+    [abort, create, addItem]
   )
 
   const createNoteWithTitle = useCallback(
@@ -100,12 +89,13 @@ const useNote = () => {
         return
       }
 
+      result.content = result.content || '\n'
       await noteCache.setItem(result.id, result)
       addItem(result)
 
-      return note
+      return { id }
     },
-    [addItem, create, genNewId, note]
+    [addItem, create, genNewId]
   )
 
   const updateNote = useCallback(
@@ -141,10 +131,25 @@ const useNote = () => {
     })
   }, [])
 
+  const findOrCreateNote = useCallback(
+    async (id: string, note: Partial<NoteModel>) => {
+      try {
+        await fetchNote(id)
+      } catch (e) {
+        await createNote({
+          id,
+          ...note,
+        })
+      }
+    },
+    [createNote, fetchNote]
+  )
+
   return {
     note,
     fetchNote,
     createNote,
+    findOrCreateNote,
     createNoteWithTitle,
     updateNote,
     removeNote,

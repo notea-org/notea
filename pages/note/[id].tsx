@@ -24,19 +24,22 @@ const EditContainer = () => {
   } = UIState.useContainer()
   const { darkModeActive } = useDarkMode()
   const { genNewId } = NoteTreeState.useContainer()
-  const { fetchNote, initNote, note } = NoteState.useContainer()
+  const {
+    fetchNote,
+    findOrCreateNote,
+    initNote,
+    note,
+  } = NoteState.useContainer()
   const { query } = useRouter()
 
   const loadNoteById = useCallback(
     async (id: string) => {
       const pid = router.query.pid as string
       if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(id)) {
-        fetchNote(id).catch(() => {
-          initNote({
-            id,
-            title: id,
-            content: '\n',
-          })
+        findOrCreateNote(id, {
+          id,
+          title: id,
+          content: '\n',
         })
       } else if (id === 'welcome') {
         return
@@ -62,7 +65,7 @@ const EditContainer = () => {
         })
       }
     },
-    [fetchNote, genNewId, initNote]
+    [fetchNote, findOrCreateNote, genNewId, initNote]
   )
 
   useEffect(() => {

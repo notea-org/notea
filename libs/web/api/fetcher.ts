@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 interface Params {
   url: string
@@ -8,7 +8,7 @@ interface Params {
 export function useFetcher() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
-  const [abortController, setAbortController] = useState<AbortController>()
+  const abortRef = useRef<AbortController>()
 
   const request = useCallback(async function request<Payload, ReponseData>(
     params: Params,
@@ -17,7 +17,7 @@ export function useFetcher() {
     const controller = new AbortController()
 
     setLoading(true)
-    setAbortController(controller)
+    abortRef.current = controller
 
     try {
       const response = await fetch(params.url, {
@@ -47,8 +47,8 @@ export function useFetcher() {
   [])
 
   const abort = useCallback(() => {
-    abortController?.abort()
-  }, [abortController])
+    abortRef.current?.abort()
+  }, [])
 
   return { loading, request, abort, error }
 }
