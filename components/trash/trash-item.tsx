@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
 import BoldText from 'components/filter-modal/bold-text'
 import IconButton from 'components/icon-button'
@@ -10,7 +10,22 @@ const TrashItem: FC<{
   note: NoteCacheItem
   keyword?: string
 }> = ({ note, keyword }) => {
-  const { closeModal, restoreNote, deleteNote } = TrashState.useContainer()
+  const {
+    closeModal,
+    restoreNote,
+    deleteNote,
+    filterNotes,
+  } = TrashState.useContainer()
+
+  const onClickRestore = useCallback(async () => {
+    await restoreNote(note)
+    filterNotes(keyword)
+  }, [filterNotes, keyword, note, restoreNote])
+
+  const onClickDelete = useCallback(async () => {
+    await deleteNote(note.id)
+    filterNotes(keyword)
+  }, [deleteNote, note.id, filterNotes, keyword])
 
   return (
     <li className="hover:bg-gray-200 cursor-pointer py-2 px-4 flex">
@@ -27,7 +42,7 @@ const TrashItem: FC<{
 
       <HotkeyTooltip text="恢复">
         <IconButton
-          onClick={() => restoreNote(note)}
+          onClick={onClickRestore}
           className="text-gray-500 mr-1"
           icon="Reply"
         ></IconButton>
@@ -35,7 +50,7 @@ const TrashItem: FC<{
 
       <HotkeyTooltip text="彻底删除">
         <IconButton
-          onClick={() => deleteNote(note.id)}
+          onClick={onClickDelete}
           className="text-gray-500"
           icon="Trash"
         ></IconButton>

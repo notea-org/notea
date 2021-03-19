@@ -46,12 +46,16 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     setTree(tree)
   }, [])
 
-  const removeItem = useCallback((id: string) => {
-    setTree(TreeActions.removeItem(treeRef.current, id))
+  const removeItem = useCallback(async (id: string) => {
+    const tree = TreeActions.removeItem(treeRef.current, id)
 
-    const items = TreeActions.flattenTree(treeRef.current, id)
-    map(items, (item) =>
-      noteCache.mutateItem(item.id, { deleted: NOTE_DELETED.DELETED })
+    setTree(tree)
+    await Promise.all(
+      map(
+        TreeActions.flattenTree(tree, id),
+        async (item) =>
+          await noteCache.mutateItem(item.id, { deleted: NOTE_DELETED.DELETED })
+      )
     )
   }, [])
 
@@ -93,11 +97,20 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     [mutate]
   )
 
-  const restoreItem = useCallback((id: string, pid: string) => {
-    setTree(TreeActions.restoreItem(treeRef.current, id, pid))
+  const restoreItem = useCallback(async (id: string, pid: string) => {
+    const tree = TreeActions.restoreItem(treeRef.current, id, pid)
+
+    setTree(tree)
+    await Promise.all(
+      map(
+        TreeActions.flattenTree(tree, id),
+        async (item) =>
+          await noteCache.mutateItem(item.id, { deleted: NOTE_DELETED.NORMAL })
+      )
+    )
   }, [])
 
-  const deleteItem = useCallback((id: string) => {
+  const deleteItem = useCallback(async (id: string) => {
     setTree(TreeActions.deleteItem(treeRef.current, id))
   }, [])
 

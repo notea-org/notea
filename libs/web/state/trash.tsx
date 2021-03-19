@@ -14,8 +14,9 @@ function useTrashData() {
   const { restoreItem, deleteItem } = NoteTreeState.useContainer()
   const { mutate, loading } = useTrashAPI()
 
-  const filterNotes = useCallback(async (keyword?: string) => {
-    const data = await searchNote(keyword || '', NOTE_DELETED.DELETED)
+  const filterNotes = useCallback(async (keyword = '') => {
+    const data = await searchNote(keyword, NOTE_DELETED.DELETED)
+
     setKeyword(keyword)
     setList(data)
   }, [])
@@ -23,11 +24,8 @@ function useTrashData() {
   const restoreNote = useCallback(
     async (note: NoteModel) => {
       // 父页面被删除时，恢复页面的 parent 改成 root
-      if (
-        !note.pid ||
-        // !tree.items[note.pid] ||
-        (await noteCache.getItem(note.pid))?.deleted === NOTE_DELETED.DELETED
-      ) {
+      const pNote = note.pid && (await noteCache.getItem(note.pid))
+      if (!note.pid || !pNote || pNote?.deleted === NOTE_DELETED.DELETED) {
         note.pid = 'root'
       }
 
@@ -41,7 +39,7 @@ function useTrashData() {
       await noteCache.mutateItem(note.id, {
         deleted: NOTE_DELETED.NORMAL,
       })
-      restoreItem(note.id, note.pid)
+      await restoreItem(note.id, note.pid)
 
       return note
     },
@@ -57,7 +55,7 @@ function useTrashData() {
         },
       })
       await noteCache.removeItem(id)
-      deleteItem(id)
+      await deleteItem(id)
     },
     [deleteItem, mutate]
   )

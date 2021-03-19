@@ -52,7 +52,7 @@ const useNote = () => {
     async (id: string) => {
       await mutate(id, { deleted: NOTE_DELETED.DELETED })
       await noteCache.mutateItem(id, { deleted: NOTE_DELETED.DELETED })
-      removeItem(id)
+      await removeItem(id)
     },
     [mutate, removeItem]
   )
