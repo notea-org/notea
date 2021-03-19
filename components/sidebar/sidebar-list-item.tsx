@@ -100,7 +100,7 @@ const SidebarListItem: FC<{
           }}
         >
           {initLoaded ? (
-            'No pages inside'
+            'No notes inside'
           ) : (
             <Skeleton width={80} variant="text" />
           )}

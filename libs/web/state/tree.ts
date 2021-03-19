@@ -3,17 +3,18 @@ import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteModel } from './note'
-import useFetch from 'use-http'
 import TreeActions, {
   DEFAULT_TREE,
   movePosition,
+  TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
 import { useNoteAPI } from '../api/note'
 import { noteCache } from '../cache/note'
+import { useTreeAPI } from '../api/tree'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
-  const { post } = useFetch('/api/tree')
+  const { mutate, loading } = useTreeAPI()
   const [tree, setTree] = useState<TreeModel>(initData)
   const [initLoaded, setInitLoaded] = useState<boolean>(false)
   const { fetch: fetchNote } = useNoteAPI()
@@ -68,29 +69,29 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       setTree(
         TreeActions.moveItem(treeRef.current, data.source, data.destination)
       )
-      await post({
+      await mutate({
         action: 'move',
         data,
       })
     },
-    [post]
+    [mutate]
   )
 
   const mutateItem = useCallback(
-    async (id: string, data) => {
+    async (id: string, data: Partial<TreeItemModel>) => {
       setTree(TreeActions.mutateItem(treeRef.current, id, data))
       delete data.data
       if (!isEmpty(data)) {
-        await post({
+        await mutate({
           action: 'mutate',
           data: {
-            id,
             ...data,
+            id,
           },
         })
       }
     },
-    [post]
+    [mutate]
   )
 
   const restoreItem = useCallback((id: string, pid: string) => {
@@ -129,6 +130,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     restoreItem,
     deleteItem,
     getPaths,
+    loading,
     initLoaded,
   }
 }

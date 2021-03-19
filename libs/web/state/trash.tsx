@@ -1,19 +1,17 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 import escapeStringRegexp from 'escape-string-regexp'
-import useFetch, { CachePolicies } from 'use-http'
 import { map, reduce, some } from 'lodash'
 import { NoteTreeState } from './tree'
 import TreeActions from 'libs/shared/tree'
 import { NoteModel } from './note'
+import { useTrashAPI } from '../api/trash'
 
 function useTrashData() {
   const [keyword, setKeyword] = useState<string>()
   const [filterData, setFilterData] = useState<NoteModel[]>()
   const { tree, restoreItem, deleteItem } = NoteTreeState.useContainer()
-  const { post } = useFetch('/api/trash', {
-    cachePolicy: CachePolicies.NO_CACHE,
-  })
+  const { mutate, loading } = useTrashAPI()
 
   const getDeletedNotes = useCallback(() => {
     const items = TreeActions.getUnusedItems(tree)
@@ -56,7 +54,7 @@ function useTrashData() {
         note.pid = 'root'
       }
 
-      await post({
+      await mutate({
         action: 'restore',
         data: {
           id: note.id,
@@ -67,12 +65,12 @@ function useTrashData() {
 
       return note
     },
-    [post, getDeletedNotes, restoreItem, tree]
+    [getDeletedNotes, tree.items, mutate, restoreItem]
   )
 
   const deleteNote = useCallback(
     async (id: string) => {
-      await post({
+      await mutate({
         action: 'delete',
         data: {
           id,
@@ -80,12 +78,13 @@ function useTrashData() {
       })
       deleteItem(id)
     },
-    [deleteItem, post]
+    [deleteItem, mutate]
   )
 
   return {
     filterData,
     keyword,
+    loading,
     filterNotes,
     restoreNote,
     deleteNote,

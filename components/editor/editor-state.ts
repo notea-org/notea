@@ -3,7 +3,7 @@ import { searchNote } from 'libs/web/state/search'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { searchRangeText } from 'libs/shared/text'
-import useFetch, { CachePolicies } from 'use-http'
+import { useFetcher } from 'libs/web/api/fetcher'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword)
@@ -23,15 +23,17 @@ const onSearchLink = async (keyword: string) => {
 const useEditorState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
-  const upload = useFetch('/api/upload', {
-    cachePolicy: CachePolicies.NO_CACHE,
-  })
+  const { request } = useFetcher()
 
   const onCreateLink = useCallback(
     async (title) => {
-      const { id } = await createNoteWithTitle(title)
+      const result = await createNoteWithTitle(title)
 
-      return id
+      if (!result) {
+        throw new Error('todo')
+      }
+
+      return result.id
     },
     [createNoteWithTitle]
   )
@@ -47,10 +49,19 @@ const useEditorState = () => {
     async (file) => {
       const data = new FormData()
       data.append('file', file)
-      const result = await upload.post(data)
+      const result = await request<FormData, { url: string }>(
+        {
+          method: 'POST',
+          url: `/api/upload`,
+        },
+        data
+      )
+      if (!result) {
+        throw new Error('todo')
+      }
       return result.url
     },
-    [upload]
+    [request]
   )
 
   return { onCreateLink, onSearchLink, onClickLink, onUploadImage }

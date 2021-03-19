@@ -1,25 +1,29 @@
+import { useFetcher } from 'libs/web/api/fetcher'
 import router from 'next/router'
 import { FormEvent, useCallback } from 'react'
-import useFetch, { CachePolicies } from 'use-http'
 
 const LoginPage = () => {
-  const { post } = useFetch('/api/auth/login', {
-    cachePolicy: CachePolicies.NO_CACHE,
-  })
+  const { request } = useFetcher()
 
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      const data = await post({
-        password: e.currentTarget.password.value,
-      })
-      if (data.isLoggedIn) {
+      const data = await request<{ password: string }, { isLoggedIn: boolean }>(
+        {
+          url: '/api/auth/login',
+          method: 'POST',
+        },
+        {
+          password: e.currentTarget.password.value,
+        }
+      )
+      if (data?.isLoggedIn) {
         location.href = (router.query.redirect as string) || '/'
       } else {
         console.error(data)
       }
     },
-    [post]
+    [request]
   )
 
   return (

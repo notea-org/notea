@@ -49,7 +49,7 @@ function addItem(tree: TreeModel, id: string, pid = 'root') {
   return clone(tree)
 }
 
-function mutateItem(tree: TreeModel, id: string, data: TreeItemModel) {
+function mutateItem(tree: TreeModel, id: string, data: Partial<TreeItemModel>) {
   if (data.data) {
     data.data = {
       ...tree.items[id]?.data,
