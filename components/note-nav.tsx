@@ -39,29 +39,39 @@ const NoteNav = () => {
   return (
     <nav
       className={classNames(
-        'absolute bg-gray-50 z-10 p-2 text-sm flex left-0 right-0',
+        'absolute bg-gray-50 z-10 p-2 flex items-center -left-1.5 right-0',
         {
           shadow: ua.isMobileOnly,
         }
       )}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
-      <span className="flex-auto">
-        <Breadcrumbs className="text-gray-800" aria-label="breadcrumb">
+      <div className="flex-auto">
+        <Breadcrumbs
+          maxItems={2}
+          className="text-gray-800"
+          aria-label="breadcrumb leading-none"
+          classes={{
+            ol: 'leading-none',
+            li: 'leading-none',
+          }}
+        >
           {getPaths(note)
             .reverse()
             .map((path) => (
               <Link key={path.id} href={`/note/${path.id}`}>
-                <a className="hover:bg-gray-200 px-1 py-0.5 rounded">
+                <a className="hover:bg-gray-200 px-1 py-0.5 rounded text-sm">
                   {path.title}
                 </a>
               </Link>
             ))}
-          <span>{note.title}</span>
+          <span className="text-gray-600 text-sm" aria-current="page">
+            {note.title}
+          </span>
         </Breadcrumbs>
-      </span>
+      </div>
       <div
-        className={classNames('mr-2 transition-opacity delay-100', {
+        className={classNames('flex mr-2 transition-opacity delay-100', {
           'opacity-0': !loading,
         })}
       >
