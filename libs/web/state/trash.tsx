@@ -6,6 +6,8 @@ import { NoteTreeState } from './tree'
 import TreeActions from 'libs/shared/tree'
 import { NoteModel } from './note'
 import { useTrashAPI } from '../api/trash'
+import { noteCache } from '../cache/note'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
 function useTrashData() {
   const [keyword, setKeyword] = useState<string>()
@@ -56,6 +58,9 @@ function useTrashData() {
           parentId: note.pid,
         },
       })
+      await noteCache.mutateItem(note.id, {
+        deleted: NOTE_DELETED.NORMAL,
+      })
       restoreItem(note.id, note.pid)
 
       return note
@@ -71,6 +76,7 @@ function useTrashData() {
           id,
         },
       })
+      await noteCache.removeItem(id)
       deleteItem(id)
     },
     [deleteItem, mutate]

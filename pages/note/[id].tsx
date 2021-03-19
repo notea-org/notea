@@ -14,6 +14,7 @@ import { useDarkMode } from 'next-dark-mode'
 import { UIState } from 'libs/web/state/ui'
 import { TreeModel } from 'libs/shared/tree'
 import Link from 'next/link'
+import { noteCache } from 'libs/web/cache/note'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
@@ -27,9 +28,17 @@ const EditContainer = () => {
   const { query } = useRouter()
 
   const loadNoteById = useCallback(
-    (id: string) => {
+    async (id: string) => {
       const pid = router.query.pid as string
-      if (id === 'welcome') {
+      if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(id)) {
+        fetchNote(id).catch(() => {
+          initNote({
+            id,
+            title: id,
+            content: '\n',
+          })
+        })
+      } else if (id === 'welcome') {
         return
       } else if (id === 'new') {
         const url = `/note/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
@@ -37,13 +46,16 @@ const EditContainer = () => {
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
         fetchNote(id).catch((msg) => {
-          if (msg.status === 404) {
-            // todo: toast
-            console.error('页面不存在')
-          }
+          // todo: toast
+          console.error(msg)
           router.push('/', undefined, { shallow: true })
         })
       } else {
+        if (await noteCache.getItem(id)) {
+          router.push(`/note/${id}`, undefined, { shallow: true })
+          return
+        }
+
         initNote({
           id,
           content: '\n',
@@ -55,7 +67,7 @@ const EditContainer = () => {
 
   useEffect(() => {
     loadNoteById(query.id as string)
-  }, [loadNoteById, query.id])
+  }, [loadNoteById, query])
 
   useEffect(() => {
     updateTitle(note?.title)
