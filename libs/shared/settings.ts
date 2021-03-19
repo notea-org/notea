@@ -1,27 +1,32 @@
-import { isArray, isNumber, isString } from 'lodash'
+import { isArray, isBoolean, isNumber, isString } from 'lodash'
 
 export interface Settings {
-  splitSizes: [number, number]
-  dailyNotesId: string
+  split_sizes: [number, number]
+  daily_root_id: string
+  sidebar_is_fold: boolean
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  splitSizes: [30, 70],
-  dailyNotesId: 'root',
+  split_sizes: [30, 70],
+  daily_root_id: 'root',
+  sidebar_is_fold: false,
 }
 
-export function formatSettings(body: Record<string, any>) {
+export function formatSettings(body: Record<string, any> = {}) {
   const settings: Settings = DEFAULT_SETTINGS
 
-  if (isString(body.dailyNotesId)) {
-    settings.dailyNotesId = body.dailyNotesId
+  if (isString(body.daily_root_id)) {
+    settings.daily_root_id = body.daily_root_id
   }
   if (
-    isArray(body.splitSizes) &&
-    isNumber(body.splitSizes[0]) &&
-    isNumber(body.splitSizes[1])
+    isArray(body.split_sizes) &&
+    isNumber(body.split_sizes[0]) &&
+    isNumber(body.split_sizes[1])
   ) {
-    settings.splitSizes = [body.splitSizes[0], body.splitSizes[1]]
+    settings.split_sizes = [body.split_sizes[0], body.split_sizes[1]]
+  }
+  if (isBoolean(body.sidebar_is_fold)) {
+    settings.sidebar_is_fold = body.sidebar_is_fold
   }
 
   return settings

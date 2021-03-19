@@ -7,14 +7,17 @@ import { NoteTreeState } from 'libs/web/state/tree'
 import NoteNav from 'components/note-nav'
 import dynamic from 'next/dynamic'
 import { GetServerSideProps, NextPage } from 'next'
-import withTree from 'libs/server/with-tree'
-import withUA from 'libs/server/with-ua'
+import withTree from 'libs/server/middlewares/tree'
+import withUA from 'libs/server/middlewares/ua'
 import classNames from 'classnames'
 import { useDarkMode } from 'next-dark-mode'
 import { UIState } from 'libs/web/state/ui'
 import { TreeModel } from 'libs/shared/tree'
 import Link from 'next/link'
 import { noteCache } from 'libs/web/cache/note'
+import { withSession } from 'libs/server/middlewares/session'
+import { withStore } from 'libs/server/middlewares/store'
+import withSettings from 'libs/server/middlewares/settings'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
@@ -108,7 +111,13 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 export default EditNotePage
 
 export const getServerSideProps: GetServerSideProps = withUA(
-  withTree(() => {
-    return {}
-  })
+  withSession(
+    withStore(
+      withTree(
+        withSettings(() => {
+          return {}
+        })
+      )
+    )
+  )
 )

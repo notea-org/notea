@@ -6,7 +6,7 @@ export function getPathTrash() {
   return `trash`
 }
 
-export function getSettings() {
+export function getPathSettings() {
   return `settings`
 }
 
