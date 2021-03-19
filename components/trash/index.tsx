@@ -12,7 +12,7 @@ const Trash: FC = () => {
     closeModal,
     filterNotes,
     keyword,
-    filterData,
+    list,
   } = TrashState.useContainer()
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Trash: FC = () => {
         keyword={keyword}
       />
       <FilterModalList
-        items={filterData}
+        items={list}
         ItemComponent={(item: NoteModel) => (
           <TrashItem note={item} keyword={keyword} key={item.id} />
         )}

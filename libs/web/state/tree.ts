@@ -12,6 +12,7 @@ import TreeActions, {
 import { useNoteAPI } from '../api/note'
 import { noteCache } from '../cache/note'
 import { useTreeAPI } from '../api/tree'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { mutate, loading } = useTreeAPI()
@@ -47,6 +48,11 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
   const removeItem = useCallback((id: string) => {
     setTree(TreeActions.removeItem(treeRef.current, id))
+
+    const items = TreeActions.flattenTree(treeRef.current, id)
+    map(items, (item) =>
+      noteCache.mutateItem(item.id, { deleted: NOTE_DELETED.DELETED })
+    )
   }, [])
 
   const genNewId = useCallback(() => {

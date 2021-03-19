@@ -4,9 +4,10 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { searchRangeText } from 'libs/shared/text'
 import { useFetcher } from 'libs/web/api/fetcher'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
 const onSearchLink = async (keyword: string) => {
-  const list = await searchNote(keyword)
+  const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
 
   return list.map((item) => ({
     title: item.title,

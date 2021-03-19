@@ -1,41 +1,31 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteCacheItem } from 'libs/web/cache'
 import escapeStringRegexp from 'escape-string-regexp'
 import { noteCache } from '../cache/note'
-import TreeActions from 'libs/shared/tree'
-import { map } from 'lodash'
-import { NoteTreeState } from './tree'
+import { NOTE_DELETED } from 'libs/shared/meta'
 
-export async function searchNote(keyword: string, ignoreIds: string[]) {
+export async function searchNote(keyword: string, deleted: NOTE_DELETED) {
   const data = [] as NoteCacheItem[]
   const re = new RegExp(escapeStringRegexp(keyword))
 
   await noteCache.iterate<NoteCacheItem, void>((note) => {
-    if (ignoreIds.includes(note.id)) return
+    if (note.deleted !== deleted) return
     if (re.test(note.rawContent || '') || re.test(note.title)) {
       data.push(note)
     }
   })
+
   return data
 }
 
 function useSearchData() {
   const [list, setList] = useState<NoteCacheItem[]>()
   const [keyword, setKeyword] = useState<string>()
-  const { tree } = NoteTreeState.useContainer()
-  const deletedIds = useMemo(
-    () => map(TreeActions.getUnusedItems(tree), (item) => item.id),
-    [tree]
-  )
-
-  const filterNotes = useCallback(
-    async (keyword?: string) => {
-      setKeyword(keyword)
-      setList(keyword ? await searchNote(keyword, deletedIds) : [])
-    },
-    [deletedIds]
-  )
+  const filterNotes = useCallback(async (keyword?: string) => {
+    setKeyword(keyword)
+    setList(keyword ? await searchNote(keyword, NOTE_DELETED.NORMAL) : [])
+  }, [])
 
   return { list, keyword, filterNotes }
 }

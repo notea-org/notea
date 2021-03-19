@@ -1,15 +1,6 @@
 import { moveItemOnTree, mutateTree, TreeData, TreeItem } from '@atlaskit/tree'
 import { NoteModel } from 'libs/web/state/note'
-import {
-  cloneDeep,
-  filter,
-  forEach,
-  pull,
-  reduce,
-  toArray,
-  union,
-  xorBy,
-} from 'lodash'
+import { cloneDeep, forEach, pull, reduce, union } from 'lodash'
 
 export interface TreeItemModel extends TreeItem {
   id: string
@@ -93,17 +84,6 @@ function restoreItem(tree: TreeModel, id: string, pid = 'root') {
   return tree
 }
 
-function getUnusedItems(tree: TreeModel) {
-  const usedItems = flattenTree(tree)
-  const allItems = toArray(tree.items)
-  const unusedItems = filter(
-    xorBy(allItems, usedItems, 'id'),
-    ({ id }) => id !== 'root'
-  )
-
-  return unusedItems
-}
-
 function deleteItem(tree: TreeModel, id: string) {
   tree = cloneDeep(tree)
   delete tree.items[id]
@@ -111,13 +91,16 @@ function deleteItem(tree: TreeModel, id: string) {
   return tree
 }
 
-const flattenTree = (tree: TreeModel): TreeItemModel[] => {
-  if (!tree.items[tree.rootId]) {
+const flattenTree = (
+  tree: TreeModel,
+  rootId = tree.rootId
+): TreeItemModel[] => {
+  if (!tree.items[rootId]) {
     return []
   }
 
   return reduce<string, TreeItemModel[]>(
-    tree.items[tree.rootId].children,
+    tree.items[rootId].children,
     (accum, itemId) => {
       const item = tree.items[itemId]
       const children = flattenTree({
@@ -137,8 +120,8 @@ const TreeActions = {
   removeItem,
   moveItem,
   restoreItem,
-  getUnusedItems,
   deleteItem,
+  flattenTree,
 }
 
 export default TreeActions

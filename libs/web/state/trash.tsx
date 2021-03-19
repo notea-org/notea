@@ -1,52 +1,32 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
-import escapeStringRegexp from 'escape-string-regexp'
-import { map, reduce, some } from 'lodash'
 import { NoteTreeState } from './tree'
-import TreeActions from 'libs/shared/tree'
 import { NoteModel } from './note'
 import { useTrashAPI } from '../api/trash'
 import { noteCache } from '../cache/note'
 import { NOTE_DELETED } from 'libs/shared/meta'
+import { searchNote } from './search'
+import { NoteCacheItem } from '../cache'
 
 function useTrashData() {
   const [keyword, setKeyword] = useState<string>()
-  const [filterData, setFilterData] = useState<NoteModel[]>()
-  const { tree, restoreItem, deleteItem } = NoteTreeState.useContainer()
+  const [list, setList] = useState<NoteCacheItem[]>()
+  const { restoreItem, deleteItem } = NoteTreeState.useContainer()
   const { mutate, loading } = useTrashAPI()
-  const deletedNotes = useMemo(
-    () => map(TreeActions.getUnusedItems(tree), (item) => item.data),
-    [tree]
-  )
 
-  const filterNotes = useCallback(
-    async (keyword?: string) => {
-      const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
-      const data = reduce<NoteModel | undefined, NoteModel[]>(
-        deletedNotes,
-        (acc, note) => {
-          if (!note) return acc
-          if (!re || re.test(note.title)) {
-            return [...acc, note]
-          }
-          return acc
-        },
-        []
-      )
-
-      setKeyword(keyword)
-      setFilterData(data)
-    },
-    [deletedNotes]
-  )
+  const filterNotes = useCallback(async (keyword?: string) => {
+    const data = await searchNote(keyword || '', NOTE_DELETED.DELETED)
+    setKeyword(keyword)
+    setList(data)
+  }, [])
 
   const restoreNote = useCallback(
     async (note: NoteModel) => {
       // 父页面被删除时，恢复页面的 parent 改成 root
       if (
         !note.pid ||
-        !tree.items[note.pid] ||
-        some(deletedNotes, (n) => n && n.id === note.pid)
+        // !tree.items[note.pid] ||
+        (await noteCache.getItem(note.pid))?.deleted === NOTE_DELETED.DELETED
       ) {
         note.pid = 'root'
       }
@@ -65,7 +45,7 @@ function useTrashData() {
 
       return note
     },
-    [deletedNotes, tree.items, mutate, restoreItem]
+    [mutate, restoreItem]
   )
 
   const deleteNote = useCallback(
@@ -83,7 +63,7 @@ function useTrashData() {
   )
 
   return {
-    filterData,
+    list,
     keyword,
     loading,
     filterNotes,
