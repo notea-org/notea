@@ -47,7 +47,7 @@ const SidebarListItem: FC<{
 
   return (
     <>
-      <li
+      <div
         {...attrs}
         ref={innerRef}
         className={classNames(
@@ -90,10 +90,10 @@ const SidebarListItem: FC<{
             className="ml-1 hidden group-hover:block"
           ></IconButton>
         </HotkeyTooltip>
-      </li>
+      </div>
 
       {!hasChildren && isExpanded && (
-        <li
+        <div
           className="ml-8 py-1.5 text-gray-400 select-none"
           style={{
             paddingLeft: attrs.style?.paddingLeft,
@@ -104,7 +104,7 @@ const SidebarListItem: FC<{
           ) : (
             <Skeleton width={80} variant="text" />
           )}
-        </li>
+        </div>
       )}
     </>
   )

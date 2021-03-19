@@ -1,7 +1,7 @@
 import { moveItemOnTree, mutateTree, TreeData, TreeItem } from '@atlaskit/tree'
 import { NoteModel } from 'libs/web/state/note'
 import {
-  clone,
+  cloneDeep,
   filter,
   forEach,
   pull,
@@ -46,7 +46,7 @@ function addItem(tree: TreeModel, id: string, pid = 'root') {
 
   parentItem.children = union(parentItem.children, [id])
 
-  return clone(tree)
+  return cloneDeep(tree)
 }
 
 function mutateItem(tree: TreeModel, id: string, data: Partial<TreeItemModel>) {
@@ -68,7 +68,7 @@ function removeItem(tree: TreeModel, id: string) {
     }
   })
 
-  return clone(tree)
+  return cloneDeep(tree)
 }
 
 function moveItem(
@@ -105,7 +105,7 @@ function getUnusedItems(tree: TreeModel) {
 }
 
 function deleteItem(tree: TreeModel, id: string) {
-  tree = clone(tree)
+  tree = cloneDeep(tree)
   delete tree.items[id]
 
   return tree

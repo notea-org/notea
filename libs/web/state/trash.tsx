@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { createContainer } from 'unstated-next'
 import escapeStringRegexp from 'escape-string-regexp'
 import { map, reduce, some } from 'lodash'
@@ -12,20 +12,16 @@ function useTrashData() {
   const [filterData, setFilterData] = useState<NoteModel[]>()
   const { tree, restoreItem, deleteItem } = NoteTreeState.useContainer()
   const { mutate, loading } = useTrashAPI()
-
-  const getDeletedNotes = useCallback(() => {
-    const items = TreeActions.getUnusedItems(tree)
-    const notes = map(items, (item) => item.data)
-
-    return notes
-  }, [tree])
+  const deletedNotes = useMemo(
+    () => map(TreeActions.getUnusedItems(tree), (item) => item.data),
+    [tree]
+  )
 
   const filterNotes = useCallback(
     async (keyword?: string) => {
-      const notes = getDeletedNotes()
       const re = keyword ? new RegExp(escapeStringRegexp(keyword)) : false
       const data = reduce<NoteModel | undefined, NoteModel[]>(
-        notes,
+        deletedNotes,
         (acc, note) => {
           if (!note) return acc
           if (!re || re.test(note.title)) {
@@ -39,17 +35,16 @@ function useTrashData() {
       setKeyword(keyword)
       setFilterData(data)
     },
-    [getDeletedNotes]
+    [deletedNotes]
   )
 
   const restoreNote = useCallback(
     async (note: NoteModel) => {
-      const notes = getDeletedNotes()
       // 父页面被删除时，恢复页面的 parent 改成 root
       if (
         !note.pid ||
         !tree.items[note.pid] ||
-        some(notes, (n) => n && n.id === note.pid)
+        some(deletedNotes, (n) => n && n.id === note.pid)
       ) {
         note.pid = 'root'
       }
@@ -65,7 +60,7 @@ function useTrashData() {
 
       return note
     },
-    [getDeletedNotes, tree.items, mutate, restoreItem]
+    [deletedNotes, tree.items, mutate, restoreItem]
   )
 
   const deleteNote = useCallback(

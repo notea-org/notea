@@ -1,4 +1,4 @@
-import { isEmpty, map } from 'lodash'
+import { cloneDeep, isEmpty, map } from 'lodash'
 import { genId } from 'packages/shared'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
@@ -25,24 +25,17 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   }, [tree])
 
   const initTree = useCallback(async () => {
-    const curTree = treeRef.current
-    const newItems = {} as TreeModel['items']
+    const tree = cloneDeep(treeRef.current)
 
     await Promise.all(
-      map(curTree.items, async (item) => {
-        newItems[item.id] = {
-          ...item,
-          data: await fetchNote(item.id),
-        }
+      map(tree.items, async (item) => {
+        item.data = await fetchNote(item.id)
       })
     )
 
-    setTree({
-      ...curTree,
-      items: newItems,
-    })
+    setTree(tree)
     setInitLoaded(true)
-    await noteCache.checkItems(newItems)
+    await noteCache.checkItems(tree.items)
   }, [fetchNote])
 
   const addItem = useCallback((item: NoteModel) => {

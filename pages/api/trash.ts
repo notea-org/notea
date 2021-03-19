@@ -30,7 +30,7 @@ export default api()
         return res.APIError.NOT_SUPPORTED.throw('action not found')
     }
 
-    res.end()
+    res.status(204).end()
   })
 
 async function deleteNote(req: ApiRequest, id: string) {

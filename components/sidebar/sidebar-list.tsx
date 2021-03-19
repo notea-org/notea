@@ -45,8 +45,8 @@ const SideBarList = () => {
   )
 
   return (
-    <ul className="h-full text-sm flex-grow bg-gray-100 overflow-y-auto">
-      <li className="p-2 text-gray-500 flex">
+    <section className="h-full flex text-sm flex-col flex-grow bg-gray-100 overflow-hidden">
+      <div className="p-2 text-gray-500 flex">
         <span className="flex-auto">我的页面</span>
         <HotkeyTooltip text="新建页面" keys={['cmd', 'n']}>
           <IconButton
@@ -57,33 +57,35 @@ const SideBarList = () => {
             className="text-gray-700"
           ></IconButton>
         </HotkeyTooltip>
-      </li>
-      <Tree
-        onExpand={onExpand}
-        onCollapse={onCollapse}
-        onDragEnd={onDragEnd}
-        tree={tree}
-        isDragEnabled
-        isNestingEnabled
-        offsetPerLevel={10}
-        renderItem={({ provided, item, onExpand, onCollapse, snapshot }) => (
-          <SidebarListItem
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            onExpand={onExpand}
-            onCollapse={onCollapse}
-            isExpanded={item.isExpanded}
-            innerRef={provided.innerRef}
-            hasChildren={!!item.children.length}
-            item={{
-              ...item.data,
-              id: item.id,
-            }}
-            snapshot={snapshot}
-          ></SidebarListItem>
-        )}
-      ></Tree>
-    </ul>
+      </div>
+      <div className="flex-grow overflow-y-auto">
+        <Tree
+          onExpand={onExpand}
+          onCollapse={onCollapse}
+          onDragEnd={onDragEnd}
+          tree={tree}
+          isDragEnabled
+          isNestingEnabled
+          offsetPerLevel={10}
+          renderItem={({ provided, item, onExpand, onCollapse, snapshot }) => (
+            <SidebarListItem
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              onExpand={onExpand}
+              onCollapse={onCollapse}
+              isExpanded={item.isExpanded}
+              innerRef={provided.innerRef}
+              hasChildren={!!item.children.length}
+              item={{
+                ...item.data,
+                id: item.id,
+              }}
+              snapshot={snapshot}
+            ></SidebarListItem>
+          )}
+        ></Tree>
+      </div>
+    </section>
   )
 }
 

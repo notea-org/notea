@@ -12,7 +12,8 @@ export default api()
     const settings = formatSettings(body)
 
     await req.store.putObject(getSettings(), JSON.stringify(settings))
-    res.end()
+
+    res.json(settings)
   })
   .get(async (req, res) => {
     const settings = await req.store.getObject(getSettings())

@@ -59,7 +59,12 @@ export function useNoteAPI() {
       if (cache) {
         return cache
       }
-      return find(id)
+      const note = await find(id)
+      if (note) {
+        noteCache.setItem(id, note)
+      }
+
+      return note
     },
     [find]
   )
