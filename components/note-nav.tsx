@@ -39,7 +39,7 @@ const NoteNav = () => {
   return (
     <nav
       className={classNames(
-        'absolute bg-gray-50 z-10 p-2 flex items-center -left-1.5 right-0',
+        'absolute bg-gray-50 z-10 p-2 flex items-center left-0 right-0',
         {
           shadow: ua.isMobileOnly,
         }

@@ -1,5 +1,5 @@
 import { NoteTreeState } from 'libs/web/state/tree'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { NoteState } from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
@@ -20,6 +20,10 @@ const LayoutMain: FC<{
   tree: TreeModel
 }> = ({ children, tree }) => {
   const { ua } = UIState.useContainer()
+
+  useEffect(() => {
+    document.body.classList.add('overflow-hidden')
+  }, [])
 
   return (
     <NoteTreeState.Provider initialState={tree}>
@@ -43,10 +47,10 @@ const MainWrapper: FC = ({ children }) => {
   })
 
   return (
-    <StyledWrapper disabled={isFold} ref={ref}>
+    <StyledWrapper className="h-screen" disabled={isFold} ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="relative flex-grow h-screen">{children}</main>
+        <main className="relative flex-grow">{children}</main>
       </Resizable>
     </StyledWrapper>
   )

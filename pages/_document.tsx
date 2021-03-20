@@ -35,7 +35,7 @@ class MyDocument extends Document {
           />
           <link rel="manifest" href="/static/manifest.json" />
         </Head>
-        <body className="overflow-hidden">
+        <body className="bg-gray-50 text-gray-800">
           <Main />
           <NextScript />
         </body>

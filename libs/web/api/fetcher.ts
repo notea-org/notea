@@ -19,15 +19,23 @@ export function useFetcher() {
     setLoading(true)
     abortRef.current = controller
 
+    const init: RequestInit = {
+      signal: controller.signal,
+      method: params.method,
+    }
+
+    if (payload instanceof FormData) {
+      init.body = payload
+    } else {
+      init.body = JSON.stringify(payload)
+      init.headers = {
+        'Content-Type': 'application/json',
+      }
+    }
+
     try {
-      const response = await fetch(params.url, {
-        signal: controller.signal,
-        method: params.method,
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const response = await fetch(params.url, init)
+
       if (!response.ok) {
         throw await response.text()
       }
