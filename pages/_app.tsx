@@ -2,9 +2,7 @@ import 'tailwindcss/tailwind.css'
 import { UIState } from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useEffect } from 'react'
-import withDarkMode from 'next-dark-mode'
-import classNames from 'classnames'
+import { ThemeProvider } from 'next-themes'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -24,27 +22,9 @@ if (typeof window !== 'undefined') {
   window.addEventListener('error', handleRejection)
 }
 
-function MyApp({
-  Component,
-  pageProps,
-  darkMode,
-}: AppProps & {
-  darkMode: any
-}) {
-  useEffect(() => {
-    if (darkMode?.darkModeActive) {
-      document.querySelector('html')?.classList.add('dark')
-    } else {
-      document.querySelector('html')?.classList.remove('dark')
-    }
-  }, [darkMode?.darkModeActive])
-
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div
-      className={classNames({
-        dark: darkMode?.darkModeActive,
-      })}
-    >
+    <ThemeProvider attribute="class" storageKey="nightwind-mode">
       <div className="bg-gray-50 text-gray-800">
         <UIState.Provider
           initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
@@ -53,7 +33,7 @@ function MyApp({
           <Component {...pageProps} />
         </UIState.Provider>
       </div>
-    </div>
+    </ThemeProvider>
   )
 
   function DocumentHead() {
@@ -71,4 +51,4 @@ function MyApp({
   }
 }
 
-export default withDarkMode(MyApp)
+export default MyApp

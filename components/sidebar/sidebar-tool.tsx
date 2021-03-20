@@ -6,10 +6,9 @@ import IconSun from 'heroicons/react/outline/Sun'
 import IconGlobe from 'heroicons/react/outline/Globe'
 import IconInbox from 'heroicons/react/outline/Inbox'
 import IconCog from 'heroicons/react/outline/Cog'
-import { forwardRef, HTMLProps, useCallback } from 'react'
+import { forwardRef, HTMLProps, useCallback, useEffect, useState } from 'react'
 import { UIState } from 'libs/web/state/ui'
 import classNames from 'classnames'
-import { useDarkMode } from 'next-dark-mode'
 import { SearchState } from 'libs/web/state/search'
 import Search from 'components/search'
 import HotkeyTooltip from 'components/hotkey-tooltip'
@@ -17,6 +16,8 @@ import { TrashState } from 'libs/web/state/trash'
 import Trash from 'components/trash'
 import Link from 'next/link'
 import dayjs from 'dayjs'
+import { useTheme } from 'next-themes'
+import IconDotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -58,39 +59,34 @@ const ButtonMenu = () => {
 }
 
 const ButtonTheme = () => {
-  const {
-    autoModeActive,
-    darkModeActive,
-    switchToAutoMode,
-    switchToDarkMode,
-    switchToLightMode,
-  } = useDarkMode()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   const onToggleThemeMode = useCallback(() => {
-    if (autoModeActive) {
-      switchToLightMode()
-    } else if (darkModeActive) {
-      switchToAutoMode()
+    if (theme === 'system') {
+      setTheme('light')
+    } else if (theme === 'dark') {
+      setTheme('system')
     } else {
-      switchToDarkMode()
+      setTheme('dark')
     }
-  }, [
-    autoModeActive,
-    darkModeActive,
-    switchToAutoMode,
-    switchToDarkMode,
-    switchToLightMode,
-  ])
+  }, [theme, setTheme])
+
+  useEffect(() => setMounted(true), [])
 
   return (
     <HotkeyTooltip text="切换主题">
       <ButtonItem onClick={onToggleThemeMode}>
-        {autoModeActive ? (
-          <IconGlobe />
-        ) : darkModeActive ? (
-          <IconMoon />
+        {mounted ? (
+          theme === 'system' ? (
+            <IconGlobe />
+          ) : theme === 'dark' ? (
+            <IconMoon />
+          ) : (
+            <IconSun />
+          )
         ) : (
-          <IconSun />
+          <IconDotsHorizontal />
         )}
       </ButtonItem>
     </HotkeyTooltip>

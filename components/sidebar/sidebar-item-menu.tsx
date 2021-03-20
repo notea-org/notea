@@ -1,5 +1,5 @@
 import { Menu, MenuItem } from '@material-ui/core'
-import React, { FC, useState, MouseEvent, useCallback } from 'react'
+import React, { FC, useState, MouseEvent, useCallback, useMemo } from 'react'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
@@ -59,11 +59,14 @@ const SidebarItemMenu: FC<{
     handleClose()
   }, [handleClose])
 
-  const MENU_HANDLER = {
-    [MENU_HANDLER_NAME.REMOVE_NOTE]: doRemoveNote,
-    [MENU_HANDLER_NAME.COPY_LINK]: doCopyLink,
-    [MENU_HANDLER_NAME.SHARE_NOTE]: doShareNote,
-  }
+  const MENU_HANDLER = useMemo(
+    () => ({
+      [MENU_HANDLER_NAME.REMOVE_NOTE]: doRemoveNote,
+      [MENU_HANDLER_NAME.COPY_LINK]: doCopyLink,
+      [MENU_HANDLER_NAME.SHARE_NOTE]: doShareNote,
+    }),
+    [doCopyLink, doRemoveNote, doShareNote]
+  )
 
   return (
     <>

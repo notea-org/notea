@@ -6,7 +6,7 @@ import router from 'next/router'
 import styled from 'styled-components'
 import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
-import { useDarkMode } from 'next-dark-mode'
+import { useTheme } from 'next-themes'
 import { useDebouncedCallback } from 'use-debounce'
 import useEditorState from './editor-state'
 
@@ -24,7 +24,7 @@ const NoteEditor = () => {
     onClickLink,
     onUploadImage,
   } = useEditorState()
-  const { darkModeActive } = useDarkMode()
+  const { theme } = useTheme()
   const { updateNote, createNote, note } = NoteState.useContainer()
   const editorEl = useRef<MarkdownEditor>(null)
 
@@ -92,7 +92,7 @@ const NoteEditor = () => {
         ref={editorEl}
         value={note?.content}
         onChange={onEditorChange}
-        theme={darkModeActive ? darkTheme : lightTheme}
+        theme={theme === 'dark' ? darkTheme : lightTheme}
         uploadImage={onUploadImage}
         onSearchLink={onSearchLink}
         onCreateLink={onCreateLink}

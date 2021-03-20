@@ -10,7 +10,6 @@ import { GetServerSideProps, NextPage } from 'next'
 import withTree from 'libs/server/middlewares/tree'
 import withUA from 'libs/server/middlewares/ua'
 import classNames from 'classnames'
-import { useDarkMode } from 'next-dark-mode'
 import { UIState } from 'libs/web/state/ui'
 import { TreeModel } from 'libs/shared/tree'
 import Link from 'next/link'
@@ -26,7 +25,6 @@ const EditContainer = () => {
   const {
     title: { updateTitle },
   } = UIState.useContainer()
-  const { darkModeActive } = useDarkMode()
   const { genNewId } = NoteTreeState.useContainer()
   const {
     fetchNote,
@@ -83,11 +81,7 @@ const EditContainer = () => {
   return query.id !== 'welcome' ? (
     <>
       <NoteNav />
-      <section
-        className={classNames('overflow-y-scroll h-full', {
-          'prose-dark': darkModeActive,
-        })}
-      >
+      <section className={classNames('overflow-y-scroll h-full')}>
         <NoteEditor />
       </section>
     </>
