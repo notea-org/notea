@@ -3,6 +3,7 @@ import { UIState } from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
+import { StylesProvider } from '@material-ui/styles'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -25,12 +26,14 @@ if (typeof window !== 'undefined') {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" storageKey="nightwind-mode">
-      <UIState.Provider
-        initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
-      >
-        <DocumentHead />
-        <Component {...pageProps} />
-      </UIState.Provider>
+      <StylesProvider injectFirst>
+        <UIState.Provider
+          initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
+        >
+          <DocumentHead />
+          <Component {...pageProps} />
+        </UIState.Provider>
+      </StylesProvider>
     </ThemeProvider>
   )
 

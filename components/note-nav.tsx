@@ -49,12 +49,8 @@ const NoteNav = () => {
       <div className="flex-auto">
         <Breadcrumbs
           maxItems={2}
-          className="text-gray-800"
-          aria-label="breadcrumb leading-none"
-          classes={{
-            ol: 'leading-none',
-            li: 'leading-none',
-          }}
+          className="text-gray-800 leading-none"
+          aria-label="breadcrumb"
         >
           {getPaths(note)
             .reverse()
