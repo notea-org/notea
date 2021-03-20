@@ -38,7 +38,7 @@ const MainWrapper: FC = ({ children }) => {
   const {
     sidebar: { isFold },
   } = UIState.useContainer()
-  const { ref, width } = useResizeDetector<HTMLDivElement>({
+  const { ref, width = 0 } = useResizeDetector<HTMLDivElement>({
     handleHeight: false,
   })
 

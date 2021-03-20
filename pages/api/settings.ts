@@ -28,7 +28,7 @@ export default api()
 
     await req.store.putObject(getPathSettings(), JSON.stringify(settings))
 
-    res.json(settings)
+    res.status(204).end()
   })
   .get(
     async (req, res): Promise<void> => {

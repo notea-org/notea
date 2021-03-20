@@ -46,7 +46,9 @@ function MyApp({
       })}
     >
       <div className="bg-gray-50 text-gray-800">
-        <UIState.Provider initialState={{ ua: pageProps?.ua }}>
+        <UIState.Provider
+          initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
+        >
           <DocumentHead />
           <Component {...pageProps} />
         </UIState.Provider>
