@@ -12,15 +12,6 @@ export default function withTree(wrapperHandler: any) {
   ) {
     const res = await wrapperHandler(ctx)
 
-    if (!ctx.req.session.get('user')) {
-      return {
-        redirect: {
-          destination: `/login?redirect=${ctx.resolvedUrl}`,
-          permanent: false,
-        },
-      }
-    }
-
     resetServerContext()
 
     let tree

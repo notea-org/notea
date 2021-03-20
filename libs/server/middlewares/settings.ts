@@ -10,15 +10,6 @@ export default function withSettings(wrapperHandler: any) {
   ) {
     const res = await wrapperHandler(ctx)
 
-    if (!ctx.req.session.get('user')) {
-      return {
-        redirect: {
-          destination: `/login?redirect=${ctx.resolvedUrl}`,
-          permanent: false,
-        },
-      }
-    }
-
     res.props = {
       ...res.props,
       settings: await getSettings(ctx.req.store),

@@ -18,6 +18,7 @@ import { noteCache } from 'libs/web/cache/note'
 import { withSession } from 'libs/server/middlewares/session'
 import { withStore } from 'libs/server/middlewares/store'
 import withSettings from 'libs/server/middlewares/settings'
+import withAuth from 'libs/server/middlewares/auth'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
@@ -113,10 +114,12 @@ export default EditNotePage
 export const getServerSideProps: GetServerSideProps = withUA(
   withSession(
     withStore(
-      withTree(
-        withSettings(() => {
-          return {}
-        })
+      withAuth(
+        withTree(
+          withSettings(() => {
+            return {}
+          })
+        )
       )
     )
   )
