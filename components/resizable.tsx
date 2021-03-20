@@ -49,6 +49,7 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
     <Split
       ref={splitRef}
       className="flex h-screen"
+      minSize={isFold ? 40 : 250}
       sizes={sizes}
       gutter={renderGutter}
       onDragEnd={updateSplitSizes}

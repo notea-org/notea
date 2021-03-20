@@ -67,9 +67,8 @@ const useNote = () => {
 
       result.content = result.content || '\n'
       await noteCache.setItem(result.id, result)
-      delete result.content
-      addItem(result)
       setNote(result)
+      addItem(result)
 
       return result
     },
