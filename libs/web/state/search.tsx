@@ -7,7 +7,7 @@ import { NOTE_DELETED } from 'libs/shared/meta'
 
 export async function searchNote(keyword: string, deleted: NOTE_DELETED) {
   const data = [] as NoteCacheItem[]
-  const re = new RegExp(escapeStringRegexp(keyword))
+  const re = new RegExp(escapeStringRegexp(keyword), 'i')
 
   await noteCache.iterate<NoteCacheItem, void>((note) => {
     if (note.deleted !== deleted) return

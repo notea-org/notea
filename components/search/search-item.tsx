@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import BoldText from 'components/filter-modal/bold-text'
+import MarkText from 'components/filter-modal/mark-text'
 
 const SearchItem: FC<{
   note: NoteCacheItem
@@ -19,10 +19,10 @@ const SearchItem: FC<{
           onClick={closeModal}
         >
           <h4 className="text-sm font-bold">
-            <BoldText text={note.title} keyword={keyword} />
+            <MarkText text={note.title} keyword={keyword} />
           </h4>
           <p className="mt-1">
-            <BoldText text={note.rawContent} keyword={keyword} />
+            <MarkText text={note.rawContent} keyword={keyword} />
           </p>
           <time className="text-gray-300 mt-2 block" dateTime={note.date}>
             {dayjs(note.date).format('DD/MM/YYYY HH:mm')}

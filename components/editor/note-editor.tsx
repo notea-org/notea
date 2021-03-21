@@ -8,7 +8,7 @@ import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
 import { useTheme } from 'next-themes'
 import { useDebouncedCallback } from 'use-debounce'
-import useEditorState from './editor-state'
+import { useEditorState } from './editor-state'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {

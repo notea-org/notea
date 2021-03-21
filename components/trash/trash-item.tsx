@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { FC, useCallback } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import BoldText from 'components/filter-modal/bold-text'
+import MarkText from 'components/filter-modal/mark-text'
 import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import { TrashState } from 'libs/web/state/trash'
@@ -35,7 +35,7 @@ const TrashItem: FC<{
           onClick={closeModal}
         >
           <h4 className="text-sm font-bold">
-            <BoldText text={note.title} keyword={keyword} />
+            <MarkText text={note.title} keyword={keyword} />
           </h4>
         </a>
       </Link>

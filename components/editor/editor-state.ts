@@ -16,12 +16,12 @@ const onSearchLink = async (keyword: string) => {
       text: item.rawContent || '',
       keyword,
       maxLen: 40,
-    }),
+    }).match,
     url: `/note/${item.id}`,
   }))
 }
 
-const useEditorState = () => {
+export const useEditorState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
   const { request } = useFetcher()
@@ -67,5 +67,3 @@ const useEditorState = () => {
 
   return { onCreateLink, onSearchLink, onClickLink, onUploadImage }
 }
-
-export default useEditorState
