@@ -5,8 +5,8 @@ import { NoteModel } from './note'
 import { useTrashAPI } from '../api/trash'
 import { noteCache } from '../cache/note'
 import { NOTE_DELETED } from 'libs/shared/meta'
-import { searchNote } from './search'
 import { NoteCacheItem } from '../cache'
+import { searchNote } from '../utils/search'
 
 function useTrashData() {
   const [keyword, setKeyword] = useState<string>()

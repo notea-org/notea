@@ -1,23 +1,8 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteCacheItem } from 'libs/web/cache'
-import escapeStringRegexp from 'escape-string-regexp'
-import { noteCache } from '../cache/note'
 import { NOTE_DELETED } from 'libs/shared/meta'
-
-export async function searchNote(keyword: string, deleted: NOTE_DELETED) {
-  const data = [] as NoteCacheItem[]
-  const re = new RegExp(escapeStringRegexp(keyword), 'i')
-
-  await noteCache.iterate<NoteCacheItem, void>((note) => {
-    if (note.deleted !== deleted) return
-    if (re.test(note.rawContent || '') || re.test(note.title)) {
-      data.push(note)
-    }
-  })
-
-  return data
-}
+import { searchNote } from '../utils/search'
 
 function useSearchData() {
   const [list, setList] = useState<NoteCacheItem[]>()

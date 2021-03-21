@@ -1,5 +1,5 @@
 import { FC, memo, ReactNode } from 'react'
-import { searchRangeText } from 'libs/shared/text'
+import { searchRangeText } from 'libs/web/utils/search'
 
 const MarkText: FC<{
   text?: string

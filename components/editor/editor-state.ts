@@ -1,8 +1,7 @@
 import { NoteState } from 'libs/web/state/note'
-import { searchNote } from 'libs/web/state/search'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import { searchRangeText } from 'libs/shared/text'
+import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import { useFetcher } from 'libs/web/api/fetcher'
 import { NOTE_DELETED } from 'libs/shared/meta'
 
