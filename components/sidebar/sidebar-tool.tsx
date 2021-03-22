@@ -133,11 +133,15 @@ const ButtonDailyNotes = () => {
 
 const ButtonSettings = () => {
   return (
-    <HotkeyTooltip text="Settings">
-      <ButtonItem aria-label="settings">
-        <IconCog />
-      </ButtonItem>
-    </HotkeyTooltip>
+    <Link href="/settings">
+      <a>
+        <HotkeyTooltip text="Settings">
+          <ButtonItem aria-label="settings">
+            <IconCog />
+          </ButtonItem>
+        </HotkeyTooltip>
+      </a>
+    </Link>
   )
 }
 

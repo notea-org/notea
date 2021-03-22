@@ -12,7 +12,6 @@ import withUA from 'libs/server/middlewares/ua'
 import classNames from 'classnames'
 import { UIState } from 'libs/web/state/ui'
 import { TreeModel } from 'libs/shared/tree'
-import Link from 'next/link'
 import { noteCache } from 'libs/web/cache/note'
 import { withSession } from 'libs/server/middlewares/session'
 import { withStore } from 'libs/server/middlewares/store'
@@ -43,8 +42,6 @@ const EditContainer = () => {
           title: id,
           content: '\n',
         })
-      } else if (id === 'welcome') {
-        return
       } else if (id === 'new') {
         const url = `/note/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
@@ -78,20 +75,13 @@ const EditContainer = () => {
     updateTitle(note?.title)
   }, [note?.title, updateTitle])
 
-  return query.id !== 'welcome' ? (
+  return (
     <>
       <NoteNav />
       <section className={classNames('overflow-y-scroll h-full')}>
         <NoteEditor />
       </section>
     </>
-  ) : (
-    <div>
-      使用说明之类的
-      <Link href="/note/new">
-        <a>Create Note</a>
-      </Link>
-    </div>
   )
 }
 

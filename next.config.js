@@ -16,14 +16,6 @@ module.exports = withPWA({
       },
     ]
   },
-  rewrites() {
-    return [
-      {
-        source: '/',
-        destination: '/note/welcome',
-      },
-    ]
-  },
   redirects() {
     return [
       {
