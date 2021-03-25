@@ -2,7 +2,7 @@ import { UserAgentType } from 'libs/web/state/ui/ua'
 import { GetServerSidePropsContext } from 'next'
 import UAParser from 'ua-parser-js'
 
-export default function withUA(wrapperHandler: any) {
+export function withUA(wrapperHandler: any) {
   return async function handler(ctx: GetServerSidePropsContext) {
     const res = await wrapperHandler(ctx)
     const ua = new UAParser(ctx.req.headers['user-agent']).getResult()

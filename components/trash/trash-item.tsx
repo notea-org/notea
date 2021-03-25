@@ -29,7 +29,7 @@ const TrashItem: FC<{
 
   return (
     <li className="hover:bg-gray-200 cursor-pointer py-2 px-4 flex">
-      <Link href={`/note/${note.id}`}>
+      <Link href={`/${note.id}`}>
         <a
           className=" block text-xs text-gray-500 flex-grow"
           onClick={closeModal}

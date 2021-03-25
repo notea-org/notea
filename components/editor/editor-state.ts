@@ -16,7 +16,7 @@ const onSearchLink = async (keyword: string) => {
       keyword,
       maxLen: 40,
     }).match,
-    url: `/note/${item.id}`,
+    url: `/${item.id}`,
   }))
 }
 

@@ -37,7 +37,7 @@ const SidebarListItem: FC<{
   const onAddNote = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
-      router.push(`/note/new?pid=` + item.id, undefined, { shallow: true })
+      router.push(`/new?pid=` + item.id, undefined, { shallow: true })
       mutateItem(item.id, {
         isExpanded: true,
       })
@@ -58,7 +58,7 @@ const SidebarListItem: FC<{
           }
         )}
       >
-        <Link href={`/note/${item.id}`} shallow>
+        <Link href={`/${item.id}`} shallow>
           <a className="flex flex-1 truncate px-2 py-1.5">
             <IconButton
               className="mr-1"

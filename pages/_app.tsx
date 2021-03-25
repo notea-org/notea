@@ -23,6 +23,21 @@ if (typeof window !== 'undefined') {
   window.addEventListener('error', handleRejection)
 }
 
+function DocumentHead() {
+  const { title } = UIState.useContainer()
+
+  return (
+    <Head>
+      <title>{title.value}</title>
+      <meta charSet="utf-8" />
+      <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+      />
+    </Head>
+  )
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" storageKey="nightwind-mode">
@@ -36,20 +51,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </StylesProvider>
     </ThemeProvider>
   )
-
-  function DocumentHead() {
-    const { title } = UIState.useContainer()
-    return (
-      <Head>
-        <title>{title.value}</title>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-        />
-      </Head>
-    )
-  }
 }
 
 export default MyApp

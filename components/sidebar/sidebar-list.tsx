@@ -52,7 +52,7 @@ const SideBarList = () => {
           <IconButton
             icon="Plus"
             onClick={() => {
-              router.push('/note/new', undefined, { shallow: true })
+              router.push('/new', undefined, { shallow: true })
             }}
             className="text-gray-700"
           ></IconButton>

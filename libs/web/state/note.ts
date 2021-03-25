@@ -16,8 +16,8 @@ export interface NoteModel {
   shared: NOTE_SHARED
 }
 
-const useNote = () => {
-  const [note, setNote] = useState<NoteModel>()
+const useNote = (initData?: NoteModel) => {
+  const [note, setNote] = useState<NoteModel | undefined>(initData)
   const { find, create, mutate, loading, abort } = useNoteAPI()
   const {
     addItem,

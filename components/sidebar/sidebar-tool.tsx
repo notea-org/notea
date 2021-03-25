@@ -119,7 +119,7 @@ const ButtonTrash = () => {
 
 const ButtonDailyNotes = () => {
   return (
-    <Link href={`/note/${dayjs().format('YYYY-MM-DD')}`}>
+    <Link href={`/${dayjs().format('YYYY-MM-DD')}`}>
       <a>
         <HotkeyTooltip text="Daily Notes" keys={['cmd', `\``]}>
           <ButtonItem aria-label="daily notes">

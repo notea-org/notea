@@ -55,7 +55,7 @@ const NoteNav = () => {
           {getPaths(note)
             .reverse()
             .map((path) => (
-              <Link key={path.id} href={`/note/${path.id}`}>
+              <Link key={path.id} href={`/${path.id}`}>
                 <a className="hover:bg-gray-200 px-1 py-0.5 rounded text-sm">
                   {path.title}
                 </a>

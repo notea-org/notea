@@ -9,6 +9,7 @@ import { darkTheme, lightTheme } from './theme'
 import { useTheme } from 'next-themes'
 import { useDebouncedCallback } from 'use-debounce'
 import { useEditorState } from './editor-state'
+import { useMounted } from 'libs/web/hooks/use-mounted'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
@@ -27,6 +28,7 @@ const NoteEditor = () => {
   const { theme } = useTheme()
   const { updateNote, createNote, note } = NoteState.useContainer()
   const editorEl = useRef<MarkdownEditor>(null)
+  const mounted = useMounted()
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
@@ -35,7 +37,7 @@ const NoteEditor = () => {
       if (isNew) {
         data.pid = (router.query.pid as string) || 'root'
         const item = await createNote({ ...note, ...data })
-        const noteUrl = `/note/${item?.id}`
+        const noteUrl = `/${item?.id}`
 
         if (router.asPath !== noteUrl) {
           await router.replace(noteUrl, undefined, { shallow: true })
@@ -90,7 +92,7 @@ const NoteEditor = () => {
       <StyledMarkdownEditor
         id={note?.id}
         ref={editorEl}
-        value={note?.content}
+        value={mounted ? note?.content : ''}
         onChange={onEditorChange}
         theme={theme === 'dark' ? darkTheme : lightTheme}
         uploadImage={onUploadImage}

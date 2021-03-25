@@ -1,4 +1,4 @@
-import LayoutShare from 'components/layout/layout-share'
+import LayoutShare from 'components/layout/layout-public'
 import { useNoteAPI } from 'libs/web/api/note'
 import { NoteModel } from 'libs/web/state/note'
 import { useRouter } from 'next/router'

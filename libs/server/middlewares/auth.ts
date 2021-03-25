@@ -1,3 +1,4 @@
+import { PageMode } from 'libs/shared/page'
 import { GetServerSidePropsContext } from 'next'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
 
@@ -15,7 +16,7 @@ export async function useAuth(
   return next()
 }
 
-export default function withAuth(wrapperHandler: any) {
+export function withAuth(wrapperHandler: any) {
   return async function handler(
     ctx: GetServerSidePropsContext & {
       req: ApiRequest
@@ -23,7 +24,10 @@ export default function withAuth(wrapperHandler: any) {
   ) {
     const res = await wrapperHandler(ctx)
 
-    if (!ctx.req.session.get('user')) {
+    if (
+      !ctx.req.session.get('user') &&
+      res.props.pageMode !== PageMode.PUBLIC
+    ) {
       return {
         redirect: {
           destination: `/login?redirect=${ctx.resolvedUrl}`,

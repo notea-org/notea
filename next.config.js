@@ -2,6 +2,8 @@ const withPWA = require('next-pwa')
 const runtimeCaching = require('next-pwa/cache')
 
 module.exports = withPWA({
+  target: process.env.NETLIFY ? 'serverless' : 'server',
+
   headers() {
     return [
       {
@@ -16,15 +18,7 @@ module.exports = withPWA({
       },
     ]
   },
-  redirects() {
-    return [
-      {
-        source: '/note',
-        destination: '/',
-        permanent: true,
-      },
-    ]
-  },
+
   webpack(config, { defaultLoaders }) {
     config.module.rules.push({
       test: /\.jsx/,
@@ -34,6 +28,7 @@ module.exports = withPWA({
 
     return config
   },
+
   pwa: {
     disable: process.env.NODE_ENV === 'development',
     dest: 'public',

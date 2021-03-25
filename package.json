@@ -9,7 +9,8 @@
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
-    "lint": "eslint . --ext ts --ext tsx --ext js"
+    "lint": "eslint . --ext ts --ext tsx --ext js",
+    "postinstall": "yarn autoclean --force"
   },
   "repository": "qingwei-li/notea",
   "husky": {

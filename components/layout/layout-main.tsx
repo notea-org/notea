@@ -1,6 +1,6 @@
 import { NoteTreeState } from 'libs/web/state/tree'
 import { FC, useCallback, useEffect } from 'react'
-import { NoteState } from 'libs/web/state/note'
+import { NoteModel, NoteState } from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
 import { UIState } from 'libs/web/state/ui'
@@ -18,7 +18,8 @@ const StyledWrapper = styled.div`
 
 const LayoutMain: FC<{
   tree: TreeModel
-}> = ({ children, tree }) => {
+  note?: NoteModel
+}> = ({ children, tree, note }) => {
   const { ua } = UIState.useContainer()
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const LayoutMain: FC<{
 
   return (
     <NoteTreeState.Provider initialState={tree}>
-      <NoteState.Provider>
+      <NoteState.Provider initialState={note}>
         {ua?.isMobileOnly ? (
           <MobileMainWrapper>{children}</MobileMainWrapper>
         ) : (

@@ -13,7 +13,7 @@ const SearchItem: FC<{
 
   return (
     <li className="hover:bg-gray-200 cursor-pointer">
-      <Link href={`/note/${note.id}`}>
+      <Link href={`/${note.id}`}>
         <a
           className="py-2 px-4 block text-xs text-gray-500"
           onClick={closeModal}
