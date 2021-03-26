@@ -18,6 +18,10 @@ export function withTree(wrapperHandler: any) {
 
     let tree
 
+    if (res.redirect) {
+      return res
+    }
+
     // todo 分享页面获取指定树结构
     if (res.pageMode !== PageMode.PUBLIC) {
       try {

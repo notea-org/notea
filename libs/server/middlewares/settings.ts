@@ -12,6 +12,10 @@ export function withSettings(wrapperHandler: any) {
     const res = await wrapperHandler(ctx)
     let settings
 
+    if (res.redirect) {
+      return res
+    }
+
     if (res.pageMode !== PageMode.PUBLIC) {
       settings = await getSettings(ctx.req.store)
     }

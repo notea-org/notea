@@ -22,18 +22,24 @@ export function withAuth(wrapperHandler: any) {
       req: ApiRequest
     }
   ) {
+    const redirectLogin = {
+      redirect: {
+        destination: `/login?redirect=${ctx.resolvedUrl}`,
+        permanent: false,
+      },
+    }
+
+    if (!ctx.req.session.get('user')) {
+      return redirectLogin
+    }
+
     const res = await wrapperHandler(ctx)
 
     if (
-      !ctx.req.session.get('user') &&
-      res.props.pageMode !== PageMode.PUBLIC
+      res.props?.pageMode !== PageMode.PUBLIC &&
+      !ctx.req.session.get('user')
     ) {
-      return {
-        redirect: {
-          destination: `/login?redirect=${ctx.resolvedUrl}`,
-          permanent: false,
-        },
-      }
+      return redirectLogin
     }
 
     res.props = {

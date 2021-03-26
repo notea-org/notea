@@ -1,5 +1,5 @@
 import LayoutMain from 'components/layout/layout-main'
-import { GetServerSideProps, NextPage } from 'next'
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import { withTree } from 'libs/server/middlewares/tree'
 import { withUA } from 'libs/server/middlewares/ua'
 import { TreeModel } from 'libs/shared/tree'
@@ -14,7 +14,7 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
     <LayoutMain tree={tree}>
       <div>
         使用说明之类的
-        <Link href="/new">
+        <Link href="/new" shallow>
           <a>Create Note</a>
         </Link>
       </div>
@@ -24,16 +24,26 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 
 export default EditNotePage
 
+function withIndex(wrapperHandler: any) {
+  return async function handler(ctx: GetServerSidePropsContext) {
+    const res = await wrapperHandler(ctx)
+    const lastVisit = res.props?.settings?.last_visit
+
+    if (lastVisit && !res.redirect) {
+      res.redirect = {
+        destination: lastVisit,
+        permanent: false,
+      }
+    }
+
+    console.log(res)
+
+    return res
+  }
+}
+
 export const getServerSideProps: GetServerSideProps = withUA(
   withSession(
-    withStore(
-      withAuth(
-        withTree(
-          withSettings(() => {
-            return {}
-          })
-        )
-      )
-    )
+    withStore(withAuth(withTree(withIndex(withSettings(() => ({}))))))
   )
 )

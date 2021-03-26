@@ -4,6 +4,7 @@ export interface Settings {
   split_sizes: [number, number]
   daily_root_id: string
   sidebar_is_fold: boolean
+  last_visit?: string
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -27,6 +28,9 @@ export function formatSettings(body: Record<string, any> = {}) {
   }
   if (isBoolean(body.sidebar_is_fold)) {
     settings.sidebar_is_fold = body.sidebar_is_fold
+  }
+  if (isString(body.last_visit)) {
+    settings.last_visit = body.last_visit
   }
 
   return settings

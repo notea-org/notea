@@ -20,7 +20,7 @@ import { withAuth } from 'libs/server/middlewares/auth'
 import { withNote } from 'libs/server/middlewares/note'
 import LayoutPublic from 'components/layout/layout-public'
 import { PageMode } from 'libs/shared/page'
-import { useDidUpdated } from 'libs/web/hooks/use-did-updated'
+import { useSettingsAPI } from 'libs/web/api/settings'
 
 const NoteEditor = dynamic(() => import('components/editor/note-editor'))
 
@@ -38,9 +38,11 @@ const EditContainer = () => {
   const { query } = useRouter()
   const pid = query.pid as string
   const id = query.id as string
+  const { mutate: mutateSettings } = useSettingsAPI()
 
   const loadNoteById = useCallback(
     async (id: string) => {
+      // daily notes
       if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(id)) {
         findOrCreateNote(id, {
           id,
@@ -68,11 +70,15 @@ const EditContainer = () => {
           content: '\n',
         })
       }
+
+      mutateSettings({
+        last_visit: `/${id}`,
+      })
     },
-    [fetchNote, findOrCreateNote, genNewId, initNote, pid]
+    [fetchNote, findOrCreateNote, genNewId, initNote, pid, mutateSettings]
   )
 
-  useDidUpdated(() => {
+  useEffect(() => {
     loadNoteById(id)
   }, [loadNoteById, id])
 
