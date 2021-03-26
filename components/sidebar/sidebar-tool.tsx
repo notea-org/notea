@@ -7,17 +7,14 @@ import IconGlobe from 'heroicons/react/outline/Globe'
 import IconInbox from 'heroicons/react/outline/Inbox'
 import IconCog from 'heroicons/react/outline/Cog'
 import { forwardRef, HTMLProps, useCallback, useEffect, useState } from 'react'
-import { UIState } from 'libs/web/state/ui'
+import UIState from 'libs/web/state/ui'
 import classNames from 'classnames'
-import { SearchState } from 'libs/web/state/search'
-import Search from 'components/search'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import { TrashState } from 'libs/web/state/trash'
-import Trash from 'components/trash'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { useTheme } from 'next-themes'
 import IconDotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
+import ModalState from 'libs/web/state/modal'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -94,11 +91,11 @@ const ButtonTheme = () => {
 }
 
 const ButtonSearch = () => {
-  const { openModal } = SearchState.useContainer()
+  const { search } = ModalState.useContainer()
 
   return (
     <HotkeyTooltip text="Search" keys={['cmd', 'p']}>
-      <ButtonItem onClick={openModal} aria-label="search">
+      <ButtonItem onClick={search.open} aria-label="search">
         <IconSearch />
       </ButtonItem>
     </HotkeyTooltip>
@@ -106,11 +103,11 @@ const ButtonSearch = () => {
 }
 
 const ButtonTrash = () => {
-  const { openModal } = TrashState.useContainer()
+  const { trash } = ModalState.useContainer()
 
   return (
     <HotkeyTooltip text="Trash" keys={['cmd', 'q']}>
-      <ButtonItem onClick={openModal} aria-label="trash">
+      <ButtonItem onClick={trash.open} aria-label="trash">
         <IconTrash />
       </ButtonItem>
     </HotkeyTooltip>
@@ -148,15 +145,9 @@ const ButtonSettings = () => {
 const SidebarTool = () => {
   return (
     <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
-      <SearchState.Provider>
-        <ButtonSearch />
-        <Search />
-      </SearchState.Provider>
+      <ButtonSearch />
 
-      <TrashState.Provider>
-        <ButtonTrash />
-        <Trash />
-      </TrashState.Provider>
+      <ButtonTrash />
 
       <ButtonDailyNotes />
 

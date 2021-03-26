@@ -9,9 +9,9 @@ import TreeActions, {
   TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
-import { useNoteAPI } from '../api/note'
-import { noteCache } from '../cache/note'
-import { useTreeAPI } from '../api/tree'
+import useNoteAPI from '../api/note'
+import noteCache from '../cache/note'
+import useTreeAPI from '../api/tree'
 import { NOTE_DELETED } from 'libs/shared/meta'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
@@ -84,6 +84,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     async (id: string, data: Partial<TreeItemModel>) => {
       setTree(TreeActions.mutateItem(treeRef.current, id, data))
       delete data.data
+      // @todo diff 没有变化就不发送请求
       if (!isEmpty(data)) {
         await mutate({
           action: 'mutate',
@@ -147,4 +148,6 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   }
 }
 
-export const NoteTreeState = createContainer(useNoteTree)
+const NoteTreeState = createContainer(useNoteTree)
+
+export default NoteTreeState

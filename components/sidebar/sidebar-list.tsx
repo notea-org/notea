@@ -1,5 +1,5 @@
 import SidebarListItem from './sidebar-list-item'
-import { NoteTreeState } from 'libs/web/state/tree'
+import NoteTreeState from 'libs/web/state/tree'
 import Tree from '@atlaskit/tree'
 import { useEffect, useCallback } from 'react'
 import router from 'next/router'

@@ -4,8 +4,9 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
 import IconPaperAirplane from 'heroicons/react/outline/PaperAirplane'
-import { NoteModel, NoteState } from 'libs/web/state/note'
+import NoteState, { NoteModel } from 'libs/web/state/note'
 import IconButton from 'components/icon-button'
+import ModalState from 'libs/web/state/modal'
 
 enum MENU_HANDLER_NAME {
   REMOVE_NOTE,
@@ -20,7 +21,7 @@ const MENU_LIST = [
     handler: MENU_HANDLER_NAME.REMOVE_NOTE,
   },
   {
-    text: '创建分享',
+    text: '分享页面',
     icon: <IconPaperAirplane />,
     handler: MENU_HANDLER_NAME.SHARE_NOTE,
   },
@@ -36,6 +37,9 @@ const SidebarItemMenu: FC<{
 }> = ({ note }) => {
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const { removeNote } = NoteState.useContainer()
+  const {
+    share: { open: openShare },
+  } = ModalState.useContainer()
 
   const handleClick = useCallback((event: MouseEvent) => {
     event.preventDefault()
@@ -53,7 +57,8 @@ const SidebarItemMenu: FC<{
 
   const doShareNote = useCallback(() => {
     handleClose()
-  }, [handleClose])
+    openShare()
+  }, [handleClose, openShare])
 
   const doCopyLink = useCallback(() => {
     handleClose()

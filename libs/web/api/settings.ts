@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { useFetcher } from './fetcher'
+import useFetcher from './fetcher'
 import { Settings } from 'libs/shared/settings'
 
-export function useSettingsAPI() {
+export default function useSettingsAPI() {
   const { request } = useFetcher()
 
   const mutate = useCallback(

@@ -5,7 +5,7 @@ const MarkText: FC<{
   text?: string
   keyword?: string
   maxLen?: number
-}> = ({ text = '', keyword = '', maxLen = 80 }) => {
+}> = memo(({ text = '', keyword = '', maxLen = 80 }) => {
   if (!text || !keyword) return <span>{text}</span>
 
   const texts: ReactNode[] = []
@@ -29,6 +29,6 @@ const MarkText: FC<{
   texts.push(match.slice(index))
 
   return <span>{texts}</span>
-}
+})
 
-export default memo(MarkText)
+export default MarkText

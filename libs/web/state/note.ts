@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import { NoteTreeState } from 'libs/web/state/tree'
+import NoteTreeState from 'libs/web/state/tree'
 import { NOTE_DELETED, NOTE_SHARED } from 'libs/shared/meta'
-import { useNoteAPI } from '../api/note'
-import { noteCache } from '../cache/note'
+import useNoteAPI from '../api/note'
+import noteCache from '../cache/note'
 
 export interface NoteModel {
   id: string
@@ -157,4 +157,6 @@ const useNote = (initData?: NoteModel) => {
   }
 }
 
-export const NoteState = createContainer(useNote)
+const NoteState = createContainer(useNote)
+
+export default NoteState

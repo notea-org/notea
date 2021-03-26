@@ -1,6 +1,6 @@
 import SidebarTool from 'components/sidebar/sidebar-tool'
-import SideBarNoteList from 'components/sidebar/sidebar-list'
-import { UIState } from 'libs/web/state/ui'
+import SideBarList from 'components/sidebar/sidebar-list'
+import UIState from 'libs/web/state/ui'
 import { FC } from 'react'
 import classNames from 'classnames'
 
@@ -16,7 +16,7 @@ const BrowserSidebar: FC = () => {
   return (
     <section className="flex h-full">
       <SidebarTool />
-      {sidebar.isFold ? null : <SideBarNoteList />}
+      {sidebar.isFold ? null : <SideBarList />}
     </section>
   )
 }
@@ -29,7 +29,7 @@ const MobileSidebar: FC = () => {
       )}
     >
       <SidebarTool />
-      <SideBarNoteList />
+      <SideBarList />
     </section>
   )
 }

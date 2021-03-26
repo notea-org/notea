@@ -41,10 +41,12 @@ async function mutateItem(id: string, body: Partial<NoteModel>) {
   })
 }
 
-export const noteCache = {
+const noteCache = {
   ...noteCacheInstance,
   getItem,
   setItem,
   mutateItem,
   checkItems,
 }
+
+export default noteCache

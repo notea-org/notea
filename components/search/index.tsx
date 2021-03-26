@@ -1,22 +1,20 @@
-import { SearchState } from 'libs/web/state/search'
+import SearchState from 'libs/web/state/search'
 import { FC } from 'react'
 import FilterModal from 'components/filter-modal/filter-modal'
 import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
 import SearchItem from './search-item'
 import { NoteModel } from 'libs/web/state/note'
+import ModalState from 'libs/web/state/modal'
 
-const Search: FC = () => {
+const SearchModal: FC = () => {
+  const { filterNotes, keyword, list } = SearchState.useContainer()
   const {
-    isOpen,
-    closeModal,
-    filterNotes,
-    keyword,
-    list,
-  } = SearchState.useContainer()
+    search: { visible, close },
+  } = ModalState.useContainer()
 
   return (
-    <FilterModal open={isOpen} onClose={closeModal}>
+    <FilterModal open={visible} onClose={close}>
       <FilterModalInput
         placeholder={'Search note'}
         doFilter={filterNotes}
@@ -32,4 +30,4 @@ const Search: FC = () => {
   )
 }
 
-export default Search
+export default SearchModal

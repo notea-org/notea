@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { DEFAULT_SETTINGS } from 'libs/shared/settings'
-import { useSettingsAPI } from 'libs/web/api/settings'
+import useSettingsAPI from 'libs/web/api/settings'
 
-export function useSplit(initData = DEFAULT_SETTINGS.split_sizes) {
+export default function useSplit(initData = DEFAULT_SETTINGS.split_sizes) {
   const [sizes, setSizes] = useState(initData)
   const sizesRef = useRef(sizes)
   const { mutate } = useSettingsAPI()

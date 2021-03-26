@@ -1,4 +1,4 @@
-import { UIState } from 'libs/web/state/ui'
+import UIState from 'libs/web/state/ui'
 import Split from 'react-split'
 import { FC, useCallback, useEffect, useRef } from 'react'
 
@@ -58,4 +58,5 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
     </Split>
   )
 }
+
 export default Resizable

@@ -1,7 +1,7 @@
 import escapeStringRegexp from 'escape-string-regexp'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { NoteCacheItem } from '../cache'
-import { noteCache } from '../cache/note'
+import noteCache from '../cache/note'
 
 export function getSearchRegExp(keyword: string) {
   return new RegExp(escapeStringRegexp(keyword), 'ig')

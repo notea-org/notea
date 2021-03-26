@@ -1,10 +1,10 @@
 import classNames from 'classnames'
-import { NoteState } from 'libs/web/state/note'
-import { UIState } from 'libs/web/state/ui'
+import NoteState from 'libs/web/state/note'
+import UIState from 'libs/web/state/ui'
 import IconMenu from 'heroicons/react/outline/Menu'
 import { useCallback, MouseEvent } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import { NoteTreeState } from 'libs/web/state/tree'
+import NoteTreeState from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
 import Link from 'next/link'
 
@@ -76,4 +76,5 @@ const NoteNav = () => {
     </nav>
   )
 }
+
 export default NoteNav

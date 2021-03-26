@@ -7,7 +7,7 @@ import { withSession } from 'libs/server/middlewares/session'
 import { withStore } from 'libs/server/middlewares/store'
 import { withSettings } from 'libs/server/middlewares/settings'
 import { withAuth } from 'libs/server/middlewares/auth'
-import SettingsForm from 'components/settings/settings-form'
+import { SettingsForm } from 'components/settings/settings-form'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   return (

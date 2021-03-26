@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
-import { NoteTreeState } from './tree'
+import NoteTreeState from './tree'
 import { NoteModel } from './note'
-import { useTrashAPI } from '../api/trash'
-import { noteCache } from '../cache/note'
+import useTrashAPI  from '../api/trash'
+import noteCache from '../cache/note'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { NoteCacheItem } from '../cache'
 import { searchNote } from '../utils/search'
 
-function useTrashData() {
+function useTrash() {
   const [keyword, setKeyword] = useState<string>()
   const [list, setList] = useState<NoteCacheItem[]>()
   const { restoreItem, deleteItem } = NoteTreeState.useContainer()
@@ -70,25 +70,6 @@ function useTrashData() {
   }
 }
 
-function useFilterModal() {
-  const [isOpen, setIsOpen] = useState(false)
+const TrashState = createContainer(useTrash)
 
-  const openModal = useCallback(() => {
-    setIsOpen(true)
-  }, [])
-
-  const closeModal = useCallback(() => {
-    setIsOpen(false)
-  }, [])
-
-  return { isOpen, openModal, closeModal }
-}
-
-function useTrash() {
-  return {
-    ...useFilterModal(),
-    ...useTrashData(),
-  }
-}
-
-export const TrashState = createContainer(useTrash)
+export default TrashState

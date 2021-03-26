@@ -12,7 +12,7 @@
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "postinstall": "yarn autoclean --force"
   },
-  "repository": "qingwei-li/notea",
+  "repository": "QingWei-Li/notea",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",

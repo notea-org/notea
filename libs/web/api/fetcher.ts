@@ -5,7 +5,7 @@ interface Params {
   method: 'GET' | 'POST'
 }
 
-export function useFetcher() {
+export default function useFetcher() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const abortRef = useRef<AbortController>()

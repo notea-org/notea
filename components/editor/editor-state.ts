@@ -1,8 +1,8 @@
-import { NoteState } from 'libs/web/state/note'
+import NoteState from 'libs/web/state/note'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { searchNote, searchRangeText } from 'libs/web/utils/search'
-import { useFetcher } from 'libs/web/api/fetcher'
+import useFetcher from 'libs/web/api/fetcher'
 import { NOTE_DELETED } from 'libs/shared/meta'
 
 const onSearchLink = async (keyword: string) => {
@@ -20,7 +20,7 @@ const onSearchLink = async (keyword: string) => {
   }))
 }
 
-export const useEditorState = () => {
+const useEditorState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
   const { request } = useFetcher()
@@ -66,3 +66,5 @@ export const useEditorState = () => {
 
   return { onCreateLink, onSearchLink, onClickLink, onUploadImage }
 }
+
+export default useEditorState

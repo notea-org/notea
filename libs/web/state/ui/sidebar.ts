@@ -1,8 +1,8 @@
-import { useSettingsAPI } from 'libs/web/api/settings'
+import useSettingsAPI from 'libs/web/api/settings'
 import { isBoolean } from 'lodash'
 import { useState, useCallback } from 'react'
 
-export function useSidebar(initState = false) {
+export default function useSidebar(initState = false) {
   const [isFold, setFold] = useState(initState)
   const { mutate } = useSettingsAPI()
 

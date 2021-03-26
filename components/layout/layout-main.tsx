@@ -1,13 +1,18 @@
-import { NoteTreeState } from 'libs/web/state/tree'
+import NoteTreeState from 'libs/web/state/tree'
 import { FC, useCallback, useEffect } from 'react'
-import { NoteModel, NoteState } from 'libs/web/state/note'
+import NoteState, { NoteModel } from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
-import { UIState } from 'libs/web/state/ui'
+import UIState from 'libs/web/state/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import classNames from 'classnames'
 import { TreeModel } from 'libs/shared/tree'
+import TrashState from 'libs/web/state/trash'
+import TrashModal from 'components/trash'
+import SearchState from 'libs/web/state/search'
+import SearchModal from 'components/search'
+import ShareModal from 'components/share-modal'
 
 const StyledWrapper = styled.div`
   .gutter {
@@ -15,29 +20,6 @@ const StyledWrapper = styled.div`
       props.disabled ? 'none' : 'auto'};
   }
 `
-
-const LayoutMain: FC<{
-  tree: TreeModel
-  note?: NoteModel
-}> = ({ children, tree, note }) => {
-  const { ua } = UIState.useContainer()
-
-  useEffect(() => {
-    document.body.classList.add('overflow-hidden')
-  }, [])
-
-  return (
-    <NoteTreeState.Provider initialState={tree}>
-      <NoteState.Provider initialState={note}>
-        {ua?.isMobileOnly ? (
-          <MobileMainWrapper>{children}</MobileMainWrapper>
-        ) : (
-          <MainWrapper>{children}</MainWrapper>
-        )}
-      </NoteState.Provider>
-    </NoteTreeState.Provider>
-  )
-}
 
 const MainWrapper: FC = ({ children }) => {
   const {
@@ -78,6 +60,39 @@ const MobileMainWrapper: FC = ({ children }) => {
         {children}
       </main>
     </StyledWrapper>
+  )
+}
+
+const LayoutMain: FC<{
+  tree: TreeModel
+  note?: NoteModel
+}> = ({ children, tree, note }) => {
+  const { ua } = UIState.useContainer()
+
+  useEffect(() => {
+    document.body.classList.add('overflow-hidden')
+  }, [])
+
+  return (
+    <NoteTreeState.Provider initialState={tree}>
+      <NoteState.Provider initialState={note}>
+        {/* main layout */}
+        {ua?.isMobileOnly ? (
+          <MobileMainWrapper>{children}</MobileMainWrapper>
+        ) : (
+          <MainWrapper>{children}</MainWrapper>
+        )}
+
+        {/* modals */}
+        <TrashState.Provider>
+          <TrashModal />
+        </TrashState.Provider>
+        <SearchState.Provider>
+          <SearchModal />
+        </SearchState.Provider>
+        <ShareModal />
+      </NoteState.Provider>
+    </NoteTreeState.Provider>
   )
 }
 

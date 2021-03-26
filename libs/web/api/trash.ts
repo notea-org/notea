@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { useFetcher } from './fetcher'
+import useFetcher from './fetcher'
 
 interface MutateBody {
   action: 'restore' | 'delete'
   data: any
 }
 
-export function useTrashAPI() {
+export default function useTrashAPI() {
   const { loading, request, abort } = useFetcher()
 
   const mutate = useCallback(

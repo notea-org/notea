@@ -1,9 +1,10 @@
 import 'tailwindcss/tailwind.css'
-import { UIState } from 'libs/web/state/ui'
+import UIState from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 import { StylesProvider } from '@material-ui/styles'
+import ModalState from 'libs/web/state/modal'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -45,8 +46,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <UIState.Provider
           initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
         >
-          <DocumentHead />
-          <Component {...pageProps} />
+          <ModalState.Provider>
+            <DocumentHead />
+            <Component {...pageProps} />
+          </ModalState.Provider>
         </UIState.Provider>
       </StylesProvider>
     </ThemeProvider>

@@ -1,6 +1,6 @@
 import { DependencyList, useEffect, useRef } from 'react'
 
-export const useDidUpdated = (handler: () => void, deps: DependencyList) => {
+const useDidUpdated = (handler: () => void, deps: DependencyList) => {
   const mounted = useRef(false)
 
   useEffect(() => {
@@ -12,3 +12,5 @@ export const useDidUpdated = (handler: () => void, deps: DependencyList) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }
+
+export default useDidUpdated

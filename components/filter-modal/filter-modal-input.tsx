@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react'
 import IconSearch from 'heroicons/react/outline/Search'
 import { useDebouncedCallback } from 'use-debounce'
 
-const FilterModalInput: FC<{
+ const FilterModalInput: FC<{
   doFilter: (keyword: string) => void
   keyword?: string
   placeholder: string

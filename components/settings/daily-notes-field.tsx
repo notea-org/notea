@@ -3,7 +3,7 @@ import { TextField } from '@material-ui/core'
 // import { useAutocomplete } from '@material-ui/lab'
 // import { SearchState } from 'libs/web/state/search'
 
-const DailyNotesField: FC = () => {
+export const DailyNotesField: FC = () => {
   // const { list } = SearchState.useContainer()
   // const {} = useAutocomplete({
   //   options,
@@ -21,4 +21,3 @@ const DailyNotesField: FC = () => {
     ></TextField>
   )
 }
-export default DailyNotesField

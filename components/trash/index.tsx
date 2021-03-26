@@ -4,25 +4,23 @@ import FilterModalInput from 'components/filter-modal/filter-modal-input'
 import FilterModalList from 'components/filter-modal/filter-modal-list'
 import TrashItem from './trash-item'
 import { NoteModel } from 'libs/web/state/note'
-import { TrashState } from 'libs/web/state/trash'
+import TrashState from 'libs/web/state/trash'
+import ModalState from 'libs/web/state/modal'
 
-const Trash: FC = () => {
+const TrashModal: FC = () => {
+  const { filterNotes, keyword, list } = TrashState.useContainer()
   const {
-    isOpen,
-    closeModal,
-    filterNotes,
-    keyword,
-    list,
-  } = TrashState.useContainer()
+    trash: { visible, close },
+  } = ModalState.useContainer()
 
   useEffect(() => {
-    if (isOpen) {
+    if (visible) {
       filterNotes()
     }
-  }, [isOpen, filterNotes])
+  }, [visible, filterNotes])
 
   return (
-    <FilterModal open={isOpen} onClose={closeModal}>
+    <FilterModal open={visible} onClose={close}>
       <FilterModalInput
         placeholder="Search note in trash"
         doFilter={filterNotes}
@@ -38,4 +36,4 @@ const Trash: FC = () => {
   )
 }
 
-export default Trash
+export default TrashModal

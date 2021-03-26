@@ -8,7 +8,7 @@ export interface UserAgentType {
   isWechat: boolean
 }
 
-export function useUA(
+export default function useUA(
   initState: UserAgentType = {
     isMobile: false,
     isMobileOnly: false,

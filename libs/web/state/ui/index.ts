@@ -1,9 +1,9 @@
 import { Settings } from 'libs/shared/settings'
 import { createContainer } from 'unstated-next'
-import { useSidebar } from './sidebar'
-import { useSplit } from './split'
-import { useTitle } from './title'
-import { UserAgentType, useUA } from './ua'
+import useSidebar from './sidebar'
+import useSplit from './split'
+import useTitle from './title'
+import useUA, { UserAgentType } from './ua'
 
 interface Props {
   ua?: UserAgentType
@@ -18,4 +18,6 @@ function useUI({ ua, settings }: Props = {}) {
   }
 }
 
-export const UIState = createContainer(useUI)
+const UIState = createContainer(useUI)
+
+export default UIState

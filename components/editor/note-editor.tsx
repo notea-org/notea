@@ -1,5 +1,5 @@
 import MarkdownEditor from 'rich-markdown-editor'
-import { NoteModel, NoteState } from 'libs/web/state/note'
+import NoteState, { NoteModel } from 'libs/web/state/note'
 import { KeyboardEvent, useCallback, useRef } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
 import router from 'next/router'
@@ -8,8 +8,8 @@ import { has } from 'lodash'
 import { darkTheme, lightTheme } from './theme'
 import { useTheme } from 'next-themes'
 import { useDebouncedCallback } from 'use-debounce'
-import { useEditorState } from './editor-state'
-import { useMounted } from 'libs/web/hooks/use-mounted'
+import useEditorState from './editor-state'
+import useMounted from 'libs/web/hooks/use-mounted'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {

@@ -7,7 +7,7 @@ import TreeActions, {
 } from 'libs/shared/tree'
 import { getPathTree } from './note-path'
 
-export class TreeStore {
+export default class TreeStore {
   store: StoreProvider
   treePath: string
 

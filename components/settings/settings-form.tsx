@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import DailyNotesField from './daily-notes-field'
+import { DailyNotesField } from './daily-notes-field'
 
-const SettingsForm: FC = () => {
+export const SettingsForm: FC = () => {
   return (
     <section>
       <form>
@@ -10,4 +10,3 @@ const SettingsForm: FC = () => {
     </section>
   )
 }
-export default SettingsForm

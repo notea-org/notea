@@ -6,7 +6,7 @@ import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import SidebarItemMenu from './sidebar-item-menu'
 import IconButton from 'components/icon-button'
-import { NoteTreeState } from 'libs/web/state/tree'
+import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 
 const SidebarListItem: FC<{

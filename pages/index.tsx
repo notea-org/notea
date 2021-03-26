@@ -36,8 +36,6 @@ function withIndex(wrapperHandler: any) {
       }
     }
 
-    console.log(res)
-
     return res
   }
 }
