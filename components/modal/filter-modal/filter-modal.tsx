@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { Modal, ModalProps } from '@material-ui/core'
+import { Dialog, ModalProps, styled } from '@material-ui/core'
 import UIState from 'libs/web/state/ui'
 
 const FilterModal: FC<{
@@ -16,17 +16,26 @@ const FilterModal: FC<{
   }, [open, onOpen])
 
   return (
-    <Modal
+    <StyledDialog
       open={open}
       onClose={onClose}
-      style={{ top: ua.isMobileOnly ? 0 : '10vh' }}
-      className="w-full m-auto lg:w-1/2 xl:w-1/3"
+      maxWidth="sm"
+      fullWidth
+      classes={{
+        root: 'mt-20',
+      }}
+      // style={{ top: ua.isMobileOnly ? 0 : '10vh' }}
+      // className="w-full m-auto lg:w-1/2 xl:w-1/3"
     >
       <div className="bg-gray-50 text-gray-800 outline-none rounded overflow-auto">
         {children}
       </div>
-    </Modal>
+    </StyledDialog>
   )
 }
+
+const StyledDialog = styled(Dialog)({
+  inset: '0 0 auto 0!important',
+})
 
 export default FilterModal

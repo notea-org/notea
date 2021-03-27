@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 
 const StyledList = styled.ul`
-  max-height: calc(80vh - 40px);
+  max-height: 70vh;
 `
 
 const FilterModalList: FC<{

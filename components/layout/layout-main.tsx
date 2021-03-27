@@ -9,10 +9,10 @@ import Resizable from 'components/resizable'
 import classNames from 'classnames'
 import { TreeModel } from 'libs/shared/tree'
 import TrashState from 'libs/web/state/trash'
-import TrashModal from 'components/trash'
+import TrashModal from 'components/modal/trash-modal/trash-modal'
 import SearchState from 'libs/web/state/search'
-import SearchModal from 'components/search'
-import ShareModal from 'components/share-modal'
+import SearchModal from 'components/modal/search-modal/search-modal'
+import ShareModal from 'components/modal/share-modal'
 
 const StyledWrapper = styled.div`
   .gutter {

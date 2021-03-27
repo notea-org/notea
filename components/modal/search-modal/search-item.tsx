@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import MarkText from 'components/filter-modal/mark-text'
+import MarkText from 'components/modal/filter-modal/mark-text'
 import ModalState from 'libs/web/state/modal'
 
 const SearchItem: FC<{
