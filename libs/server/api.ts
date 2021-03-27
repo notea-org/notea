@@ -5,7 +5,7 @@ import { API } from './middlewares/error'
 import { StoreProvider } from '@notea/store'
 import { useSession } from './middlewares/session'
 import { Session } from 'next-iron-session'
-import { TreeStore } from './tree'
+import TreeStore from './tree'
 
 export type ApiRequest = NextApiRequest & {
   store: StoreProvider
