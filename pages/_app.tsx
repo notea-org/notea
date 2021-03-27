@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 import { StylesProvider } from '@material-ui/styles'
 import ModalState from 'libs/web/state/modal'
+import Div100vh from 'react-div-100vh'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -47,8 +48,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
         >
           <ModalState.Provider>
-            <DocumentHead />
-            <Component {...pageProps} />
+            <Div100vh>
+              <DocumentHead />
+              <Component {...pageProps} />
+            </Div100vh>
           </ModalState.Provider>
         </UIState.Provider>
       </StylesProvider>

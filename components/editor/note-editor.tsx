@@ -10,10 +10,12 @@ import { useTheme } from 'next-themes'
 import { useDebouncedCallback } from 'use-debounce'
 import useEditorState from './editor-state'
 import useMounted from 'libs/web/hooks/use-mounted'
+import { use100vh } from 'react-div-100vh'
 
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
-    min-height: calc(100vh - 14rem);
+    min-height: ${({ height }: { height: number | null }) =>
+      `calc(${height ? height + 'px' : '100vh'} - 14rem)`};
     padding-bottom: 10rem;
   }
 `
@@ -29,6 +31,7 @@ const NoteEditor = () => {
   const { updateNote, createNote, note } = NoteState.useContainer()
   const editorEl = useRef<MarkdownEditor>(null)
   const mounted = useMounted()
+  const height = use100vh()
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
@@ -76,7 +79,7 @@ const NoteEditor = () => {
   )
 
   return (
-    <article className="pt-40 px-6 m-auto prose">
+    <article className="pt-40 px-6 m-auto prose h-full">
       <h1>
         <TextareaAutosize
           className="outline-none w-full resize-none block bg-transparent"
@@ -90,6 +93,7 @@ const NoteEditor = () => {
         />
       </h1>
       <StyledMarkdownEditor
+        height={height}
         id={note?.id}
         ref={editorEl}
         value={mounted ? note?.content : ''}

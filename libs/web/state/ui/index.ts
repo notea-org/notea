@@ -12,7 +12,7 @@ interface Props {
 function useUI({ ua, settings }: Props = {}) {
   return {
     ua: useUA(ua),
-    sidebar: useSidebar(ua?.isMobileOnly || settings?.sidebar_is_fold),
+    sidebar: useSidebar(ua?.isMobileOnly ? false : settings?.sidebar_is_fold),
     split: useSplit(settings?.split_sizes),
     title: useTitle(),
   }

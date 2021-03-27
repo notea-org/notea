@@ -1,41 +1,65 @@
 import { FC, useEffect } from 'react'
-import { Dialog, ModalProps, styled } from '@material-ui/core'
+import { Dialog, DialogProps, ModalProps } from '@material-ui/core'
 import UIState from 'libs/web/state/ui'
+import classNames from 'classnames'
+import router from 'next/router'
 
 const FilterModal: FC<{
   open: ModalProps['open']
-  onClose: ModalProps['onClose']
+  onClose: () => void
   onOpen?: () => void
 }> = ({ open, onClose, onOpen, children }) => {
-  const { ua } = UIState.useContainer()
+  const {
+    ua: { isMobileOnly },
+  } = UIState.useContainer()
 
   useEffect(() => {
-    if (open && onOpen) {
-      onOpen()
+    router.beforePopState(() => {
+      onClose()
+      return true
+    })
+  }, [onClose])
+
+  useEffect(() => {
+    if (open) {
+      onOpen?.()
     }
   }, [open, onOpen])
 
+  const props: Partial<DialogProps> = isMobileOnly
+    ? {
+        fullScreen: true,
+      }
+    : {
+        style: {
+          inset: '0 0 auto 0',
+          marginTop: '10vh',
+        },
+      }
+
   return (
-    <StyledDialog
+    <Dialog
       open={open}
       onClose={onClose}
       maxWidth="sm"
       fullWidth
       classes={{
-        root: 'mt-20',
+        paper: 'bg-gray-50',
       }}
-      // style={{ top: ua.isMobileOnly ? 0 : '10vh' }}
-      // className="w-full m-auto lg:w-1/2 xl:w-1/3"
+      {...props}
     >
-      <div className="bg-gray-50 text-gray-800 outline-none rounded overflow-auto">
+      <div
+        className={classNames(
+          'bg-gray-50 text-gray-800 outline-none overflow-auto',
+          {
+            rounded: !isMobileOnly,
+          }
+        )}
+      >
         {children}
       </div>
-    </StyledDialog>
+    </Dialog>
   )
 }
-
-const StyledDialog = styled(Dialog)({
-  inset: '0 0 auto 0!important',
-})
 
 export default FilterModal

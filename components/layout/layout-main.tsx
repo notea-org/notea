@@ -1,18 +1,18 @@
 import NoteTreeState from 'libs/web/state/tree'
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import NoteState, { NoteModel } from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
 import UIState from 'libs/web/state/ui'
 import styled from 'styled-components'
 import Resizable from 'components/resizable'
-import classNames from 'classnames'
 import { TreeModel } from 'libs/shared/tree'
 import TrashState from 'libs/web/state/trash'
 import TrashModal from 'components/modal/trash-modal/trash-modal'
 import SearchState from 'libs/web/state/search'
 import SearchModal from 'components/modal/search-modal/search-modal'
 import ShareModal from 'components/modal/share-modal'
+import { SwipeableDrawer } from '@material-ui/core'
 
 const StyledWrapper = styled.div`
   .gutter {
@@ -23,14 +23,14 @@ const StyledWrapper = styled.div`
 
 const MainWrapper: FC = ({ children }) => {
   const {
-    sidebar: { isFold },
+    sidebar: { visible },
   } = UIState.useContainer()
   const { ref, width = 0 } = useResizeDetector<HTMLDivElement>({
     handleHeight: false,
   })
 
   return (
-    <StyledWrapper className="h-screen" disabled={isFold} ref={ref}>
+    <StyledWrapper className="h-full" disabled={visible} ref={ref}>
       <Resizable width={width}>
         <Sidebar />
         <main className="relative flex-grow">{children}</main>
@@ -41,22 +41,22 @@ const MainWrapper: FC = ({ children }) => {
 
 const MobileMainWrapper: FC = ({ children }) => {
   const {
-    sidebar: { isFold, toggleFold },
+    sidebar: { visible, open, close },
   } = UIState.useContainer()
 
-  const onFold = useCallback(() => {
-    toggleFold(true)
-  }, [toggleFold])
-
   return (
-    <StyledWrapper
-      className={classNames('flex h-screen relative transform transition-all', {
-        'translate-x-3/4': !isFold,
-      })}
-      disabled={true}
-    >
-      <Sidebar />
-      <main className="flex-grow overflow-y-auto" onClick={onFold}>
+    <StyledWrapper className="flex h-full" disabled>
+      <SwipeableDrawer
+        anchor="left"
+        open={visible}
+        onClose={close}
+        onOpen={open}
+        hysteresis={0.4}
+      >
+        <Sidebar />
+      </SwipeableDrawer>
+
+      <main className="flex-grow overflow-y-auto" onClick={close}>
         {children}
       </main>
     </StyledWrapper>

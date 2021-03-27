@@ -11,16 +11,16 @@ import Link from 'next/link'
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
 
-  const onToggleFold = useCallback(
+  const onToggle = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation()
-      sidebar.toggleFold()
+      sidebar.toggle()
     },
     [sidebar]
   )
 
   return (
-    <button className="w-5 mr-2 active:bg-gray-400" onClick={onToggleFold}>
+    <button className="w-5 mr-2 active:bg-gray-400" onClick={onToggle}>
       <IconMenu />
     </button>
   )

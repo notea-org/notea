@@ -2,7 +2,6 @@ import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarList from 'components/sidebar/sidebar-list'
 import UIState from 'libs/web/state/ui'
 import { FC } from 'react'
-import classNames from 'classnames'
 
 const Sidebar: FC = () => {
   const { ua } = UIState.useContainer()
@@ -16,18 +15,14 @@ const BrowserSidebar: FC = () => {
   return (
     <section className="flex h-full">
       <SidebarTool />
-      {sidebar.isFold ? null : <SideBarList />}
+      {sidebar.visible ? null : <SideBarList />}
     </section>
   )
 }
 
 const MobileSidebar: FC = () => {
   return (
-    <section
-      className={classNames(
-        'flex h-full transform absolute w-9/12 z-10 -translate-x-full'
-      )}
-    >
+    <section className="flex h-full" style={{ width: '80vw' }}>
       <SidebarTool />
       <SideBarList />
     </section>

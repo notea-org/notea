@@ -19,6 +19,7 @@ const SearchModal: FC = () => {
         placeholder={'Search note'}
         doFilter={filterNotes}
         keyword={keyword}
+        onClose={close}
       />
       <FilterModalList
         items={list}

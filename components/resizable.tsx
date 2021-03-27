@@ -18,7 +18,7 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
   const splitRef = useRef<typeof Split>(null)
   const {
     split: { saveSizes, resize, sizes },
-    sidebar: { isFold },
+    sidebar: { visible },
   } = UIState.useContainer()
   const lastWidthRef = useRef(width)
 
@@ -33,10 +33,10 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
 
   useEffect(() => {
     splitRef.current?.split?.setSizes(sizes)
-    if (isFold) {
+    if (visible) {
       splitRef.current?.split?.collapse(0)
     }
-  }, [isFold, sizes, width])
+  }, [visible, sizes, width])
 
   const updateSplitSizes = useCallback(
     async (sizes: [number, number]) => {
@@ -48,8 +48,8 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
   return (
     <Split
       ref={splitRef}
-      className="flex h-screen"
-      minSize={isFold ? 40 : 250}
+      className="flex h-full"
+      minSize={visible ? 40 : 250}
       sizes={sizes}
       gutter={renderGutter}
       onDragEnd={updateSplitSizes}

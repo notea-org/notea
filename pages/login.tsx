@@ -1,4 +1,4 @@
-import { useFetcher } from 'libs/web/api/fetcher'
+import useFetcher from 'libs/web/api/fetcher'
 import router from 'next/router'
 import { FormEvent, useCallback } from 'react'
 

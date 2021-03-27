@@ -36,18 +36,18 @@ const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
 
 const ButtonMenu = () => {
   const {
-    sidebar: { toggleFold, isFold },
+    sidebar: { toggle, visible },
   } = UIState.useContainer()
   const onFold = useCallback(() => {
-    toggleFold()
-  }, [toggleFold])
+    toggle()
+  }, [toggle])
 
   return (
     <HotkeyTooltip text="折叠侧边栏" keys={['cmd', '\\']}>
       <ButtonItem onClick={onFold}>
         <IconChevronDoubleLeft
           className={classNames('transform transition-transform', {
-            'rotate-180': isFold,
+            'rotate-180': visible,
           })}
         />
       </ButtonItem>
@@ -144,7 +144,7 @@ const ButtonSettings = () => {
 
 const SidebarTool = () => {
   return (
-    <aside className="h-full flex flex-col w-10 flex-none bg-gray-200">
+    <aside className="h-full flex flex-col w-11 flex-none bg-gray-200">
       <ButtonSearch />
 
       <ButtonTrash />

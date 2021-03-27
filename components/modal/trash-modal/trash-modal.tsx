@@ -25,6 +25,7 @@ const TrashModal: FC = () => {
         placeholder="Search note in trash"
         doFilter={filterNotes}
         keyword={keyword}
+        onClose={close}
       />
       <FilterModalList
         items={list}

@@ -2,11 +2,12 @@ import { FC, useEffect, useRef } from 'react'
 import IconSearch from 'heroicons/react/outline/Search'
 import { useDebouncedCallback } from 'use-debounce'
 
- const FilterModalInput: FC<{
+const FilterModalInput: FC<{
   doFilter: (keyword: string) => void
   keyword?: string
   placeholder: string
-}> = ({ doFilter, keyword, placeholder }) => {
+  onClose: () => void
+}> = ({ doFilter, keyword, placeholder, onClose }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const debouncedFilter = useDebouncedCallback((value: string) => {
     doFilter(value)
@@ -18,7 +19,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
   return (
     <div className="flex py-2 px-4">
-      <IconSearch width="16" />
+      <IconSearch width="20" />
       <input
         ref={inputRef}
         defaultValue={keyword}
@@ -28,6 +29,7 @@ import { useDebouncedCallback } from 'use-debounce'
         autoFocus
         onChange={(e) => debouncedFilter.callback(e.target.value)}
       />
+      <button onClick={onClose}>Cancel</button>
     </div>
   )
 }

@@ -3,23 +3,37 @@ import { isBoolean } from 'lodash'
 import { useState, useCallback } from 'react'
 
 export default function useSidebar(initState = false) {
-  const [isFold, setFold] = useState(initState)
+  const [visible, setVisible] = useState(initState)
   const { mutate } = useSettingsAPI()
 
-  const toggleFold = useCallback(
+  const toggle = useCallback(
     async (state?: boolean) => {
-      setFold((prev) => {
-        const isFold = isBoolean(state) ? state : !prev
+      setVisible((prev) => {
+        const visible = isBoolean(state) ? state : !prev
 
         mutate({
-          sidebar_is_fold: isFold,
+          sidebar_is_fold: visible,
         })
 
-        return isFold
+        return visible
       })
     },
     [mutate]
   )
 
-  return { isFold, toggleFold }
+  const open = useCallback(() => {
+    setVisible(true)
+    mutate({
+      sidebar_is_fold: true,
+    })
+  }, [mutate])
+
+  const close = useCallback(() => {
+    setVisible(false)
+    mutate({
+      sidebar_is_fold: false,
+    })
+  }, [mutate])
+
+  return { visible, toggle, open, close }
 }
