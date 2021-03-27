@@ -1,6 +1,6 @@
 import { NoteModel } from 'libs/web/state/note'
 import Link from 'next/link'
-import React, { FC, ReactText, MouseEvent, useCallback } from 'react'
+import { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'

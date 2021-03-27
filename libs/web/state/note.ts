@@ -28,6 +28,8 @@ const useNote = (initData?: NoteModel) => {
 
   const fetchNote = useCallback(
     async (id: string) => {
+      abort()
+
       const cache = await noteCache.getItem(id)
       if (cache) {
         setNote(cache)
@@ -42,7 +44,7 @@ const useNote = (initData?: NoteModel) => {
       setNote(result)
       await noteCache.setItem(id, result)
     },
-    [find]
+    [find, abort]
   )
 
   const removeNote = useCallback(

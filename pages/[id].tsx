@@ -22,7 +22,7 @@ import LayoutPublic from 'components/layout/layout-public'
 import { PageMode } from 'libs/shared/page'
 import useSettingsAPI from 'libs/web/api/settings'
 
-const NoteEditor = dynamic(() => import('components/editor/note-editor'))
+const NoteEdit = dynamic(() => import('components/editor/note-edit'))
 
 const EditContainer = () => {
   const {
@@ -90,7 +90,7 @@ const EditContainer = () => {
     <>
       <NoteNav />
       <section className={classNames('overflow-y-scroll h-full')}>
-        <NoteEditor />
+        <NoteEdit />
       </section>
     </>
   )

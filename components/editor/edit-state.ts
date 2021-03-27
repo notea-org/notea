@@ -20,7 +20,7 @@ const onSearchLink = async (keyword: string) => {
   }))
 }
 
-const useEditorState = () => {
+const useEditState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
   const { request } = useFetcher()
@@ -40,7 +40,8 @@ const useEditorState = () => {
 
   const onClickLink = useCallback(
     (href: string) => {
-      router.push(href)
+      console.log(href)
+      router.push(href, undefined, { shallow: true })
     },
     [router]
   )
@@ -67,4 +68,4 @@ const useEditorState = () => {
   return { onCreateLink, onSearchLink, onClickLink, onUploadImage }
 }
 
-export default useEditorState
+export default useEditState

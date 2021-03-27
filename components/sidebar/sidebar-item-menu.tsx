@@ -1,5 +1,5 @@
 import { Menu, MenuItem } from '@material-ui/core'
-import React, { FC, useState, MouseEvent, useCallback, useMemo } from 'react'
+import { FC, useState, MouseEvent, useCallback, useMemo } from 'react'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
