@@ -13,6 +13,10 @@ import { streamToString } from '../utils'
 import { Readable } from 'stream'
 import { isEmpty } from 'lodash'
 
+function isNoSuchKey(err) {
+  return err.code === 'NoSuchKey' || err.message === 'NoSuchKey'
+}
+
 /**
  * @todo unit test
  */
@@ -81,7 +85,7 @@ export class StoreS3 extends StoreProvider {
       )
       content = await streamToString(result.Body as Readable)
     } catch (err) {
-      if (err.code !== 'NoSuchKey') {
+      if (!isNoSuchKey(err)) {
         throw err
       }
     }
@@ -99,7 +103,7 @@ export class StoreS3 extends StoreProvider {
       )
       return result.Metadata
     } catch (err) {
-      if (err.code !== 'NoSuchKey') {
+      if (!isNoSuchKey(err)) {
         throw err
       }
       return
@@ -120,7 +124,7 @@ export class StoreS3 extends StoreProvider {
       content = await streamToString(result.Body as Readable)
       meta = result.Metadata
     } catch (err) {
-      if (err.code !== 'NoSuchKey') {
+      if (!isNoSuchKey(err)) {
         throw err
       }
     }
