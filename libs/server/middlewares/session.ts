@@ -7,7 +7,10 @@ const sessionOptions = {
   password: md5('notea' + getEnv('PASSWORD')),
   // if your localhost is served on http:// then disable the secure flag
   cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: getEnv<boolean>(
+      'COOKIE_SECURE',
+      process.env.NODE_ENV === 'production'
+    ),
   },
 }
 

@@ -76,17 +76,31 @@ STORE_END_POINT=http://oss-cn-hangzhou.aliyuncs.com
 STORE_REGION=oss-cn-hangzhou
 ```
 
+### Tencent COS
+
+`.env`
+
+```sh
+STORE_TYPE=AWS
+STORE_ACCESS_KEY=
+STORE_SECRET_KEY=
+STORE_BUCKET=notea
+STORE_END_POINT=https://cos.ap-guangzhou.myqcloud.com
+STORE_REGION=ap-guangzhou
+```
+
 ## Environment variables
 
-| Name             | Description                  | Default   | Optional              | Required |
-| ---------------- | ---------------------------- | --------- | --------------------- | -------- |
-| PASSWORD         | password to login to the app |           |                       | true     |
-| STORE_TYPE       | storage service              |           | `MINIO`, `OSS`, `AWS` | true     |
-| STORE_ACCESS_KEY | accessKey                    |           |                       | true     |
-| STORE_SECRET_KEY | secretKey                    |           |                       | true     |
-| STORE_BUCKET     | bucket                       |           |                       | true     |
-| STORE_END_POINT  | host name or an IP address.  |           |                       |          |
-| STORE_REGION     | region                       | us-east-1 |                       |          |
+| Name             | Description                    | Default   | Optional              | Required |
+| ---------------- | ------------------------------ | --------- | --------------------- | -------- |
+| PASSWORD         | password to login to the app   |           |                       | true     |
+| STORE_TYPE       | storage service                |           | `MINIO`, `OSS`, `AWS` | true     |
+| STORE_ACCESS_KEY | accessKey                      |           |                       | true     |
+| STORE_SECRET_KEY | secretKey                      |           |                       | true     |
+| STORE_BUCKET     | bucket                         |           |                       | true     |
+| STORE_END_POINT  | host name or an IP address.    |           |                       |          |
+| STORE_REGION     | region                         | us-east-1 |                       |          |
+| COOKIE_SECURE    | only works under https: scheme | true      |                       |          |
 
 ## Development
 
