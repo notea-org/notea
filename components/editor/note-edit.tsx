@@ -6,6 +6,17 @@ import { has } from 'lodash'
 import { useDebouncedCallback } from 'use-debounce'
 import EditTitle from './edit-title'
 import Editor from './editor'
+import styled from 'styled-components'
+
+const Article = styled.article`
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+`
 
 const NoteEdit = () => {
   const { updateNote, createNote, note } = NoteState.useContainer()
@@ -31,10 +42,10 @@ const NoteEdit = () => {
   )
 
   return (
-    <article className="pt-40 px-6 m-auto prose h-full">
+    <Article className="pt-40 px-6 m-auto h-full max-w-prose">
       <EditTitle note={note} onNoteChange={onNoteChange} editorEl={editorEl} />
       <Editor note={note} onNoteChange={onNoteChange} editorEl={editorEl} />
-    </article>
+    </Article>
   )
 }
 

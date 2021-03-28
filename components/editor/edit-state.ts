@@ -33,7 +33,7 @@ const useEditState = () => {
         throw new Error('todo')
       }
 
-      return result.id
+      return `/${result.id}`
     },
     [createNoteWithTitle]
   )

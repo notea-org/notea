@@ -1,17 +1,17 @@
 import { FC, useEffect } from 'react'
-import FilterModal from 'components/modal/filter-modal/filter-modal'
-import FilterModalInput from 'components/modal/filter-modal/filter-modal-input'
-import FilterModalList from 'components/modal/filter-modal/filter-modal-list'
+import FilterModal from 'components/portals/filter-modal/filter-modal'
+import FilterModalInput from 'components/portals/filter-modal/filter-modal-input'
+import FilterModalList from 'components/portals/filter-modal/filter-modal-list'
 import TrashItem from './trash-item'
 import { NoteModel } from 'libs/web/state/note'
 import TrashState from 'libs/web/state/trash'
-import ModalState from 'libs/web/state/modal'
+import PortalState from 'libs/web/state/portal'
 
 const TrashModal: FC = () => {
   const { filterNotes, keyword, list } = TrashState.useContainer()
   const {
     trash: { visible, close },
-  } = ModalState.useContainer()
+  } = PortalState.useContainer()
 
   useEffect(() => {
     if (visible) {

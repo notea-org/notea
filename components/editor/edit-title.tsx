@@ -29,7 +29,7 @@ const EditTitle: FC<{
   )
 
   return (
-    <h1>
+    <h1 className="text-3xl mb-8">
       <TextareaAutosize
         className="outline-none w-full resize-none block bg-transparent"
         placeholder="新页面"

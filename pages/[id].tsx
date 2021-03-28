@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic'
 import { GetServerSideProps, NextPage } from 'next'
 import { withTree } from 'libs/server/middlewares/tree'
 import { withUA } from 'libs/server/middlewares/ua'
-import classNames from 'classnames'
 import UIState from 'libs/web/state/ui'
 import { TreeModel } from 'libs/shared/tree'
 import noteCache from 'libs/web/cache/note'
@@ -89,7 +88,7 @@ const EditContainer = () => {
   return (
     <>
       <NoteNav />
-      <section className={classNames('overflow-y-scroll h-full')}>
+      <section className="overflow-y-scroll h-full">
         <NoteEdit />
       </section>
     </>

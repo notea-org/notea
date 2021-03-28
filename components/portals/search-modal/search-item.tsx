@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import MarkText from 'components/modal/filter-modal/mark-text'
-import ModalState from 'libs/web/state/modal'
+import MarkText from 'components/portals/filter-modal/mark-text'
+import PortalState from 'libs/web/state/portal'
 
 const SearchItem: FC<{
   note: NoteCacheItem
@@ -11,7 +11,7 @@ const SearchItem: FC<{
 }> = ({ note, keyword }) => {
   const {
     search: { close },
-  } = ModalState.useContainer()
+  } = PortalState.useContainer()
 
   return (
     <li className="hover:bg-gray-200 cursor-pointer">

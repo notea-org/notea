@@ -4,10 +4,10 @@ import { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
-import SidebarItemMenu from './sidebar-item-menu'
 import IconButton from 'components/icon-button'
 import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
+import PortalState from 'libs/web/state/portal'
 
 const SidebarListItem: FC<{
   item: NoteModel
@@ -34,6 +34,10 @@ const SidebarListItem: FC<{
 }) => {
   const { query } = useRouter()
   const { mutateItem, initLoaded } = NoteTreeState.useContainer()
+  const {
+    sidebar: { open, setData },
+  } = PortalState.useContainer()
+
   const onAddNote = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
@@ -43,6 +47,15 @@ const SidebarListItem: FC<{
       })
     },
     [item.id, mutateItem]
+  )
+
+  const handleClickMenu = useCallback(
+    (event: MouseEvent) => {
+      event.preventDefault()
+      open(event.currentTarget)
+      setData(item)
+    },
+    [item, open, setData]
   )
 
   return (
@@ -81,7 +94,13 @@ const SidebarListItem: FC<{
           </a>
         </Link>
 
-        <SidebarItemMenu note={item} />
+        <HotkeyTooltip text="删除、复制链接等操作">
+          <IconButton
+            icon="DotsHorizontal"
+            onClick={handleClickMenu}
+            className="hidden group-hover:block"
+          ></IconButton>
+        </HotkeyTooltip>
 
         <HotkeyTooltip text="新建子页面">
           <IconButton

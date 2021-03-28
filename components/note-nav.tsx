@@ -7,6 +7,9 @@ import { CircularProgress } from '@material-ui/core'
 import NoteTreeState from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
 import Link from 'next/link'
+import IconButton from './icon-button'
+import HotkeyTooltip from './hotkey-tooltip'
+import PortalState from 'libs/web/state/portal'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -30,6 +33,7 @@ const NoteNav = () => {
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
+  const { share } = PortalState.useContainer()
 
   if (!note) {
     // todo
@@ -73,6 +77,9 @@ const NoteNav = () => {
       >
         <CircularProgress size="14px" color="inherit" />
       </div>
+      <HotkeyTooltip text="分享页面">
+        <IconButton onClick={share.open} icon="PaperAirplane" />
+      </HotkeyTooltip>
     </nav>
   )
 }

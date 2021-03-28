@@ -14,7 +14,7 @@ import Link from 'next/link'
 import dayjs from 'dayjs'
 import { useTheme } from 'next-themes'
 import IconDotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
-import ModalState from 'libs/web/state/modal'
+import PortalState from 'libs/web/state/portal'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -91,7 +91,7 @@ const ButtonTheme = () => {
 }
 
 const ButtonSearch = () => {
-  const { search } = ModalState.useContainer()
+  const { search } = PortalState.useContainer()
 
   return (
     <HotkeyTooltip text="Search" keys={['cmd', 'p']}>
@@ -103,7 +103,7 @@ const ButtonSearch = () => {
 }
 
 const ButtonTrash = () => {
-  const { trash } = ModalState.useContainer()
+  const { trash } = PortalState.useContainer()
 
   return (
     <HotkeyTooltip text="Trash" keys={['cmd', 'q']}>

@@ -4,7 +4,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ThemeProvider } from 'next-themes'
 import { StylesProvider } from '@material-ui/styles'
-import ModalState from 'libs/web/state/modal'
+import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
 
 const handleRejection = (event: any) => {
@@ -47,12 +47,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <UIState.Provider
           initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
         >
-          <ModalState.Provider>
+          <PortalState.Provider>
             <Div100vh>
               <DocumentHead />
               <Component {...pageProps} />
             </Div100vh>
-          </ModalState.Provider>
+          </PortalState.Provider>
         </UIState.Provider>
       </StylesProvider>
     </ThemeProvider>

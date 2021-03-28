@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import { FC, useCallback } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import MarkText from 'components/modal/filter-modal/mark-text'
+import MarkText from 'components/portals/filter-modal/mark-text'
 import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import TrashState from 'libs/web/state/trash'
-import ModalState from 'libs/web/state/modal'
+import PortalState from 'libs/web/state/portal'
 
 const TrashItem: FC<{
   note: NoteCacheItem
@@ -14,7 +14,7 @@ const TrashItem: FC<{
   const { restoreNote, deleteNote, filterNotes } = TrashState.useContainer()
   const {
     trash: { close },
-  } = ModalState.useContainer()
+  } = PortalState.useContainer()
 
   const onClickRestore = useCallback(async () => {
     await restoreNote(note)

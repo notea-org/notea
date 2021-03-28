@@ -1,17 +1,17 @@
 import SearchState from 'libs/web/state/search'
 import { FC } from 'react'
-import FilterModal from 'components/modal/filter-modal/filter-modal'
-import FilterModalInput from 'components/modal/filter-modal/filter-modal-input'
-import FilterModalList from 'components/modal/filter-modal/filter-modal-list'
+import FilterModal from 'components/portals/filter-modal/filter-modal'
+import FilterModalInput from 'components/portals/filter-modal/filter-modal-input'
+import FilterModalList from 'components/portals/filter-modal/filter-modal-list'
 import SearchItem from './search-item'
 import { NoteModel } from 'libs/web/state/note'
-import ModalState from 'libs/web/state/modal'
+import PortalState from 'libs/web/state/portal'
 
 const SearchModal: FC = () => {
   const { filterNotes, keyword, list } = SearchState.useContainer()
   const {
     search: { visible, close },
-  } = ModalState.useContainer()
+  } = PortalState.useContainer()
 
   return (
     <FilterModal open={visible} onClose={close}>

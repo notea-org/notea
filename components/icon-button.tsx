@@ -6,6 +6,7 @@ import Plus from 'heroicons/react/outline/Plus'
 import DotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
 import ChevronRight from 'heroicons/react/outline/ChevronRight'
 import Reply from 'heroicons/react/outline/Reply'
+import PaperAirplane from 'heroicons/react/outline/PaperAirplane'
 
 export const ICONS = {
   Trash,
@@ -14,6 +15,7 @@ export const ICONS = {
   DotsHorizontal,
   ChevronRight,
   Reply,
+  PaperAirplane,
 }
 
 const IconButton = forwardRef<
