@@ -25,7 +25,7 @@ Data is stored in https://play.minio.io:9000/notea/
 
 ## Deploy
 
-### Vercel(Recommanded)
+### Vercel(Recommended)
 
 Click https://vercel.com/new to deploy your fork repo.
 
