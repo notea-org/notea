@@ -14,7 +14,7 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="Notea" />
           <meta
             name="description"
-            content="Self hosted note taking app stored on Amazon S3 or like."
+            content="Self hosted note taking app stored on S3."
           />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />

@@ -2,10 +2,15 @@ import { getEnv } from 'libs/shared/env'
 import { URL } from 'url'
 import { StoreS3 } from './providers/s3'
 
-export type StroageType = 'OSS' | 'MINIO' | 'AWS'
+/**
+ * `STORE_TYPE` is deprecated.
+ * The code will be removed in a future version
+ */
+export type StroageType = 'OSS' | 'MINIO' | 'AWS' | 'COS' | 'S3'
 
 export function createStore(
   prefix = '',
+
   type = getEnv<StroageType>('STORE_TYPE')
 ) {
   switch (type) {
@@ -29,6 +34,8 @@ export function createStore(
         prefix,
       })
     }
+    case 'S3':
+    case 'COS':
     case 'AWS':
       return new StoreS3({
         accessKey: getEnv('STORE_ACCESS_KEY'),
@@ -39,7 +46,6 @@ export function createStore(
         prefix,
       })
     case 'MINIO':
-    default:
       return new StoreS3({
         accessKey: getEnv('STORE_ACCESS_KEY'),
         secretKey: getEnv('STORE_SECRET_KEY'),
@@ -48,6 +54,20 @@ export function createStore(
         region: getEnv('STORE_REGION', 'us-east-1'),
         prefix,
         pathStyle: true,
+      })
+
+    /**
+     * Currently only compatible with s3 storage
+     */
+    default:
+      return new StoreS3({
+        accessKey: getEnv('STORE_ACCESS_KEY'),
+        secretKey: getEnv('STORE_SECRET_KEY'),
+        endPoint: getEnv('STORE_END_POINT'),
+        bucket: getEnv('STORE_BUCKET', 'notea'),
+        region: getEnv('STORE_REGION', 'us-east-1'),
+        pathStyle: getEnv('STORE_FORCE_PATH_STYLE', false),
+        prefix,
       })
   }
 }

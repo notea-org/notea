@@ -1,10 +1,8 @@
 # Notea [WIP]
 
-> Self hosted note taking app stored on Amazon S3 or like.
+> Self hosted note taking app stored on S3.
 
 ![screenshot](./assets/screenshot.png)
-
-Fork and install **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** to automatically update your repo.
 
 ## Features
 
@@ -21,31 +19,36 @@ Data is stored in https://play.minio.io:9000/notea/
 
 ## Quickstart
 
-1. [Choose Storage](#storage)
-2. [Deploy App](#deploy)
-3. Visit your website
+1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
+1. [Choose Storage](#storage) and create bucket.
+1. [Deploy App](#deploy)
 
 ## Deploy
 
 ### Vercel(Recommanded)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FQingWei-Li%2Fnotea&env=STORE_TYPE,STORE_ACCESS_KEY,STORE_SECRET_KEY,STORE_BUCKET,STORE_END_POINT,PASSWORD&envDescription=Refer%20to%20the%20docs%20to%20set%20environment%20variables&envLink=https%3A%2F%2Fgithub.com%2FQingWei-Li%2Fnotea%23environment-variables&project-name=notea)
+Click https://vercel.com/new to deploy your fork repo.
 
 ### Netlify
 
+Click https://app.netlify.com/start to deploy your fork repo.
+
 ### Docker
 
-```sh
+```bash
 docker run -d \
   --name notea \
-  -e STORE_TYPE=MINIO \
+  -p 3000:3000
   -e STORE_ACCESS_KEY=Q3AM3UQ867SPQQA43P2F \
   -e STORE_SECRET_KEY=zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG \
   -e STORE_BUCKET=notea \
   -e STORE_END_POINT=http://play.minio.io \
+  -e STORE_FORCE_PATH_STYLE=true
   -e PASSWORD=notea \
   cinwell/notea
 ```
+
+You can install [watchtower](https://containrrr.dev/watchtower/) to keep the latest version.
 
 ## Storage
 
@@ -56,11 +59,12 @@ Configure environment variables according to storage service.
 `.env`
 
 ```sh
-STORE_TYPE=MINIO
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
 STORE_END_POINT=http://localhost:9000
+# This is required
+STORE_FORCE_PATH_STYLE=true
 ```
 
 ### Amazon S3
@@ -68,7 +72,6 @@ STORE_END_POINT=http://localhost:9000
 `.env`
 
 ```sh
-STORE_TYPE=AWS
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
@@ -80,11 +83,10 @@ STORE_REGION=us-east-1
 `.env`
 
 ```sh
-STORE_TYPE=OSS
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
-STORE_END_POINT=http://oss-cn-hangzhou.aliyuncs.com
+STORE_END_POINT=https://oss-cn-hangzhou.aliyuncs.com
 STORE_REGION=oss-cn-hangzhou
 ```
 
@@ -93,7 +95,6 @@ STORE_REGION=oss-cn-hangzhou
 `.env`
 
 ```sh
-STORE_TYPE=AWS
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
@@ -101,18 +102,21 @@ STORE_END_POINT=https://cos.ap-guangzhou.myqcloud.com
 STORE_REGION=ap-guangzhou
 ```
 
+Other services that support the s3 protocol can also be used.
+Contribution examples are welcome.
+
 ## Environment variables
 
-| Name             | Description                    | Default   | Optional              | Required |
-| ---------------- | ------------------------------ | --------- | --------------------- | -------- |
-| PASSWORD         | password to login to the app   |           |                       | true     |
-| STORE_TYPE       | storage service                |           | `MINIO`, `OSS`, `AWS` | true     |
-| STORE_ACCESS_KEY | accessKey                      |           |                       | true     |
-| STORE_SECRET_KEY | secretKey                      |           |                       | true     |
-| STORE_BUCKET     | bucket                         |           |                       | true     |
-| STORE_END_POINT  | host name or an IP address.    |           |                       |          |
-| STORE_REGION     | region                         | us-east-1 |                       |          |
-| COOKIE_SECURE    | only works under https: scheme | true      |                       |          |
+| Name                   | Description                                     | Default   | Optional | Required |
+| ---------------------- | ----------------------------------------------- | --------- | -------- | -------- |
+| PASSWORD               | password to login to the app                    |           |          | true     |
+| STORE_ACCESS_KEY       | accessKey                                       |           |          | true     |
+| STORE_SECRET_KEY       | secretKey                                       |           |          | true     |
+| STORE_BUCKET           | bucket                                          |           |          | true     |
+| STORE_END_POINT        | host name or an IP address.                     |           |          |          |
+| STORE_REGION           | region                                          | us-east-1 |          |          |
+| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects | false     |          |          |
+| COOKIE_SECURE          | only works under https: scheme                  | true      |          |          |
 
 ## Development
 
