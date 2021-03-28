@@ -1,5 +1,5 @@
 import { isNil, toNumber } from 'lodash'
-import { strCompress, strDecompress } from 'packages/shared'
+import { strCompress, strDecompress } from 'libs/shared/str'
 import {
   PAGE_META_KEY,
   NOTE_DELETED,

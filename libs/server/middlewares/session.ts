@@ -1,6 +1,6 @@
-import { getEnv } from 'packages/shared'
 import { ironSession, withIronSession, Handler } from 'next-iron-session'
 import md5 from 'md5'
+import { getEnv } from 'libs/shared/env'
 
 const sessionOptions = {
   cookieName: 'notea-auth',

@@ -1,5 +1,5 @@
-import { getEnv } from 'packages/shared'
 import { api } from 'libs/server/api'
+import { getEnv } from 'libs/shared/env'
 
 export default api().post(async (req, res) => {
   const { password } = req.body

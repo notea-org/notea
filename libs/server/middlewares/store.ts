@@ -1,4 +1,4 @@
-import { createStore } from '@notea/store'
+import { createStore } from 'libs/server/store'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
 import { GetServerSidePropsContext } from 'next'
 import TreeStore from 'libs/server/tree'

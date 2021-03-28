@@ -1,5 +1,5 @@
 import { ObjectOptions, StoreProvider, StoreProviderConfig } from './base'
-import { toBuffer, toStr } from '@notea/shared'
+import { toBuffer, toStr } from 'libs/shared/str'
 import {
   CopyObjectCommand,
   DeleteObjectCommand,

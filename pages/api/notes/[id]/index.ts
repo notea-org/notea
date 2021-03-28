@@ -1,12 +1,12 @@
-import { strCompress } from 'packages/shared'
 import { api } from 'libs/server/api'
 import { metaToJson } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import { getPathNoteById } from 'libs/server/note-path'
 import { NoteModel } from 'libs/web/state/note'
-import { StoreProvider } from 'packages/store/src'
+import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
+import { strCompress } from 'libs/shared/str'
 
 export async function getNote(
   store: StoreProvider,

@@ -1,4 +1,4 @@
-import { StoreProvider } from 'packages/store/src'
+import { StoreProvider } from 'libs/server/store'
 import TreeActions, {
   DEFAULT_TREE,
   movePosition,

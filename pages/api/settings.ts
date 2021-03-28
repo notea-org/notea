@@ -4,8 +4,8 @@ import { useStore } from 'libs/server/middlewares/store'
 import { getPathSettings } from 'libs/server/note-path'
 import { formatSettings, Settings } from 'libs/shared/settings'
 import { isEqual } from 'lodash'
-import { tryJSON } from 'packages/shared'
-import { StoreProvider } from 'packages/store/src'
+import { tryJSON } from 'libs/shared/str'
+import { StoreProvider } from 'libs/server/store'
 
 export async function getSettings(store: StoreProvider) {
   const settings =

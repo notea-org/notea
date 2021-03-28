@@ -1,4 +1,4 @@
-import { genId } from '@notea/shared'
+import { genId } from 'libs/shared/id'
 import { api } from 'libs/server/api'
 import { jsonToMeta } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'

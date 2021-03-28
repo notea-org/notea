@@ -1,5 +1,5 @@
 import { cloneDeep, isEmpty, map } from 'lodash'
-import { genId } from 'packages/shared'
+import { genId } from 'libs/shared/id'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import { NoteModel } from './note'

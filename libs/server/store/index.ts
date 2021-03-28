@@ -1,4 +1,4 @@
-import { getEnv } from '@notea/shared'
+import { getEnv } from 'libs/shared/env'
 import { URL } from 'url'
 import { StoreS3 } from './providers/s3'
 
