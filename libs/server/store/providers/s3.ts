@@ -13,7 +13,7 @@ import { streamToString } from '../utils'
 import { Readable } from 'stream'
 import { isEmpty } from 'lodash'
 
-function isNoSuchKey(err) {
+function isNoSuchKey(err: any) {
   return err.code === 'NoSuchKey' || err.message === 'NoSuchKey'
 }
 
