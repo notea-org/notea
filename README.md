@@ -48,7 +48,13 @@ docker run -d \
   cinwell/notea
 ```
 
-You can install [watchtower](https://containrrr.dev/watchtower/) to keep the latest version.
+You can use [watchtower](https://containrrr.dev/watchtower/) to keep the latest version.
+
+```bash
+docker run -d \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower -c notea
+```
 
 ## Storage
 
