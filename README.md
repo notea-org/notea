@@ -35,9 +35,21 @@ Data is stored in https://play.minio.io:9000/notea/
 
 ### Docker
 
+```sh
+docker run -d \
+  --name notea \
+  -e STORE_TYPE=MINIO \
+  -e STORE_ACCESS_KEY=Q3AM3UQ867SPQQA43P2F \
+  -e STORE_SECRET_KEY=zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG \
+  -e STORE_BUCKET=notea \
+  -e STORE_END_POINT=http://play.minio.io \
+  -e PASSWORD=notea \
+  cinwell/notea
+```
+
 ## Storage
 
-Configure environment variables according to storage mode.
+Configure environment variables according to storage service.
 
 ### Minio
 
