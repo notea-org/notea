@@ -1,53 +1,67 @@
 import { ObjectOptions, StoreProvider, StoreProviderConfig } from './base'
 import { toBuffer, toStr } from '@notea/shared'
-import { Client } from 'awos-js'
-import { isBuffer } from 'lodash'
+import {
+  CopyObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { streamToString } from '../utils'
+import { Readable } from 'stream'
+import { isEmpty } from 'lodash'
 
+/**
+ * @todo unit test
+ */
 export interface S3Config extends StoreProviderConfig {
   bucket: string
   accessKey: string
   secretKey: string
-  type: 'oss' | 'aws'
   endPoint?: string
   pathStyle?: boolean
   region?: string
 }
 
 export class StoreS3 extends StoreProvider {
-  store: Client
+  client: S3Client
   config: S3Config
 
   constructor(config: S3Config) {
     super(config)
-    this.store = new Client({
-      type: config.type,
-      ossOptions: {
-        accessKeyId: config.accessKey,
-        accessKeySecret: config.secretKey,
-        endpoint: config.endPoint as string,
-        bucket: config.bucket,
-      },
-      awsOptions: {
+    this.client = new S3Client({
+      forcePathStyle: config.pathStyle,
+      region: config.region,
+      endpoint: config.endPoint,
+      credentials: {
         accessKeyId: config.accessKey,
         secretAccessKey: config.secretKey,
-        endpoint: config.endPoint as string,
-        bucket: config.bucket,
-        s3ForcePathStyle: config.pathStyle,
-        region: config.region,
       },
     })
     this.config = config
   }
 
-  async getSignUrl(path: string, expires = 600) {
-    return this.store.signatureUrl(this.getPath(path), {
-      expires,
-    })
+  getSignUrl(path: string, expires = 600) {
+    return getSignedUrl(
+      this.client,
+      new GetObjectCommand({
+        Bucket: this.config.bucket,
+        Key: this.getPath(path),
+      }),
+      { expiresIn: expires }
+    )
   }
 
   async hasObject(path: string) {
     try {
-      const data = await this.store.head(this.getPath(path))
+      const data = await this.client.send(
+        new HeadObjectCommand({
+          Bucket: this.config.bucket,
+          Key: this.getPath(path),
+        })
+      )
 
       return !!data
     } catch (e) {
@@ -59,8 +73,13 @@ export class StoreS3 extends StoreProvider {
     let content
 
     try {
-      const result = await this.store.getAsBuffer(this.getPath(path))
-      content = result?.content
+      const result = await this.client.send(
+        new GetObjectCommand({
+          Bucket: this.config.bucket,
+          Key: this.getPath(path),
+        })
+      )
+      content = await streamToString(result.Body as Readable)
     } catch (err) {
       if (err.code !== 'NoSuchKey') {
         throw err
@@ -72,8 +91,13 @@ export class StoreS3 extends StoreProvider {
 
   async getObjectMeta(path: string) {
     try {
-      const result = await this.store.head(this.getPath(path))
-      return result || undefined
+      const result = await this.client.send(
+        new HeadObjectCommand({
+          Bucket: this.config.bucket,
+          Key: this.getPath(path),
+        })
+      )
+      return result.Metadata
     } catch (err) {
       if (err.code !== 'NoSuchKey') {
         throw err
@@ -82,18 +106,19 @@ export class StoreS3 extends StoreProvider {
     }
   }
 
-  async getObjectAndMeta(
-    path: string,
-    metaKeys: string[],
-    isCompressed = false
-  ) {
+  async getObjectAndMeta(path: string, isCompressed = false) {
     let content
     let meta
 
     try {
-      const result = await this.store.getAsBuffer(this.getPath(path), metaKeys)
-      content = result?.content
-      meta = result?.meta
+      const result = await this.client.send(
+        new GetObjectCommand({
+          Bucket: this.config.bucket,
+          Key: this.getPath(path),
+        })
+      )
+      content = await streamToString(result.Body as Readable)
+      meta = result.Metadata
     } catch (err) {
       if (err.code !== 'NoSuchKey') {
         throw err
@@ -109,18 +134,42 @@ export class StoreS3 extends StoreProvider {
     options?: ObjectOptions,
     isCompressed?: boolean
   ) {
-    await this.store.put(
-      this.getPath(path),
-      isBuffer(raw) ? raw : toBuffer(raw, isCompressed),
-      options
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.config.bucket,
+        Key: this.getPath(path),
+        Body: Buffer.isBuffer(raw) ? raw : toBuffer(raw, isCompressed),
+        Metadata: options?.meta,
+        CacheControl: options?.headers?.cacheControl,
+        ContentDisposition: options?.headers?.contentDisposition,
+        ContentEncoding: options?.headers?.contentEncoding,
+        ContentType: options?.contentType,
+      })
     )
   }
 
   async deleteObject(path: string) {
-    await this.store.del(this.getPath(path))
+    await this.client.send(
+      new DeleteObjectCommand({
+        Bucket: this.config.bucket,
+        Key: this.getPath(path),
+      })
+    )
   }
 
   async copyObject(fromPath: string, toPath: string, options: ObjectOptions) {
-    await this.store.copy(this.getPath(toPath), this.getPath(fromPath), options)
+    await this.client.send(
+      new CopyObjectCommand({
+        Bucket: this.config.bucket,
+        Key: this.getPath(toPath),
+        CopySource: `${this.config.bucket}/${this.getPath(fromPath)}`,
+        Metadata: options?.meta,
+        CacheControl: options?.headers?.cacheControl,
+        ContentDisposition: options?.headers?.contentDisposition,
+        ContentEncoding: options?.headers?.contentEncoding,
+        ContentType: options?.contentType,
+        MetadataDirective: isEmpty(options?.meta) ? 'COPY' : 'REPLACE',
+      })
+    )
   }
 }

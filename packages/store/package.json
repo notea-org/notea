@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "awos-js": "^2.0.3"
+    "@aws-sdk/client-s3": "^3.10.0",
+    "@aws-sdk/s3-request-presigner": "^3.10.0"
   },
   "devDependencies": {}
 }

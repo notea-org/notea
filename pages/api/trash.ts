@@ -48,7 +48,7 @@ async function restoreNote(req: ApiRequest, id: string, parentId = 'root') {
     deleted: NOTE_DELETED.NORMAL.toString(),
   })
   if (oldMeta) {
-    meta = new Map([...oldMeta, ...meta])
+    meta = { ...oldMeta, ...meta }
   }
 
   await req.store.copyObject(notePath, notePath, {

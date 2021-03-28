@@ -3,7 +3,7 @@ export interface StoreProviderConfig {
 }
 
 export interface ObjectOptions {
-  meta?: Map<string, any>
+  meta?: { [key: string]: string }
   contentType?: string
   headers?: {
     cacheControl?: string
@@ -46,7 +46,9 @@ export abstract class StoreProvider {
    * 获取对象 Meta
    * @returns meta
    */
-  abstract getObjectMeta(path: string): Promise<Map<string, string> | undefined>
+  abstract getObjectMeta(
+    path: string
+  ): Promise<{ [key: string]: string } | undefined>
 
   /**
    * 获取对象和对象 Meta
@@ -54,11 +56,10 @@ export abstract class StoreProvider {
    */
   abstract getObjectAndMeta(
     path: string,
-    metaKeys: string[],
     isCompressed?: boolean
   ): Promise<{
     content?: string
-    meta?: Map<string, string>
+    meta?: { [key: string]: string }
   }>
 
   /**

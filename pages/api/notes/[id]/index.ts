@@ -4,7 +4,6 @@ import { metaToJson } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import { getPathNoteById } from 'libs/server/note-path'
-import { PAGE_META_KEY } from 'libs/shared/meta'
 import { NoteModel } from 'libs/web/state/note'
 import { StoreProvider } from 'packages/store/src'
 import { API } from 'libs/server/middlewares/error'
@@ -13,10 +12,7 @@ export async function getNote(
   store: StoreProvider,
   id: string
 ): Promise<NoteModel> {
-  const { content, meta } = await store.getObjectAndMeta(
-    getPathNoteById(id),
-    PAGE_META_KEY
-  )
+  const { content, meta } = await store.getObjectAndMeta(getPathNoteById(id))
 
   if (!content && !meta) {
     throw API.NOT_FOUND.throw()
@@ -65,7 +61,7 @@ export default api()
     const oldMeta = await req.store.getObjectMeta(notePath)
 
     if (oldMeta) {
-      oldMeta.set('date', strCompress(new Date().toISOString()))
+      oldMeta['date'] = strCompress(new Date().toISOString())
     }
 
     await req.store.putObject(notePath, content, {

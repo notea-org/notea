@@ -48,7 +48,7 @@ STORE_TYPE=MINIO
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
-STORE_END_POINT=
+STORE_END_POINT=http://localhost:9000
 ```
 
 ### Amazon S3
@@ -72,7 +72,8 @@ STORE_TYPE=OSS
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
-STORE_END_POINT=oss-cn-hangzhou.aliyuncs.com
+STORE_END_POINT=http://oss-cn-hangzhou.aliyuncs.com
+STORE_REGION=oss-cn-hangzhou
 ```
 
 ## Environment variables
@@ -80,7 +81,7 @@ STORE_END_POINT=oss-cn-hangzhou.aliyuncs.com
 | Name             | Description                  | Default   | Optional              | Required |
 | ---------------- | ---------------------------- | --------- | --------------------- | -------- |
 | PASSWORD         | password to login to the app |           |                       | true     |
-| STORE_TYPE       | storage method               |           | `MINIO`, `OSS`, `AWS` | true     |
+| STORE_TYPE       | storage service              |           | `MINIO`, `OSS`, `AWS` | true     |
 | STORE_ACCESS_KEY | accessKey                    |           |                       | true     |
 | STORE_SECRET_KEY | secretKey                    |           |                       | true     |
 | STORE_BUCKET     | bucket                       |           |                       | true     |

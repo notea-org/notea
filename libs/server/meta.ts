@@ -8,14 +8,14 @@ import {
 } from 'libs/shared/meta'
 
 export function jsonToMeta(meta?: Record<string, string | undefined>) {
-  const metaData: Map<string, string> = new Map()
+  const metaData: Record<string, string> = {}
 
   if (meta) {
     PAGE_META_KEY.forEach((key) => {
       const value = meta[key]
 
       if (value) {
-        metaData.set(key, strCompress(value.toString()))
+        metaData[key] = strCompress(value.toString())
       }
     })
   }
@@ -23,12 +23,12 @@ export function jsonToMeta(meta?: Record<string, string | undefined>) {
   return metaData
 }
 
-export function metaToJson(metaData?: Map<string, string>) {
+export function metaToJson(metaData?: Record<string, string>) {
   const meta: Record<string, any> = {}
 
   if (metaData) {
     PAGE_META_KEY.forEach((key) => {
-      const value = metaData.get(key)
+      const value = metaData[key]
 
       if (!isNil(value)) {
         const strValue = strDecompress(value) || undefined

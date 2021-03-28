@@ -11,12 +11,14 @@ export function toBuffer(raw: unknown, compressed = false): Buffer {
 }
 
 export function toStr(
-  buffer?: Buffer,
+  bufferOrString?: Buffer | string,
   deCompressed = false
 ): string | undefined {
-  if (!buffer) return
+  if (!bufferOrString) return
 
-  const str = buffer.toString()
+  const str = Buffer.isBuffer(bufferOrString)
+    ? bufferOrString.toString()
+    : bufferOrString
 
   return deCompressed ? strDecompress(str) : str
 }

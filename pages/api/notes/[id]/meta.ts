@@ -19,7 +19,7 @@ export default api()
     })
 
     if (oldMeta) {
-      meta = new Map([...oldMeta, ...meta])
+      meta = { ...oldMeta, ...meta }
 
       // 处理删除情况
       const { deleted } = req.body
