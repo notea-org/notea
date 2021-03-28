@@ -34,6 +34,7 @@ export function createStore(
         accessKey: getEnv('STORE_ACCESS_KEY'),
         secretKey: getEnv('STORE_SECRET_KEY'),
         bucket: getEnv('STORE_BUCKET', 'notea'),
+        endPoint: getEnv('STORE_END_POINT', 'notea'),
         region: getEnv('STORE_REGION', 'us-east-1'),
         prefix,
       })
