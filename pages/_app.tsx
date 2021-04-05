@@ -2,10 +2,12 @@ import 'tailwindcss/tailwind.css'
 import UIState from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider, useTheme } from 'next-themes'
 import { StylesProvider } from '@material-ui/styles'
 import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
+import { useMemo } from 'react'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -40,9 +42,31 @@ function DocumentHead() {
   )
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+const AppInner = ({ Component, pageProps }: AppProps) => {
+  const { theme } = useTheme()
+  const muiTheme = useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: theme ? 'dark' : 'light',
+          primary: {
+            /**
+             * colors https://tailwindcss.com/docs/customizing-colors
+             * primary.main: blue 500
+             * secondary.main: gray 500
+             */
+            main: '#3B82F6',
+          },
+          secondary: {
+            main: '#6B7280',
+          },
+        },
+      }),
+    [theme]
+  )
+
   return (
-    <ThemeProvider attribute="class" storageKey="nightwind-mode">
+    <MuiThemeProvider theme={muiTheme}>
       <StylesProvider injectFirst>
         <UIState.Provider
           initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
@@ -55,6 +79,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           </PortalState.Provider>
         </UIState.Provider>
       </StylesProvider>
+    </MuiThemeProvider>
+  )
+}
+
+function MyApp(props: AppProps) {
+  return (
+    <ThemeProvider attribute="class" storageKey="nightwind-mode">
+      <AppInner {...props} />
     </ThemeProvider>
   )
 }

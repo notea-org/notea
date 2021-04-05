@@ -33,7 +33,17 @@ const NoteNav = () => {
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
-  const { share } = PortalState.useContainer()
+  const {
+    share: { setData, open },
+  } = PortalState.useContainer()
+
+  const handleClickShare = useCallback(
+    (event: MouseEvent) => {
+      setData(note)
+      open(event)
+    },
+    [note, setData, open]
+  )
 
   if (!note) {
     // todo
@@ -78,7 +88,7 @@ const NoteNav = () => {
         <CircularProgress size="14px" color="inherit" />
       </div>
       <HotkeyTooltip text="分享页面">
-        <IconButton onClick={share.open} icon="PaperAirplane" />
+        <IconButton onClick={handleClickShare} icon="PaperAirplane" />
       </HotkeyTooltip>
     </nav>
   )
