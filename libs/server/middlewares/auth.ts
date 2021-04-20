@@ -29,10 +29,6 @@ export function withAuth(wrapperHandler: any) {
       },
     }
 
-    if (!ctx.req.session.get('user')) {
-      return redirectLogin
-    }
-
     const res = await wrapperHandler(ctx)
 
     if (

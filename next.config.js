@@ -4,6 +4,10 @@ const runtimeCaching = require('next-pwa/cache')
 module.exports = withPWA({
   target: process.env.NETLIFY ? 'serverless' : 'server',
 
+  future: {
+    webpack5: true,
+  },
+
   webpack(config, { defaultLoaders }) {
     config.module.rules.push({
       test: /\.jsx/,

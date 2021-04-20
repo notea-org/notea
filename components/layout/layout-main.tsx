@@ -8,12 +8,12 @@ import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import { TreeModel } from 'libs/shared/tree'
 import TrashState from 'libs/web/state/trash'
-import TrashModal from 'components/portals/trash-modal/trash-modal'
+import TrashModal from 'components/portal/trash-modal/trash-modal'
 import SearchState from 'libs/web/state/search'
-import SearchModal from 'components/portals/search-modal/search-modal'
-import ShareModal from 'components/portals/share-modal'
+import SearchModal from 'components/portal/search-modal/search-modal'
+import ShareModal from 'components/portal/share-modal'
 import { SwipeableDrawer } from '@material-ui/core'
-import SidebarMenu from 'components/portals/sidebar-menu'
+import SidebarMenu from 'components/portal/sidebar-menu'
 
 const StyledWrapper = styled.div`
   .gutter {

@@ -5695,10 +5695,10 @@ react-is@16.13.1, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-medium-image-zoom@^3.0.16:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/react-medium-image-zoom/-/react-medium-image-zoom-3.1.2.tgz#5ac4441f1d424bd9680a25bfc2591be3d7704a42"
-  integrity sha512-werjufn5o4ytdyvJNzfqXCilovDhMyREH0qeJhCjV5brNAyfV7anZmvpFc3FApbuVXwBkzHMuQkV2z/GyEQatg==
+react-medium-image-zoom@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/react-medium-image-zoom/-/react-medium-image-zoom-3.1.3.tgz#b1470abc5a342d65c23021c01bafa8c731821478"
+  integrity sha512-5CoU8whSCz5Xz2xNeGD34dDfZ6jaf/pybdfZh8HNUmA9mbXbLfj0n6bQWfEUwkq9lsNg1sEkyeIJq2tcvZY8bw==
 
 react-native-get-random-values@^1.4.0:
   version "1.6.0"
@@ -5932,10 +5932,10 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rich-markdown-editor@^11.4.0-0:
-  version "11.6.0"
-  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.6.0.tgz#f5f47feadf93a9d63f8ce4905482fcf38d2b3c56"
-  integrity sha512-mZHq+FWLbEVivIZNgeHO9hMHsIRV+g5tdTCq/hfz4wWAMRt+f14e+YIMW6QSYAlRXs9WmsNm5eOZ3oc9anAXkA==
+rich-markdown-editor@^11.6.4:
+  version "11.6.4"
+  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.6.4.tgz#19b69bd7d4df87ae75842bf90a9d08ab3a959a93"
+  integrity sha512-6KmkvIyKEcAsd8wRlzWxGTqKdhKKmdI4BEH2UcsllA6u2fEwXQEXs8hAY0S+gkLHFvUIY3G4s77oH7S5jn+8IQ==
   dependencies:
     copy-to-clipboard "^3.0.8"
     lodash "^4.17.11"
@@ -5955,7 +5955,7 @@ rich-markdown-editor@^11.4.0-0:
     prosemirror-transform "1.2.5"
     prosemirror-utils "^0.9.6"
     prosemirror-view "^1.17.6"
-    react-medium-image-zoom "^3.0.16"
+    react-medium-image-zoom "^3.1.3"
     react-portal "^4.2.1"
     refractor "^3.3.1"
     resize-observer-polyfill "^1.5.1"

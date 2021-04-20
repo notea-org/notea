@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { FC, useCallback } from 'react'
 import { NoteCacheItem } from 'libs/web/cache'
-import MarkText from 'components/portals/filter-modal/mark-text'
+import MarkText from 'components/portal/filter-modal/mark-text'
 import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import TrashState from 'libs/web/state/trash'
