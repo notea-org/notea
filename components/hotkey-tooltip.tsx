@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip, TooltipProps } from '@material-ui/core'
 import { FC } from 'react'
 
 // todo: tooltip style
@@ -16,12 +16,14 @@ const Title: FC<{
 const HotkeyTooltip: FC<{
   text: string
   keys?: string[]
-}> = ({ text, keys = [], children }) => {
+  onClose?: TooltipProps['onClose']
+}> = ({ text, keys = [], children, onClose }) => {
   return (
     <Tooltip
       enterDelay={200}
       TransitionProps={{ timeout: 0 }}
       title={<Title text={text} keys={keys} />}
+      onClose={onClose}
       placement="bottom-start"
     >
       {children as any}

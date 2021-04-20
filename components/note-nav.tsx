@@ -10,6 +10,7 @@ import Link from 'next/link'
 import IconButton from './icon-button'
 import HotkeyTooltip from './hotkey-tooltip'
 import PortalState from 'libs/web/state/portal'
+import { NOTE_SHARED } from 'libs/shared/meta'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -88,7 +89,13 @@ const NoteNav = () => {
         <CircularProgress size="14px" color="inherit" />
       </div>
       <HotkeyTooltip text="分享页面">
-        <IconButton onClick={handleClickShare} icon="PaperAirplane" />
+        <IconButton
+          onClick={handleClickShare}
+          iconClassName={classNames({
+            'text-blue-500': note.shared === NOTE_SHARED.PUBLIC,
+          })}
+          icon="PaperAirplane"
+        />
       </HotkeyTooltip>
     </nav>
   )
