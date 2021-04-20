@@ -2,7 +2,7 @@ import { TreeModel } from 'libs/shared/tree'
 import { noteCacheInstance, NoteCacheItem } from 'libs/web/cache'
 import { NoteModel } from 'libs/web/state/note'
 import { keys, pull } from 'lodash'
-import removeMarkdown from 'remove-markdown'
+import { removeMarkdown } from '../utils/markdown'
 
 /**
  * 清除本地存储中未使用的 note
@@ -24,7 +24,7 @@ async function getItem(id: string) {
 async function setItem(id: string, note: NoteModel) {
   return noteCacheInstance.setItem<NoteCacheItem>(id, {
     ...note,
-    rawContent: removeMarkdown(note.content).replace(/\\/g, ''),
+    rawContent: removeMarkdown(note.content),
   })
 }
 

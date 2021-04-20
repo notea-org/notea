@@ -1,6 +1,9 @@
 import NoteState from 'libs/web/state/note'
+import { removeMarkdown } from 'libs/web/utils/markdown'
 import { useMemo } from 'react'
 import rules from 'rich-markdown-editor/dist/lib/markdown/rules'
+import styled from 'styled-components'
+import { NextSeo } from 'next-seo'
 
 const renderToHtml = (markdown: string) => {
   return rules({ embeds: [] }).render(markdown).trim()
@@ -13,17 +16,49 @@ export const PostContainer = () => {
   const { note } = NoteState.useContainer()
 
   const content = useMemo(() => renderToHtml(note?.content ?? ''), [note])
+  const description = useMemo(
+    () => removeMarkdown(note?.content).slice(0, 100),
+    [note]
+  )
+  const title = useMemo(() => `${note?.title} - Power By Notea`, [note?.title])
 
   return (
-    <article className="prose m-auto">
+    <AriticleStyle className="prose mx-auto prose-sm lg:prose-xl">
+      <NextSeo
+        title={title}
+        description={description}
+        openGraph={{
+          title,
+          description,
+          images: note?.pic ? [{ url: note?.pic }] : undefined,
+        }}
+      />
       <header>
-        <h1>{note?.title}</h1>
+        <h1 className="pt-10">{note?.title}</h1>
       </header>
       <main
         dangerouslySetInnerHTML={{
           __html: content,
         }}
       ></main>
-    </article>
+    </AriticleStyle>
   )
 }
+
+const AriticleStyle = styled.article`
+  [title='left-50'] {
+    float: left;
+    width: 50%;
+    margin-right: 2em;
+    margin-bottom: 1em;
+    clear: initial;
+  }
+
+  [title='right-50'] {
+    float: right;
+    width: 50%;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    clear: initial;
+  }
+`
