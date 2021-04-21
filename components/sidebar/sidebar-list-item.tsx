@@ -9,6 +9,17 @@ import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 import PortalState from 'libs/web/state/portal'
 
+const TextSkeleton = () => (
+  <Skeleton
+    width={80}
+    variant="text"
+    animation="wave"
+    classes={{
+      root: 'bg-gray-300',
+    }}
+  />
+)
+
 const SidebarListItem: FC<{
   item: NoteModel
   innerRef: (el: HTMLElement | null) => void
@@ -85,11 +96,7 @@ const SidebarListItem: FC<{
               }}
             ></IconButton>
             <span className="flex-1 truncate">
-              {initLoaded ? (
-                item.title || 'Untitled'
-              ) : (
-                <Skeleton width={80} variant="text" />
-              )}
+              {initLoaded ? item.title || 'Untitled' : <TextSkeleton />}
             </span>
           </a>
         </Link>
@@ -118,11 +125,7 @@ const SidebarListItem: FC<{
             paddingLeft: attrs.style?.paddingLeft,
           }}
         >
-          {initLoaded ? (
-            'No notes inside'
-          ) : (
-            <Skeleton width={80} variant="text" />
-          )}
+          {initLoaded ? 'No notes inside' : <TextSkeleton />}
         </div>
       )}
     </>

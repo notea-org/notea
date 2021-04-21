@@ -123,6 +123,7 @@ Contribution examples are welcome.
 | STORE_REGION           | region                                          | us-east-1 |          |          |
 | STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects | false     |          |          |
 | COOKIE_SECURE          | only works under https: scheme                  | true      |          |          |
+| BASE_URL               | The domain of the website, used for SEO         |           |          |          |
 
 ## Development
 

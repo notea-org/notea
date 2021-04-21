@@ -18,11 +18,12 @@ const EditNotePage: NextPage<{
   tree: TreeModel
   note?: NoteModel
   pageMode: PageMode
-}> = ({ tree, note, pageMode }) => {
+  baseURL: string
+}> = ({ tree, note, pageMode, baseURL }) => {
   if (PageMode.PUBLIC === pageMode) {
     return (
       <LayoutPublic tree={tree} note={note}>
-        <PostContainer />
+        <PostContainer baseURL={baseURL} />
       </LayoutPublic>
     )
   }

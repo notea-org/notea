@@ -1,6 +1,6 @@
 import NoteState from 'libs/web/state/note'
 import { removeMarkdown } from 'libs/web/utils/markdown'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import rules from 'rich-markdown-editor/dist/lib/markdown/rules'
 import styled from 'styled-components'
 import { NextSeo } from 'next-seo'
@@ -12,7 +12,7 @@ const renderToHtml = (markdown: string) => {
 /**
  * FIXME https://github.com/outline/rich-markdown-editor/pull/432/files
  */
-export const PostContainer = () => {
+export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
   const { note } = NoteState.useContainer()
 
   const content = useMemo(() => renderToHtml(note?.content ?? ''), [note])
@@ -20,17 +20,22 @@ export const PostContainer = () => {
     () => removeMarkdown(note?.content).slice(0, 100),
     [note]
   )
-  const title = useMemo(() => `${note?.title} - Power By Notea`, [note?.title])
 
   return (
     <AriticleStyle className="prose mx-auto prose-sm lg:prose-xl">
       <NextSeo
-        title={title}
+        title={note?.title}
+        titleTemplate="%s - Power By Notea"
         description={description}
         openGraph={{
-          title,
+          title: note?.title,
           description,
-          images: note?.pic ? [{ url: note?.pic }] : undefined,
+          url: `${baseURL}/${note?.id}`,
+          images: [{ url: note?.pic ?? `${baseURL}/logo_1280x640.png` }],
+          type: 'article',
+          article: {
+            publishedTime: note?.date,
+          },
         }}
       />
       <header>

@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from 'next'
 import { getNote } from 'pages/api/notes/[id]'
 import { ApiRequest } from '../api'
 import { NoteModel } from 'libs/web/state/note'
+import { getEnv } from 'libs/shared/env'
 
 const RESERVED_ROUTES = ['new', 'settings', 'login']
 
@@ -38,6 +39,7 @@ export function withNote(wrapperHandler: any) {
     res.props = {
       ...res.props,
       ...props,
+      baseURL: getEnv('BASE_URL'),
     }
 
     return res

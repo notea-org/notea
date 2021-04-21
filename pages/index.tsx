@@ -8,15 +8,29 @@ import { withStore } from 'libs/server/middlewares/store'
 import { withSettings } from 'libs/server/middlewares/settings'
 import { withAuth } from 'libs/server/middlewares/auth'
 import Link from 'next/link'
+import UIState from 'libs/web/state/ui'
+import Router from 'next/router'
+import { useEffect } from 'react'
 
 const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
+  const { ua } = UIState.useContainer()
+
+  useEffect(() => {
+    if (ua.isMobileOnly) {
+      Router.push('/new')
+    }
+  }, [ua.isMobileOnly])
+
   return (
     <LayoutMain tree={tree}>
-      <div>
-        使用说明之类的
-        <Link href="/new" shallow>
-          <a>Create Note</a>
-        </Link>
+      <div className="flex flex-col h-screen">
+        <div className="m-auto text-center flex flex-col items-center">
+          <Link href="//github.com/qingwei-li/notea">
+            <a target="_blank">
+              <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg" />
+            </a>
+          </Link>
+        </div>
       </div>
     </LayoutMain>
   )
