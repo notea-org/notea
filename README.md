@@ -15,8 +15,6 @@
 - Link: https://notea.vercel.app
 - Password: notea
 
-Data is stored in https://play.minio.io:9000/notea/
-
 ## Quickstart
 
 1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
