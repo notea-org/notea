@@ -1,6 +1,15 @@
 import { TextareaAutosize } from '@material-ui/core'
 import { NoteModel } from 'libs/web/state/note'
-import { FC, useCallback, KeyboardEvent, RefObject } from 'react'
+import { has } from 'lodash'
+import { useRouter } from 'next/router'
+import {
+  FC,
+  useCallback,
+  KeyboardEvent,
+  RefObject,
+  useRef,
+  useMemo,
+} from 'react'
 import MarkdownEditor from 'rich-markdown-editor'
 import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
 
@@ -9,6 +18,8 @@ const EditTitle: FC<{
   onNoteChange: DebouncedState<(data: Partial<NoteModel>) => Promise<void>>
   editorEl: RefObject<MarkdownEditor>
 }> = ({ onNoteChange, editorEl, note }) => {
+  const router = useRouter()
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const onInputTitle = useCallback(
     (event: KeyboardEvent<HTMLTextAreaElement>) => {
       if (event.key.toLowerCase() === 'enter') {
@@ -28,16 +39,20 @@ const EditTitle: FC<{
     [onNoteChange]
   )
 
+  const autoFocus = useMemo(() => has(router.query, 'new'), [router.query])
+
   return (
     <h1 className="text-3xl mb-8">
       <TextareaAutosize
+        ref={inputRef}
         className="outline-none w-full resize-none block bg-transparent"
         placeholder="新页面"
         defaultValue={note?.title}
         key={note?.id}
-        onKeyDown={onInputTitle}
+        onKeyPress={onInputTitle}
         onChange={onTitleChange}
         maxLength={128}
+        autoFocus={autoFocus}
       />
     </h1>
   )

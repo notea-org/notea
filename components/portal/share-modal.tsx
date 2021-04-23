@@ -5,12 +5,14 @@ import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import NoteState from 'libs/web/state/note'
 import { NOTE_SHARED } from 'libs/shared/meta'
+import { useRouter } from 'next/router'
 
 const ShareModal: FC = () => {
   const { share } = PortalState.useContainer()
   const [url, setUrl] = useState<string>()
   const [copied, setCopied] = useState(false)
   const { note, updateNote } = NoteState.useContainer()
+  const router = useRouter()
 
   const handleCopy = useCallback(() => {
     url && navigator.clipboard.writeText(url)
@@ -28,7 +30,7 @@ const ShareModal: FC = () => {
 
   useEffect(() => {
     setUrl(location.href)
-  }, [])
+  }, [router.query])
 
   return (
     <Popover
