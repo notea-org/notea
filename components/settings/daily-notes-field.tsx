@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo } from 'react'
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import NoteTreeState from 'libs/web/state/tree'
-import { toArray } from 'lodash'
+import { filter } from 'lodash'
 import UIState from 'libs/web/state/ui'
 import { TreeItemModel } from 'libs/shared/tree'
 
@@ -12,7 +12,10 @@ export const DailyNotesField: FC = () => {
     settings: { settings, updateSettings },
   } = UIState.useContainer()
 
-  const items = useMemo(() => toArray(tree.items), [tree])
+  const items = useMemo(
+    () => filter(tree.items, (item) => !item.data?.deleted),
+    [tree]
+  )
   const selected = useMemo(
     () => items.find((i) => i.id === settings.daily_root_id),
     [items, settings.daily_root_id]
