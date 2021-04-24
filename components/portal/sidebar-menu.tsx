@@ -4,6 +4,7 @@ import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
 import IconTrash from 'heroicons/react/outline/Trash'
 import NoteState from 'libs/web/state/note'
 import PortalState from 'libs/web/state/portal'
+import router from 'next/router'
 
 enum MENU_HANDLER_NAME {
   REMOVE_NOTE,
@@ -33,6 +34,7 @@ const SidebarMenu: FC = () => {
     close()
     if (data?.id) {
       removeNote(data.id)
+      router.back()
     }
   }, [close, data, removeNote])
 
