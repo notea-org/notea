@@ -14,6 +14,7 @@ const NoteEdit = dynamic(() => import('components/editor/note-edit'))
 export const EditContainer = () => {
   const {
     title: { updateTitle },
+    settings: { settings },
   } = UIState.useContainer()
   const { genNewId } = NoteTreeState.useContainer()
   const {
@@ -35,6 +36,7 @@ export const EditContainer = () => {
           id,
           title: id,
           content: '\n',
+          pid: settings.daily_root_id,
         })
       } else if (id === 'new') {
         const url = `/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')

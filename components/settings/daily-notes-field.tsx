@@ -1,23 +1,49 @@
-import { FC } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import { TextField } from '@material-ui/core'
-// import { useAutocomplete } from '@material-ui/lab'
-// import { SearchState } from 'libs/web/state/search'
+import { Autocomplete } from '@material-ui/lab'
+import NoteTreeState from 'libs/web/state/tree'
+import { toArray } from 'lodash'
+import UIState from 'libs/web/state/ui'
+import { TreeItemModel } from 'libs/shared/tree'
 
 export const DailyNotesField: FC = () => {
-  // const { list } = SearchState.useContainer()
-  // const {} = useAutocomplete({
-  //   options,
-  // })
+  const { tree } = NoteTreeState.useContainer()
+  const {
+    settings: { settings, updateSettings },
+  } = UIState.useContainer()
+
+  const items = useMemo(() => toArray(tree.items), [tree])
+  const selected = useMemo(
+    () => items.find((i) => i.id === settings.daily_root_id),
+    [items, settings.daily_root_id]
+  )
+
+  const handleChange = useCallback(
+    (_event, item: TreeItemModel | null) => {
+      if (item) {
+        updateSettings({ daily_root_id: item.id })
+      }
+    },
+    [updateSettings]
+  )
+
   return (
-    <TextField
-      label="每日速记保存位置"
-      placeholder="Placeholder"
-      helperText="每日速记将在指定页面下创建"
-      fullWidth
-      margin="normal"
-      InputLabelProps={{
-        shrink: true,
-      }}
-    ></TextField>
+    <Autocomplete
+      options={items}
+      getOptionLabel={(option) => option.data?.title || '根页面'}
+      value={selected}
+      onChange={handleChange}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="每日笔记保存位置"
+          helperText="每日笔记将在指定页面下创建"
+          variant="outlined"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        ></TextField>
+      )}
+    ></Autocomplete>
   )
 }

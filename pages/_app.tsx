@@ -8,6 +8,7 @@ import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import { useMemo } from 'react'
+import { zhCN } from '@material-ui/core/locale'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -43,26 +44,29 @@ function DocumentHead() {
 }
 
 const AppInner = ({ Component, pageProps }: AppProps) => {
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const muiTheme = useMemo(
     () =>
-      createMuiTheme({
-        palette: {
-          type: theme ? 'dark' : 'light',
-          primary: {
-            /**
-             * colors https://tailwindcss.com/docs/customizing-colors
-             * primary.main: blue 500
-             * secondary.main: gray 500
-             */
-            main: '#3B82F6',
-          },
-          secondary: {
-            main: '#6B7280',
+      createMuiTheme(
+        {
+          palette: {
+            type: resolvedTheme === 'dark' ? 'dark' : 'light',
+            primary: {
+              /**
+               * colors https://tailwindcss.com/docs/customizing-colors
+               * primary.main: blue 500
+               * secondary.main: gray 500
+               */
+              main: '#3B82F6',
+            },
+            secondary: {
+              main: '#6B7280',
+            },
           },
         },
-      }),
-    [theme]
+        zhCN
+      ),
+    [resolvedTheme]
   )
 
   return (

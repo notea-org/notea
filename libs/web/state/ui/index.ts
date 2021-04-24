@@ -1,5 +1,6 @@
 import { Settings } from 'libs/shared/settings'
 import { createContainer } from 'unstated-next'
+import useSettings from './settings'
 import useSidebar from './sidebar'
 import useSplit from './split'
 import useTitle from './title'
@@ -15,6 +16,7 @@ function useUI({ ua, settings }: Props = {}) {
     sidebar: useSidebar(ua?.isMobileOnly ? false : settings?.sidebar_is_fold),
     split: useSplit(settings?.split_sizes),
     title: useTitle(),
+    settings: useSettings(settings),
   }
 }
 
