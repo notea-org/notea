@@ -5,6 +5,7 @@ import NoteTreeState from 'libs/web/state/tree'
 import { filter } from 'lodash'
 import UIState from 'libs/web/state/ui'
 import { TreeItemModel } from 'libs/shared/tree'
+import { defaultFieldConfig } from './settings-form'
 
 export const DailyNotesField: FC = () => {
   const { tree } = NoteTreeState.useContainer()
@@ -39,12 +40,9 @@ export const DailyNotesField: FC = () => {
       renderInput={(params) => (
         <TextField
           {...params}
+          {...defaultFieldConfig}
           label="每日笔记保存位置"
           helperText="每日笔记将在指定页面下创建"
-          variant="outlined"
-          InputLabelProps={{
-            shrink: true,
-          }}
         ></TextField>
       )}
     ></Autocomplete>

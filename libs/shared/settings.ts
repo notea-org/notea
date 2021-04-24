@@ -1,16 +1,22 @@
 import { isArray, isBoolean, isNumber, isString } from 'lodash'
 
+export enum Locale {
+  ZH_CN = 'zh-cn',
+  EN_US = 'en-us',
+}
 export interface Settings {
   split_sizes: [number, number]
   daily_root_id: string
   sidebar_is_fold: boolean
   last_visit?: string
+  locale: Locale
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   split_sizes: [30, 70],
   daily_root_id: 'root',
   sidebar_is_fold: false,
+  locale: Locale.EN_US,
 }
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -31,6 +37,10 @@ export function formatSettings(body: Record<string, any> = {}) {
   }
   if (isString(body.last_visit)) {
     settings.last_visit = body.last_visit
+  }
+
+  if (body.locale in Locale) {
+    settings.locale = body.locale
   }
 
   return settings

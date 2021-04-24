@@ -8,7 +8,13 @@ import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import { useMemo } from 'react'
-import { zhCN } from '@material-ui/core/locale'
+import { zhCN, enUS } from '@material-ui/core/locale'
+import { Locale, Settings } from 'libs/shared/settings'
+
+const muiLocale = {
+  [Locale.ZH_CN]: zhCN,
+  [Locale.EN_US]: enUS,
+}
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -45,6 +51,7 @@ function DocumentHead() {
 
 const AppInner = ({ Component, pageProps }: AppProps) => {
   const { resolvedTheme } = useTheme()
+  const settings = pageProps?.settings as Settings
   const muiTheme = useMemo(
     () =>
       createMuiTheme(
@@ -64,17 +71,15 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
             },
           },
         },
-        zhCN
+        muiLocale[settings.locale]
       ),
-    [resolvedTheme]
+    [resolvedTheme, settings]
   )
 
   return (
     <MuiThemeProvider theme={muiTheme}>
       <StylesProvider injectFirst>
-        <UIState.Provider
-          initialState={{ ua: pageProps?.ua, settings: pageProps?.settings }}
-        >
+        <UIState.Provider initialState={{ ua: pageProps?.ua, settings }}>
           <PortalState.Provider>
             <Div100vh>
               <DocumentHead />
