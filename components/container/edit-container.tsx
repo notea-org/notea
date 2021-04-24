@@ -64,7 +64,15 @@ export const EditContainer = () => {
         last_visit: `/${id}`,
       })
     },
-    [fetchNote, findOrCreateNote, genNewId, initNote, pid, mutateSettings]
+    [
+      mutateSettings,
+      findOrCreateNote,
+      settings.daily_root_id,
+      genNewId,
+      pid,
+      fetchNote,
+      initNote,
+    ]
   )
 
   useEffect(() => {

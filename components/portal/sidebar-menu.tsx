@@ -27,7 +27,7 @@ const MENU_LIST = [
 const SidebarMenu: FC = () => {
   const { removeNote } = NoteState.useContainer()
   const {
-    sidebar: { close, anchor, data },
+    menu: { close, anchor, data },
   } = PortalState.useContainer()
 
   const doRemoveNote = useCallback(() => {

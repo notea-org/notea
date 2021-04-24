@@ -35,15 +35,24 @@ const NoteNav = () => {
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
   const {
-    share: { setData, open },
+    share: { setData: setDataShare, open: openShare },
+    menu: { setData: setDataMenu, open: openMenu },
   } = PortalState.useContainer()
 
   const handleClickShare = useCallback(
     (event: MouseEvent) => {
-      setData(note)
-      open(event)
+      setDataShare(note)
+      openShare(event)
     },
-    [note, setData, open]
+    [note, setDataShare, openShare]
+  )
+
+  const handleClickMenu = useCallback(
+    (event: MouseEvent) => {
+      openMenu(event)
+      setDataMenu(note)
+    },
+    [note, openMenu, setDataMenu]
   )
 
   if (!note) {
@@ -91,11 +100,15 @@ const NoteNav = () => {
       <HotkeyTooltip text="分享页面">
         <IconButton
           onClick={handleClickShare}
+          className="mr-2"
           iconClassName={classNames({
             'text-blue-500': note.shared === NOTE_SHARED.PUBLIC,
           })}
           icon="PaperAirplane"
         />
+      </HotkeyTooltip>
+      <HotkeyTooltip text="设置">
+        <IconButton onClick={handleClickMenu} icon="DotsHorizontal" />
       </HotkeyTooltip>
     </nav>
   )

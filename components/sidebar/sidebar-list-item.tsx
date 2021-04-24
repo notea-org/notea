@@ -46,7 +46,7 @@ const SidebarListItem: FC<{
   const { query } = useRouter()
   const { mutateItem, initLoaded } = NoteTreeState.useContainer()
   const {
-    sidebar: { open, setData },
+    menu: { open, setData },
   } = PortalState.useContainer()
 
   const onAddNote = useCallback(

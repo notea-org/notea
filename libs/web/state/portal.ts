@@ -35,7 +35,7 @@ const useModal = () => {
   return {
     search: useModalIntance(),
     trash: useModalIntance(),
-    sidebar: useAnchorIntance<NoteModel>(),
+    menu: useAnchorIntance<NoteModel>(),
     share: useAnchorIntance<NoteModel>(),
   }
 }
