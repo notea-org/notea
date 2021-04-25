@@ -1,4 +1,4 @@
-# Notea [WIP]
+# Notea
 
 > Self hosted note taking app stored on S3.
 
