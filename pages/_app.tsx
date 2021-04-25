@@ -8,12 +8,12 @@ import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import { useMemo } from 'react'
-import { zhCN, enUS } from '@material-ui/core/locale'
-import { Locale, Settings } from 'libs/shared/settings'
+import { zhCN, enUS, Localization } from '@material-ui/core/locale'
+import { DEFAULT_SETTINGS, Locale, Settings } from 'libs/shared/settings'
 
-const muiLocale = {
+const muiLocale: Record<Locale, Localization> = {
   [Locale.ZH_CN]: zhCN,
-  [Locale.EN_US]: enUS,
+  [Locale.EN]: enUS,
 }
 
 const handleRejection = (event: any) => {
@@ -71,7 +71,7 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
             },
           },
         },
-        muiLocale[settings.locale]
+        muiLocale[settings?.locale || DEFAULT_SETTINGS.locale]
       ),
     [resolvedTheme, settings]
   )

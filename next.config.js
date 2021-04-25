@@ -14,6 +14,10 @@ module.exports = withPWA({
     return config
   },
 
+  i18n: {
+    localeDetection: false,
+  },
+
   pwa: {
     disable: process.env.NODE_ENV === 'development',
     dest: 'public',

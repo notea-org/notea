@@ -24,7 +24,7 @@ export const LanguageField: FC = () => {
       onChange={handleChange}
       select
     >
-      <MenuItem value={Locale.EN_US}>English</MenuItem>
+      <MenuItem value={Locale.EN}>English</MenuItem>
       <MenuItem value={Locale.ZH_CN}>简体中文</MenuItem>
     </TextField>
   )

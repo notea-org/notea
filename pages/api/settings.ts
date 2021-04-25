@@ -8,11 +8,10 @@ import { tryJSON } from 'libs/shared/str'
 import { StoreProvider } from 'libs/server/store'
 
 export async function getSettings(store: StoreProvider) {
-  const settings =
-    tryJSON<Settings>(await store.getObject(getPathSettings())) || {}
-  const formatted = formatSettings(settings)
+  const settings = tryJSON<Settings>(await store.getObject(getPathSettings()))
+  const formatted = formatSettings(settings || {})
 
-  if (!isEqual(settings, formatted)) {
+  if (!settings || !isEqual(settings, formatted)) {
     await store.putObject(getPathSettings(), JSON.stringify(formatted))
     return formatted
   }
@@ -24,15 +23,18 @@ export default api()
   .use(useStore)
   .post(async (req, res) => {
     const { body } = req
-    const settings = formatSettings(body)
+    const prev = await getSettings(req.store)
+    const settings = formatSettings({
+      ...prev,
+      ...body,
+    })
 
     await req.store.putObject(getPathSettings(), JSON.stringify(settings))
-
     res.status(204).end()
   })
   .get(
     async (req, res): Promise<void> => {
-      const settings = getSettings(req.store)
+      const settings = await getSettings(req.store)
 
       res.json(settings)
     }

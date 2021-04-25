@@ -46,7 +46,7 @@ const EditTitle: FC<{
       <TextareaAutosize
         ref={inputRef}
         className="outline-none w-full resize-none block bg-transparent"
-        placeholder="新页面"
+        placeholder={'New Page'}
         defaultValue={note?.title}
         key={note?.id}
         onKeyPress={onInputTitle}

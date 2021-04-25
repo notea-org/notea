@@ -1,8 +1,8 @@
-import { isArray, isBoolean, isNumber, isString } from 'lodash'
+import { isArray, isBoolean, isNumber, isString, values } from 'lodash'
 
 export enum Locale {
-  ZH_CN = 'zh-cn',
-  EN_US = 'en-us',
+  ZH_CN = 'zh-CN',
+  EN = 'en',
 }
 export interface Settings {
   split_sizes: [number, number]
@@ -16,7 +16,7 @@ export const DEFAULT_SETTINGS: Settings = {
   split_sizes: [30, 70],
   daily_root_id: 'root',
   sidebar_is_fold: false,
-  locale: Locale.EN_US,
+  locale: Locale.EN,
 }
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -39,7 +39,7 @@ export function formatSettings(body: Record<string, any> = {}) {
     settings.last_visit = body.last_visit
   }
 
-  if (body.locale in Locale) {
+  if (values(Locale).includes(body.locale)) {
     settings.locale = body.locale
   }
 

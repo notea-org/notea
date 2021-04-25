@@ -40,7 +40,6 @@ const useEditState = () => {
 
   const onClickLink = useCallback(
     (href: string) => {
-      console.log(href)
       router.push(href, undefined, { shallow: true })
     },
     [router]
