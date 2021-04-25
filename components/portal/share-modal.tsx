@@ -6,8 +6,10 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import NoteState from 'libs/web/state/note'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import { useRouter } from 'next/router'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const ShareModal: FC = () => {
+  const { t } = useI18n()
   const { share } = PortalState.useContainer()
   const [url, setUrl] = useState<string>()
   const [copied, setCopied] = useState(false)
@@ -55,9 +57,9 @@ const ShareModal: FC = () => {
           }}
           label={
             <div className="mr-2">
-              <h2 className="text-sm">公开分享</h2>
+              <h2 className="text-sm">{t('Share to web')}</h2>
               <p className="text-xs text-gray-500">
-                开启后任何人都可以通过此链接访问页面
+                {t('Anyone can visit the page via the link')}
               </p>
             </div>
           }
@@ -71,7 +73,7 @@ const ShareModal: FC = () => {
           ></input>
           <HotkeyTooltip
             onClose={() => setCopied(false)}
-            text={copied ? 'Copied!' : 'Copy to clipboard'}
+            text={copied ? t('Copied!') : t('Copy to clipboard')}
           >
             <IconButton
               className="w-6 h-6 flex"

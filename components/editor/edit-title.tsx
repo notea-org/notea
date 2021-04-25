@@ -1,4 +1,5 @@
 import { TextareaAutosize } from '@material-ui/core'
+import useI18n from 'libs/web/hooks/use-i18n'
 import { NoteModel } from 'libs/web/state/note'
 import { has } from 'lodash'
 import { useRouter } from 'next/router'
@@ -41,12 +42,14 @@ const EditTitle: FC<{
 
   const autoFocus = useMemo(() => has(router.query, 'new'), [router.query])
 
+  const { t } = useI18n()
+
   return (
     <h1 className="text-3xl mb-8">
       <TextareaAutosize
         ref={inputRef}
         className="outline-none w-full resize-none block bg-transparent"
-        placeholder={'New Page'}
+        placeholder={t('New Page')}
         defaultValue={note?.title}
         key={note?.id}
         onKeyPress={onInputTitle}

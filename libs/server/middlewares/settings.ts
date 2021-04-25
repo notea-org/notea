@@ -20,9 +20,15 @@ export function withSettings(wrapperHandler: any) {
       settings = await getSettings(ctx.req.store)
     }
 
+    // import language dict
+    const { default: lngDict = {} } = await import(
+      `locales/${settings?.locale}.json`
+    )
+
     res.props = {
       ...res.props,
       settings,
+      lngDict,
     }
 
     return res

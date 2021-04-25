@@ -8,13 +8,16 @@ import { withStore } from 'libs/server/middlewares/store'
 import { withSettings } from 'libs/server/middlewares/settings'
 import { withAuth } from 'libs/server/middlewares/auth'
 import { SettingsForm } from 'components/settings/settings-form'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
+  const { t } = useI18n()
+
   return (
     <LayoutMain tree={tree}>
       <main className="pt-40 px-6 m-auto prose">
         <h1>
-          <span className="font-normal">设置</span>
+          <span className="font-normal">{t('Settings')}</span>
         </h1>
 
         <SettingsForm />

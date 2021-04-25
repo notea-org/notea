@@ -3,15 +3,19 @@ import { MenuItem, TextField } from '@material-ui/core'
 import UIState from 'libs/web/state/ui'
 import { Locale } from 'libs/shared/settings'
 import { defaultFieldConfig } from './settings-form'
+import router from 'next/router'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 export const LanguageField: FC = () => {
+  const { t } = useI18n()
   const {
     settings: { settings, updateSettings },
   } = UIState.useContainer()
 
   const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      updateSettings({ locale: event.target.value as Locale })
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      await updateSettings({ locale: event.target.value as Locale })
+      router.reload()
     },
     [updateSettings]
   )
@@ -19,7 +23,7 @@ export const LanguageField: FC = () => {
   return (
     <TextField
       {...defaultFieldConfig}
-      label="语言设置"
+      label={t('Language')}
       value={settings.locale}
       onChange={handleChange}
       select

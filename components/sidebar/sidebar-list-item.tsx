@@ -8,6 +8,7 @@ import IconButton from 'components/icon-button'
 import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 import PortalState from 'libs/web/state/portal'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const TextSkeleton = () => (
   <Skeleton
@@ -43,6 +44,7 @@ const SidebarListItem: FC<{
   hasChildren,
   ...attrs
 }) => {
+  const { t } = useI18n()
   const { query } = useRouter()
   const { mutateItem, initLoaded } = NoteTreeState.useContainer()
   const {
@@ -96,12 +98,12 @@ const SidebarListItem: FC<{
               }}
             ></IconButton>
             <span className="flex-1 truncate">
-              {initLoaded ? item.title || 'Untitled' : <TextSkeleton />}
+              {initLoaded ? item.title || t('Untitled') : <TextSkeleton />}
             </span>
           </a>
         </Link>
 
-        <HotkeyTooltip text="删除、复制链接等操作">
+        <HotkeyTooltip text={t('Remove, Copy Link, etc')}>
           <IconButton
             icon="DotsHorizontal"
             onClick={handleClickMenu}
@@ -109,7 +111,7 @@ const SidebarListItem: FC<{
           ></IconButton>
         </HotkeyTooltip>
 
-        <HotkeyTooltip text="新建子页面">
+        <HotkeyTooltip text={t('Add a page inside')}>
           <IconButton
             icon="Plus"
             onClick={onAddNote}
@@ -125,7 +127,7 @@ const SidebarListItem: FC<{
             paddingLeft: attrs.style?.paddingLeft,
           }}
         >
-          {initLoaded ? 'No notes inside' : <TextSkeleton />}
+          {initLoaded ? t('No notes inside') : <TextSkeleton />}
         </div>
       )}
     </>

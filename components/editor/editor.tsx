@@ -22,7 +22,7 @@ const Editor: FC<{
   } = useEditState()
   const height = use100vh()
   const mounted = useMounted()
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
 
   const onEditorChange = useCallback(
     (value: () => string): void => {
@@ -38,7 +38,7 @@ const Editor: FC<{
       ref={editorEl}
       value={mounted ? note?.content : ''}
       onChange={onEditorChange}
-      theme={theme === 'dark' ? darkTheme : lightTheme}
+      theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}
       uploadImage={onUploadImage}
       onSearchLink={onSearchLink}
       onCreateLink={onCreateLink}

@@ -5,26 +5,15 @@ import IconTrash from 'heroicons/react/outline/Trash'
 import NoteState from 'libs/web/state/note'
 import PortalState from 'libs/web/state/portal'
 import router from 'next/router'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 enum MENU_HANDLER_NAME {
   REMOVE_NOTE,
   COPY_LINK,
 }
 
-const MENU_LIST = [
-  {
-    text: '删除',
-    icon: <IconTrash />,
-    handler: MENU_HANDLER_NAME.REMOVE_NOTE,
-  },
-  {
-    text: '拷贝链接',
-    icon: <IconClipboardCopy />,
-    handler: MENU_HANDLER_NAME.COPY_LINK,
-  },
-]
-
 const SidebarMenu: FC = () => {
+  const { t } = useI18n()
   const { removeNote } = NoteState.useContainer()
   const {
     menu: { close, anchor, data },
@@ -48,6 +37,22 @@ const SidebarMenu: FC = () => {
       [MENU_HANDLER_NAME.COPY_LINK]: doCopyLink,
     }),
     [doCopyLink, doRemoveNote]
+  )
+
+  const MENU_LIST = useMemo(
+    () => [
+      {
+        text: t('Remove'),
+        icon: <IconTrash />,
+        handler: MENU_HANDLER_NAME.REMOVE_NOTE,
+      },
+      {
+        text: t('Copy Link'),
+        icon: <IconClipboardCopy />,
+        handler: MENU_HANDLER_NAME.COPY_LINK,
+      },
+    ],
+    [t]
   )
 
   return (

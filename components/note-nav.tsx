@@ -11,6 +11,7 @@ import IconButton from './icon-button'
 import HotkeyTooltip from './hotkey-tooltip'
 import PortalState from 'libs/web/state/portal'
 import { NOTE_SHARED } from 'libs/shared/meta'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -31,6 +32,7 @@ const MenuButton = () => {
 }
 
 const NoteNav = () => {
+  const { t } = useI18n()
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
@@ -97,7 +99,7 @@ const NoteNav = () => {
       >
         <CircularProgress size="14px" color="inherit" />
       </div>
-      <HotkeyTooltip text="分享页面">
+      <HotkeyTooltip text={t('Share page')}>
         <IconButton
           onClick={handleClickShare}
           className="mr-2"
@@ -107,7 +109,7 @@ const NoteNav = () => {
           icon="PaperAirplane"
         />
       </HotkeyTooltip>
-      <HotkeyTooltip text="设置">
+      <HotkeyTooltip text={t('Settings')}>
         <IconButton onClick={handleClickMenu} icon="DotsHorizontal" />
       </HotkeyTooltip>
     </nav>

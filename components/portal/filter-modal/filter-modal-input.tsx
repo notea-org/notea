@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef } from 'react'
 import IconSearch from 'heroicons/react/outline/Search'
 import { useDebouncedCallback } from 'use-debounce'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const FilterModalInput: FC<{
   doFilter: (keyword: string) => void
@@ -8,6 +9,7 @@ const FilterModalInput: FC<{
   placeholder: string
   onClose: () => void
 }> = ({ doFilter, keyword, placeholder, onClose }) => {
+  const { t } = useI18n()
   const inputRef = useRef<HTMLInputElement>(null)
   const debouncedFilter = useDebouncedCallback((value: string) => {
     doFilter(value)
@@ -24,12 +26,12 @@ const FilterModalInput: FC<{
         ref={inputRef}
         defaultValue={keyword}
         type="text"
-        className="appearance-none w-full outline-none ml-2 bg-transparent"
+        className="appearance-none flex-1 outline-none ml-2 bg-transparent"
         placeholder={placeholder}
         autoFocus
         onChange={(e) => debouncedFilter.callback(e.target.value)}
       />
-      <button onClick={onClose}>Cancel</button>
+      <button onClick={onClose}>{t('Cancel')}</button>
     </div>
   )
 }

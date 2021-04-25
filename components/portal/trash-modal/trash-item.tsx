@@ -6,11 +6,13 @@ import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import TrashState from 'libs/web/state/trash'
 import PortalState from 'libs/web/state/portal'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const TrashItem: FC<{
   note: NoteCacheItem
   keyword?: string
 }> = ({ note, keyword }) => {
+  const { t } = useI18n()
   const { restoreNote, deleteNote, filterNotes } = TrashState.useContainer()
   const {
     trash: { close },
@@ -36,7 +38,7 @@ const TrashItem: FC<{
         </a>
       </Link>
 
-      <HotkeyTooltip text="恢复">
+      <HotkeyTooltip text={t('Recovery')}>
         <IconButton
           onClick={onClickRestore}
           className="text-gray-500 mr-1"
@@ -44,7 +46,7 @@ const TrashItem: FC<{
         ></IconButton>
       </HotkeyTooltip>
 
-      <HotkeyTooltip text="彻底删除">
+      <HotkeyTooltip text={t('Delete')}>
         <IconButton
           onClick={onClickDelete}
           className="text-gray-500"

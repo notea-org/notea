@@ -5,8 +5,10 @@ import { useEffect, useCallback } from 'react'
 import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconButton from 'components/icon-button'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const SideBarList = () => {
+  const { t } = useI18n()
   const { tree, initTree, moveItem, mutateItem } = NoteTreeState.useContainer()
 
   useEffect(() => {
@@ -47,8 +49,8 @@ const SideBarList = () => {
   return (
     <section className="h-full flex text-sm flex-col flex-grow bg-gray-100 overflow-hidden">
       <div className="p-2 text-gray-500 flex">
-        <span className="flex-auto">我的页面</span>
-        <HotkeyTooltip text="新建页面" keys={['cmd', 'n']}>
+        <span className="flex-auto">{t('My Pages')}</span>
+        <HotkeyTooltip text={t('Create page')} keys={['cmd', 'n']}>
           <IconButton
             icon="Plus"
             onClick={() => {

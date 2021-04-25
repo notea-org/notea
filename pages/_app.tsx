@@ -9,7 +9,8 @@ import Div100vh from 'react-div-100vh'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import { useMemo } from 'react'
 import { zhCN, enUS, Localization } from '@material-ui/core/locale'
-import { DEFAULT_SETTINGS, Locale, Settings } from 'libs/shared/settings'
+import { Locale, Settings } from 'libs/shared/settings'
+import I18nProvider from 'libs/web/utils/i18n-provider'
 
 const muiLocale: Record<Locale, Localization> = {
   [Locale.ZH_CN]: zhCN,
@@ -71,7 +72,7 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
             },
           },
         },
-        muiLocale[settings?.locale || DEFAULT_SETTINGS.locale]
+        muiLocale[settings?.locale]
       ),
     [resolvedTheme, settings]
   )
@@ -79,14 +80,16 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
   return (
     <MuiThemeProvider theme={muiTheme}>
       <StylesProvider injectFirst>
-        <UIState.Provider initialState={{ ua: pageProps?.ua, settings }}>
-          <PortalState.Provider>
-            <Div100vh>
-              <DocumentHead />
-              <Component {...pageProps} />
-            </Div100vh>
-          </PortalState.Provider>
-        </UIState.Provider>
+        <I18nProvider locale={settings?.locale} lngDict={pageProps.lngDict}>
+          <UIState.Provider initialState={{ ua: pageProps?.ua, settings }}>
+            <PortalState.Provider>
+              <Div100vh>
+                <DocumentHead />
+                <Component {...pageProps} />
+              </Div100vh>
+            </PortalState.Provider>
+          </UIState.Provider>
+        </I18nProvider>
       </StylesProvider>
     </MuiThemeProvider>
   )

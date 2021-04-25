@@ -6,8 +6,10 @@ import { filter } from 'lodash'
 import UIState from 'libs/web/state/ui'
 import { TreeItemModel } from 'libs/shared/tree'
 import { defaultFieldConfig } from './settings-form'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 export const DailyNotesField: FC = () => {
+  const { t } = useI18n()
   const { tree } = NoteTreeState.useContainer()
   const {
     settings: { settings, updateSettings },
@@ -34,15 +36,15 @@ export const DailyNotesField: FC = () => {
   return (
     <Autocomplete
       options={items}
-      getOptionLabel={(option) => option.data?.title || '根页面'}
+      getOptionLabel={(option) => option.data?.title || t('Root Page')}
       value={selected}
       onChange={handleChange}
       renderInput={(params) => (
         <TextField
           {...params}
           {...defaultFieldConfig}
-          label="每日笔记保存位置"
-          helperText="每日笔记将在指定页面下创建"
+          label={t('Daily notes are saved in')}
+          helperText={t('Daily notes will be created under this page')}
         ></TextField>
       )}
     ></Autocomplete>
