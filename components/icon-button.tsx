@@ -6,7 +6,7 @@ import Plus from 'heroicons/react/outline/Plus'
 import DotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
 import ChevronRight from 'heroicons/react/outline/ChevronRight'
 import Reply from 'heroicons/react/outline/Reply'
-import PaperAirplane from 'heroicons/react/outline/PaperAirplane'
+import Share from 'heroicons/react/outline/Share'
 import Duplicate from 'heroicons/react/outline/Duplicate'
 
 export const ICONS = {
@@ -16,7 +16,7 @@ export const ICONS = {
   DotsHorizontal,
   ChevronRight,
   Reply,
-  PaperAirplane,
+  Share,
   Duplicate,
 }
 
@@ -39,12 +39,12 @@ const IconButton = forwardRef<
         ref={ref}
         {...attrs}
         className={classNames(
-          'p-0.5 hover:bg-gray-400 cursor-pointer w-5 h-5',
+          'p-0.5 hover:bg-gray-400 cursor-pointer w-6 h-6',
           { rounded },
           className
         )}
       >
-        <Icon className={iconClassName}></Icon>
+        <Icon className={classNames(iconClassName)}></Icon>
         {children}
       </span>
     )

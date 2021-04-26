@@ -76,7 +76,7 @@ const ShareModal: FC = () => {
             text={copied ? t('Copied!') : t('Copy to clipboard')}
           >
             <IconButton
-              className="w-6 h-6 flex"
+              className="flex"
               rounded={false}
               iconClassName="w-4 h-4 m-auto"
               icon="Duplicate"

@@ -48,7 +48,7 @@ const SideBarList = () => {
 
   return (
     <section className="h-full flex text-sm flex-col flex-grow bg-gray-100 overflow-hidden">
-      <div className="p-2 text-gray-500 flex">
+      <div className="p-2 text-gray-500 flex items-center">
         <span className="flex-auto">{t('My Pages')}</span>
         <HotkeyTooltip text={t('Create page')} keys={['cmd', 'n']}>
           <IconButton

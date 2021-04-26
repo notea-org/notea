@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import NoteState from 'libs/web/state/note'
 import UIState from 'libs/web/state/ui'
-import IconMenu from 'heroicons/react/outline/Menu'
 import { useCallback, MouseEvent } from 'react'
 import { CircularProgress } from '@material-ui/core'
 import NoteTreeState from 'libs/web/state/tree'
@@ -25,9 +24,11 @@ const MenuButton = () => {
   )
 
   return (
-    <button className="w-5 mr-2 active:bg-gray-400" onClick={onToggle}>
-      <IconMenu />
-    </button>
+    <IconButton
+      icon="Menu"
+      className="mr-2 active:bg-gray-400"
+      onClick={onToggle}
+    ></IconButton>
   )
 }
 
@@ -106,7 +107,7 @@ const NoteNav = () => {
           iconClassName={classNames({
             'text-blue-500': note.shared === NOTE_SHARED.PUBLIC,
           })}
-          icon="PaperAirplane"
+          icon="Share"
         />
       </HotkeyTooltip>
       <HotkeyTooltip text={t('Settings')}>

@@ -85,7 +85,7 @@ const SidebarListItem: FC<{
         )}
       >
         <Link href={`/${item.id}`} shallow>
-          <a className="flex flex-1 truncate px-2 py-1.5">
+          <a className="flex flex-1 items-center truncate px-2 py-1.5">
             <IconButton
               className="mr-1"
               icon="ChevronRight"
