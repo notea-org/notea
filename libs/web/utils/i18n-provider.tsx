@@ -1,8 +1,7 @@
 import { createContext, useState, useRef, useEffect, ReactNode } from 'react'
-import rosetta from 'rosetta'
+import rosetta, { Rosetta } from 'rosetta'
 import { DEFAULT_SETTINGS, Locale } from 'libs/shared/settings'
 import { values } from 'lodash'
-import { Rosetta } from 'rosetta/debug'
 
 const i18n = rosetta<JSON>()
 
