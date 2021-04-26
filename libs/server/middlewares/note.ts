@@ -39,7 +39,7 @@ export function withNote(wrapperHandler: any) {
     res.props = {
       ...res.props,
       ...props,
-      baseURL: getEnv('BASE_URL'),
+      baseURL: getEnv('BASE_URL', ''),
     }
 
     return res

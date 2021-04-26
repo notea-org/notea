@@ -5,13 +5,13 @@ import rules from 'rich-markdown-editor/dist/lib/markdown/rules'
 import styled from 'styled-components'
 import { NextSeo } from 'next-seo'
 
+/**
+ * FIXME https://github.com/outline/rich-markdown-editor/pull/432/files
+ */
 const renderToHtml = (markdown: string) => {
   return rules({ embeds: [] }).render(markdown).trim()
 }
 
-/**
- * FIXME https://github.com/outline/rich-markdown-editor/pull/432/files
- */
 export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
   const { note } = NoteState.useContainer()
 
@@ -25,7 +25,7 @@ export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
     <AriticleStyle className="prose mx-auto prose-sm lg:prose-xl">
       <NextSeo
         title={note?.title}
-        titleTemplate="%s - Power By Notea"
+        titleTemplate="%s - Powered by Notea"
         description={description}
         openGraph={{
           title: note?.title,

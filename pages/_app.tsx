@@ -3,11 +3,14 @@ import UIState from 'libs/web/state/ui'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ThemeProvider, useTheme } from 'next-themes'
-import { StylesProvider } from '@material-ui/styles'
 import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
-import { useMemo } from 'react'
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  StylesProvider,
+} from '@material-ui/core'
+import { useEffect, useMemo } from 'react'
 import { zhCN, enUS, Localization } from '@material-ui/core/locale'
 import { Locale, Settings } from 'libs/shared/settings'
 import I18nProvider from 'libs/web/utils/i18n-provider'
@@ -77,9 +80,18 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
     [resolvedTheme, settings]
   )
 
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side')
+
+    if (jssStyles) {
+      jssStyles.parentElement?.removeChild(jssStyles)
+    }
+  }, [])
+
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <StylesProvider injectFirst>
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={muiTheme}>
         <I18nProvider locale={settings?.locale} lngDict={pageProps.lngDict}>
           <UIState.Provider initialState={{ ua: pageProps?.ua, settings }}>
             <PortalState.Provider>
@@ -90,8 +102,8 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
             </PortalState.Provider>
           </UIState.Provider>
         </I18nProvider>
-      </StylesProvider>
-    </MuiThemeProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
   )
 }
 
