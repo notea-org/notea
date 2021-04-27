@@ -17,6 +17,7 @@ export default function useFetcher() {
     const controller = new AbortController()
 
     setLoading(true)
+    setError('')
     abortRef.current = controller
 
     const init: RequestInit = {
