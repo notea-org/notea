@@ -43,22 +43,22 @@ const IndexPage = () => {
             Self hosted note taking app stored on S3
           </h1>
           <p className="leading-normal text-base md:text-2xl text-gray-500 mb-8 text-center md:text-left">
-            This is a note-taking application with data in your hands. It
+            Notea is a privacy-first, open-source note taking application. It
             supports Markdown syntax, sharing, responsive and more.
           </p>
 
           <div className="flex w-full justify-center md:justify-start pb-24 lg:pb-0">
             <a
               className="m-2 sm:w-auto flex-none bg-gray-900 hover:bg-gray-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200"
-              href="//notea.vercel.app"
-            >
-              Live Demo
-            </a>
-            <a
-              className="m-2 sm:w-auto flex-none text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
               href="//github.com/QingWei-Li/notea#quickstart"
             >
               How to use
+            </a>
+            <a
+              className="m-2 sm:w-auto flex-none text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
+              href="//notea.vercel.app"
+            >
+              Live Demo
             </a>
           </div>
         </div>
