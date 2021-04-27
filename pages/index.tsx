@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { basePath } from 'utils/base-path'
 
 const IndexPage = () => {
   return (
@@ -13,13 +14,13 @@ const IndexPage = () => {
           rel="icon"
           type="image/png"
           sizes="128x128"
-          href="/static/icons/icon-128x128.png"
+          href={basePath + 'static/icons/icon-128x128.png'}
         />
       </Head>
       <div className="w-full container mx-auto p-6">
         <div className="w-full flex items-center justify-between">
           <a
-            className="flex items-center text-gray-500 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
+            className="flex items-center text-gray-500 no-underline hover:no-underline text-2xl lg:text-4xl"
             href="#"
           >
             Notea
@@ -48,13 +49,13 @@ const IndexPage = () => {
 
           <div className="flex w-full justify-center md:justify-start pb-24 lg:pb-0">
             <a
-              className="m-2 w-full sm:w-auto flex-none bg-gray-900 hover:bg-gray-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200"
+              className="m-2 sm:w-auto flex-none bg-gray-900 hover:bg-gray-700 text-white text-lg leading-6 font-semibold py-3 px-6 border border-transparent rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-900 focus:outline-none transition-colors duration-200"
               href="//notea.vercel.app"
             >
               Live Demo
             </a>
             <a
-              className="m-2 w-full sm:w-auto flex-none text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
+              className="m-2 sm:w-auto flex-none text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
               href="//github.com/QingWei-Li/notea#quickstart"
             >
               How to use
@@ -63,7 +64,7 @@ const IndexPage = () => {
         </div>
 
         <div className="w-full xl:w-3/5 py-6 overflow-y-hidden">
-          <img className="mx-auto" src="/screen.png" />
+          <img className="mx-auto" src={basePath + 'screen.png'} />
         </div>
 
         {/* <div>feature</div> */}
