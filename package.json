@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "postinstall": "yarn autoclean --force",
-    "pub": "next build & next export & gh-pages -d out"
+    "pub": "next build && next export && gh-pages -d out"
   },
   "repository": "QingWei-Li/notea",
   "husky": {
