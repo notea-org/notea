@@ -27,15 +27,19 @@ const IndexPage = () => {
               className="flex w-40 items-center text-gray-500 no-underline hover:no-underline text-2xl lg:text-4xl"
               href="#"
             >
-              <img width="100%" src="/logo.svg" title="Notea logo" />
+              <img
+                width="100%"
+                src={basePath + '/logo.svg'}
+                title="Notea logo"
+              />
             </a>
 
             <div className="flex w-1/2 justify-end content-center">
               <a
+                title=">Notea on GitHub"
                 href="https://github.com/QingWei-Li/notea"
                 className="text-gray-400 hover:text-gray-500 transition-colors duration-200"
               >
-                <span className="sr-only">Notea on GitHub</span>
                 <GithubIcon />
               </a>
             </div>
