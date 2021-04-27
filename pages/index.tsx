@@ -29,7 +29,7 @@ const IndexPage = () => {
             >
               <img
                 width="100%"
-                src={basePath + '/logo.svg'}
+                src={basePath + 'logo.svg'}
                 title="Notea logo"
               />
             </a>
