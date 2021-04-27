@@ -14,7 +14,7 @@ export function jsonToMeta(meta?: Record<string, string | undefined>) {
     PAGE_META_KEY.forEach((key) => {
       const value = meta[key]
 
-      if (value) {
+      if (!isNil(value)) {
         metaData[key] = strCompress(value.toString())
       }
     })
