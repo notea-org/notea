@@ -1,3 +1,4 @@
+import { getEnv } from 'libs/shared/env'
 import { PageMode } from 'libs/shared/page'
 import { GetServerSidePropsContext } from 'next'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
@@ -7,9 +8,7 @@ export async function useAuth(
   res: ApiResponse,
   next: ApiNext
 ) {
-  const user = req.session.get('user')
-
-  if (!user?.isLoggedIn) {
+  if (!isLoggedIn(req)) {
     return res.APIError.NEED_LOGIN.throw()
   }
 
@@ -31,10 +30,7 @@ export function withAuth(wrapperHandler: any) {
 
     const res = await wrapperHandler(ctx)
 
-    if (
-      res.props?.pageMode !== PageMode.PUBLIC &&
-      !ctx.req.session.get('user')
-    ) {
+    if (res.props?.pageMode !== PageMode.PUBLIC && !isLoggedIn(ctx.req)) {
       return redirectLogin
     }
 
@@ -44,4 +40,12 @@ export function withAuth(wrapperHandler: any) {
 
     return res
   }
+}
+
+export function isLoggedIn(req: ApiRequest) {
+  if (getEnv('IS_DEMO')) {
+    return true
+  }
+
+  return req.session.get('user')?.isLoggedIn
 }

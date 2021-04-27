@@ -5,6 +5,7 @@ import { getNote } from 'pages/api/notes/[id]'
 import { ApiRequest } from '../api'
 import { NoteModel } from 'libs/web/state/note'
 import { getEnv } from 'libs/shared/env'
+import { isLoggedIn } from './auth'
 
 const RESERVED_ROUTES = ['new', 'settings', 'login']
 
@@ -29,10 +30,7 @@ export function withNote(wrapperHandler: any) {
       }
     }
 
-    if (
-      props.note?.shared === NOTE_SHARED.PUBLIC &&
-      !ctx.req.session.get('user')
-    ) {
+    if (props.note?.shared === NOTE_SHARED.PUBLIC && !isLoggedIn(ctx.req)) {
       props.pageMode = PageMode.PUBLIC
     }
 

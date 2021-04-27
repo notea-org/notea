@@ -13,7 +13,6 @@
 ## Demo
 
 - Link: https://notea.vercel.app
-- Password: notea
 
 ## Quickstart
 
