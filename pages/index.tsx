@@ -40,7 +40,7 @@ const IndexPage = () => {
       <div className="container pt-24 md:pt-30 px-6 mx-auto flex flex-wrap flex-col md:flex-row items-center">
         <div className="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
           <h1 className="my-4 text-3xl md:text-5xl text-gray-800 font-bold leading-tight text-center md:text-left">
-            Self hosted note taking app stored on S3.
+            Self hosted note taking app stored on S3
           </h1>
           <p className="leading-normal text-base md:text-2xl text-gray-500 mb-8 text-center md:text-left">
             This is a note-taking application with data in your hands. It
