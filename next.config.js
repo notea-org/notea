@@ -1,7 +1,11 @@
+const isProd = process.env.NODE_ENV === 'production'
+
 module.exports = {
   future: {
     webpack5: true,
   },
 
-  basePath: '/notea',
+  assetPrefix: isProd
+    ? 'https://cdn.statically.io/gh/QingWei-Li/notea/gh-pages/'
+    : '',
 }

@@ -43,7 +43,7 @@ const IndexPage = () => {
           </h1>
           <p className="leading-normal text-base md:text-2xl text-gray-500 mb-8 text-center md:text-left">
             This is a note-taking application with data in your hands. It
-            supports Markdown syntax, sharing and responsive, and more.
+            supports Markdown syntax, sharing, responsive and more.
           </p>
 
           <div className="flex w-full justify-center md:justify-start pb-24 lg:pb-0">
