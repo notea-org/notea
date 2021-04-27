@@ -2,7 +2,7 @@
 
 > Self hosted note taking app stored on S3.
 
-![screenshot](./assets/screenshot.png)
+![screenshot](./assets/screen.png)
 
 ## Features
 
@@ -67,7 +67,7 @@ STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
 STORE_END_POINT=http://localhost:9000
-# This is required
+# Required
 STORE_FORCE_PATH_STYLE=true
 ```
 
