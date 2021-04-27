@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next",
-    "debug": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "postinstall": "yarn autoclean --force"
+    "postinstall": "yarn autoclean --force",
+    "pub": "next build & next export & gh-pages -d out"
   },
   "repository": "QingWei-Li/notea",
   "husky": {
@@ -40,6 +40,7 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "gh-pages": "^3.1.0",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
     "postcss": "^8.2.6",
