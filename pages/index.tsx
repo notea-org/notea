@@ -8,10 +8,10 @@ const IndexPage = () => {
   return (
     <main className="font-sans">
       <Head>
-        <title>Notea - Self hosted note taking app stored on S3</title>
+        <title>Notea - Self-hosted note-taking app stored on S3</title>
         <meta
           name="description"
-          content="Self hosted note taking app stored on S3."
+          content="Self-hosted note-taking app stored on S3."
         />
         <link
           rel="icon"
@@ -52,7 +52,7 @@ const IndexPage = () => {
               Self hosted note taking app stored on S3
             </h1>
             <p className="leading-normal text-base md:text-2xl text-gray-500 mb-8 text-center md:text-left">
-              Notea is a privacy-first, open-source note taking application. It
+              Notea is a privacy-first, open-source note-taking application. It
               supports Markdown syntax, sharing, responsive and more.
             </p>
 
@@ -80,29 +80,29 @@ const IndexPage = () => {
 
       <section className="container m-auto">
         <h2 className="pb-14 text-2xl md:text-4xl text-gray-800 font-bold text-center">
-          Why you’ll love using Notea
+          Why you’ll love Notea
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 px-6">
           <FeatureItem title="Self hosted">
-            Self-hosted can ensure that you can own your data. It can be
-            deployed to Vercel or Netlify in a few steps. Or deploy to your own
-            server via docker.
+            Notea is self-hosted, so your data is safe in your hands. In a few
+            steps, it can be deployed to Vercel or Netlify, or even your own server
+            via docker.
           </FeatureItem>
 
           <FeatureItem title="Stored on S3">
-            It does not require a database. Notes are stored in AWS S3 bucket or
-            compatible API. This means you can use MinIO(self hosted), Aliyun
-            OSS(like AWS S3) or NAS to store data.
+            Notea does not require a database. Notes are stored in AWS S3 bucket or
+            compatible APIs. This means you can use MinIO(self-hosted), Aliyun
+            OSS(like AWS S3) or NAS to store your data.
           </FeatureItem>
 
           <FeatureItem title="Sharing">
-            You can publish your content on the web. With beautiful typography
-            and new features added in the future, you can use notea to publish
-            documentation, wiki, blog, newsletter, etc.
+            You can publish your content to the web. With beautiful typography
+            and new upcoming features, you can share your docs, wikis, blogs and
+            newsletters with others using Notea.
           </FeatureItem>
 
           <FeatureItem title="Markdown first">
-            The editor is based on markdown syntax and also supports slash
+            The editor is based on markdown syntax. It also supports slash
             commands, rich embeds, drag and drop to upload pictures, etc.
           </FeatureItem>
         </div>
@@ -110,7 +110,7 @@ const IndexPage = () => {
 
       <section className="mt-32 container m-auto text-center">
         <h3 className="mb-10 text-2xl md:text-4xl text-gray-800 font-bold text-center">
-          Want to try?
+          Wanna try?
         </h3>
         <a
           className="m-2 sm:w-auto inline-block text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
