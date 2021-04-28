@@ -13,6 +13,7 @@ import LayoutPublic from 'components/layout/layout-public'
 import { PageMode } from 'libs/shared/page'
 import { EditContainer } from 'components/container/edit-container'
 import { PostContainer } from 'components/container/post-container'
+import { withCsrf } from 'libs/server/middlewares/csrf'
 
 const EditNotePage: NextPage<{
   tree: TreeModel
@@ -37,5 +38,7 @@ const EditNotePage: NextPage<{
 export default EditNotePage
 
 export const getServerSideProps: GetServerSideProps = withUA(
-  withSession(withStore(withAuth(withNote(withTree(withSettings(() => ({})))))))
+  withSession(
+    withStore(withAuth(withNote(withTree(withSettings(withCsrf(() => ({})))))))
+  )
 )

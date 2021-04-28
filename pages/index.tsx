@@ -11,6 +11,7 @@ import Link from 'next/link'
 import UIState from 'libs/web/state/ui'
 import Router from 'next/router'
 import { useEffect } from 'react'
+import { withCsrf } from 'libs/server/middlewares/csrf'
 
 const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { ua } = UIState.useContainer()
@@ -56,6 +57,6 @@ function withIndex(wrapperHandler: any) {
 
 export const getServerSideProps: GetServerSideProps = withUA(
   withSession(
-    withStore(withAuth(withTree(withIndex(withSettings(() => ({}))))))
+    withStore(withAuth(withTree(withIndex(withSettings(withCsrf(() => ({})))))))
   )
 )

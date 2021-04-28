@@ -6,6 +6,7 @@ import { StoreProvider } from 'libs/server/store'
 import { useSession } from './middlewares/session'
 import { Session } from 'next-iron-session'
 import TreeStore from './tree'
+import { useCsrf } from 'libs/server/middlewares/csrf'
 
 export type ApiRequest = NextApiRequest & {
   store: StoreProvider
@@ -25,3 +26,4 @@ export const api = () =>
   })
     .use(useError)
     .use(useSession)
+    .use(useCsrf)

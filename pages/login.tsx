@@ -1,5 +1,6 @@
 import { TextField, Button, Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
+import { withCsrf } from 'libs/server/middlewares/csrf'
 import useFetcher from 'libs/web/api/fetcher'
 import router from 'next/router'
 import { FormEvent, useCallback } from 'react'
@@ -62,4 +63,7 @@ const LoginPage = () => {
     </main>
   )
 }
+
 export default LoginPage
+
+export const getServerSideProps = withCsrf(() => ({}))

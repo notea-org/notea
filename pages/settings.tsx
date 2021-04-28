@@ -9,6 +9,7 @@ import { withSettings } from 'libs/server/middlewares/settings'
 import { withAuth } from 'libs/server/middlewares/auth'
 import { SettingsForm } from 'components/settings/settings-form'
 import useI18n from 'libs/web/hooks/use-i18n'
+import { withCsrf } from 'libs/server/middlewares/csrf'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { t } = useI18n()
@@ -29,15 +30,5 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 export default SettingsPage
 
 export const getServerSideProps: GetServerSideProps = withUA(
-  withSession(
-    withStore(
-      withAuth(
-        withTree(
-          withSettings(() => {
-            return {}
-          })
-        )
-      )
-    )
-  )
+  withSession(withStore(withAuth(withTree(withSettings(withCsrf(() => ({})))))))
 )

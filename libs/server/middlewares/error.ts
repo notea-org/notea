@@ -17,6 +17,10 @@ export const API_ERROR = {
     message: 'Not found',
     description: '找不到该数据',
   },
+  INVALID_CSRF_TOKEN: {
+    status: 401,
+    message: 'Invalid CSRF token',
+  },
 }
 
 export class APIError {

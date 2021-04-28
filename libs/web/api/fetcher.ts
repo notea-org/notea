@@ -1,4 +1,6 @@
+import { CRSF_HEADER_KEY } from 'libs/shared/crsf'
 import { useCallback, useRef, useState } from 'react'
+import CsrfTokenState from '../state/csrf-token'
 
 interface Params {
   url: string
@@ -9,6 +11,7 @@ export default function useFetcher() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string>()
   const abortRef = useRef<AbortController>()
+  const csrfToken = CsrfTokenState.useContainer()
 
   const request = useCallback(async function request<Payload, ReponseData>(
     params: Params,
@@ -31,6 +34,7 @@ export default function useFetcher() {
       init.body = JSON.stringify(payload)
       init.headers = {
         'Content-Type': 'application/json',
+        ...(csrfToken && { [CRSF_HEADER_KEY]: csrfToken }),
       }
     }
 

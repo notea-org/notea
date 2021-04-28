@@ -14,6 +14,7 @@ import { useEffect, useMemo } from 'react'
 import { zhCN, enUS, Localization } from '@material-ui/core/locale'
 import { Locale, Settings } from 'libs/shared/settings'
 import I18nProvider from 'libs/web/utils/i18n-provider'
+import CsrfTokenState from 'libs/web/state/csrf-token'
 
 const muiLocale: Record<Locale, Localization> = {
   [Locale.ZH_CN]: zhCN,
@@ -92,16 +93,23 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
   return (
     <StylesProvider injectFirst>
       <MuiThemeProvider theme={muiTheme}>
-        <I18nProvider locale={settings?.locale} lngDict={pageProps.lngDict}>
-          <UIState.Provider initialState={{ ua: pageProps?.ua, settings }}>
-            <PortalState.Provider>
-              <Div100vh>
-                <DocumentHead />
-                <Component {...pageProps} />
-              </Div100vh>
-            </PortalState.Provider>
-          </UIState.Provider>
-        </I18nProvider>
+        <CsrfTokenState.Provider initialState={pageProps.csrfToken}>
+          <I18nProvider locale={settings?.locale} lngDict={pageProps.lngDict}>
+            <UIState.Provider
+              initialState={{
+                ua: pageProps?.ua,
+                settings,
+              }}
+            >
+              <PortalState.Provider>
+                <Div100vh>
+                  <DocumentHead />
+                  <Component {...pageProps} />
+                </Div100vh>
+              </PortalState.Provider>
+            </UIState.Provider>
+          </I18nProvider>
+        </CsrfTokenState.Provider>
       </MuiThemeProvider>
     </StylesProvider>
   )
