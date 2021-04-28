@@ -1,7 +1,13 @@
 import { mapValues } from 'lodash'
 import { ApiRequest, ApiResponse, ApiNext } from '../api'
 
-export const API_ERROR = {
+export const API_ERROR: {
+  [key: string]: {
+    status: number
+    message: string
+    description: string
+  }
+} = {
   NEED_LOGIN: {
     status: 401,
     message: 'Please login first',
@@ -20,6 +26,7 @@ export const API_ERROR = {
   INVALID_CSRF_TOKEN: {
     status: 401,
     message: 'Invalid CSRF token',
+    description: '无效 CSRF token',
   },
 }
 
