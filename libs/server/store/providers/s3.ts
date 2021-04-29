@@ -11,7 +11,8 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { streamToString } from '../utils'
 import { Readable } from 'stream'
-import { isEmpty } from 'lodash'
+import { isEmpty, toNumber } from 'lodash'
+import { Client as MinioClient } from 'minio'
 
 function isNoSuchKey(err: any) {
   return err.code === 'NoSuchKey' || err.message === 'NoSuchKey'
@@ -47,7 +48,25 @@ export class StoreS3 extends StoreProvider {
     this.config = config
   }
 
+  /**
+   * FIXME 签名错误在 MinIO 包含端口号时，这里先用 MinioSDK 代替
+   * @see https://github.com/aws/aws-sdk-js-v3/issues/2121
+   */
   getSignUrl(path: string, expires = 600) {
+    const url = new URL(this.config.endPoint as string)
+
+    if (url.port) {
+      const client = new MinioClient({
+        accessKey: this.config.accessKey,
+        secretKey: this.config.secretKey,
+        endPoint: url.hostname,
+        useSSL: url.protocol === 'https:',
+        port: toNumber(url.port),
+      })
+
+      return client.presignedGetObject(this.config.bucket, this.getPath(path))
+    }
+
     return getSignedUrl(
       this.client,
       new GetObjectCommand({

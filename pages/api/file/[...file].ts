@@ -20,16 +20,16 @@ export default api()
         expires
       )
 
+      res.setHeader(
+        'Cache-Control',
+        `public, max-age=${expires}, s-maxage=${expires}, stale-while-revalidate=${expires}`
+      )
+
       if (signUrl) {
-        res.redirect(signUrl.replace(/^http:/, ''))
+        res.redirect(signUrl)
         return
       }
     }
-
-    res.setHeader(
-      'Cache-Control',
-      `public, max-age=${expires}, s-maxage=${expires}, stale-while-revalidate=${expires}`
-    )
 
     res.redirect('/404')
   })
