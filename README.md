@@ -14,6 +14,12 @@
 
 - Link: https://notea.vercel.app
 
+## Requirement
+
+- [Next.js](https://nextjs.org/)
+- [S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
+- [Vercel](https://vercel.com/), [Netlify](netlify.com) or [Docker](https://www.docker.com/)
+
 ## Quickstart
 
 1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
@@ -110,17 +116,17 @@ Contribution examples are welcome.
 
 ## Environment variables
 
-| Name                   | Description                                                                            | Default   | Optional | Required |
-| ---------------------- | -------------------------------------------------------------------------------------- | --------- | -------- | -------- |
-| PASSWORD               | password to login to the app                                                           |           |          | true     |
-| STORE_ACCESS_KEY       | accessKey                                                                              |           |          | true     |
-| STORE_SECRET_KEY       | secretKey                                                                              |           |          | true     |
-| STORE_BUCKET           | bucket                                                                                 |           |          | true     |
-| STORE_END_POINT        | host name or an IP address.                                                            |           |          |          |
-| STORE_REGION           | region                                                                                 | us-east-1 |          |          |
-| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                        | false     |          |          |
-| COOKIE_SECURE          | only works under https: scheme **If your website is not https, you need to set false** | true      |          |          |
-| BASE_URL               | The domain of the website, used for SEO                                                |           |          |          |
+| Name                   | Description                                                                                                                | Default   | Optional | Required |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------- |
+| PASSWORD               | password to login to the app                                                                                               |           |          | true     |
+| STORE_ACCESS_KEY       | accessKey                                                                                                                  |           |          | true     |
+| STORE_SECRET_KEY       | secretKey                                                                                                                  |           |          | true     |
+| STORE_BUCKET           | bucket                                                                                                                     |           |          | true     |
+| STORE_END_POINT        | host name or an IP address.                                                                                                |           |          |          |
+| STORE_REGION           | region                                                                                                                     | us-east-1 |          |          |
+| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                                                            | false     |          |          |
+| COOKIE_SECURE          | only works under https: scheme **If the website is not https, you may not be able to log in, you need to set it to false** | true      |          |          |
+| BASE_URL               | The domain of the website, used for SEO                                                                                    |           |          |          |
 
 ## Development
 
