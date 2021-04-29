@@ -28,14 +28,15 @@ export default function useFetcher() {
       method: params.method,
     }
 
+    init.headers = {
+      ...(csrfToken && { [CRSF_HEADER_KEY]: csrfToken }),
+    }
+
     if (payload instanceof FormData) {
       init.body = payload
     } else {
       init.body = JSON.stringify(payload)
-      init.headers = {
-        'Content-Type': 'application/json',
-        ...(csrfToken && { [CRSF_HEADER_KEY]: csrfToken }),
-      }
+      init.headers['Content-Type'] = 'application/json'
     }
 
     try {
