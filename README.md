@@ -7,7 +7,7 @@
 ## Features
 
 - One-click deploy to Vercel/Netlify or deploy to host with Docker
-- Support storage in Amazon S3, Minio, Aliyun OSS, etc
+- Support storage in Amazon S3, MinIO, Aliyun OSS, etc
 - Notion like markdown editor
 
 ## Demo
@@ -35,12 +35,12 @@ Click https://app.netlify.com/start to deploy your fork repo.
 ```bash
 docker run -d \
   --name notea \
-  -p 3000:3000
+  -p 3000:3000 \
   -e STORE_ACCESS_KEY=Q3AM3UQ867SPQQA43P2F \
   -e STORE_SECRET_KEY=zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG \
   -e STORE_BUCKET=notea \
   -e STORE_END_POINT=http://play.minio.io \
-  -e STORE_FORCE_PATH_STYLE=true
+  -e STORE_FORCE_PATH_STYLE=true \
   -e PASSWORD=notea \
   cinwell/notea
 ```
@@ -57,7 +57,7 @@ docker run -d \
 
 Configure environment variables according to storage service.
 
-### Minio
+### MinIO
 
 `.env`
 
@@ -110,17 +110,17 @@ Contribution examples are welcome.
 
 ## Environment variables
 
-| Name                   | Description                                     | Default   | Optional | Required |
-| ---------------------- | ----------------------------------------------- | --------- | -------- | -------- |
-| PASSWORD               | password to login to the app                    |           |          | true     |
-| STORE_ACCESS_KEY       | accessKey                                       |           |          | true     |
-| STORE_SECRET_KEY       | secretKey                                       |           |          | true     |
-| STORE_BUCKET           | bucket                                          |           |          | true     |
-| STORE_END_POINT        | host name or an IP address.                     |           |          |          |
-| STORE_REGION           | region                                          | us-east-1 |          |          |
-| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects | false     |          |          |
-| COOKIE_SECURE          | only works under https: scheme                  | true      |          |          |
-| BASE_URL               | The domain of the website, used for SEO         |           |          |          |
+| Name                   | Description                                                                            | Default   | Optional | Required |
+| ---------------------- | -------------------------------------------------------------------------------------- | --------- | -------- | -------- |
+| PASSWORD               | password to login to the app                                                           |           |          | true     |
+| STORE_ACCESS_KEY       | accessKey                                                                              |           |          | true     |
+| STORE_SECRET_KEY       | secretKey                                                                              |           |          | true     |
+| STORE_BUCKET           | bucket                                                                                 |           |          | true     |
+| STORE_END_POINT        | host name or an IP address.                                                            |           |          |          |
+| STORE_REGION           | region                                                                                 | us-east-1 |          |          |
+| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                        | false     |          |          |
+| COOKIE_SECURE          | only works under https: scheme **If your website is not https, you need to set false** | true      |          |          |
+| BASE_URL               | The domain of the website, used for SEO                                                |           |          |          |
 
 ## Development
 
