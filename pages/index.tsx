@@ -13,6 +13,10 @@ const IndexPage = () => {
           name="description"
           content="Self-hosted note-taking app stored on S3."
         />
+        <meta
+          property="og:image"
+          content="https://cinwell.com/notea/screen.png"
+        />
         <link
           rel="icon"
           type="image/png"
@@ -85,14 +89,14 @@ const IndexPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 px-6">
           <FeatureItem title="Self hosted">
             Notea is self-hosted, so your data is safe in your hands. In a few
-            steps, it can be deployed to Vercel or Netlify, or even your own server
-            via docker.
+            steps, it can be deployed to Vercel or Netlify, or even your own
+            server via docker.
           </FeatureItem>
 
           <FeatureItem title="Stored on S3">
-            Notea does not require a database. Notes are stored in AWS S3 bucket or
-            compatible APIs. This means you can use MinIO(self-hosted), Aliyun
-            OSS(like AWS S3) or NAS to store your data.
+            Notea does not require a database. Notes are stored in AWS S3 bucket
+            or compatible APIs. This means you can use MinIO(self-hosted),
+            Aliyun OSS(like AWS S3) or NAS to store your data.
           </FeatureItem>
 
           <FeatureItem title="Sharing">
