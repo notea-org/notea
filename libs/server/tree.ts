@@ -5,7 +5,26 @@ import TreeActions, {
   TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
+import { filter, forEach } from 'lodash'
 import { getPathTree } from './note-path'
+
+/**
+ * FIXME
+ * children 有可能包含 null，暂不清楚从哪产生的
+ * 先忽略掉并加个 log，找到问题再修复
+ */
+function fixedTree(tree: TreeModel) {
+  forEach(tree.items, (item) => {
+    if (item.children.find((i) => i === null)) {
+      console.log('item.children includes null', item)
+    }
+    tree.items[item.id] = {
+      ...item,
+      children: filter(item.children, Boolean),
+    }
+  })
+  return tree
+}
 
 export default class TreeStore {
   store: StoreProvider
@@ -23,13 +42,17 @@ export default class TreeStore {
       return this.set(DEFAULT_TREE)
     }
 
-    return JSON.parse(res) as TreeModel
+    const tree = JSON.parse(res) as TreeModel
+
+    return fixedTree(tree)
   }
 
   async set(tree: TreeModel) {
-    await this.store.putObject(this.treePath, JSON.stringify(tree))
+    const newTree = fixedTree(tree)
 
-    return tree
+    await this.store.putObject(this.treePath, JSON.stringify(newTree))
+
+    return newTree
   }
 
   async addItem(id: string, parentId = 'root') {
