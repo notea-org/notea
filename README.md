@@ -25,7 +25,7 @@
 ## Quickstart
 
 1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
-1. [Choose Storage](#storage) and create bucket.
+1. [Choose Storage](#storage) and **manually create bucket**.
 1. [Deploy App](#deploy)
 
 ## Deploy
@@ -60,6 +60,8 @@ docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock \
   containrrr/watchtower -c notea
 ```
+
+If you are looking for MinIO + Notea docker configuration [check this](https://www.reddit.com/r/selfhosted/comments/n0jacf/notea_selfhosted_notetaking_app_stored_on_s3_aka/gw89iyo?utm_source=share&utm_medium=web2x&context=3)
 
 ## Storage
 
