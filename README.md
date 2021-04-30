@@ -76,6 +76,7 @@ STORE_BUCKET=notea
 STORE_END_POINT=http://localhost:9000
 # Required
 STORE_FORCE_PATH_STYLE=true
+PASSWORD=
 ```
 
 ### Amazon S3
@@ -87,6 +88,7 @@ STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
 STORE_BUCKET=notea
 STORE_REGION=us-east-1
+PASSWORD=
 ```
 
 ### Aliyun OSS
@@ -99,6 +101,7 @@ STORE_SECRET_KEY=
 STORE_BUCKET=notea
 STORE_END_POINT=https://oss-cn-hangzhou.aliyuncs.com
 STORE_REGION=oss-cn-hangzhou
+PASSWORD=
 ```
 
 ### Tencent COS
@@ -108,9 +111,10 @@ STORE_REGION=oss-cn-hangzhou
 ```sh
 STORE_ACCESS_KEY=
 STORE_SECRET_KEY=
-STORE_BUCKET=notea
+STORE_BUCKET=notea # create the bucket first
 STORE_END_POINT=https://cos.ap-guangzhou.myqcloud.com
 STORE_REGION=ap-guangzhou
+PASSWORD=
 ```
 
 Other services that support the s3 protocol can also be used.
