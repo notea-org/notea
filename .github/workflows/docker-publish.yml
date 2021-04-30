@@ -5,6 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - uses: mstachniuk/ci-skip@v1
+        with:
+          fail-fast: true
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
