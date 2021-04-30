@@ -3,7 +3,11 @@ const runtimeCaching = require('next-pwa/cache')
 
 module.exports = withPWA({
   future: {
-    webpack5: true,
+    /**
+     * FIXME
+     * https://github.com/netlify/netlify-plugin-nextjs/issues/209
+     */
+    webpack5: process.env.NETLIFY ? false : true,
   },
 
   target: process.env.NETLIFY ? 'serverless' : 'server',
