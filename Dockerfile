@@ -1,5 +1,5 @@
 # Stage 1: Building the code
-FROM mhart/alpine-node AS builder
+FROM node:alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN yarn install --production --frozen-lockfile
 
 
 # Stage 2: And then copy over node_modules, etc from that stage to the smaller base image
-FROM mhart/alpine-node:base as production
+FROM node:alpine as production
 
 WORKDIR /app
 
