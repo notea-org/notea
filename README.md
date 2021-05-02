@@ -20,7 +20,7 @@
 
 - [Next.js](https://nextjs.org/)
 - [S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-- [Vercel](https://vercel.com/), [Netlify](netlify.com) or [Docker](https://www.docker.com/)
+- [Vercel](https://vercel.com/), [Netlify](https://www.netlify.com/) or [Docker](https://www.docker.com/)
 
 ## Quickstart
 
