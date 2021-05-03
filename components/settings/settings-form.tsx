@@ -2,6 +2,7 @@ import { TextFieldProps } from '@material-ui/core'
 import { FC } from 'react'
 import { DailyNotesField } from './daily-notes-field'
 import { LanguageField } from './language-field'
+import { ThemeField } from './theme-field'
 
 export const defaultFieldConfig: TextFieldProps = {
   fullWidth: true,
@@ -16,8 +17,9 @@ export const SettingsForm: FC = () => {
   return (
     <section>
       <form>
-        <DailyNotesField />
-        <LanguageField />
+        <DailyNotesField></DailyNotesField>
+        <LanguageField></LanguageField>
+        <ThemeField></ThemeField>
       </form>
     </section>
   )
