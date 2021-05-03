@@ -139,7 +139,6 @@ Contribution examples are welcome.
 ## Development
 
 ```sh
-cp .env.sample .env
 docker-compose up -d
 yarn dev
 ```
