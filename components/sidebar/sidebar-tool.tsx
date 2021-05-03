@@ -13,6 +13,7 @@ import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
 import HeadwayWidget from '@headwayapp/react-widget'
 import styled from 'styled-components'
+import useMounted from 'libs/web/hooks/use-mounted'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -113,6 +114,8 @@ const ButtonSettings = () => {
 }
 
 const SidebarTool = () => {
+  const mounted = useMounted()
+
   return (
     <aside className="h-full flex flex-col w-11 flex-none bg-gray-200">
       <ButtonSearch />
@@ -120,9 +123,11 @@ const SidebarTool = () => {
       <ButtonDailyNotes />
 
       <BottomTool className="mt-auto">
-        <HeadwayWidget account="J031Z7" badgePosition="center">
-          <div className="mx-3 w-5 h-5"></div>
-        </HeadwayWidget>
+        {mounted ? (
+          <HeadwayWidget account="J031Z7" badgePosition="center">
+            <div className="mx-3 w-5 h-5"></div>
+          </HeadwayWidget>
+        ) : null}
         <ButtonMenu></ButtonMenu>
         <ButtonSettings></ButtonSettings>
       </BottomTool>
