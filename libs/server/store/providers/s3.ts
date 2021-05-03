@@ -53,18 +53,20 @@ export class StoreS3 extends StoreProvider {
    * @see https://github.com/aws/aws-sdk-js-v3/issues/2121
    */
   getSignUrl(path: string, expires = 600) {
-    const url = new URL(this.config.endPoint as string)
+    if (this.config.endPoint) {
+      const url = new URL(this.config.endPoint)
 
-    if (url.port) {
-      const client = new MinioClient({
-        accessKey: this.config.accessKey,
-        secretKey: this.config.secretKey,
-        endPoint: url.hostname,
-        useSSL: url.protocol === 'https:',
-        port: toNumber(url.port),
-      })
+      if (url.port) {
+        const client = new MinioClient({
+          accessKey: this.config.accessKey,
+          secretKey: this.config.secretKey,
+          endPoint: url.hostname,
+          useSSL: url.protocol === 'https:',
+          port: toNumber(url.port),
+        })
 
-      return client.presignedGetObject(this.config.bucket, this.getPath(path))
+        return client.presignedGetObject(this.config.bucket, this.getPath(path))
+      }
     }
 
     return getSignedUrl(
