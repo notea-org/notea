@@ -39,9 +39,9 @@ export function metaToJson(metaData?: Record<string, string>) {
           meta[key] = strValue
         }
       } else if (key === 'deleted') {
-        meta[key] = NOTE_DELETED.NORMAL
+        meta[key] = value ? strDecompress(value) : NOTE_DELETED.NORMAL
       } else if (key === 'shared') {
-        meta[key] = NOTE_SHARED.PRIVATE
+        meta[key] = value ? strDecompress(value) : NOTE_SHARED.PRIVATE
       }
     })
   }
