@@ -6,10 +6,10 @@ export const SettingFooter = () => {
 
   return (
     <footer className="mt-20 text-center opacity-50">
-      <div className="mr-4">
+      <div className="me-4">
         <span>{t('Current version')}:</span>
         <a
-          className="ml-1"
+          className="ms-1"
           href="//github.com/qingwei-li/notea/tags"
           target="_blank"
           rel="noreferrer"
@@ -21,7 +21,7 @@ export const SettingFooter = () => {
       <div>
         <span>&copy;</span>
         <a
-          className="ml-1"
+          className="ms-1"
           href="//github.com/qingwei-li"
           target="_blank"
           rel="noreferrer"

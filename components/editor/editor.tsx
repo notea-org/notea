@@ -8,6 +8,8 @@ import { useTheme } from 'next-themes'
 import { darkTheme, lightTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import styled from 'styled-components'
+import { Direction } from 'libs/shared/settings'
+import UIState from 'libs/web/state/ui'
 
 const Editor: FC<{
   note?: NoteModel
@@ -23,6 +25,11 @@ const Editor: FC<{
   const height = use100vh()
   const mounted = useMounted()
   const { resolvedTheme } = useTheme()
+  const {
+    settings: {
+      settings: { direction },
+    },
+  } = UIState.useContainer()
 
   const onEditorChange = useCallback(
     (value: () => string): void => {
@@ -33,6 +40,7 @@ const Editor: FC<{
 
   return (
     <StyledMarkdownEditor
+      dir={direction}
       height={height}
       id={note?.id}
       ref={editorEl}
@@ -47,11 +55,22 @@ const Editor: FC<{
   )
 }
 
+interface StyledMarkdownEditorProps {
+  height: number | null
+  dir: Direction
+}
+
 const StyledMarkdownEditor = styled(MarkdownEditor)`
   .ProseMirror {
-    min-height: ${({ height }: { height: number | null }) =>
+    min-height: ${({ height }: StyledMarkdownEditorProps) =>
       `calc(${height ? height + 'px' : '100vh'} - 14rem)`};
     padding-bottom: 10rem;
+  }
+
+  .block-menu-trigger {
+    ${({ dir }: StyledMarkdownEditorProps) => `
+    ${dir === Direction.LTR ? 'margin-left' : 'margin-right'}: -24px;
+  `}
   }
 `
 

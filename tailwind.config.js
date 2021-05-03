@@ -19,5 +19,9 @@ module.exports = {
       borderWidth: ['last'],
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('nightwind')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('nightwind'),
+    require('tailwindcss-rtl'),
+  ],
 }

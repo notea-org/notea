@@ -1,6 +1,7 @@
 import { TextFieldProps } from '@material-ui/core'
 import { FC } from 'react'
 import { DailyNotesField } from './daily-notes-field'
+import { DirectionField } from './direction-field'
 import { LanguageField } from './language-field'
 import { ThemeField } from './theme-field'
 
@@ -19,6 +20,7 @@ export const SettingsForm: FC = () => {
       <form>
         <DailyNotesField></DailyNotesField>
         <LanguageField></LanguageField>
+        <DirectionField></DirectionField>
         <ThemeField></ThemeField>
       </form>
     </section>

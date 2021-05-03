@@ -66,7 +66,7 @@ const SidebarMenu: FC = () => {
     >
       {MENU_LIST.map((item) => (
         <MenuItem key={item.text} onClick={MENU_HANDLER[item.handler]}>
-          <span className="text-xs w-4 mr-2">{item.icon}</span>
+          <span className="text-xs w-4 me-2">{item.icon}</span>
           <span className="text-xs">{item.text}</span>
         </MenuItem>
       ))}

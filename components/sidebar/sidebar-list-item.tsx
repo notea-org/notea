@@ -1,6 +1,6 @@
 import { NoteModel } from 'libs/web/state/note'
 import Link from 'next/link'
-import { FC, ReactText, MouseEvent, useCallback } from 'react'
+import { FC, ReactText, MouseEvent, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
@@ -9,6 +9,8 @@ import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
+import UIState from 'libs/web/state/ui'
+import { Direction } from 'libs/shared/settings'
 
 const TextSkeleton = () => (
   <Skeleton
@@ -50,6 +52,11 @@ const SidebarListItem: FC<{
   const {
     menu: { open, setData },
   } = PortalState.useContainer()
+  const {
+    settings: {
+      settings: { direction },
+    },
+  } = UIState.useContainer()
 
   const onAddNote = useCallback(
     (e: MouseEvent) => {
@@ -70,14 +77,27 @@ const SidebarListItem: FC<{
     },
     [item, open, setData]
   )
+  const { paddingLeft, ...otherStyle } = (attrs.style || {}) as any
+  const paddingStyle = useMemo(
+    () => ({
+      [direction === Direction.RTL
+        ? 'paddingRight'
+        : 'paddingLeft']: paddingLeft,
+    }),
+    [direction, paddingLeft]
+  )
 
   return (
     <>
       <div
         {...attrs}
+        style={{
+          ...otherStyle,
+          ...paddingStyle,
+        }}
         ref={innerRef}
         className={classNames(
-          'flex items-center group pr-2 overflow-hidden hover:bg-gray-300 text-gray-700',
+          'flex items-center group pe-2 overflow-hidden hover:bg-gray-300 text-gray-700',
           {
             'shadow bg-gray-300': snapshot.isDragging,
             'bg-gray-200': query.id === item.id,
@@ -87,7 +107,7 @@ const SidebarListItem: FC<{
         <Link href={`/${item.id}`} shallow>
           <a className="flex flex-1 items-center truncate px-2 py-1.5">
             <IconButton
-              className="mr-1"
+              className="me-1"
               icon="ChevronRight"
               iconClassName={classNames('transition-transform transform', {
                 'rotate-90': isExpanded,
@@ -115,17 +135,15 @@ const SidebarListItem: FC<{
           <IconButton
             icon="Plus"
             onClick={onAddNote}
-            className="ml-1 hidden group-hover:block"
+            className="ms-1 hidden group-hover:block"
           ></IconButton>
         </HotkeyTooltip>
       </div>
 
       {!hasChildren && isExpanded && (
         <div
-          className="ml-9 py-1.5 text-gray-400 select-none"
-          style={{
-            paddingLeft: attrs.style?.paddingLeft,
-          }}
+          className="ms-9 py-1.5 text-gray-400 select-none"
+          style={paddingStyle}
         >
           {initLoaded ? t('No notes inside') : <TextSkeleton />}
         </div>

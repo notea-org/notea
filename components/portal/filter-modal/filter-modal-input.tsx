@@ -26,7 +26,7 @@ const FilterModalInput: FC<{
         ref={inputRef}
         defaultValue={keyword}
         type="text"
-        className="appearance-none flex-1 outline-none ml-2 bg-transparent"
+        className="appearance-none flex-1 outline-none ms-2 bg-transparent"
         placeholder={placeholder}
         autoFocus
         onChange={(e) => debouncedFilter.callback(e.target.value)}

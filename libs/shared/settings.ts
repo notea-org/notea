@@ -1,12 +1,17 @@
 import { Locale } from 'locales'
 import { isArray, isBoolean, isNumber, isString, values } from 'lodash'
 
+export enum Direction {
+  RTL = 'rtl',
+  LTR = 'ltr',
+}
 export interface Settings {
   split_sizes: [number, number]
   daily_root_id: string
   sidebar_is_fold: boolean
   last_visit?: string
   locale: Locale
+  direction: Direction
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -14,6 +19,7 @@ export const DEFAULT_SETTINGS: Settings = {
   daily_root_id: 'root',
   sidebar_is_fold: false,
   locale: Locale.EN,
+  direction: Direction.LTR,
 }
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -38,6 +44,10 @@ export function formatSettings(body: Record<string, any> = {}) {
 
   if (values(Locale).includes(body.locale)) {
     settings.locale = body.locale
+  }
+
+  if (values(Direction).includes(body.direction)) {
+    settings.direction = body.direction
   }
 
   return settings

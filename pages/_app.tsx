@@ -51,11 +51,14 @@ function DocumentHead() {
 
 const AppInner = ({ Component, pageProps }: AppProps) => {
   const { resolvedTheme } = useTheme()
-  const settings = pageProps?.settings as Settings
+  const settings = useMemo(() => (pageProps?.settings || {}) as Settings, [
+    pageProps?.settings,
+  ])
   const muiTheme = useMemo(
     () =>
       createMuiTheme(
         {
+          direction: settings.direction,
           palette: {
             type: resolvedTheme === 'dark' ? 'dark' : 'light',
             primary: {
@@ -97,7 +100,7 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
               }}
             >
               <PortalState.Provider>
-                <Div100vh>
+                <Div100vh dir={settings.direction}>
                   <DocumentHead />
                   <Component {...pageProps} />
                 </Div100vh>

@@ -26,7 +26,7 @@ const MenuButton = () => {
   return (
     <IconButton
       icon="Menu"
-      className="mr-2 active:bg-gray-400"
+      className="me-2 active:bg-gray-400"
       onClick={onToggle}
     ></IconButton>
   )
@@ -94,7 +94,7 @@ const NoteNav = () => {
         </Breadcrumbs>
       </div>
       <div
-        className={classNames('flex mr-2 transition-opacity delay-100', {
+        className={classNames('flex me-2 transition-opacity delay-100', {
           'opacity-0': !loading,
         })}
       >
@@ -103,7 +103,7 @@ const NoteNav = () => {
       <HotkeyTooltip text={t('Share page')}>
         <IconButton
           onClick={handleClickShare}
-          className="mr-2"
+          className="me-2"
           iconClassName={classNames({
             'text-blue-500': note.shared === NOTE_SHARED.PUBLIC,
           })}

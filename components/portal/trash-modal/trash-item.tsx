@@ -41,7 +41,7 @@ const TrashItem: FC<{
       <HotkeyTooltip text={t('Recovery')}>
         <IconButton
           onClick={onClickRestore}
-          className="text-gray-500 mr-1"
+          className="text-gray-500 me-1"
           icon="Reply"
         ></IconButton>
       </HotkeyTooltip>

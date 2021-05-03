@@ -53,10 +53,10 @@ const ShareModal: FC = () => {
             />
           }
           classes={{
-            root: 'ml-0',
+            root: 'ms-0',
           }}
           label={
-            <div className="mr-2">
+            <div className="me-2">
               <h2 className="text-sm">{t('Share to web')}</h2>
               <p className="text-xs text-gray-500">
                 {t('Anyone can visit the page via the link')}
