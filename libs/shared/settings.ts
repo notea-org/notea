@@ -1,9 +1,6 @@
+import { Locale } from 'locales'
 import { isArray, isBoolean, isNumber, isString, values } from 'lodash'
 
-export enum Locale {
-  ZH_CN = 'zh-CN',
-  EN = 'en',
-}
 export interface Settings {
   split_sizes: [number, number]
   daily_root_id: string

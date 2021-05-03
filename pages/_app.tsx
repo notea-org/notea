@@ -11,15 +11,10 @@ import {
   StylesProvider,
 } from '@material-ui/core'
 import { useEffect, useMemo } from 'react'
-import { zhCN, enUS, Localization } from '@material-ui/core/locale'
-import { Locale, Settings } from 'libs/shared/settings'
+import { Settings } from 'libs/shared/settings'
 import I18nProvider from 'libs/web/utils/i18n-provider'
 import CsrfTokenState from 'libs/web/state/csrf-token'
-
-const muiLocale: Record<Locale, Localization> = {
-  [Locale.ZH_CN]: zhCN,
-  [Locale.EN]: enUS,
-}
+import { muiLocale } from 'locales'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`

@@ -1,10 +1,11 @@
 import { FC, useCallback, ChangeEvent } from 'react'
 import { MenuItem, TextField } from '@material-ui/core'
 import UIState from 'libs/web/state/ui'
-import { Locale } from 'libs/shared/settings'
 import { defaultFieldConfig } from './settings-form'
 import router from 'next/router'
 import useI18n from 'libs/web/hooks/use-i18n'
+import { configLocale, Locale } from 'locales'
+import { map } from 'lodash'
 
 export const LanguageField: FC = () => {
   const { t } = useI18n()
@@ -28,8 +29,11 @@ export const LanguageField: FC = () => {
       onChange={handleChange}
       select
     >
-      <MenuItem value={Locale.EN}>English</MenuItem>
-      <MenuItem value={Locale.ZH_CN}>简体中文</MenuItem>
+      {map(configLocale, (item, key) => (
+        <MenuItem key={key} value={key}>
+          {item}
+        </MenuItem>
+      ))}
     </TextField>
   )
 }
