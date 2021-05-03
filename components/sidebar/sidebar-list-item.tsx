@@ -122,7 +122,7 @@ const SidebarListItem: FC<{
 
       {!hasChildren && isExpanded && (
         <div
-          className="ml-8 py-1.5 text-gray-400 select-none"
+          className="ml-9 py-1.5 text-gray-400 select-none"
           style={{
             paddingLeft: attrs.style?.paddingLeft,
           }}

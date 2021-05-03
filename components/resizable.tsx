@@ -18,6 +18,7 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
   const splitRef = useRef<typeof Split>(null)
   const {
     split: { saveSizes, resize, sizes },
+    ua: { isMobileOnly },
     sidebar: { visible },
   } = UIState.useContainer()
   const lastWidthRef = useRef(width)
@@ -40,9 +41,13 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
 
   const updateSplitSizes = useCallback(
     async (sizes: [number, number]) => {
+      if (isMobileOnly) {
+        return
+      }
+
       await saveSizes(sizes)
     },
-    [saveSizes]
+    [saveSizes, isMobileOnly]
   )
 
   return (

@@ -5,22 +5,24 @@ import TreeActions, {
   TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
-import { filter, forEach } from 'lodash'
+import { filter, forEach, isNil } from 'lodash'
 import { getPathTree } from './note-path'
 
 /**
- * FIXME
- * children 有可能包含 null，暂不清楚从哪产生的
- * 先忽略掉并加个 log，找到问题再修复
+ * FIXME 抽空重构 libs/shard/tree
+ *
+ * 1. children 有可能包含 null，暂不清楚从哪产生的
+ * 2. 可能会存在 children 包含当前节点的问题
+ *
  */
 function fixedTree(tree: TreeModel) {
   forEach(tree.items, (item) => {
-    if (item.children.find((i) => i === null)) {
-      console.log('item.children includes null', item)
+    if (item.children.find((i) => i === null || i === item.id)) {
+      console.log('item.children error', item)
     }
     tree.items[item.id] = {
       ...item,
-      children: filter(item.children, Boolean),
+      children: filter(item.children, (cid) => !isNil(cid) && cid !== item.id),
     }
   })
   return tree
