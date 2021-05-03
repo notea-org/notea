@@ -1844,6 +1844,13 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@headwayapp/react-widget@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@headwayapp/react-widget/-/react-widget-0.0.4.tgz#34c97be8a1e42aed2ba2860988c93dc24f9ccec4"
+  integrity sha512-Gw7R85tE0LSYFBu7DcnGZUO1AnF2J0+HoCKxlQVCE0GgsQzZjfpoCkq+q6zAy9374zSOl4GmivDhh/wCjhH3Pw==
+  dependencies:
+    prop-types "^15.7.2"
+
 "@material-ui/core@^4.11.3":
   version "4.11.3"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.11.3.tgz#f22e41775b0bd075e36a7a093d43951bf7f63850"

@@ -9,3 +9,5 @@ declare module 'heroicons/react/outline/*' {
 declare module 'react-split'
 
 declare module 'remove-markdown'
+
+declare module '@headwayapp/react-widget'

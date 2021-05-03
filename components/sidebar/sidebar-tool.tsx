@@ -11,6 +11,8 @@ import Link from 'next/link'
 import dayjs from 'dayjs'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
+import HeadwayWidget from '@headwayapp/react-widget'
+import styled from 'styled-components'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -117,12 +119,21 @@ const SidebarTool = () => {
       <ButtonTrash />
       <ButtonDailyNotes />
 
-      <div className="mt-auto">
+      <BottomTool className="mt-auto">
+        <HeadwayWidget account="J031Z7" badgePosition="center">
+          <div className="mx-3 w-5 h-5"></div>
+        </HeadwayWidget>
         <ButtonMenu></ButtonMenu>
         <ButtonSettings></ButtonSettings>
-      </div>
+      </BottomTool>
     </aside>
   )
 }
 
 export default SidebarTool
+
+const BottomTool = styled.div`
+  .HW_softHidden {
+    display: none;
+  }
+`
