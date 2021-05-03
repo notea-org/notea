@@ -10,19 +10,23 @@ import { withAuth } from 'libs/server/middlewares/auth'
 import { SettingsForm } from 'components/settings/settings-form'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { withCsrf } from 'libs/server/middlewares/csrf'
+import { SettingFooter } from 'components/settings/setting-footer'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { t } = useI18n()
 
   return (
     <LayoutMain tree={tree}>
-      <main className="pt-40 px-6 m-auto prose">
-        <h1>
-          <span className="font-normal">{t('Settings')}</span>
-        </h1>
+      <section className="py-40 h-full overflow-y-auto">
+        <div className="px-6 prose m-auto">
+          <h1>
+            <span className="font-normal">{t('Settings')}</span>
+          </h1>
 
-        <SettingsForm />
-      </main>
+          <SettingsForm />
+          <SettingFooter />
+        </div>
+      </section>
     </LayoutMain>
   )
 }
