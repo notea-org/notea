@@ -8,4 +8,5 @@ services:
     environment:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
-    command: server /data
+    entrypoint: sh
+    command: -c 'mkdir -p /data/notea && /usr/bin/minio server /data'
