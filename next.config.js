@@ -1,5 +1,6 @@
 const withPWA = require('next-pwa')
 const runtimeCaching = require('next-pwa/cache')
+const path = require('path')
 
 module.exports = withPWA({
   future: {
@@ -16,7 +17,7 @@ module.exports = withPWA({
     config.module.rules.push({
       test: /\.jsx/,
       use: [defaultLoaders.babel],
-      include: [/node_modules\/heroicons/],
+      include: [path.resolve(__dirname, 'node_modules/heroicons')],
     })
 
     return config
