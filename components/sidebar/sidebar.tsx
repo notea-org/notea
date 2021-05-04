@@ -10,10 +10,15 @@ const Sidebar: FC = () => {
 }
 
 const BrowserSidebar: FC = () => {
-  const { sidebar } = UIState.useContainer()
+  const {
+    sidebar,
+    settings: {
+      settings: { direction },
+    },
+  } = UIState.useContainer()
 
   return (
-    <section className="flex h-full">
+    <section className="flex h-full" dir={direction}>
       <SidebarTool />
       {sidebar.visible ? null : <SideBarList />}
     </section>
@@ -21,8 +26,14 @@ const BrowserSidebar: FC = () => {
 }
 
 const MobileSidebar: FC = () => {
+  const {
+    settings: {
+      settings: { direction },
+    },
+  } = UIState.useContainer()
+
   return (
-    <section className="flex h-full" style={{ width: '80vw' }}>
+    <section className="flex h-full" style={{ width: '80vw' }} dir={direction}>
       <SidebarTool />
       <SideBarList />
     </section>

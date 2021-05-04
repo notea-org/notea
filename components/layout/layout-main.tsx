@@ -25,6 +25,9 @@ const StyledWrapper = styled.div`
 const MainWrapper: FC = ({ children }) => {
   const {
     sidebar: { visible },
+    settings: {
+      settings: { direction },
+    },
   } = UIState.useContainer()
   const { ref, width = 0 } = useResizeDetector<HTMLDivElement>({
     handleHeight: false,
@@ -34,7 +37,9 @@ const MainWrapper: FC = ({ children }) => {
     <StyledWrapper className="h-full" disabled={visible} ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="relative flex-grow">{children}</main>
+        <main className="relative flex-grow" dir={direction}>
+          {children}
+        </main>
       </Resizable>
     </StyledWrapper>
   )

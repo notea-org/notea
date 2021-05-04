@@ -1,6 +1,8 @@
 import UIState from 'libs/web/state/ui'
 import Split from 'react-split'
 import { FC, useCallback, useEffect, useRef } from 'react'
+import { Direction } from 'libs/shared/settings'
+import { reverse } from 'lodash'
 
 const renderGutter = () => {
   const gutter = document.createElement('div')
@@ -20,8 +22,18 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
     split: { saveSizes, resize, sizes },
     ua: { isMobileOnly },
     sidebar: { visible },
+    settings: {
+      settings: { direction },
+    },
   } = UIState.useContainer()
   const lastWidthRef = useRef(width)
+
+  const calcDisplaySizes = useCallback(
+    (sizes) => {
+      return direction === Direction.LTR ? sizes : reverse([...sizes])
+    },
+    [direction]
+  )
 
   useEffect(() => {
     const lastWidth = lastWidthRef.current
@@ -33,11 +45,11 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
   }, [resize, width])
 
   useEffect(() => {
-    splitRef.current?.split?.setSizes(sizes)
+    splitRef.current?.split?.setSizes(calcDisplaySizes(sizes))
     if (visible) {
       splitRef.current?.split?.collapse(0)
     }
-  }, [visible, sizes, width])
+  }, [visible, sizes, width, calcDisplaySizes])
 
   const updateSplitSizes = useCallback(
     async (sizes: [number, number]) => {
@@ -45,21 +57,26 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
         return
       }
 
-      await saveSizes(sizes)
+      await saveSizes(calcDisplaySizes(sizes))
     },
-    [saveSizes, isMobileOnly]
+    [isMobileOnly, saveSizes, calcDisplaySizes]
   )
+
+  const nodes =
+    Array.isArray(children) &&
+    (direction === Direction.LTR ? children : reverse([...children]))
 
   return (
     <Split
       ref={splitRef}
       className="flex h-full"
       minSize={visible ? 40 : 250}
-      sizes={sizes}
+      sizes={calcDisplaySizes(sizes)}
       gutter={renderGutter}
       onDragEnd={updateSplitSizes}
+      dir="ltr"
     >
-      {children}
+      {nodes}
     </Split>
   )
 }

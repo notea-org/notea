@@ -88,6 +88,10 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
     }
   }, [])
 
+  useEffect(() => {
+    document.body.dir = settings.direction
+  }, [settings.direction])
+
   return (
     <StylesProvider injectFirst>
       <MuiThemeProvider theme={muiTheme}>
@@ -100,7 +104,7 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
               }}
             >
               <PortalState.Provider>
-                <Div100vh dir={settings.direction}>
+                <Div100vh>
                   <DocumentHead />
                   <Component {...pageProps} />
                 </Div100vh>
