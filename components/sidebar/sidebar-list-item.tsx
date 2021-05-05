@@ -88,7 +88,13 @@ const SidebarListItem: FC<{
           <a className="flex flex-1 items-center truncate px-2 py-1.5">
             <IconButton
               className="mr-1"
-              icon="ChevronRight"
+              icon={
+                hasChildren || isExpanded
+                  ? 'ChevronRight'
+                  : item.title
+                  ? 'DocumentText'
+                  : 'Document'
+              }
               iconClassName={classNames('transition-transform transform', {
                 'rotate-90': isExpanded,
               })}

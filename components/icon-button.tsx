@@ -8,6 +8,8 @@ import ChevronRight from 'heroicons/react/outline/ChevronRight'
 import Reply from 'heroicons/react/outline/Reply'
 import Share from 'heroicons/react/outline/Share'
 import Duplicate from 'heroicons/react/outline/Duplicate'
+import Document from 'heroicons/react/outline/Document'
+import DocumentText from 'heroicons/react/outline/DocumentText'
 
 export const ICONS = {
   Trash,
@@ -18,6 +20,8 @@ export const ICONS = {
   Reply,
   Share,
   Duplicate,
+  Document,
+  DocumentText,
 }
 
 const IconButton = forwardRef<
