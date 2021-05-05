@@ -43,7 +43,7 @@ export function withAuth(wrapperHandler: any) {
 }
 
 export function isLoggedIn(req: ApiRequest) {
-  if (getEnv('IS_DEMO')) {
+  if (getEnv('IS_DEMO') || getEnv('DISABLE_PASSWORD', false)) {
     return true
   }
 

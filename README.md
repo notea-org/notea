@@ -126,15 +126,16 @@ Contribution examples are welcome.
 
 | Name                   | Description                                                                                                                | Default   | Optional | Required |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------- |
-| PASSWORD               | password to login to the app                                                                                               |           |          | true     |
-| STORE_ACCESS_KEY       | accessKey                                                                                                                  |           |          | true     |
-| STORE_SECRET_KEY       | secretKey                                                                                                                  |           |          | true     |
-| STORE_BUCKET           | bucket                                                                                                                     |           |          | true     |
-| STORE_END_POINT        | host name or an IP address.                                                                                                |           |          |          |
+| PASSWORD               | Password to login to the app                                                                                               |           |          | true     |
+| STORE_ACCESS_KEY       | AccessKey                                                                                                                  |           |          | true     |
+| STORE_SECRET_KEY       | SecretKey                                                                                                                  |           |          | true     |
+| STORE_BUCKET           | Bucket                                                                                                                     |           |          | true     |
+| STORE_END_POINT        | Host name or an IP address.                                                                                                |           |          |          |
 | STORE_REGION           | region                                                                                                                     | us-east-1 |          |          |
 | STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                                                            | false     |          |          |
-| COOKIE_SECURE          | only works under https: scheme **If the website is not https, you may not be able to log in, you need to set it to false** | true      |          |          |
+| COOKIE_SECURE          | Only works under https: scheme **If the website is not https, you may not be able to log in, you need to set it to false** | true      |          |          |
 | BASE_URL               | The domain of the website, used for SEO                                                                                    |           |          |          |
+| DISABLE_PASSWORD       | Disable password protection                                                                                                | false     |          |          |
 
 ## Development
 
