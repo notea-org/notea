@@ -31,7 +31,7 @@ export function metaToJson(metaData?: Record<string, string>) {
       const value = metaData[key]
 
       if (!isNil(value)) {
-        const strValue = strDecompress(value) || undefined
+        const strValue = strDecompress(value) || null
 
         if (NUMBER_KEYS.includes(key)) {
           meta[key] = toNumber(strValue)
