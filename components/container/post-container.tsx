@@ -1,21 +1,16 @@
 import NoteState from 'libs/web/state/note'
 import { removeMarkdown } from 'libs/web/utils/markdown'
 import { FC, useMemo } from 'react'
-import rules from 'rich-markdown-editor/dist/lib/markdown/rules'
 import styled from 'styled-components'
 import { NextSeo } from 'next-seo'
-
-/**
- * FIXME https://github.com/outline/rich-markdown-editor/pull/432/files
- */
-const renderToHtml = (markdown: string) => {
-  return rules({ embeds: [] }).render(markdown).trim()
-}
+import { renderMarkdown } from 'libs/web/render-markdown'
+// TODO: Maybe can custom
+import 'highlight.js/styles/zenburn.css'
 
 export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
   const { note } = NoteState.useContainer()
 
-  const content = useMemo(() => renderToHtml(note?.content ?? ''), [note])
+  const content = useMemo(() => renderMarkdown(note?.content ?? ''), [note])
   const description = useMemo(
     () => removeMarkdown(note?.content).slice(0, 100),
     [note]
