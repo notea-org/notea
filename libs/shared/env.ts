@@ -10,7 +10,6 @@ export function getEnv<T>(
       throw new Error(`[Notea] \`${env}\` is required`)
     }
 
-    console.log(`[Notea] \`${env}\` use the default value \`${defaultValue}\``)
     return defaultValue
   }
 
