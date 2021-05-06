@@ -144,6 +144,21 @@ docker-compose up -d
 yarn dev
 ```
 
+## FAQs
+
+### What is S3? And what is MinIO？
+
+- Amazon Simple Storage Service (AKA Amazon S3) . TLDR: Read and write stored files or pictures through RESTful API.
+- MinIO: a self-hosted S3. Install by docker: docker run -p 9000:9000 minio/minio server /data
+
+### Why not use Database?
+
+My understanding: The data stored in Notea is mainly files (such as text or pictures), which is not what the database is good at; Database is more expensive than S3 to read and write small data; Use S3 to generate a signed URL to access files, but the database cannot do it.
+
+### Why not use filesystem storage?
+
+Too many excellent offline note-taking apps on the web. Because I couldn't find a product that supports both self-hosted and data synchronization, I create it.
+
 ## LICENSE
 
 MIT
