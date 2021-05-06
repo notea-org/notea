@@ -119,6 +119,21 @@ STORE_REGION=ap-guangzhou
 PASSWORD=
 ```
 
+### Exoscale
+
+`.env`
+
+```sh
+STORE_ACCESS_KEY=
+STORE_SECRET_KEY=
+STORE_BUCKET=notea # create the bucket first
+STORE_END_POINT=https://sos-de-fra-1.exo.io
+STORE_REGION=de-fra-1
+STORE_FORCE_PATH_STYLE=true
+PASSWORD=
+```
+
+
 Other services that support the s3 protocol can also be used.
 Contribution examples are welcome.
 
