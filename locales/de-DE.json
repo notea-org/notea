@@ -1,8 +1,8 @@
 {
   "New Page": "Neue Seite",
-  "Settings": "Eisntellungen",
+  "Settings": "Einstellungen",
   "Language": "Sprache",
-  "Daily notes are saved in": "Tägliche notizen gespeichert in",
+  "Daily notes are saved in": "Tägliche Notizen gespeichert in",
   "Daily notes will be created under this page": "Tägliche Notizen werden unter dieser Seite erstellt",
   "Search note": "Notiz durchsuchen",
   "Cancel": "Abbrechen",
@@ -27,8 +27,8 @@
   "Daily Notes": "Tägliche Notizen",
   "Share page": "Seite teilen",
   "Theme mode": "Theme mode",
-  "Sync with system": "Sync with system",
-  "Dark": "Dark",
-  "Light": "Light",
-  "Current version": "Current version"
+  "Sync with system": "mit System synchronisieren",
+  "Dark": "Dunkel",
+  "Light": "Hell",
+  "Current version": "aktuelle Version"
 }
