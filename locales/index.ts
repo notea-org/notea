@@ -17,6 +17,6 @@ export const muiLocale: Record<Locale, Localization> = {
 export const configLocale: Record<Locale, string> = {
   [Locale.EN]: 'English',
   [Locale.ZH_CN]: '简体中文',
-  [Locale.de_DE]: 'Deutsche',
+  [Locale.de_DE]: 'Deutsch',
   [Locale.ru_RU]: 'Русский',
 }
