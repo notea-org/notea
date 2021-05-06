@@ -119,6 +119,25 @@ STORE_REGION=ap-guangzhou
 PASSWORD=
 ```
 
+### Oracle Object Storage
+
+`.env`
+
+```sh
+STORE_ACCESS_KEY=
+STORE_SECRET_KEY=
+STORE_END_POINT=https://nampespace.compat.objectstorage.ap-chuncheon-1.oraclecloud.com
+STORE_FORCE_PATH_STYLE=true
+STORE_BUCKET=bucketname
+STORE_REGION=ap-chuncheon-1
+PASSWORD=
+
+#  bucketname，namespace and region “ap-chuncheon-1” need check your profile and https://docs.oracle.com/en-us/iaas/api/#/en/s3objectstorage/20160918/
+```
+
+
+
+
 ### Exoscale
 
 `.env`
