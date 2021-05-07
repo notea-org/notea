@@ -1,6 +1,6 @@
 import NoteTreeState from 'libs/web/state/tree'
 import { FC, useEffect } from 'react'
-import NoteState, { NoteModel } from 'libs/web/state/note'
+import NoteState from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
 import UIState from 'libs/web/state/ui'
@@ -14,6 +14,7 @@ import SearchModal from 'components/portal/search-modal/search-modal'
 import ShareModal from 'components/portal/share-modal'
 import { SwipeableDrawer } from '@material-ui/core'
 import SidebarMenu from 'components/portal/sidebar-menu'
+import { NoteModel } from 'libs/shared/note'
 
 const StyledWrapper = styled.div`
   .gutter {
