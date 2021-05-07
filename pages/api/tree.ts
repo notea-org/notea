@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 
@@ -6,7 +6,7 @@ export default api()
   .use(useAuth)
   .use(useStore)
   .get(async (req, res) => {
-    res.json(await req.treeStore.get())
+    res.json(await req.state.treeStore.get())
   })
   .post(async (req, res) => {
     const { action, data } = req.body as {
@@ -16,11 +16,11 @@ export default api()
 
     switch (action) {
       case 'move':
-        await req.treeStore.moveItem(data.source, data.destination)
+        await req.state.treeStore.moveItem(data.source, data.destination)
         break
 
       case 'mutate':
-        await req.treeStore.mutateItem(data.id, data)
+        await req.state.treeStore.mutateItem(data.id, data)
         break
 
       default:

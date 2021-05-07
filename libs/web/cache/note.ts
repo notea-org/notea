@@ -1,6 +1,6 @@
 import { TreeModel } from 'libs/shared/tree'
 import { noteCacheInstance, NoteCacheItem } from 'libs/web/cache'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import { keys, pull } from 'lodash'
 import { removeMarkdown } from '../utils/markdown'
 

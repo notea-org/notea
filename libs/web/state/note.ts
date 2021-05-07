@@ -4,17 +4,7 @@ import NoteTreeState from 'libs/web/state/tree'
 import { NOTE_DELETED, NOTE_SHARED } from 'libs/shared/meta'
 import useNoteAPI from '../api/note'
 import noteCache from '../cache/note'
-
-export interface NoteModel {
-  id: string
-  title: string
-  pid?: string
-  content?: string
-  pic?: string
-  date?: string
-  deleted: NOTE_DELETED
-  shared: NOTE_SHARED
-}
+import { NoteModel } from 'libs/shared/note'
 
 const useNote = (initData?: NoteModel) => {
   const [note, setNote] = useState<NoteModel | undefined>(initData)

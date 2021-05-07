@@ -15,6 +15,7 @@ import { Settings } from 'libs/shared/settings'
 import I18nProvider from 'libs/web/utils/i18n-provider'
 import CsrfTokenState from 'libs/web/state/csrf-token'
 import { muiLocale } from 'locales'
+import { ServerProps } from 'libs/server/connect'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -49,7 +50,13 @@ function DocumentHead() {
   )
 }
 
-const AppInner = ({ Component, pageProps }: AppProps) => {
+const AppInner = ({
+  Component,
+  pageProps,
+}: {
+  pageProps: ServerProps
+  Component: any
+}) => {
   const { resolvedTheme } = useTheme()
   const settings = pageProps?.settings as Settings
   const muiTheme = useMemo(
@@ -94,6 +101,7 @@ const AppInner = ({ Component, pageProps }: AppProps) => {
               initialState={{
                 ua: pageProps?.ua,
                 settings,
+                disablePassword: pageProps?.disablePassword,
               }}
             >
               <PortalState.Provider>

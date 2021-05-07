@@ -1,17 +1,17 @@
 import LayoutMain from 'components/layout/layout-main'
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
-import { withTree } from 'libs/server/middlewares/tree'
-import { withUA } from 'libs/server/middlewares/ua'
+import { NextPage } from 'next'
+import { applyTree } from 'libs/server/middlewares/tree'
+import { applyUA } from 'libs/server/middlewares/ua'
 import { TreeModel } from 'libs/shared/tree'
-import { withSession } from 'libs/server/middlewares/session'
-import { withStore } from 'libs/server/middlewares/store'
-import { withSettings } from 'libs/server/middlewares/settings'
-import { withAuth } from 'libs/server/middlewares/auth'
+import { useSession } from 'libs/server/middlewares/session'
+import { applySettings } from 'libs/server/middlewares/settings'
+import { applyAuth, applyRedirectLogin } from 'libs/server/middlewares/auth'
 import Link from 'next/link'
 import UIState from 'libs/web/state/ui'
 import Router from 'next/router'
 import { useEffect } from 'react'
-import { withCsrf } from 'libs/server/middlewares/csrf'
+import { applyCsrf } from 'libs/server/middlewares/csrf'
+import { SSRContext, ssr } from 'libs/server/connect'
 
 const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { ua } = UIState.useContainer()
@@ -39,24 +39,30 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 
 export default EditNotePage
 
-function withIndex(wrapperHandler: any) {
-  return async function handler(ctx: GetServerSidePropsContext) {
-    const res = await wrapperHandler(ctx)
-    const lastVisit = res.props?.settings?.last_visit
+export const getServerSideProps = async (ctx: SSRContext) => {
+  await ssr()
+    .use(useSession)
+    .use(applyAuth)
+    .use(applyRedirectLogin(ctx.resolvedUrl))
+    .use(applyTree)
+    .use(applySettings)
+    .use(applyCsrf)
+    .use(applyUA)
+    .run(ctx.req, ctx.res)
 
-    if (lastVisit && !res.redirect) {
-      res.redirect = {
+  const lastVisit = ctx.req.props?.settings?.last_visit
+
+  if (lastVisit) {
+    return {
+      redirect: {
         destination: lastVisit,
         permanent: false,
-      }
+      },
     }
+  }
 
-    return res
+  return {
+    props: ctx.req.props,
+    redirect: ctx.req.redirect,
   }
 }
-
-export const getServerSideProps: GetServerSideProps = withUA(
-  withSession(
-    withStore(withAuth(withTree(withIndex(withSettings(withCsrf(() => ({})))))))
-  )
-)

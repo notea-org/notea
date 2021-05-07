@@ -1,6 +1,7 @@
 import { TextField, Button, Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import { withCsrf } from 'libs/server/middlewares/csrf'
+import { SSRContext, ssr } from 'libs/server/connect'
+import { applyCsrf } from 'libs/server/middlewares/csrf'
 import useFetcher from 'libs/web/api/fetcher'
 import router from 'next/router'
 import { FormEvent, useCallback } from 'react'
@@ -66,4 +67,11 @@ const LoginPage = () => {
 
 export default LoginPage
 
-export const getServerSideProps = withCsrf(() => ({}))
+export const getServerSideProps = async (ctx: SSRContext) => {
+  await ssr().use(applyCsrf).run(ctx.req, ctx.res)
+
+  return {
+    props: ctx.req.props,
+    redirect: ctx.req.redirect,
+  }
+}

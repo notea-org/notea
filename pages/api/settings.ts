@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import { getPathSettings } from 'libs/server/note-path'
@@ -23,18 +23,18 @@ export default api()
   .use(useStore)
   .post(async (req, res) => {
     const { body } = req
-    const prev = await getSettings(req.store)
+    const prev = await getSettings(req.state.store)
     const settings = formatSettings({
       ...prev,
       ...body,
     })
 
-    await req.store.putObject(getPathSettings(), JSON.stringify(settings))
+    await req.state.store.putObject(getPathSettings(), JSON.stringify(settings))
     res.status(204).end()
   })
   .get(
     async (req, res): Promise<void> => {
-      const settings = await getSettings(req.store)
+      const settings = await getSettings(req.state.store)
 
       res.json(settings)
     }

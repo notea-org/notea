@@ -1,7 +1,7 @@
 import { FC, RefObject, useCallback } from 'react'
 import { use100vh } from 'react-div-100vh'
 import useEditState from './edit-state'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import MarkdownEditor from 'rich-markdown-editor'
 import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
 import { useTheme } from 'next-themes'

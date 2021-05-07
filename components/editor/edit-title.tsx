@@ -1,6 +1,6 @@
 import { TextareaAutosize } from '@material-ui/core'
 import useI18n from 'libs/web/hooks/use-i18n'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import { has } from 'lodash'
 import { useRouter } from 'next/router'
 import {

@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import { IncomingForm } from 'formidable'
@@ -35,7 +35,7 @@ export default api()
     )}${extname(file.name)}`
     const filePath = getPathFileByName(fileName)
 
-    await req.store.putObject(filePath, buffer, {
+    await req.state.store.putObject(filePath, buffer, {
       contentType: file.type,
       headers: {
         cacheControl:

@@ -1,12 +1,5 @@
+import { UserAgentType } from 'libs/shared/ua'
 import { useState } from 'react'
-
-export interface UserAgentType {
-  isMobile: boolean
-  isMobileOnly: boolean
-  isTablet: boolean
-  isBrowser: boolean
-  isWechat: boolean
-}
 
 export default function useUA(
   initState: UserAgentType = {

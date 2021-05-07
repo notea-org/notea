@@ -67,7 +67,7 @@ const MobileMainWrapper: FC = ({ children }) => {
 }
 
 const LayoutMain: FC<{
-  tree: TreeModel
+  tree?: TreeModel
   note?: NoteModel
 }> = ({ children, tree, note }) => {
   const { ua } = UIState.useContainer()

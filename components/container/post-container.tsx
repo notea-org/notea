@@ -6,8 +6,13 @@ import { NextSeo } from 'next-seo'
 import { renderMarkdown } from 'libs/web/render-markdown'
 // TODO: Maybe can custom
 import 'highlight.js/styles/zenburn.css'
+import { PageMode } from 'libs/shared/page'
+import Error from 'next/error'
 
-export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
+export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
+  baseURL,
+  pageMode,
+}) => {
   const { note } = NoteState.useContainer()
 
   const content = useMemo(() => renderMarkdown(note?.content ?? ''), [note])
@@ -15,6 +20,10 @@ export const PostContainer: FC<{ baseURL: string }> = ({ baseURL }) => {
     () => removeMarkdown(note?.content).slice(0, 100),
     [note]
   )
+
+  if (pageMode !== PageMode.PUBLIC) {
+    return <Error statusCode={404} title={'Not a public page'}></Error>
+  }
 
   return (
     <AriticleStyle className="prose mx-auto prose-sm lg:prose-xl px-4 md:px-0">
