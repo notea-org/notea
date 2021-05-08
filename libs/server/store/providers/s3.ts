@@ -9,7 +9,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { streamToString } from '../utils'
+import { streamToBuffer } from '../utils'
 import { Readable } from 'stream'
 import { isEmpty, toNumber } from 'lodash'
 import { Client as MinioClient } from 'minio'
@@ -104,7 +104,7 @@ export class StoreS3 extends StoreProvider {
           Key: this.getPath(path),
         })
       )
-      content = await streamToString(result.Body as Readable)
+      content = await streamToBuffer(result.Body as Readable)
     } catch (err) {
       if (!isNoSuchKey(err)) {
         throw err
@@ -134,6 +134,7 @@ export class StoreS3 extends StoreProvider {
   async getObjectAndMeta(path: string, isCompressed = false) {
     let content
     let meta
+    let contentType
 
     try {
       const result = await this.client.send(
@@ -142,15 +143,21 @@ export class StoreS3 extends StoreProvider {
           Key: this.getPath(path),
         })
       )
-      content = await streamToString(result.Body as Readable)
+      content = await streamToBuffer(result.Body as Readable)
       meta = result.Metadata
+      contentType = result.ContentType
     } catch (err) {
       if (!isNoSuchKey(err)) {
         throw err
       }
     }
 
-    return { content: toStr(content, isCompressed), meta }
+    return {
+      content: toStr(content, isCompressed),
+      meta,
+      contentType,
+      buffer: content,
+    }
   }
 
   async putObject(
