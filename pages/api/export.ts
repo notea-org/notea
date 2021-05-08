@@ -28,7 +28,7 @@ export default api()
         if (metaJson.deleted === NOTE_DELETED.DELETED) {
           return
         }
-        const title = metaJson.title
+        const title = metaJson.title ?? 'Untitled'
 
         zip.addFile(
           `${title}${duplicate[title] ? ` (${duplicate[title]})` : ''}.md`,
