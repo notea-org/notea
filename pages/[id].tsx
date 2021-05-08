@@ -43,6 +43,7 @@ export const getServerSideProps = async (
   if (!/^[A-Za-z0-9_-]+$/.test(ctx.query.id)) {
     return { props: {} }
   }
+
   await ssr()
     .use(useSession)
     .use(applyAuth)
