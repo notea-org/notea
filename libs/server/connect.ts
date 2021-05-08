@@ -63,6 +63,12 @@ export const ssr = () =>
   nc<ApiRequest, ApiResponse>({
     onError,
   })
+    // init props
+    .use((req, _res, next) => {
+      req.props = {} as ServerProps
+      req.state = {} as ServerState
+      next()
+    })
     .use(useError)
     .use(useStore)
 

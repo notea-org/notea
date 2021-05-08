@@ -8,13 +8,14 @@ import { renderMarkdown } from 'libs/web/render-markdown'
 import 'highlight.js/styles/zenburn.css'
 import { PageMode } from 'libs/shared/page'
 import Error from 'next/error'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
   baseURL,
   pageMode,
 }) => {
+  const { t } = useI18n()
   const { note } = NoteState.useContainer()
-
   const content = useMemo(() => renderMarkdown(note?.content ?? ''), [note])
   const description = useMemo(
     () => removeMarkdown(note?.content).slice(0, 100),
@@ -22,7 +23,7 @@ export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
   )
 
   if (pageMode !== PageMode.PUBLIC) {
-    return <Error statusCode={404} title={'Not a public page'}></Error>
+    return <Error statusCode={404} title={t('Not a public page')}></Error>
   }
 
   return (

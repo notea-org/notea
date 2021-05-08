@@ -72,6 +72,5 @@ export const getServerSideProps = async (ctx: SSRContext) => {
 
   return {
     props: ctx.req.props,
-    redirect: ctx.req.redirect,
   }
 }

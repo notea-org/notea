@@ -1,6 +1,7 @@
 import Tokens from 'csrf'
-import { CRSF_HEADER_KEY } from 'libs/shared/crsf'
+import { CRSF_HEADER_KEY } from 'libs/shared/const'
 import { getEnv } from 'libs/shared/env'
+import { PageMode } from 'libs/shared/page'
 import md5 from 'md5'
 import { ApiNext, ApiRequest, ApiResponse, SSRMiddeware } from '../connect'
 
@@ -15,7 +16,7 @@ export const verifyCsrfToken = (token: string) =>
   tokens.verify(csrfSecret, token)
 
 export const applyCsrf: SSRMiddeware = (req, _res, next) => {
-  if (req.props.isLoggedIn) {
+  if (req.props.pageMode !== PageMode.PUBLIC) {
     req.props = {
       ...req.props,
       csrfToken: getCsrfToken(),

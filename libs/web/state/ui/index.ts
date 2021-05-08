@@ -5,7 +5,6 @@ import useSettings from './settings'
 import useSidebar from './sidebar'
 import useSplit from './split'
 import useTitle from './title'
-import useUA from './ua'
 
 interface Props {
   ua?: UserAgentType
@@ -14,7 +13,7 @@ interface Props {
 }
 function useUI({ ua, settings, disablePassword }: Props = {}) {
   return {
-    ua: useUA(ua),
+    ua,
     sidebar: useSidebar(ua?.isMobileOnly ? false : settings?.sidebar_is_fold),
     split: useSplit(settings?.split_sizes),
     title: useTitle(),

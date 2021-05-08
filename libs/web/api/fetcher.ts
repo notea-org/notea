@@ -1,4 +1,4 @@
-import { CRSF_HEADER_KEY } from 'libs/shared/crsf'
+import { CRSF_HEADER_KEY } from 'libs/shared/const'
 import { useCallback, useRef, useState } from 'react'
 import CsrfTokenState from '../state/csrf-token'
 

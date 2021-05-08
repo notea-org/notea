@@ -40,7 +40,14 @@ export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddeware = (
     permanent: false,
   }
 
-  if (req.props.pageMode !== PageMode.PUBLIC && !req.props.isLoggedIn) {
+  // note 存在的情况
+  if (req.props.pageMode) {
+    if (req.props.pageMode !== PageMode.PUBLIC && !req.props.isLoggedIn) {
+      req.redirect = redirect
+      return res.APIError.NEED_LOGIN.throw()
+    }
+    // 访问首页没有 note，则判断是否登录
+  } else if (!req.props.isLoggedIn) {
     req.redirect = redirect
     return res.APIError.NEED_LOGIN.throw()
   }
