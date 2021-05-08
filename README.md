@@ -178,7 +178,7 @@ yarn dev
 
 ### What is S3? And what is MinIO？
 
-- Amazon Simple Storage Service (AKA Amazon S3) . TLDR: Read and write stored files or pictures through RESTful API.
+- Amazon Simple Storage Service (AKA Amazon S3). TLDR: Read and write stored files or pictures through RESTful API.
 - MinIO: a self-hosted S3. Install by docker: `docker run -p 9000:9000 minio/minio server /data`
 
 ### Why not use Database?
