@@ -103,7 +103,7 @@ const SidebarListItem: FC<{
                 isExpanded ? onCollapse(item.id) : onExpand(item.id)
               }}
             ></IconButton>
-            <span className="flex-1 truncate">
+            <span className="flex-1 truncate" dir="auto">
               {initLoaded ? item.title || t('Untitled') : <TextSkeleton />}
             </span>
           </a>
