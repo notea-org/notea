@@ -1,14 +1,15 @@
-import { TextField, Button, Snackbar } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { TextField, Button } from '@material-ui/core'
 import { SSRContext, ssr } from 'libs/server/connect'
 import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { useSession } from 'libs/server/middlewares/session'
 import useFetcher from 'libs/web/api/fetcher'
 import router from 'next/router'
-import { FormEvent, useCallback } from 'react'
+import { FormEvent, useCallback, useEffect } from 'react'
+import { useToast } from 'libs/web/hooks/use-toast'
 
 const LoginPage = () => {
   const { request, error, loading } = useFetcher()
+  const toast = useToast()
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -28,11 +29,14 @@ const LoginPage = () => {
     [request]
   )
 
+  useEffect(() => {
+    if (!loading && !!error) {
+      toast('Incorrect password', 'error')
+    }
+  }, [loading, error, toast])
+
   return (
     <main className="pt-48">
-      <Snackbar open={!loading && !!error} autoHideDuration={6000}>
-        <Alert severity="error">Incorrect password</Alert>
-      </Snackbar>
       <img className="w-40 h-40 m-auto" src="/logo.svg" alt="Logo" />
       <form
         className="w-80 m-auto"

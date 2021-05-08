@@ -2,6 +2,7 @@ import { StoreProvider } from 'libs/server/store'
 import TreeActions, {
   DEFAULT_TREE,
   movePosition,
+  ROOT_ID,
   TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
@@ -57,10 +58,20 @@ export default class TreeStore {
     return newTree
   }
 
-  async addItem(id: string, parentId = 'root') {
+  async addItem(id: string, parentId = ROOT_ID) {
     const tree = await this.get()
 
     return this.set(TreeActions.addItem(tree, id, parentId))
+  }
+
+  async addItems(ids: string[], parentId = ROOT_ID) {
+    let tree = await this.get()
+
+    ids.forEach((id) => {
+      tree = TreeActions.addItem(tree, id, parentId)
+    })
+
+    return this.set(tree)
   }
 
   async removeItem(id: string) {

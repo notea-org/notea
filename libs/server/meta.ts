@@ -7,7 +7,7 @@ import {
   NUMBER_KEYS,
 } from 'libs/shared/meta'
 
-export function jsonToMeta(meta?: Record<string, string | undefined>) {
+export function jsonToMeta(meta?: Record<string, any>) {
   const metaData: Record<string, string> = {}
 
   if (meta) {
@@ -23,7 +23,7 @@ export function jsonToMeta(meta?: Record<string, string | undefined>) {
   return metaData
 }
 
-export function metaToJson(metaData?: Record<string, string>) {
+export function metaToJson(metaData?: Record<string, any>) {
   const meta: Record<string, any> = {}
 
   if (metaData) {

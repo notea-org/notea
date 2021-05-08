@@ -6,7 +6,7 @@ import { TreeModel } from 'libs/shared/tree'
 import { useSession } from 'libs/server/middlewares/session'
 import { applySettings } from 'libs/server/middlewares/settings'
 import { applyAuth } from 'libs/server/middlewares/auth'
-import { SettingsForm } from 'components/settings/settings-form'
+import { SettingsContainer } from 'components/settings/settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { SettingFooter } from 'components/settings/setting-footer'
@@ -23,7 +23,7 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
             <span className="font-normal">{t('Settings')}</span>
           </h1>
 
-          <SettingsForm />
+          <SettingsContainer />
           <SettingFooter />
         </div>
       </section>

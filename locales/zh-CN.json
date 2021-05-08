@@ -30,6 +30,13 @@
   "Sync with system": "自动",
   "Dark": "深色",
   "Light": "浅色",
-  "Current version": "当前版本",
+  "Import & Export": "导入导出",
+  "Import a zip file containing markdown files to this location, or export all pages from this location": "导入一个 zip 文件包含 markdown 文件到指定的位置，或从指定位置导出所有页面",
+  "Import": "导入",
+  "Export": "导出",
+  "Please select zip file": "请选择 zip 文件",
+  "File size must be less than {{n}}mb": "文件大小不超过 {{n}}mb",
+  "Successfully imported {{n}} markdown files": "成功导入 {{n}} 个 markdown 文件",
+  "Not found markdown file": "没有找到 markdown 文件",
   "Not a public page": "非公开页面"
 }

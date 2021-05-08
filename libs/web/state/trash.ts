@@ -7,6 +7,7 @@ import { NOTE_DELETED } from 'libs/shared/meta'
 import { NoteCacheItem } from '../cache'
 import { searchNote } from '../utils/search'
 import { NoteModel } from 'libs/shared/note'
+import { ROOT_ID } from 'libs/shared/tree'
 
 function useTrash() {
   const [keyword, setKeyword] = useState<string>()
@@ -26,7 +27,7 @@ function useTrash() {
       // 父页面被删除时，恢复页面的 parent 改成 root
       const pNote = note.pid && (await noteCache.getItem(note.pid))
       if (!note.pid || !pNote || pNote?.deleted === NOTE_DELETED.DELETED) {
-        note.pid = 'root'
+        note.pid = ROOT_ID
       }
 
       await mutate({

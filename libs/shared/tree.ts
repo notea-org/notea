@@ -12,11 +12,13 @@ export interface TreeModel extends TreeData {
   items: Record<string, TreeItemModel>
 }
 
+export const ROOT_ID = 'root'
+
 export const DEFAULT_TREE: TreeModel = {
-  rootId: 'root',
+  rootId: ROOT_ID,
   items: {
     root: {
-      id: 'root',
+      id: ROOT_ID,
       children: [],
     },
   },
@@ -27,7 +29,7 @@ export interface movePosition {
   index: number
 }
 
-function addItem(tree: TreeModel, id: string, pid = 'root') {
+function addItem(tree: TreeModel, id: string, pid = ROOT_ID) {
   tree.items[id] = tree.items[id] || {
     id,
     children: [],
@@ -77,7 +79,7 @@ function moveItem(
 /**
  * 从原父节点上移除，添加到新的父节点上
  */
-function restoreItem(tree: TreeModel, id: string, pid = 'root') {
+function restoreItem(tree: TreeModel, id: string, pid = ROOT_ID) {
   tree = removeItem(tree, id)
   tree = addItem(tree, id, pid)
 

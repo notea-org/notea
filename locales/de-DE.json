@@ -30,7 +30,13 @@
   "Sync with system": "mit System synchronisieren",
   "Dark": "Dunkel",
   "Light": "Hell",
-  "Current version": "aktuelle Version",
+  "Import & Export": "Import & Export",
+  "Import a zip file containing markdown files to this location, or export all pages from this location": "Import a zip file containing markdown files to this location, or export all pages from this location",
+  "Import": "Import",
+  "Export": "Export",
+  "Please select zip file": "Please select zip file",
+  "File size must be less than {{n}}mb": "File size must be less than {{n}}mb",
+  "Successfully imported {{n}} markdown files": "Successfully imported {{n}} markdown files",
+  "Not found markdown file": "Not found markdown file",
   "Not a public page": "Not a public page"
-
 }

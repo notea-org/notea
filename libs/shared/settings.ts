@@ -1,5 +1,6 @@
 import { Locale } from 'locales'
 import { isArray, isBoolean, isNumber, isString, values } from 'lodash'
+import { ROOT_ID } from './tree'
 
 export interface Settings {
   split_sizes: [number, number]
@@ -11,7 +12,7 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   split_sizes: [30, 70],
-  daily_root_id: 'root',
+  daily_root_id: ROOT_ID,
   sidebar_is_fold: false,
   locale: Locale.EN,
 }

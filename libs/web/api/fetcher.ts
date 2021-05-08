@@ -5,6 +5,7 @@ import CsrfTokenState from '../state/csrf-token'
 interface Params {
   url: string
   method: 'GET' | 'POST'
+  headers?: Record<string, string>
 }
 
 export default function useFetcher() {
@@ -38,6 +39,11 @@ export default function useFetcher() {
       } else {
         init.body = JSON.stringify(payload)
         init.headers['Content-Type'] = 'application/json'
+      }
+
+      init.headers = {
+        ...init.headers,
+        ...(params.headers || {}),
       }
 
       try {

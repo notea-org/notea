@@ -1,13 +1,13 @@
 import { FC, useCallback, ChangeEvent } from 'react'
 import { MenuItem, TextField } from '@material-ui/core'
 import UIState from 'libs/web/state/ui'
-import { defaultFieldConfig } from './settings-form'
+import { defaultFieldConfig } from './settings-container'
 import router from 'next/router'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { configLocale, Locale } from 'locales'
 import { map } from 'lodash'
 
-export const LanguageField: FC = () => {
+export const Language: FC = () => {
   const { t } = useI18n()
   const {
     settings: { settings, updateSettings },

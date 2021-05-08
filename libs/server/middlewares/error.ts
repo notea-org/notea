@@ -1,13 +1,8 @@
+import { IMPORT_FILE_LIMIT_SIZE } from 'libs/shared/const'
 import { mapValues } from 'lodash'
 import { ApiRequest, ApiResponse, ApiNext } from '../connect'
 
-export const API_ERROR: {
-  [key: string]: {
-    status: number
-    message: string
-    description: string
-  }
-} = {
+export const API_ERROR = {
   NEED_LOGIN: {
     status: 401,
     message: 'Please login first',
@@ -27,6 +22,11 @@ export const API_ERROR: {
     status: 401,
     message: 'Invalid CSRF token',
     description: '无效 CSRF token',
+  },
+  IMPORT_FILE_LIMIT_SIZE: {
+    status: 401,
+    message: `File size limit exceeded ${IMPORT_FILE_LIMIT_SIZE}`,
+    description: '文件体积超过限制',
   },
 }
 
