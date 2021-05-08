@@ -74,8 +74,7 @@ export const API = mapValues(
 export async function onError(
   err: Error & APIError,
   _req: ApiRequest,
-  res: ApiResponse,
-  next: ApiNext
+  res: ApiResponse
 ) {
   const e = {
     name: err.name || 'UNKNOWN_ERR',
@@ -89,7 +88,6 @@ export async function onError(
   })
 
   res.status?.(e.status).json?.(e)
-  next?.()
 }
 
 export async function useError(

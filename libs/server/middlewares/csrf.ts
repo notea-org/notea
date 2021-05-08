@@ -14,14 +14,13 @@ export const getCsrfToken = () => tokens.create(csrfSecret)
 export const verifyCsrfToken = (token: string) =>
   tokens.verify(csrfSecret, token)
 
-export const applyCsrf: SSRMiddeware = (req, _res, next) => {
-  if (req.props.isLoggedIn) {
-    req.props = {
-      ...req.props,
-      csrfToken: getCsrfToken(),
-    }
+export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
+  req.props = {
+    ...req.props,
+    csrfToken: getCsrfToken(),
   }
-
+  req.session.set(CRSF_HEADER_KEY, req.props.csrfToken)
+  await req.session.save()
   next()
 }
 
@@ -29,12 +28,18 @@ const ignoredMethods = ['GET', 'HEAD', 'OPTIONS']
 
 export function useCsrf(req: ApiRequest, res: ApiResponse, next: ApiNext) {
   const token = req.headers[CRSF_HEADER_KEY] as string
+  const sessionToken = req.session.get(CRSF_HEADER_KEY)
 
   if (ignoredMethods.includes(req.method?.toLocaleUpperCase() as string)) {
     return next()
   }
 
-  if (token && verifyCsrfToken(token)) {
+  if (
+    token &&
+    sessionToken &&
+    token === sessionToken &&
+    verifyCsrfToken(token)
+  ) {
     next()
   } else {
     return res.APIError.INVALID_CSRF_TOKEN.throw()
