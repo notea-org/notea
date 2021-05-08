@@ -33,7 +33,6 @@ const ShareModal: FC = () => {
   )
 
   useEffect(() => {
-    console.log(1, disablePassword)
     if (disablePassword) {
       setUrl(`${location.origin}/share/${router.query.id}`)
     } else {
