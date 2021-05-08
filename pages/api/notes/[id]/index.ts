@@ -64,6 +64,14 @@ export default api()
       oldMeta['date'] = strCompress(new Date().toISOString())
     }
 
+    // Empty content may be a misoperation
+    if (!content || content.trim() === '\\') {
+      await req.state.store.copyObject(notePath, notePath + '.bak', {
+        meta: oldMeta,
+        contentType: 'text/markdown',
+      })
+    }
+
     await req.state.store.putObject(notePath, content, {
       contentType: 'text/markdown',
       meta: oldMeta,
