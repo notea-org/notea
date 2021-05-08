@@ -94,7 +94,8 @@
     "typescript": "4.0"
   },
   "resolutions": {
-    "prosemirror-transform": "1.2.5"
+    "prosemirror-transform": "1.2.5",
+    "lodash": "^4.17.21"
   },
   "license": "MIT"
 }
