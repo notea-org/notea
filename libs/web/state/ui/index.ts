@@ -6,12 +6,20 @@ import useSidebar from './sidebar'
 import useSplit from './split'
 import useTitle from './title'
 
+const DEFAULT_UA: UserAgentType = {
+  isMobile: false,
+  isMobileOnly: false,
+  isTablet: false,
+  isBrowser: true,
+  isWechat: false,
+}
+
 interface Props {
   ua?: UserAgentType
   settings?: Settings
   disablePassword?: boolean
 }
-function useUI({ ua, settings, disablePassword }: Props = {}) {
+function useUI({ ua = DEFAULT_UA, settings, disablePassword }: Props = {}) {
   return {
     ua,
     sidebar: useSidebar(ua?.isMobileOnly ? false : settings?.sidebar_is_fold),
