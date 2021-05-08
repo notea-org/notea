@@ -1,5 +1,5 @@
 import MarkdownEditor from 'rich-markdown-editor'
-import NoteState, { NoteModel } from 'libs/web/state/note'
+import NoteState from 'libs/web/state/note'
 import { useRef } from 'react'
 import router from 'next/router'
 import { has } from 'lodash'
@@ -7,6 +7,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import EditTitle from './edit-title'
 import Editor from './editor'
 import styled from 'styled-components'
+import { NoteModel } from 'libs/shared/note'
 
 const Article = styled.article`
   ul {

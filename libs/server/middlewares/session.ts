@@ -1,4 +1,4 @@
-import { ironSession, withIronSession, Handler } from 'next-iron-session'
+import { ironSession} from 'next-iron-session'
 import md5 from 'md5'
 import { getEnv } from 'libs/shared/env'
 
@@ -15,5 +15,3 @@ const sessionOptions = {
 }
 
 export const useSession = ironSession(sessionOptions)
-export const withSession = (handler: Handler) =>
-  withIronSession(handler, sessionOptions)

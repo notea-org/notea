@@ -1,4 +1,4 @@
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import Link from 'next/link'
 import { FC, ReactText, MouseEvent, useCallback } from 'react'
 import classNames from 'classnames'

@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { getEnv } from 'libs/shared/env'
 
 export default api().post(async (req, res) => {

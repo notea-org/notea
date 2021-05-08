@@ -1,10 +1,8 @@
 import Tokens from 'csrf'
-import { CRSF_HEADER_KEY } from 'libs/shared/crsf'
+import { CRSF_HEADER_KEY } from 'libs/shared/const'
 import { getEnv } from 'libs/shared/env'
-import { PageMode } from 'libs/shared/page'
 import md5 from 'md5'
-import { GetServerSidePropsContext } from 'next'
-import { ApiNext, ApiRequest, ApiResponse } from '../api'
+import { ApiNext, ApiRequest, ApiResponse, SSRMiddeware } from '../connect'
 
 const tokens = new Tokens()
 
@@ -16,42 +14,32 @@ export const getCsrfToken = () => tokens.create(csrfSecret)
 export const verifyCsrfToken = (token: string) =>
   tokens.verify(csrfSecret, token)
 
-export function withCsrf(wrapperHandler: any) {
-  return async function handler(
-    ctx: GetServerSidePropsContext & {
-      req: ApiRequest
-    }
-  ) {
-    const res = await wrapperHandler(ctx)
-    let csrfToken
-
-    if (res.redirect) {
-      return res
-    }
-
-    if (res.pageMode !== PageMode.PUBLIC) {
-      csrfToken = getCsrfToken()
-    }
-
-    res.props = {
-      ...res.props,
-      csrfToken,
-    }
-
-    return res
+export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
+  req.props = {
+    ...req.props,
+    csrfToken: getCsrfToken(),
   }
+  req.session.set(CRSF_HEADER_KEY, req.props.csrfToken)
+  await req.session.save()
+  next()
 }
 
 const ignoredMethods = ['GET', 'HEAD', 'OPTIONS']
 
 export function useCsrf(req: ApiRequest, res: ApiResponse, next: ApiNext) {
   const token = req.headers[CRSF_HEADER_KEY] as string
+  const sessionToken = req.session.get(CRSF_HEADER_KEY)
 
   if (ignoredMethods.includes(req.method?.toLocaleUpperCase() as string)) {
     return next()
   }
 
-  if (token && verifyCsrfToken(token)) {
+  if (
+    token &&
+    sessionToken &&
+    token === sessionToken &&
+    verifyCsrfToken(token)
+  ) {
     next()
   } else {
     return res.APIError.INVALID_CSRF_TOKEN.throw()

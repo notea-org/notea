@@ -1,9 +1,9 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { metaToJson } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import { getPathNoteById } from 'libs/server/note-path'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
 import { strCompress } from 'libs/shared/str'
@@ -35,8 +35,8 @@ export default api()
     const notePath = getPathNoteById(id)
 
     await Promise.all([
-      req.store.deleteObject(notePath),
-      req.treeStore.removeItem(id),
+      req.state.store.deleteObject(notePath),
+      req.state.treeStore.removeItem(id),
     ])
 
     res.end()
@@ -50,7 +50,7 @@ export default api()
       })
     }
 
-    const note = await getNote(req.store, id)
+    const note = await getNote(req.state.store, id)
 
     res.json(note)
   })
@@ -58,13 +58,13 @@ export default api()
     const id = req.query.id as string
     const { content } = req.body
     const notePath = getPathNoteById(id)
-    const oldMeta = await req.store.getObjectMeta(notePath)
+    const oldMeta = await req.state.store.getObjectMeta(notePath)
 
     if (oldMeta) {
       oldMeta['date'] = strCompress(new Date().toISOString())
     }
 
-    await req.store.putObject(notePath, content, {
+    await req.state.store.putObject(notePath, content, {
       contentType: 'text/markdown',
       meta: oldMeta,
     })

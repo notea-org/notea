@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { useStore } from 'libs/server/middlewares/store'
 import { getPathFileByName } from 'libs/server/note-path'
 
@@ -15,7 +15,7 @@ export default api()
   .use(useStore)
   .get(async (req, res) => {
     if (req.query.file) {
-      const signUrl = await req.store.getSignUrl(
+      const signUrl = await req.state.store.getSignUrl(
         getPathFileByName((req.query.file as string[]).join('/')),
         expires
       )

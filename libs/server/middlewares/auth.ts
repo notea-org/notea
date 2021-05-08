@@ -1,7 +1,6 @@
 import { getEnv } from 'libs/shared/env'
 import { PageMode } from 'libs/shared/page'
-import { GetServerSidePropsContext } from 'next'
-import { ApiRequest, ApiResponse, ApiNext } from '../api'
+import { ApiRequest, ApiResponse, ApiNext, SSRMiddeware } from '../connect'
 
 export async function useAuth(
   req: ApiRequest,
@@ -15,37 +14,41 @@ export async function useAuth(
   return next()
 }
 
-export function withAuth(wrapperHandler: any) {
-  return async function handler(
-    ctx: GetServerSidePropsContext & {
-      req: ApiRequest
-    }
-  ) {
-    const redirectLogin = {
-      redirect: {
-        destination: `/login?redirect=${ctx.resolvedUrl}`,
-        permanent: false,
-      },
-    }
-
-    const res = await wrapperHandler(ctx)
-
-    if (res.props?.pageMode !== PageMode.PUBLIC && !isLoggedIn(ctx.req)) {
-      return redirectLogin
-    }
-
-    res.props = {
-      ...res.props,
-    }
-
-    return res
-  }
-}
-
 export function isLoggedIn(req: ApiRequest) {
   if (getEnv('IS_DEMO') || getEnv('DISABLE_PASSWORD', false)) {
     return true
   }
 
-  return req.session.get('user')?.isLoggedIn
+  return !!req.session.get('user')?.isLoggedIn
+}
+
+export const applyAuth: SSRMiddeware = async (req, _res, next) => {
+  req.props = {
+    ...req.props,
+    isLoggedIn: isLoggedIn(req),
+    disablePassword: getEnv('IS_DEMO') || getEnv('DISABLE_PASSWORD', false),
+  }
+
+  next()
+}
+
+export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddeware = (
+  resolvedUrl: string
+) => async (req, _res, next) => {
+  const redirect = {
+    destination: `/login?redirect=${resolvedUrl}`,
+    permanent: false,
+  }
+
+  // note 存在的情况
+  if (req.props.pageMode) {
+    if (req.props.pageMode !== PageMode.PUBLIC && !req.props.isLoggedIn) {
+      req.redirect = redirect
+    }
+    // 访问首页没有 note，则判断是否登录
+  } else if (!req.props.isLoggedIn) {
+    req.redirect = redirect
+  }
+
+  next()
 }

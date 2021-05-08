@@ -7,6 +7,7 @@ import NoteState from 'libs/web/state/note'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import { useRouter } from 'next/router'
 import useI18n from 'libs/web/hooks/use-i18n'
+import UIState from 'libs/web/state/ui'
 
 const ShareModal: FC = () => {
   const { t } = useI18n()
@@ -15,6 +16,7 @@ const ShareModal: FC = () => {
   const [copied, setCopied] = useState(false)
   const { note, updateNote } = NoteState.useContainer()
   const router = useRouter()
+  const { disablePassword } = UIState.useContainer()
 
   const handleCopy = useCallback(() => {
     url && navigator.clipboard.writeText(url)
@@ -31,8 +33,12 @@ const ShareModal: FC = () => {
   )
 
   useEffect(() => {
-    setUrl(location.href)
-  }, [router.query])
+    if (disablePassword) {
+      setUrl(`${location.origin}/share/${router.query.id}`)
+    } else {
+      setUrl(location.href)
+    }
+  }, [disablePassword, router.query])
 
   return (
     <Popover

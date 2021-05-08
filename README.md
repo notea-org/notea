@@ -135,9 +135,6 @@ PASSWORD=
 #  bucketname，namespace and region “ap-chuncheon-1” need check your profile and https://docs.oracle.com/en-us/iaas/api/#/en/s3objectstorage/20160918/
 ```
 
-
-
-
 ### Exoscale
 
 `.env`
@@ -152,24 +149,23 @@ STORE_FORCE_PATH_STYLE=true
 PASSWORD=
 ```
 
-
 Other services that support the s3 protocol can also be used.
 Contribution examples are welcome.
 
 ## Environment variables
 
-| Name                   | Description                                                                                                                | Default   | Optional | Required |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------- |
-| PASSWORD               | Password to login to the app                                                                                               |           |          | true     |
-| STORE_ACCESS_KEY       | AccessKey                                                                                                                  |           |          | true     |
-| STORE_SECRET_KEY       | SecretKey                                                                                                                  |           |          | true     |
-| STORE_BUCKET           | Bucket                                                                                                                     |           |          | true     |
-| STORE_END_POINT        | Host name or an IP address.                                                                                                |           |          |          |
-| STORE_REGION           | region                                                                                                                     | us-east-1 |          |          |
-| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                                                            | false     |          |          |
-| COOKIE_SECURE          | Only works under https: scheme **If the website is not https, you may not be able to log in, you need to set it to false** | true      |          |          |
-| BASE_URL               | The domain of the website, used for SEO                                                                                    |           |          |          |
-| DISABLE_PASSWORD       | Disable password protection                                                                                                | false     |          |          |
+| Name                   | Description                                                                                                                                                                                      | Default   | Optional | Required |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | -------- | -------- |
+| PASSWORD               | Password to login to the app                                                                                                                                                                     |           |          | true     |
+| STORE_ACCESS_KEY       | AccessKey                                                                                                                                                                                        |           |          | true     |
+| STORE_SECRET_KEY       | SecretKey                                                                                                                                                                                        |           |          | true     |
+| STORE_BUCKET           | Bucket                                                                                                                                                                                           |           |          | true     |
+| STORE_END_POINT        | Host name or an IP address.                                                                                                                                                                      |           |          |          |
+| STORE_REGION           | region                                                                                                                                                                                           | us-east-1 |          |          |
+| STORE_FORCE_PATH_STYLE | Whether to force path style URLs for S3 objects                                                                                                                                                  | false     |          |          |
+| COOKIE_SECURE          | Only works under https: scheme **If the website is not https, you may not be able to log in, and you need to set it to false**                                                                   | true      |          |          |
+| BASE_URL               | The domain of the website, used for SEO                                                                                                                                                          |           |          |          |
+| DISABLE_PASSWORD       | Disable password protection. This means that you need to implement authentication on the server yourself, but the route `/share/:id` needs to be accessible anonymously, if you need share page. | false     |          |          |
 
 ## Development
 
@@ -182,16 +178,16 @@ yarn dev
 
 ### What is S3? And what is MinIO？
 
-- Amazon Simple Storage Service (AKA Amazon S3) . TLDR: Read and write stored files or pictures through RESTful API.
-- MinIO: a self-hosted S3. Install by docker: docker run -p 9000:9000 minio/minio server /data
+- Amazon Simple Storage Service (AKA Amazon S3). TLDR: Read and write stored files or pictures through RESTful API.
+- MinIO: a self-hosted S3. Install by docker: `docker run -p 9000:9000 minio/minio server /data`
 
 ### Why not use Database?
 
-My understanding: The data stored in Notea is mainly files (such as text or pictures), which is not what the database is good at; Database is more expensive than S3 to read and write small data; Use S3 to generate a signed URL to access files, but the database cannot do it.
+Personally speaking, the data stored in Notea is mainly files (such as text or pictures) but the database is not good at reading and writing these type of files; S3 can generate a signed URL to access the remote files, but the database cannot do it.
 
 ### Why not use filesystem storage?
 
-Too many excellent offline note-taking apps on the web. Because I couldn't find a product that supports both self-hosted and data synchronization, I create it.
+There are many excellent offline note-taking apps supporting filesystem storage available. However, I couldn't find a APP that supports both self-hosted and easy to manage the synchronized data. The purpose of this project is to mitigate the above pain-point.
 
 ## LICENSE
 

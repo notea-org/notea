@@ -1,5 +1,5 @@
 import { mapValues } from 'lodash'
-import { ApiRequest, ApiResponse, ApiNext } from '../api'
+import { ApiRequest, ApiResponse, ApiNext } from '../connect'
 
 export const API_ERROR: {
   [key: string]: {
@@ -74,8 +74,7 @@ export const API = mapValues(
 export async function onError(
   err: Error & APIError,
   _req: ApiRequest,
-  res: ApiResponse,
-  _next: ApiNext
+  res: ApiResponse
 ) {
   const e = {
     name: err.name || 'UNKNOWN_ERR',
@@ -88,7 +87,7 @@ export async function onError(
     stack: err.stack,
   })
 
-  res.status(e.status).json(e)
+  res.status?.(e.status).json?.(e)
 }
 
 export async function useError(

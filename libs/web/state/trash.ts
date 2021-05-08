@@ -1,12 +1,12 @@
 import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 import NoteTreeState from './tree'
-import { NoteModel } from './note'
-import useTrashAPI  from '../api/trash'
+import useTrashAPI from '../api/trash'
 import noteCache from '../cache/note'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { NoteCacheItem } from '../cache'
 import { searchNote } from '../utils/search'
+import { NoteModel } from 'libs/shared/note'
 
 function useTrash() {
   const [keyword, setKeyword] = useState<string>()

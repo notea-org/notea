@@ -1,36 +1,18 @@
-import { PageMode } from 'libs/shared/page'
-import { GetServerSidePropsContext } from 'next'
+import { DEFAULT_SETTINGS } from 'libs/shared/settings'
 import { getSettings } from 'pages/api/settings'
-import { ApiRequest } from '../api'
+import { SSRMiddeware } from '../connect'
 
-export function withSettings(wrapperHandler: any) {
-  return async function handler(
-    ctx: GetServerSidePropsContext & {
-      req: ApiRequest
-    }
-  ) {
-    const res = await wrapperHandler(ctx)
-    let settings
+export const applySettings: SSRMiddeware = async (req, _res, next) => {
+  const settings = await getSettings(req.state.store)
 
-    if (res.redirect) {
-      return res
-    }
+  // import language dict
+  const { default: lngDict = {} } = await import(
+    `locales/${settings?.locale || DEFAULT_SETTINGS.locale}.json`
+  )
 
-    if (res.pageMode !== PageMode.PUBLIC) {
-      settings = await getSettings(ctx.req.store)
-    }
-
-    // import language dict
-    const { default: lngDict = {} } = await import(
-      `locales/${settings?.locale}.json`
-    )
-
-    res.props = {
-      ...res.props,
-      settings,
-      lngDict,
-    }
-
-    return res
+  req.props = {
+    ...req.props,
+    ...{ settings, lngDict },
   }
+  next()
 }

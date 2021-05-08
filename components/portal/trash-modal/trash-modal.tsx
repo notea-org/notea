@@ -3,7 +3,7 @@ import FilterModal from 'components/portal/filter-modal/filter-modal'
 import FilterModalInput from 'components/portal/filter-modal/filter-modal-input'
 import FilterModalList from 'components/portal/filter-modal/filter-modal-list'
 import TrashItem from './trash-item'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import TrashState from 'libs/web/state/trash'
 import PortalState from 'libs/web/state/portal'
 

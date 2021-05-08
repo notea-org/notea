@@ -1,6 +1,6 @@
+import { NoteModel } from 'libs/shared/note'
 import { useState, useCallback, MouseEvent } from 'react'
 import { createContainer } from 'unstated-next'
-import { NoteModel } from './note'
 
 const useModalIntance = () => {
   const [visible, setVisible] = useState(false)

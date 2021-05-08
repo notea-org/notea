@@ -1,5 +1,5 @@
 import { moveItemOnTree, mutateTree, TreeData, TreeItem } from '@atlaskit/tree'
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import { cloneDeep, forEach, pull, reduce, union } from 'lodash'
 
 export interface TreeItemModel extends TreeItem {

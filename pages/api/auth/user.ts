@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { useAuth } from 'libs/server/middlewares/auth'
 
 export default api()

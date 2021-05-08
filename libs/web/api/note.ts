@@ -1,4 +1,4 @@
-import { NoteModel } from 'libs/web/state/note'
+import { NoteModel } from 'libs/shared/note'
 import { useCallback } from 'react'
 import noteCache from '../cache/note'
 import useFetcher from './fetcher'

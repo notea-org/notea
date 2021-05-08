@@ -1,4 +1,4 @@
-import { api } from 'libs/server/api'
+import { api } from 'libs/server/connect'
 import { jsonToMeta, metaToJson } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
@@ -11,7 +11,7 @@ export default api()
   .post(async (req, res) => {
     const id = req.body.id || req.query.id
     const notePath = getPathNoteById(id)
-    const oldMeta = await req.store.getObjectMeta(notePath)
+    const oldMeta = await req.state.store.getObjectMeta(notePath)
     const oldMetaJson = metaToJson(oldMeta)
     let meta = jsonToMeta({
       ...req.body,
@@ -24,11 +24,11 @@ export default api()
       // 处理删除情况
       const { deleted } = req.body
       if (oldMetaJson.deleted !== deleted && deleted === NOTE_DELETED.DELETED) {
-        await req.treeStore.removeItem(id)
+        await req.state.treeStore.removeItem(id)
       }
     }
 
-    await req.store.copyObject(notePath, notePath, {
+    await req.state.store.copyObject(notePath, notePath, {
       meta,
       contentType: 'text/markdown',
     })
@@ -38,7 +38,7 @@ export default api()
   .get(async (req, res) => {
     const id = req.body.id || req.query.id
     const notePath = getPathNoteById(id)
-    const meta = await req.store.getObjectMeta(notePath)
+    const meta = await req.state.store.getObjectMeta(notePath)
 
     res.json(metaToJson(meta))
   })

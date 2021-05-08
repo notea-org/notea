@@ -1,16 +1,16 @@
 import LayoutMain from 'components/layout/layout-main'
-import { GetServerSideProps, NextPage } from 'next'
-import { withTree } from 'libs/server/middlewares/tree'
-import { withUA } from 'libs/server/middlewares/ua'
+import { NextPage } from 'next'
+import { applyTree } from 'libs/server/middlewares/tree'
+import { applyUA } from 'libs/server/middlewares/ua'
 import { TreeModel } from 'libs/shared/tree'
-import { withSession } from 'libs/server/middlewares/session'
-import { withStore } from 'libs/server/middlewares/store'
-import { withSettings } from 'libs/server/middlewares/settings'
-import { withAuth } from 'libs/server/middlewares/auth'
+import { useSession } from 'libs/server/middlewares/session'
+import { applySettings } from 'libs/server/middlewares/settings'
+import { applyAuth } from 'libs/server/middlewares/auth'
 import { SettingsForm } from 'components/settings/settings-form'
 import useI18n from 'libs/web/hooks/use-i18n'
-import { withCsrf } from 'libs/server/middlewares/csrf'
+import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { SettingFooter } from 'components/settings/setting-footer'
+import { SSRContext, ssr } from 'libs/server/connect'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { t } = useI18n()
@@ -33,6 +33,18 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 
 export default SettingsPage
 
-export const getServerSideProps: GetServerSideProps = withUA(
-  withSession(withStore(withAuth(withTree(withSettings(withCsrf(() => ({})))))))
-)
+export const getServerSideProps = async (ctx: SSRContext) => {
+  await ssr()
+    .use(useSession)
+    .use(applyAuth)
+    .use(applyTree)
+    .use(applySettings)
+    .use(applyCsrf)
+    .use(applyUA)
+    .run(ctx.req, ctx.res)
+
+  return {
+    props: ctx.req.props,
+    redirect: ctx.req.redirect,
+  }
+}

@@ -2,7 +2,6 @@ import { cloneDeep, isEmpty, map } from 'lodash'
 import { genId } from 'libs/shared/id'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
-import { NoteModel } from './note'
 import TreeActions, {
   DEFAULT_TREE,
   movePosition,
@@ -13,6 +12,7 @@ import useNoteAPI from '../api/note'
 import noteCache from '../cache/note'
 import useTreeAPI from '../api/tree'
 import { NOTE_DELETED } from 'libs/shared/meta'
+import { NoteModel } from 'libs/shared/note'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { mutate, loading } = useTreeAPI()
