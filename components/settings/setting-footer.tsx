@@ -1,34 +1,29 @@
-import useI18n from 'libs/web/hooks/use-i18n'
 import pkg from 'package.json'
 
 export const SettingFooter = () => {
-  const { t } = useI18n()
-
   return (
-    <footer className="mt-20 text-center opacity-50">
-      <div className="mr-4">
-        <span>{t('Current version')}:</span>
+    <footer className="mt-20 text-center opacity-50 font-normal text-sm">
+      <div>
         <a
-          className="ml-1"
-          href="//github.com/qingwei-li/notea/tags"
+          href="//github.com/qingwei-li/notea"
           target="_blank"
           rel="noreferrer"
         >
-          v{pkg.version}
+          Notea v{pkg.version}
         </a>
       </div>
-
-      <div>
+      <div className="space-x-1">
+        <span>MIT</span>
         <span>&copy;</span>
-        <a
-          className="ml-1"
-          href="//github.com/qingwei-li"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="//github.com/qingwei-li" target="_blank" rel="noreferrer">
           Cinwell
         </a>
       </div>
+      <style jsx>{`
+        a {
+          font-weight: normal;
+        }
+      `}</style>
     </footer>
   )
 }

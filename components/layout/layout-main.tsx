@@ -4,7 +4,6 @@ import NoteState from 'libs/web/state/note'
 import { useResizeDetector } from 'react-resize-detector'
 import Sidebar from 'components/sidebar/sidebar'
 import UIState from 'libs/web/state/ui'
-import styled from 'styled-components'
 import Resizable from 'components/resizable'
 import { TreeModel } from 'libs/shared/tree'
 import TrashState from 'libs/web/state/trash'
@@ -16,13 +15,6 @@ import { SwipeableDrawer } from '@material-ui/core'
 import SidebarMenu from 'components/portal/sidebar-menu'
 import { NoteModel } from 'libs/shared/note'
 
-const StyledWrapper = styled.div`
-  .gutter {
-    pointer-events: ${(props: { disabled: boolean }) =>
-      props.disabled ? 'none' : 'auto'};
-  }
-`
-
 const MainWrapper: FC = ({ children }) => {
   const {
     sidebar: { visible },
@@ -32,12 +24,19 @@ const MainWrapper: FC = ({ children }) => {
   })
 
   return (
-    <StyledWrapper className="h-full" disabled={visible} ref={ref}>
+    <div className="h-full" ref={ref}>
       <Resizable width={width}>
         <Sidebar />
         <main className="relative flex-grow">{children}</main>
       </Resizable>
-    </StyledWrapper>
+      <style jsx global>
+        {`
+          .gutter {
+            pointer-events: ${visible ? 'none' : 'auto'};
+          }
+        `}
+      </style>
+    </div>
   )
 }
 
@@ -47,7 +46,7 @@ const MobileMainWrapper: FC = ({ children }) => {
   } = UIState.useContainer()
 
   return (
-    <StyledWrapper className="flex h-full" disabled>
+    <div className="flex h-full">
       <SwipeableDrawer
         anchor="left"
         open={visible}
@@ -63,7 +62,14 @@ const MobileMainWrapper: FC = ({ children }) => {
       <main className="flex-grow overflow-y-auto" onClick={close}>
         {children}
       </main>
-    </StyledWrapper>
+      <style jsx global>
+        {`
+          .gutter {
+            pointer-events: none;
+          }
+        `}
+      </style>
+    </div>
   )
 }
 

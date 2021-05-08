@@ -1,7 +1,6 @@
 import NoteState from 'libs/web/state/note'
 import { removeMarkdown } from 'libs/web/utils/markdown'
 import { FC, useMemo } from 'react'
-import styled from 'styled-components'
 import { NextSeo } from 'next-seo'
 import { renderMarkdown } from 'libs/web/render-markdown'
 // TODO: Maybe can custom
@@ -27,7 +26,7 @@ export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
   }
 
   return (
-    <AriticleStyle className="prose mx-auto prose-sm lg:prose-xl px-4 md:px-0">
+    <article className="prose mx-auto prose-sm lg:prose-xl px-4 md:px-0">
       <NextSeo
         title={note?.title}
         titleTemplate="%s - Powered by Notea"
@@ -51,24 +50,23 @@ export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
           __html: content,
         }}
       ></main>
-    </AriticleStyle>
+      <style jsx global>{`
+        [title='left-50'] {
+          float: left;
+          width: 50%;
+          margin-right: 2em;
+          margin-bottom: 1em;
+          clear: initial;
+        }
+
+        [title='right-50'] {
+          float: right;
+          width: 50%;
+          margin-left: 2em;
+          margin-bottom: 1em;
+          clear: initial;
+        }
+      `}</style>
+    </article>
   )
 }
-
-const AriticleStyle = styled.article`
-  [title='left-50'] {
-    float: left;
-    width: 50%;
-    margin-right: 2em;
-    margin-bottom: 1em;
-    clear: initial;
-  }
-
-  [title='right-50'] {
-    float: right;
-    width: 50%;
-    margin-left: 2em;
-    margin-bottom: 1em;
-    clear: initial;
-  }
-`

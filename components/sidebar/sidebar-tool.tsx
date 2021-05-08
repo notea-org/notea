@@ -12,7 +12,6 @@ import dayjs from 'dayjs'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
 import HeadwayWidget from '@headwayapp/react-widget'
-import styled from 'styled-components'
 import useMounted from 'libs/web/hooks/use-mounted'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
@@ -122,7 +121,7 @@ const SidebarTool = () => {
       <ButtonTrash />
       <ButtonDailyNotes />
 
-      <BottomTool className="mt-auto">
+      <div className="tool mt-auto">
         {mounted ? (
           <HeadwayWidget account="J031Z7" badgePosition="center">
             <div className="mx-3 w-5 h-5"></div>
@@ -130,15 +129,14 @@ const SidebarTool = () => {
         ) : null}
         <ButtonMenu></ButtonMenu>
         <ButtonSettings></ButtonSettings>
-      </BottomTool>
+        <style jsx>{`
+          .tool :global(.HW_softHidden) {
+            display: none;
+          }
+        `}</style>
+      </div>
     </aside>
   )
 }
 
 export default SidebarTool
-
-const BottomTool = styled.div`
-  .HW_softHidden {
-    display: none;
-  }
-`

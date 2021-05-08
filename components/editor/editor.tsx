@@ -7,7 +7,6 @@ import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
 import { useTheme } from 'next-themes'
 import { darkTheme, lightTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
-import styled from 'styled-components'
 
 const Editor: FC<{
   note?: NoteModel
@@ -32,27 +31,34 @@ const Editor: FC<{
   )
 
   return (
-    <StyledMarkdownEditor
-      height={height}
-      id={note?.id}
-      ref={editorEl}
-      value={mounted ? note?.content : ''}
-      onChange={onEditorChange}
-      theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}
-      uploadImage={onUploadImage}
-      onSearchLink={onSearchLink}
-      onCreateLink={onCreateLink}
-      onClickLink={onClickLink}
-    />
+    <>
+      <MarkdownEditor
+        id={note?.id}
+        ref={editorEl}
+        value={mounted ? note?.content : ''}
+        onChange={onEditorChange}
+        theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}
+        uploadImage={onUploadImage}
+        onSearchLink={onSearchLink}
+        onCreateLink={onCreateLink}
+        onClickLink={onClickLink}
+      />
+      <style jsx global>{`
+        ul {
+          list-style-type: disc;
+        }
+
+        ol {
+          list-style-type: decimal;
+        }
+
+        .ProseMirror {
+          min-height: calc(${height ? height + 'px' : '100vh'} - 14rem);
+          padding-bottom: 10rem;
+        }
+      `}</style>
+    </>
   )
 }
-
-const StyledMarkdownEditor = styled(MarkdownEditor)`
-  .ProseMirror {
-    min-height: ${({ height }: { height: number | null }) =>
-      `calc(${height ? height + 'px' : '100vh'} - 14rem)`};
-    padding-bottom: 10rem;
-  }
-`
 
 export default Editor
