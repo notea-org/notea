@@ -34,7 +34,7 @@ export const applyAuth: SSRMiddeware = async (req, _res, next) => {
 
 export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddeware = (
   resolvedUrl: string
-) => async (req, res, next) => {
+) => async (req, _res, next) => {
   const redirect = {
     destination: `/login?redirect=${resolvedUrl}`,
     permanent: false,
@@ -44,12 +44,10 @@ export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddeware = (
   if (req.props.pageMode) {
     if (req.props.pageMode !== PageMode.PUBLIC && !req.props.isLoggedIn) {
       req.redirect = redirect
-      return res.APIError.NEED_LOGIN.throw()
     }
     // 访问首页没有 note，则判断是否登录
   } else if (!req.props.isLoggedIn) {
     req.redirect = redirect
-    return res.APIError.NEED_LOGIN.throw()
   }
 
   next()
