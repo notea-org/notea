@@ -11,6 +11,7 @@ import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { ssr, SSRContext, ServerProps } from 'libs/server/connect'
 import { applyUA } from 'libs/server/middlewares/ua'
 import { applyPostWithAuth } from 'libs/server/middlewares/post'
+import { isNoteLink } from 'libs/shared/note'
 
 export default function EditNotePage({
   tree,
@@ -42,7 +43,7 @@ export const getServerSideProps = async (
     }
   }
 ) => {
-  if (!/^[A-Za-z0-9_-]+$/.test(ctx.query.id)) {
+  if (!isNoteLink('/' + ctx.query.id)) {
     return { props: {} }
   }
 

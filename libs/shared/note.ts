@@ -10,3 +10,10 @@ export interface NoteModel {
   deleted: NOTE_DELETED
   shared: NOTE_SHARED
 }
+
+/**
+ * like `/IHqMRohfi2`
+ */
+export const isNoteLink = (str: string) => {
+  return /^\/[A-Za-z0-9_-]+$/.test(str)
+}
