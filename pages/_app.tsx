@@ -16,6 +16,7 @@ import I18nProvider from 'libs/web/utils/i18n-provider'
 import CsrfTokenState from 'libs/web/state/csrf-token'
 import { muiLocale } from 'locales'
 import { ServerProps } from 'libs/server/connect'
+import { SnackbarProvider } from 'notistack'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -107,7 +108,9 @@ const AppInner = ({
               <PortalState.Provider>
                 <Div100vh>
                   <DocumentHead />
-                  <Component {...pageProps} />
+                  <SnackbarProvider>
+                    <Component {...pageProps} />
+                  </SnackbarProvider>
                 </Div100vh>
               </PortalState.Provider>
             </UIState.Provider>

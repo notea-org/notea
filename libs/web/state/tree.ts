@@ -5,6 +5,7 @@ import { createContainer } from 'unstated-next'
 import TreeActions, {
   DEFAULT_TREE,
   movePosition,
+  ROOT_ID,
   TreeItemModel,
   TreeModel,
 } from 'libs/shared/tree'
@@ -119,7 +120,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     const tree = treeRef.current
     const paths = [] as NoteModel[]
 
-    while (note.pid && note.pid !== 'root') {
+    while (note.pid && note.pid !== ROOT_ID) {
       const curData = tree.items[note.pid]?.data
       if (curData) {
         note = curData

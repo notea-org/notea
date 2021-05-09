@@ -1,11 +1,11 @@
 import { FC, useCallback, ChangeEvent } from 'react'
 import { MenuItem, TextField } from '@material-ui/core'
-import { defaultFieldConfig } from './settings-form'
+import { defaultFieldConfig } from './settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { useTheme } from 'next-themes'
 import useMounted from 'libs/web/hooks/use-mounted'
 
-export const ThemeField: FC = () => {
+export const Theme: FC = () => {
   const { t } = useI18n()
   const { theme, setTheme } = useTheme()
   const mounted = useMounted()

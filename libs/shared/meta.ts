@@ -8,7 +8,7 @@ export enum NOTE_SHARED {
   PUBLIC,
 }
 
-type PAGE_META_KEY =
+export type PAGE_META_KEY =
   | 'title'
   | 'pid'
   | 'id'

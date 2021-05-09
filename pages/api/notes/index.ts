@@ -1,36 +1,14 @@
-import { genId } from 'libs/shared/id'
 import { api } from 'libs/server/connect'
-import { jsonToMeta } from 'libs/server/meta'
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
-import { getPathNoteById } from 'libs/server/note-path'
+import { createNote } from 'libs/server/note'
 
 export default api()
   .use(useAuth)
   .use(useStore)
   .post(async (req, res) => {
-    const { content = '\n', ...meta } = req.body
-    let id = req.body.id as string
+    const note = await createNote(req.body, req.state)
+    await req.state.treeStore.addItem(note.id, note.pid)
 
-    if (!id) {
-      id = genId()
-      while (await req.state.store.hasObject(getPathNoteById(id))) {
-        id = genId()
-      }
-    }
-
-    const metaWithModel = {
-      id,
-      date: new Date().toISOString(),
-      ...meta,
-    }
-    const metaData = jsonToMeta(metaWithModel)
-
-    await req.state.store.putObject(getPathNoteById(id), content, {
-      contentType: 'text/markdown',
-      meta: metaData,
-    })
-    await req.state.treeStore.addItem(id, meta.pid)
-
-    res.json(metaWithModel)
+    res.json(note)
   })

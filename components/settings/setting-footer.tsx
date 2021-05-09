@@ -2,7 +2,7 @@ import pkg from 'package.json'
 
 export const SettingFooter = () => {
   return (
-    <footer className="mt-20 text-center opacity-50 font-normal text-sm">
+    <footer className="mt-20 text-center opacity-50 text-xs">
       <div>
         <a
           href="//github.com/qingwei-li/notea"

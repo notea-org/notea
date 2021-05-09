@@ -5,10 +5,10 @@ import NoteTreeState from 'libs/web/state/tree'
 import { filter } from 'lodash'
 import UIState from 'libs/web/state/ui'
 import { TreeItemModel } from 'libs/shared/tree'
-import { defaultFieldConfig } from './settings-form'
+import { defaultFieldConfig } from './settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
 
-export const DailyNotesField: FC = () => {
+export const DailyNotes: FC = () => {
   const { t } = useI18n()
   const { tree } = NoteTreeState.useContainer()
   const {

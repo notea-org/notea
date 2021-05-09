@@ -7,6 +7,7 @@ import { useDebouncedCallback } from 'use-debounce'
 import EditTitle from './edit-title'
 import Editor from './editor'
 import { NoteModel } from 'libs/shared/note'
+import { ROOT_ID } from 'libs/shared/tree'
 
 const NoteEdit = () => {
   const { updateNote, createNote, note } = NoteState.useContainer()
@@ -17,7 +18,7 @@ const NoteEdit = () => {
       const isNew = has(router.query, 'new')
 
       if (isNew) {
-        data.pid = (router.query.pid as string) || 'root'
+        data.pid = (router.query.pid as string) || ROOT_ID
         const item = await createNote({ ...note, ...data })
         const noteUrl = `/${item?.id}`
 

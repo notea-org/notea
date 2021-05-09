@@ -1,13 +1,9 @@
+import { IMPORT_FILE_LIMIT_SIZE } from 'libs/shared/const'
 import { mapValues } from 'lodash'
 import { NextHandler } from 'next-connect'
 import { ApiRequest, ApiResponse, ApiNext } from '../connect'
 
-export const API_ERROR: {
-  [key: string]: {
-    status: number
-    message: string
-  }
-} = {
+export const API_ERROR = {
   NEED_LOGIN: {
     status: 401,
     message: 'Please login first',
@@ -23,6 +19,10 @@ export const API_ERROR: {
   INVALID_CSRF_TOKEN: {
     status: 401,
     message: 'Invalid CSRF token',
+  },
+  IMPORT_FILE_LIMIT_SIZE: {
+    status: 401,
+    message: `File size limit exceeded ${IMPORT_FILE_LIMIT_SIZE}`,
   },
 }
 

@@ -7,6 +7,7 @@ import { NoteModel } from 'libs/shared/note'
 import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
 import { strCompress } from 'libs/shared/str'
+import { ROOT_ID } from 'libs/shared/tree'
 
 export async function getNote(
   store: StoreProvider,
@@ -44,7 +45,7 @@ export default api()
   .get(async (req, res) => {
     const id = req.query.id as string
 
-    if (id === 'root') {
+    if (id === ROOT_ID) {
       return res.json({
         id,
       })
