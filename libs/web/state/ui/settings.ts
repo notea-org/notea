@@ -20,5 +20,5 @@ export default function useSettings(initData = {} as Settings) {
     [mutate]
   )
 
-  return { settings, updateSettings }
+  return { settings, updateSettings, setSettings }
 }

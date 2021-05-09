@@ -4,6 +4,7 @@ import 'highlight.js/styles/zenburn.css'
 import { useEditorTheme } from 'components/editor/theme'
 import classNames from 'classnames'
 import useI18n from 'libs/web/hooks/use-i18n'
+import UIState from 'libs/web/state/ui'
 
 export const PostContainer: FC<{
   title?: string
@@ -12,6 +13,11 @@ export const PostContainer: FC<{
 }> = ({ post = '', small = false, title }) => {
   const { t } = useI18n()
   const editorTheme = useEditorTheme()
+  const {
+    settings: {
+      settings: { snippetBody = '', snippetHead = '' },
+    },
+  } = UIState.useContainer()
 
   return (
     <article
@@ -125,6 +131,13 @@ export const PostContainer: FC<{
           margin: 0;
         }
       `}</style>
+      {/* todo 怎么解决 script 的问题 */}
+      <div
+        id="snippet-body"
+        dangerouslySetInnerHTML={{
+          __html: snippetBody + snippetHead,
+        }}
+      ></div>
     </article>
   )
 }
