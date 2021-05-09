@@ -2,20 +2,19 @@ import NoteState from 'libs/web/state/note'
 import { removeMarkdown } from 'libs/web/utils/markdown'
 import { FC, useMemo } from 'react'
 import { NextSeo } from 'next-seo'
-import { renderMarkdown } from 'libs/web/render-markdown'
 // TODO: Maybe can custom
 import 'highlight.js/styles/zenburn.css'
 import { PageMode } from 'libs/shared/page'
 import Error from 'next/error'
 import useI18n from 'libs/web/hooks/use-i18n'
 
-export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
-  baseURL,
-  pageMode,
-}) => {
+export const PostContainer: FC<{
+  baseURL: string
+  pageMode: PageMode
+  post?: string
+}> = ({ baseURL, pageMode, post = '' }) => {
   const { t } = useI18n()
   const { note } = NoteState.useContainer()
-  const content = useMemo(() => renderMarkdown(note?.content ?? ''), [note])
   const description = useMemo(
     () => removeMarkdown(note?.content).slice(0, 100),
     [note]
@@ -47,11 +46,11 @@ export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
       </header>
       <main
         dangerouslySetInnerHTML={{
-          __html: content,
+          __html: post,
         }}
       ></main>
-      <style jsx global>{`
-        [title='left-50'] {
+      <style jsx>{`
+        .prose :glboal([title='left-50']) {
           float: left;
           width: 50%;
           margin-right: 2em;
@@ -59,12 +58,16 @@ export const PostContainer: FC<{ baseURL: string; pageMode: PageMode }> = ({
           clear: initial;
         }
 
-        [title='right-50'] {
+        .prose :glboal([title='right-50']) {
           float: right;
           width: 50%;
           margin-left: 2em;
           margin-bottom: 1em;
           clear: initial;
+        }
+
+        .prose :glboal(figcaption) {
+          text-align: center;
         }
       `}</style>
     </article>

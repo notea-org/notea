@@ -33,7 +33,7 @@ const NoteEdit = () => {
   )
 
   return (
-    <article className="pt-40 px-6 m-auto h-full max-w-prose">
+    <article className="pt-40 px-6 m-auto h-full max-w-prose" dir="auto">
       <EditTitle note={note} onNoteChange={onNoteChange} editorEl={editorEl} />
       <Editor note={note} onNoteChange={onNoteChange} editorEl={editorEl} />
     </article>

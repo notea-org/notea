@@ -1,32 +1,28 @@
 import { IMPORT_FILE_LIMIT_SIZE } from 'libs/shared/const'
 import { mapValues } from 'lodash'
+import { NextHandler } from 'next-connect'
 import { ApiRequest, ApiResponse, ApiNext } from '../connect'
 
 export const API_ERROR = {
   NEED_LOGIN: {
     status: 401,
     message: 'Please login first',
-    description: '需要先登录相关系统',
   },
   NOT_SUPPORTED: {
     status: 406,
     message: 'Not supported',
-    description: '不支持的服务',
   },
   NOT_FOUND: {
     status: 404,
     message: 'Not found',
-    description: '找不到该数据',
   },
   INVALID_CSRF_TOKEN: {
     status: 401,
     message: 'Invalid CSRF token',
-    description: '无效 CSRF token',
   },
   IMPORT_FILE_LIMIT_SIZE: {
     status: 401,
     message: `File size limit exceeded ${IMPORT_FILE_LIMIT_SIZE}`,
-    description: '文件体积超过限制',
   },
 }
 
@@ -36,7 +32,6 @@ export class APIError {
   status?: number = 500
   name?: string = 'UNKNOWN'
   message = 'Something unexpected happened'
-  description?: string
 
   constructor(
     message: string,
@@ -46,7 +41,6 @@ export class APIError {
     if (properties) {
       this.status = properties.status
       this.name = properties.name
-      this.description = properties.description
     }
   }
 
@@ -55,7 +49,6 @@ export class APIError {
 
     error.name = this.prefix + this.name
     ;(error as any).status = this.status
-    ;(error as any).description = this.description
 
     throw error
   }
@@ -67,7 +60,6 @@ export const API = mapValues(
     new APIError(v.message, {
       status: v.status,
       name,
-      description: v.description,
     })
 )
 
@@ -78,7 +70,7 @@ export async function onError(
 ) {
   const e = {
     name: err.name || 'UNKNOWN_ERR',
-    message: err.message || err?.description || 'Something unexpected',
+    message: err.message || 'Something unexpected',
     status: err.status || 500,
   }
 
@@ -88,6 +80,32 @@ export async function onError(
   })
 
   res.status?.(e.status).json?.(e)
+}
+
+/**
+ * FIXME:
+ * I don't know why it breaks in getServerSideProps without `next()`.
+ * This should be fixed, then use onError instead.
+ */
+export async function onErrorWithNext(
+  err: Error & APIError,
+  _req: ApiRequest,
+  res: ApiResponse,
+  next?: NextHandler
+) {
+  const e = {
+    name: err.name || 'UNKNOWN_ERR',
+    message: err.message || 'Something unexpected',
+    status: err.status || 500,
+  }
+
+  console.error({
+    ...e,
+    stack: err.stack,
+  })
+
+  res.status?.(e.status).json?.(e)
+  next?.()
 }
 
 export async function useError(

@@ -1,5 +1,5 @@
 import nc, { Middleware } from 'next-connect'
-import { onError, useError } from './middlewares/error'
+import { onError, useError, onErrorWithNext } from './middlewares/error'
 import {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -35,6 +35,7 @@ export interface ServerProps {
   tree?: TreeModel
   ua?: UserAgentType
   disablePassword: boolean
+  post: string
 }
 
 export type ApiRequest = NextApiRequest & {
@@ -61,7 +62,7 @@ export const api = () =>
 // used by getServerSideProps
 export const ssr = () =>
   nc<ApiRequest, ApiResponse>({
-    onError,
+    onError: onErrorWithNext,
   })
     // init props
     .use((req, _res, next) => {

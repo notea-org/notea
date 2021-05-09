@@ -8,8 +8,10 @@ import noticesPlugin from 'rich-markdown-editor/dist/lib/markdown/notices'
 import underlinesPlugin from 'rich-markdown-editor/dist/lib/markdown/underlines'
 import hljs from 'highlight.js'
 
-export function renderMarkdown(markdown: string) {
-  return markdownit('default', {
+export function renderMarkdown(src: string) {
+  src = src.replace(/\\\n/g, '\n')
+
+  const html = markdownit('default', {
     breaks: false,
     html: false,
     linkify: true,
@@ -33,6 +35,12 @@ export function renderMarkdown(markdown: string) {
     .use(underlinesPlugin)
     .use(tablesPlugin)
     .use(noticesPlugin)
-    .render(markdown)
+    .use(require('markdown-it-implicit-figures'), {
+      figcaption: true,
+      dataType: true,
+    })
+    .render(src)
     .trim()
+
+  return html
 }

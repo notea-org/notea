@@ -1,10 +1,9 @@
 import { SSRMiddeware } from '../connect'
-import { API } from './error'
 
 // @atlaskit/tree 的依赖
 const { resetServerContext } = require('react-beautiful-dnd-next')
 
-export const applyTree: SSRMiddeware = async (req, _res, next) => {
+export const applyTree: SSRMiddeware = async (req, res, next) => {
   resetServerContext()
 
   let tree
@@ -14,7 +13,7 @@ export const applyTree: SSRMiddeware = async (req, _res, next) => {
     try {
       tree = await req.state.treeStore.get()
     } catch (error) {
-      return API.NOT_FOUND.throw(error.message)
+      res.APIError.NOT_FOUND.throw(error.message)
     }
   }
 

@@ -60,6 +60,8 @@ export abstract class StoreProvider {
   ): Promise<{
     content?: string
     meta?: { [key: string]: string }
+    contentType?: string
+    buffer?: Buffer
   }>
 
   /**

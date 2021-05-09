@@ -12,18 +12,26 @@ import { getPathTree } from './note-path'
 /**
  * FIXME 抽空重构 libs/shard/tree
  *
+ * We need unit test...
+ *
  * 1. children 有可能包含 null，暂不清楚从哪产生的
  * 2. 可能会存在 children 包含当前节点的问题
+ * 3. children 可能包含不存在的节点
  *
  */
 function fixedTree(tree: TreeModel) {
   forEach(tree.items, (item) => {
-    if (item.children.find((i) => i === null || i === item.id)) {
+    if (
+      item.children.find((i) => i === null || i === item.id || !tree.items[i])
+    ) {
       console.log('item.children error', item)
-    }
-    tree.items[item.id] = {
-      ...item,
-      children: filter(item.children, (cid) => !isNil(cid) && cid !== item.id),
+      tree.items[item.id] = {
+        ...item,
+        children: filter(
+          item.children,
+          (cid) => !isNil(cid) && cid !== item.id && !!tree.items[cid]
+        ),
+      }
     }
   })
   return tree

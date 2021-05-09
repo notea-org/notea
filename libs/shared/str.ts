@@ -17,7 +17,7 @@ export function toStr(
   if (!bufferOrString) return
 
   const str = Buffer.isBuffer(bufferOrString)
-    ? bufferOrString.toString()
+    ? bufferOrString.toString('utf-8')
     : bufferOrString
 
   return deCompressed ? strDecompress(str) : str
