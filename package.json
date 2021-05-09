@@ -42,6 +42,7 @@
     "lodash": "^4.17.21",
     "lzutf8": "^0.6.0",
     "markdown-it": "^12.0.6",
+    "markdown-it-implicit-figures": "^0.10.0",
     "md5": "^2.3.0",
     "minio": "^7.0.18",
     "nanoid": "^3.1.22",

@@ -35,6 +35,7 @@ export interface ServerProps {
   tree?: TreeModel
   ua?: UserAgentType
   disablePassword: boolean
+  post: string
 }
 
 export type ApiRequest = NextApiRequest & {
