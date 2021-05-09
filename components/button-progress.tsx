@@ -1,16 +1,18 @@
 import { Button, ButtonProps, CircularProgress } from '@material-ui/core'
 import classNames from 'classnames'
-import { FC } from 'react'
+import { forwardRef } from 'react'
 
-export const ButtonProgress: FC<
+export const ButtonProgress = forwardRef<
+  HTMLSpanElement,
   ButtonProps & {
     loading?: boolean
     progress?: number
   }
-> = ({ children, loading, progress, ...props }) => {
+>(({ children, loading, progress, ...props }, ref) => {
   return (
     <Button
       {...props}
+      ref={ref}
       className="relative"
       disabled={loading}
       variant="contained"
@@ -26,4 +28,4 @@ export const ButtonProgress: FC<
       ) : null}
     </Button>
   )
-}
+})
