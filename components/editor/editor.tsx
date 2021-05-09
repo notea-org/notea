@@ -42,6 +42,7 @@ const Editor: FC<{
         onSearchLink={onSearchLink}
         onCreateLink={onCreateLink}
         onClickLink={onClickLink}
+        className="px-4 md:px-0"
       />
       <style jsx global>{`
         .ProseMirror ul {

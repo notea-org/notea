@@ -116,7 +116,7 @@ const SidebarTool = () => {
   const mounted = useMounted()
 
   return (
-    <aside className="h-full flex flex-col w-11 flex-none bg-gray-200">
+    <aside className="h-full flex flex-col w-12  md:w-11 flex-none bg-gray-200">
       <ButtonSearch />
       <ButtonTrash />
       <ButtonDailyNotes />

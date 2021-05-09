@@ -43,7 +43,7 @@ const IconButton = forwardRef<
         ref={ref}
         {...attrs}
         className={classNames(
-          'p-0.5 hover:bg-gray-400 cursor-pointer w-6 h-6',
+          'p-0.5 hover:bg-gray-400 cursor-pointer w-7 h-7 md:w-6 md:w-6',
           { rounded },
           className
         )}
