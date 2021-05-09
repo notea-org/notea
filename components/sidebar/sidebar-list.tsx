@@ -60,7 +60,7 @@ const SideBarList = () => {
           ></IconButton>
         </HotkeyTooltip>
       </div>
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto pb-10">
         <Tree
           onExpand={onExpand}
           onCollapse={onCollapse}
