@@ -101,5 +101,11 @@
   "Type '/' to insert…": "Type '/' to insert…",
   "Untitled": "Без имени",
   "Warning": "Warning",
-  "Warning notice": "Warning notice"
+  "Warning notice": "Warning notice",
+  "Location": "Location",
+  "Snippet injection": "Snippet injection",
+  "Basic": "Basic",
+  "Sharing": "Sharing",
+  "Inject analytics or other scripts into the HTML of your site.": "Inject analytics or other scripts into the HTML of your site.",
+  "Not a public page": "Not a public page"
 }

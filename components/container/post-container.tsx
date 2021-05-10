@@ -5,6 +5,7 @@ import { useEditorTheme } from 'components/editor/theme'
 import classNames from 'classnames'
 import useI18n from 'libs/web/hooks/use-i18n'
 import UIState from 'libs/web/state/ui'
+import InnerHTML from 'dangerously-set-html-content'
 
 export const PostContainer: FC<{
   title?: string
@@ -15,7 +16,7 @@ export const PostContainer: FC<{
   const editorTheme = useEditorTheme()
   const {
     settings: {
-      settings: { snippetBody = '', snippetHead = '' },
+      settings: { injection },
     },
   } = UIState.useContainer()
 
@@ -131,13 +132,10 @@ export const PostContainer: FC<{
           margin: 0;
         }
       `}</style>
-      {/* todo 怎么解决 script 的问题 */}
-      <div
-        id="snippet-body"
-        dangerouslySetInnerHTML={{
-          __html: snippetBody + snippetHead,
-        }}
-      ></div>
+      {injection ? <InnerHTML id="snippet-injection" html={injection} /> : null}
+      <footer className="text-gray-300 border-gray-200 border-t text-center my-10 py-10">
+        Powered by Notea
+      </footer>
     </article>
   )
 }

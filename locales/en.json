@@ -41,7 +41,7 @@
   "Location": "Location",
   "Snippet injection": "Snippet injection",
   "Basic": "Basic",
-  "Insert before {{html}}": "Insert before {{html}}",
+  "Sharing": "Sharing",
   "Inject analytics or other scripts into the HTML of your site.": "Inject analytics or other scripts into the HTML of your site.",
   "Not a public page": "Not a public page"
 }

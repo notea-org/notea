@@ -11,9 +11,13 @@ import { SettingsHeader } from './settings-header'
 export const defaultFieldConfig: TextFieldProps = {
   fullWidth: true,
   margin: 'normal',
+  size: 'small',
   variant: 'outlined',
   InputLabelProps: {
     shrink: true,
+  },
+  classes: {
+    root: 'text-lg',
   },
 }
 
@@ -37,13 +41,7 @@ export const SettingsContainer: FC = () => {
 
       <ImportOrExport></ImportOrExport>
       <hr />
-      <SettingsHeader
-        id="snippet-injection"
-        title={t('Snippet injection')}
-        description={t([
-          'Inject analytics or other scripts into the HTML of your site.',
-        ])}
-      ></SettingsHeader>
+      <SettingsHeader id="sharing" title={t('Sharing')}></SettingsHeader>
       <SnippetInjection></SnippetInjection>
     </section>
   )

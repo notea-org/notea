@@ -3486,6 +3486,11 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"
   integrity sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==
 
+dangerously-set-html-content@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/dangerously-set-html-content/-/dangerously-set-html-content-1.0.8.tgz#8518eac472fe236ce71f779cef3fbfdd1f7160a9"
+  integrity sha512-f7mZGQqKxgsa1wMU9ksAvSGk3hlPemTlesAUH1k9YBNjsiE5zN8TPQbzr0I2SQRXNC/oz0QZp3KSQXmFlH0qVg==
+
 data-uri-to-buffer@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-3.0.1.tgz#594b8973938c5bc2c33046535785341abc4f3636"

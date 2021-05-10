@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { ChangeEvent, FC, FocusEvent, useCallback } from 'react'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { TextField } from '@material-ui/core'
 import { defaultFieldConfig } from './settings-container'
@@ -11,13 +11,20 @@ export const SnippetInjection: FC = () => {
     settings: { settings, updateSettings, setSettings },
   } = UIState.useContainer()
 
-  const saveChange = useCallback(
-    async (snippet: string, location: 'snippetBody' | 'snippetHead') => {
+  const saveValue = useCallback(
+    async (event: FocusEvent<HTMLInputElement>) => {
       await updateSettings({
-        [location]: snippet,
+        injection: event.target.value,
       })
     },
     [updateSettings]
+  )
+
+  const updateValue = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) => {
+      setSettings((prev) => ({ ...prev, injection: event.target.value }))
+    },
+    [setSettings]
   )
 
   return (
@@ -25,25 +32,14 @@ export const SnippetInjection: FC = () => {
       <TextField
         {...defaultFieldConfig}
         multiline
-        label={t('Insert before {{html}}', { html: '</body>' })}
+        label={t('Snippet injection')}
         placeholder="HTML"
-        value={settings.snippetBody}
-        onChange={({ target }) =>
-          setSettings((prev) => ({ ...prev, snippetBody: target.value }))
+        value={settings.injection}
+        onChange={updateValue}
+        onBlur={saveValue}
+        helperText={
+          'Inject analytics or other scripts into the HTML of your site.'
         }
-        onBlur={({ target }) => saveChange(target.value, 'snippetBody')}
-      ></TextField>
-
-      <TextField
-        {...defaultFieldConfig}
-        multiline
-        label={t('Insert before {{html}}', { html: '</head>' })}
-        placeholder="HTML"
-        value={settings.snippetHead}
-        onChange={({ target }) =>
-          setSettings((prev) => ({ ...prev, snippetHead: target.value }))
-        }
-        onBlur={({ target }) => saveChange(target.value, 'snippetHead')}
       ></TextField>
     </div>
   )

@@ -8,8 +8,7 @@ export interface Settings {
   sidebar_is_fold: boolean
   last_visit?: string
   locale: Locale
-  snippetBody?: string
-  snippetHead?: string
+  injection?: string
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
@@ -50,12 +49,8 @@ export function formatSettings(body: Record<string, any> = {}) {
     settings.locale = body.locale
   }
 
-  if (isString(body.snippetBody)) {
-    settings.snippetBody = body.snippetBody
-  }
-
-  if (isString(body.snippetHead)) {
-    settings.snippetHead = body.snippetHead
+  if (isString(body.injection)) {
+    settings.injection = body.injection
   }
 
   return settings
