@@ -31,7 +31,7 @@ export interface ServerProps {
   note?: NoteModel
   baseURL: string
   settings?: Settings
-  lngDict: JSON
+  lngDict: Record<string, string>
   tree?: TreeModel
   ua?: UserAgentType
   disablePassword: boolean
