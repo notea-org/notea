@@ -4,11 +4,12 @@ import { SSRMiddeware } from '../connect'
 
 export const applySettings: SSRMiddeware = async (req, _res, next) => {
   const settings = await getSettings(req.state.store)
+  let lngDict = {}
 
   // import language dict
-  const { default: lngDict = {} } = await import(
-    `locales/${settings?.locale || DEFAULT_SETTINGS.locale}.json`
-  )
+  if (settings.locale && settings.locale !== DEFAULT_SETTINGS.locale) {
+    lngDict = (await import(`locales/${settings.locale}.json`)).default
+  }
 
   req.props = {
     ...req.props,

@@ -10,7 +10,8 @@
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "postinstall": "yarn autoclean --force"
+    "postinstall": "yarn autoclean --force",
+    "build:i18n": "node scripts/extract-i18n"
   },
   "repository": "QingWei-Li/notea",
   "husky": {
@@ -88,6 +89,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "heroicons": "^0.4.2",
     "husky": "^5.0.9",
+    "i18n-extract": "^0.6.7",
     "lint-staged": "^10.5.4",
     "next-pwa": "^5.0.6",
     "nightwind": "^1.1.6",

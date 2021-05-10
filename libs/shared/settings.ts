@@ -10,15 +10,15 @@ export interface Settings {
   locale: Locale
 }
 
-export const DEFAULT_SETTINGS: Settings = {
+export const DEFAULT_SETTINGS: Settings = Object.freeze({
   split_sizes: [30, 70],
   daily_root_id: ROOT_ID,
   sidebar_is_fold: false,
   locale: Locale.EN,
-}
+})
 
 export function formatSettings(body: Record<string, any> = {}) {
-  const settings: Settings = DEFAULT_SETTINGS
+  const settings: Settings = { ...DEFAULT_SETTINGS }
 
   if (isString(body.daily_root_id)) {
     settings.daily_root_id = body.daily_root_id
