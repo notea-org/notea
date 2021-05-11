@@ -6341,10 +6341,10 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rich-markdown-editor@^11.8.0:
-  version "11.8.0"
-  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.8.0.tgz#ebacd03213065db4b27e1d11edebc7834fa805fd"
-  integrity sha512-HaI/d6VW6JOcBuhGPbWXzJ9FyjQ0UbXh2XZCFdxzS/onzqCdUhoVSi1xOJNiXOhcidXK9/7nDUu6VLNeWqYYaw==
+rich-markdown-editor@^11.8.1:
+  version "11.8.1"
+  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.8.1.tgz#7a7ddd39ed6ab48785225006630ed392f0766ec5"
+  integrity sha512-4zhd8+gkQtgqI4ZZc0ASbYUIkfyEdHnpfmvpJnAzz78hCenbBoKYVnx4Af23qB2jCsU3bdX7jtdqpspCmxtwPQ==
   dependencies:
     copy-to-clipboard "^3.0.8"
     lodash "^4.17.11"
@@ -6363,7 +6363,7 @@ rich-markdown-editor@^11.8.0:
     prosemirror-tables "^1.1.1"
     prosemirror-transform "1.2.5"
     prosemirror-utils "^0.9.6"
-    prosemirror-view "^1.17.6"
+    prosemirror-view "^1.18.4"
     react-medium-image-zoom "^3.1.3"
     react-portal "^4.2.1"
     refractor "^3.3.1"
