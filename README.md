@@ -14,7 +14,7 @@
 
 ## Demo
 
-- Link: https://notea.vercel.app
+- Link: https://notea-demo.netlify.app
 
 ## Requirement
 
