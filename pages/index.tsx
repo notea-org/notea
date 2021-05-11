@@ -69,7 +69,7 @@ const IndexPage = () => {
               </a>
               <a
                 className="m-2 sm:w-auto flex-none text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
-                href="//notea.vercel.app"
+                href="//notea-demo.netlify.app"
               >
                 Live Demo
               </a>
@@ -118,7 +118,7 @@ const IndexPage = () => {
         </h3>
         <a
           className="m-2 sm:w-auto inline-block text-gray-900 text-lg leading-6 font-semibold py-3 px-6 border-2 rounded-xl focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-gray-400 focus:outline-none transition-colors duration-200"
-          href="//notea.vercel.app"
+          href="//notea-demo.netlify.app"
         >
           Live Demo
         </a>
