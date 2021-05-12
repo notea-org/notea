@@ -7,6 +7,7 @@ import md5 from 'md5'
 import { extname } from 'path'
 import { readFileFromRequest } from 'libs/server/file'
 import { readFileSync } from 'fs'
+import { strCompress } from 'libs/shared/str'
 
 export const config = {
   api: {
@@ -18,6 +19,7 @@ export default api()
   .use(useAuth)
   .use(useStore)
   .post(async (req, res) => {
+    const id = req.query.id as string
     const file = await readFileFromRequest(req)
     const buffer = readFileSync(file.path)
     const fileName = `${dayjs().format('YYYY/MM/DD')}/${md5(buffer).slice(
@@ -28,6 +30,9 @@ export default api()
 
     await req.state.store.putObject(filePath, buffer, {
       contentType: file.type,
+      meta: {
+        id: strCompress(id),
+      },
       headers: {
         cacheControl:
           'public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=31536000',

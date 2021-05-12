@@ -104,7 +104,7 @@ const Editor: FC<{
         value={mounted ? note?.content : ''}
         onChange={onEditorChange}
         theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}
-        uploadImage={onUploadImage}
+        uploadImage={(file) => onUploadImage(file, note?.id)}
         onSearchLink={onSearchLink}
         onCreateLink={onCreateLink}
         onClickLink={onClickLink}

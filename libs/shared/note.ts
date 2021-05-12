@@ -15,5 +15,7 @@ export interface NoteModel {
  * like `/IHqMRohfi2`
  */
 export const isNoteLink = (str: string) => {
-  return /^\/[A-Za-z0-9_-]+$/.test(str)
+  return new RegExp(`^/${NOTE_ID_REGEXP}$`).test(str)
 }
+
+export const NOTE_ID_REGEXP = '[A-Za-z0-9_-]+'

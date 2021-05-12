@@ -51,13 +51,13 @@ const useEditState = () => {
   )
 
   const onUploadImage = useCallback(
-    async (file) => {
+    async (file: File, id?: string) => {
       const data = new FormData()
       data.append('file', file)
       const result = await request<FormData, { url: string }>(
         {
           method: 'POST',
-          url: `/api/upload`,
+          url: `/api/upload?id=${id}`,
         },
         data
       )
