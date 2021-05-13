@@ -13,6 +13,7 @@ import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
 import HeadwayWidget from '@headwayapp/react-widget'
 import useMounted from 'libs/web/hooks/use-mounted'
+import { useRouter } from 'next/router'
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
   (props, ref) => {
@@ -42,7 +43,12 @@ const ButtonMenu = () => {
   }, [toggle])
 
   return (
-    <HotkeyTooltip text={t('Fold sidebar')} keys={['cmd', '\\']}>
+    <HotkeyTooltip
+      text={t('Fold sidebar')}
+      commandKey
+      onHotkey={onFold}
+      keys={['\\']}
+    >
       <ButtonItem onClick={onFold}>
         <IconChevronDoubleLeft
           className={classNames('transform transition-transform', {
@@ -59,7 +65,12 @@ const ButtonSearch = () => {
   const { search } = PortalState.useContainer()
 
   return (
-    <HotkeyTooltip text={t('Search note')} keys={['cmd', 'p']}>
+    <HotkeyTooltip
+      text={t('Search note')}
+      commandKey
+      onHotkey={search.open}
+      keys={['P']}
+    >
       <ButtonItem onClick={search.open} aria-label="search">
         <IconSearch />
       </ButtonItem>
@@ -72,7 +83,13 @@ const ButtonTrash = () => {
   const { trash } = PortalState.useContainer()
 
   return (
-    <HotkeyTooltip text={t('Trash')} keys={['cmd', 'q']}>
+    <HotkeyTooltip
+      text={t('Trash')}
+      commandKey
+      optionKey
+      onHotkey={trash.open}
+      keys={['T']}
+    >
       <ButtonItem onClick={trash.open} aria-label="trash">
         <IconTrash />
       </ButtonItem>
@@ -82,11 +99,18 @@ const ButtonTrash = () => {
 
 const ButtonDailyNotes = () => {
   const { t } = useI18n()
+  const href = `/${dayjs().format('YYYY-MM-DD')}`
+  const router = useRouter()
 
   return (
-    <Link href={`/${dayjs().format('YYYY-MM-DD')}`}>
+    <Link href={href} shallow>
       <a>
-        <HotkeyTooltip text={t('Daily Notes')} keys={['cmd', `\``]}>
+        <HotkeyTooltip
+          text={t('Daily Notes')}
+          commandKey
+          onHotkey={() => router.push(href, href, { shallow: true })}
+          keys={['shift', 'O']}
+        >
           <ButtonItem aria-label="daily notes">
             <IconInbox />
           </ButtonItem>

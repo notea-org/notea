@@ -4,4 +4,5 @@ export interface UserAgentType {
   isTablet: boolean
   isBrowser: boolean
   isWechat: boolean
+  isMac: boolean
 }
