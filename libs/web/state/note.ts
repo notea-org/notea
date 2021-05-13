@@ -53,7 +53,8 @@ const useNote = (initData?: NoteModel) => {
       const result = await create(body)
 
       if (!result) {
-        return toast(createError, 'error')
+        toast(createError, 'error')
+        return
       }
 
       result.content = result.content || '\n'
