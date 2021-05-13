@@ -5,6 +5,7 @@ import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import useFetcher from 'libs/web/api/fetcher'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { isNoteLink } from 'libs/shared/note'
+import { useToast } from 'libs/web/hooks/use-toast'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -24,7 +25,8 @@ const onSearchLink = async (keyword: string) => {
 const useEditState = () => {
   const { createNoteWithTitle } = NoteState.useContainer()
   const router = useRouter()
-  const { request } = useFetcher()
+  const { request, error } = useFetcher()
+  const toast = useToast()
 
   const onCreateLink = useCallback(
     async (title) => {
@@ -62,11 +64,12 @@ const useEditState = () => {
         data
       )
       if (!result) {
-        throw new Error('todo')
+        toast(error, 'error')
+        throw Error(error)
       }
       return result.url
     },
-    [request]
+    [error, request, toast]
   )
 
   return { onCreateLink, onSearchLink, onClickLink, onUploadImage }

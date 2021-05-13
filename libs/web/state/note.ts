@@ -5,21 +5,23 @@ import { NOTE_DELETED, NOTE_SHARED } from 'libs/shared/meta'
 import useNoteAPI from '../api/note'
 import noteCache from '../cache/note'
 import { NoteModel } from 'libs/shared/note'
+import { useToast } from '../hooks/use-toast'
 
 const useNote = (initData?: NoteModel) => {
   const [note, setNote] = useState<NoteModel | undefined>(initData)
-  const { find, create, mutate, loading, abort } = useNoteAPI()
+  const { find } = useNoteAPI()
+  const { create, error: createError } = useNoteAPI()
+  const { mutate, loading, abort } = useNoteAPI()
   const {
     addItem,
     removeItem,
     mutateItem,
     genNewId,
   } = NoteTreeState.useContainer()
+  const toast = useToast()
 
   const fetchNote = useCallback(
     async (id: string) => {
-      abort()
-
       const cache = await noteCache.getItem(id)
       if (cache) {
         setNote(cache)
@@ -27,14 +29,14 @@ const useNote = (initData?: NoteModel) => {
       const result = await find(id)
 
       if (!result) {
-        throw new Error(`找不到 note:${id}`)
+        throw new Error(`not found note:${id}`)
       }
 
       result.content = result.content || '\n'
       setNote(result)
       await noteCache.setItem(id, result)
     },
-    [find, abort]
+    [find]
   )
 
   const removeNote = useCallback(
@@ -48,13 +50,10 @@ const useNote = (initData?: NoteModel) => {
 
   const createNote = useCallback(
     async (body: Partial<NoteModel>) => {
-      abort()
-
       const result = await create(body)
 
       if (!result) {
-        // todo
-        return
+        return toast(createError, 'error')
       }
 
       result.content = result.content || '\n'
@@ -64,7 +63,7 @@ const useNote = (initData?: NoteModel) => {
 
       return result
     },
-    [abort, create, addItem]
+    [create, addItem, toast, createError]
   )
 
   const createNoteWithTitle = useCallback(
@@ -76,7 +75,6 @@ const useNote = (initData?: NoteModel) => {
       })
 
       if (!result) {
-        // todo
         return
       }
 
@@ -94,7 +92,7 @@ const useNote = (initData?: NoteModel) => {
       abort()
 
       if (!note?.id) {
-        //  todo
+        toast('Not found id', 'error')
         return
       }
       const newNote = {
@@ -109,7 +107,7 @@ const useNote = (initData?: NoteModel) => {
       await mutate(note.id, data)
       await noteCache.mutateItem(note.id, data)
     },
-    [abort, note, mutate, mutateItem]
+    [abort, toast, note, mutate, mutateItem]
   )
 
   const initNote = useCallback((note: Partial<NoteModel>) => {

@@ -8,6 +8,7 @@ import UIState from 'libs/web/state/ui'
 import noteCache from 'libs/web/cache/note'
 import useSettingsAPI from 'libs/web/api/settings'
 import dynamic from 'next/dynamic'
+import { useToast } from 'libs/web/hooks/use-toast'
 
 const NoteEdit = dynamic(() => import('components/editor/note-edit'))
 
@@ -27,6 +28,7 @@ export const EditContainer = () => {
   const pid = query.pid as string
   const id = query.id as string
   const { mutate: mutateSettings } = useSettingsAPI()
+  const toast = useToast()
 
   const loadNoteById = useCallback(
     async (id: string) => {
@@ -44,8 +46,7 @@ export const EditContainer = () => {
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
         fetchNote(id).catch((msg) => {
-          // todo: toast
-          console.error(msg)
+          toast(msg, 'error')
           router.push('/', undefined, { shallow: true })
         })
       } else {
@@ -71,6 +72,7 @@ export const EditContainer = () => {
       genNewId,
       pid,
       fetchNote,
+      toast,
       initNote,
     ]
   )
