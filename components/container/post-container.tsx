@@ -25,7 +25,7 @@ export const PostContainer: FC<{
   }
 
   return (
-    <article className="prose mx-auto prose-sm lg:prose-xl px-4 md:px-0">
+    <article className="prose mx-auto prose-sm lg:prose-2xl px-4 md:px-0">
       <NextSeo
         title={note?.title}
         titleTemplate="%s - Powered by Notea"
@@ -68,6 +68,18 @@ export const PostContainer: FC<{
 
         .prose :glboal(figcaption) {
           text-align: center;
+        }
+
+        .prose :global(.task-list-item) {
+          padding-left: 0;
+        }
+
+        .prose :global(.task-list-item::before) {
+          content: none;
+        }
+
+        .prose :global(.task-list-item label) {
+          margin-left: 6px;
         }
       `}</style>
     </article>
