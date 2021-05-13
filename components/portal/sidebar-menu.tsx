@@ -28,8 +28,9 @@ const SidebarMenu: FC = () => {
   }, [close, data, removeNote])
 
   const doCopyLink = useCallback(() => {
+    navigator.clipboard.writeText(location.origin + '/' + data?.id)
     close()
-  }, [close])
+  }, [close, data?.id])
 
   const MENU_HANDLER = useMemo(
     () => ({
