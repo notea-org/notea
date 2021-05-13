@@ -38,7 +38,7 @@ const TrashItem: FC<{
     <li
       ref={ref}
       className={classNames('hover:bg-gray-200 cursor-pointer py-2 px-4 flex', {
-        'bg-gray-200': selected,
+        'bg-gray-300': selected,
       })}
     >
       <Link href={`/${note.id}`} shallow>

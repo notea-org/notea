@@ -23,7 +23,7 @@ const SearchItem: FC<{
     <li
       ref={ref}
       className={classNames('hover:bg-gray-200 cursor-pointer', {
-        'bg-gray-200': selected,
+        'bg-gray-300': selected,
       })}
     >
       <Link href={`/${note.id}`} shallow>
