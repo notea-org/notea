@@ -15,6 +15,7 @@ export const verifyCsrfToken = (token: string) =>
   tokens.verify(csrfSecret, token)
 
 export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
+  console.log('csrf token', req.url)
   req.props = {
     ...req.props,
     csrfToken: getCsrfToken(),

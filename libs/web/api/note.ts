@@ -4,7 +4,7 @@ import noteCache from '../cache/note'
 import useFetcher from './fetcher'
 
 export default function useNoteAPI() {
-  const { loading, request, abort } = useFetcher()
+  const { loading, request, abort, error } = useFetcher()
 
   const find = useCallback(
     async (id: string) => {
@@ -71,6 +71,7 @@ export default function useNoteAPI() {
 
   return {
     loading,
+    error,
     abort,
     find,
     create,
