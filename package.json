@@ -45,6 +45,7 @@
     "lzutf8": "^0.6.0",
     "markdown-it": "^12.0.6",
     "markdown-it-implicit-figures": "^0.10.0",
+    "markdown-it-task-checkbox": "^1.0.6",
     "md5": "^2.3.0",
     "minio": "^7.0.18",
     "nanoid": "^3.1.22",

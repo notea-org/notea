@@ -1,6 +1,5 @@
 import markdownit from 'markdown-it'
 import markPlugin from 'rich-markdown-editor/dist/lib/markdown/mark'
-import checkboxPlugin from 'rich-markdown-editor/dist/lib/markdown/checkboxes'
 import embedsPlugin from 'rich-markdown-editor/dist/lib/markdown/embeds'
 import breakPlugin from 'rich-markdown-editor/dist/lib/markdown/breaks'
 import tablesPlugin from 'rich-markdown-editor/dist/lib/markdown/tables'
@@ -29,12 +28,14 @@ export function renderMarkdown(src: string) {
   })
     .use(embedsPlugin([]))
     .use(breakPlugin)
-    .use(checkboxPlugin)
     .use(markPlugin({ delim: '==', mark: 'highlight' }))
     .use(markPlugin({ delim: '!!', mark: 'placeholder' }))
     .use(underlinesPlugin)
     .use(tablesPlugin)
     .use(noticesPlugin)
+    .use(require('markdown-it-task-checkbox'), {
+      disabled: true,
+    })
     .use(require('markdown-it-implicit-figures'), {
       figcaption: true,
       dataType: true,
