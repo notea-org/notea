@@ -13,6 +13,7 @@ export const applyUA: SSRMiddeware = (req, _res, next) => {
       isTablet: ua.device.type === 'tablet',
       isBrowser: !ua.device.type,
       isWechat: ua.browser.name?.toLocaleLowerCase() === 'wechat',
+      isMac: !!/Mac|iOS/.test(ua.os.name ?? ''),
     } as UserAgentType,
   }
   next()

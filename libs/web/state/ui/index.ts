@@ -12,6 +12,7 @@ const DEFAULT_UA: UserAgentType = {
   isTablet: false,
   isBrowser: true,
   isWechat: false,
+  isMac: false,
 }
 
 interface Props {
