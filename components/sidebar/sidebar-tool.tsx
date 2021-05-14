@@ -124,7 +124,7 @@ const ButtonSettings = () => {
   const { t } = useI18n()
 
   return (
-    <Link href="/settings">
+    <Link href="/settings" shallow>
       <a>
         <HotkeyTooltip text={t('Settings')}>
           <ButtonItem aria-label="settings">

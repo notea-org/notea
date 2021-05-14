@@ -46,7 +46,7 @@ export const EditContainer = () => {
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
         fetchNote(id).catch((msg) => {
-          toast(msg, 'error')
+          toast(msg.message, 'error')
           router.push('/', undefined, { shallow: true })
         })
       } else {
