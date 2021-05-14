@@ -2,11 +2,10 @@ import { FC, useCallback, useMemo } from 'react'
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import NoteTreeState from 'libs/web/state/tree'
-import { filter } from 'lodash'
 import UIState from 'libs/web/state/ui'
-import { TreeItemModel } from 'libs/shared/tree'
 import { defaultFieldConfig } from './settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
+import { useTreeOptions, TreeOption } from 'libs/web/hooks/use-tree-options'
 
 export const DailyNotes: FC = () => {
   const { t } = useI18n()
@@ -14,18 +13,14 @@ export const DailyNotes: FC = () => {
   const {
     settings: { settings, updateSettings },
   } = UIState.useContainer()
-
-  const items = useMemo(
-    () => filter(tree.items, (item) => !item.data?.deleted),
-    [tree]
-  )
+  const options = useTreeOptions(tree)
   const selected = useMemo(
-    () => items.find((i) => i.id === settings.daily_root_id),
-    [items, settings.daily_root_id]
+    () => options.find((i) => i.id === settings.daily_root_id),
+    [options, settings.daily_root_id]
   )
 
   const handleChange = useCallback(
-    (_event, item: TreeItemModel | null) => {
+    (_event, item: TreeOption | null) => {
       if (item) {
         updateSettings({ daily_root_id: item.id })
       }
@@ -35,8 +30,8 @@ export const DailyNotes: FC = () => {
 
   return (
     <Autocomplete
-      options={items}
-      getOptionLabel={(option) => option.data?.title || t('Root Page')}
+      options={options}
+      getOptionLabel={(option) => option.label}
       value={selected}
       onChange={handleChange}
       renderInput={(params) => (

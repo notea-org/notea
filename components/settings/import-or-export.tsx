@@ -1,24 +1,20 @@
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { TextField } from '@material-ui/core'
 import { defaultFieldConfig } from './settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
-import { ROOT_ID, TreeItemModel } from 'libs/shared/tree'
 import NoteTreeState from 'libs/web/state/tree'
-import { filter } from 'lodash'
 import { Autocomplete } from '@material-ui/lab'
 import { ExportButton } from './export-button'
 import { ImportButton } from './import-button'
+import { useTreeOptions, TreeOption } from 'libs/web/hooks/use-tree-options'
 
 export const ImportOrExport: FC = () => {
   const { t } = useI18n()
   const { tree } = NoteTreeState.useContainer()
-  const [selected, setSelected] = useState(tree.items[ROOT_ID])
-  const items = useMemo(
-    () => filter(tree.items, (item) => !item.data?.deleted),
-    [tree]
-  )
+  const options = useTreeOptions(tree)
+  const [selected, setSelected] = useState(options[0])
 
-  const handleChange = useCallback((_event, item: TreeItemModel | null) => {
+  const handleChange = useCallback((_event, item: TreeOption | null) => {
     if (item) {
       setSelected(item)
     }
@@ -27,9 +23,10 @@ export const ImportOrExport: FC = () => {
   return (
     <div>
       <Autocomplete
-        options={items}
-        getOptionLabel={(option) => option.data?.title || t('Root Page')}
+        options={options}
+        getOptionLabel={(option) => option.label}
         value={selected}
+        getOptionSelected={(option) => !!option.id}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
