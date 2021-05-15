@@ -26,7 +26,7 @@ export const ImportOrExport: FC = () => {
         options={options}
         getOptionLabel={(option) => option.label}
         value={selected}
-        getOptionSelected={(option) => !!option.id}
+        getOptionSelected={(option) => option.id === selected.id}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField
