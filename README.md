@@ -14,7 +14,7 @@
 
 ## Demo
 
-- Link: https://notea-demo.netlify.app
+- Link: https://notea.cinwell.com
 
 ## Requirement
 
