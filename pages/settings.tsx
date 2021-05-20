@@ -1,6 +1,5 @@
 import LayoutMain from 'components/layout/layout-main'
 import { NextPage } from 'next'
-import { applyTree } from 'libs/server/middlewares/tree'
 import { applyUA } from 'libs/server/middlewares/ua'
 import { TreeModel } from 'libs/shared/tree'
 import { useSession } from 'libs/server/middlewares/session'
@@ -11,6 +10,7 @@ import useI18n from 'libs/web/hooks/use-i18n'
 import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { SettingFooter } from 'components/settings/setting-footer'
 import { SSRContext, ssr } from 'libs/server/connect'
+import { applyReset } from 'libs/server/middlewares/reset'
 
 const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { t } = useI18n()
@@ -37,7 +37,7 @@ export const getServerSideProps = async (ctx: SSRContext) => {
   await ssr()
     .use(useSession)
     .use(applyAuth)
-    .use(applyTree)
+    .use(applyReset)
     .use(applySettings)
     .use(applyCsrf)
     .use(applyUA)

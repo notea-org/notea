@@ -6,10 +6,17 @@ import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconButton from 'components/icon-button'
 import useI18n from 'libs/web/hooks/use-i18n'
+import { CircularProgress } from '@material-ui/core'
 
 const SideBarList = () => {
   const { t } = useI18n()
-  const { tree, initTree, moveItem, mutateItem } = NoteTreeState.useContainer()
+  const {
+    tree,
+    initTree,
+    moveItem,
+    mutateItem,
+    initLoaded,
+  } = NoteTreeState.useContainer()
 
   useEffect(() => {
     initTree()
@@ -68,31 +75,43 @@ const SideBarList = () => {
         </HotkeyTooltip>
       </div>
       <div className="flex-grow overflow-y-auto pb-10">
-        <Tree
-          onExpand={onExpand}
-          onCollapse={onCollapse}
-          onDragEnd={onDragEnd}
-          tree={tree}
-          isDragEnabled
-          isNestingEnabled
-          offsetPerLevel={10}
-          renderItem={({ provided, item, onExpand, onCollapse, snapshot }) => (
-            <SidebarListItem
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              onExpand={onExpand}
-              onCollapse={onCollapse}
-              isExpanded={item.isExpanded}
-              innerRef={provided.innerRef}
-              hasChildren={!!item.children.length}
-              item={{
-                ...item.data,
-                id: item.id,
-              }}
-              snapshot={snapshot}
-            ></SidebarListItem>
-          )}
-        ></Tree>
+        {!initLoaded && (!tree || !tree.items.length) ? (
+          <div className="text-center">
+            <CircularProgress size="14px" color="inherit" />
+          </div>
+        ) : (
+          <Tree
+            onExpand={onExpand}
+            onCollapse={onCollapse}
+            onDragEnd={onDragEnd}
+            tree={tree}
+            isDragEnabled
+            isNestingEnabled
+            offsetPerLevel={10}
+            renderItem={({
+              provided,
+              item,
+              onExpand,
+              onCollapse,
+              snapshot,
+            }) => (
+              <SidebarListItem
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                onExpand={onExpand}
+                onCollapse={onCollapse}
+                isExpanded={item.isExpanded}
+                innerRef={provided.innerRef}
+                hasChildren={!!item.children.length}
+                item={{
+                  ...item.data,
+                  id: item.id,
+                }}
+                snapshot={snapshot}
+              ></SidebarListItem>
+            )}
+          ></Tree>
+        )}
       </div>
     </section>
   )
