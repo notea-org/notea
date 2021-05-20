@@ -1,11 +1,6 @@
 import { SSRMiddeware } from '../connect'
 
-// @atlaskit/tree 的依赖
-const { resetServerContext } = require('react-beautiful-dnd-next')
-
 export const applyTree: SSRMiddeware = async (req, res, next) => {
-  resetServerContext()
-
   let tree
 
   // todo 分享页面获取指定树结构

@@ -1,6 +1,5 @@
 import LayoutMain from 'components/layout/layout-main'
 import { NextPage } from 'next'
-import { applyTree } from 'libs/server/middlewares/tree'
 import { applyUA } from 'libs/server/middlewares/ua'
 import { TreeModel } from 'libs/shared/tree'
 import { useSession } from 'libs/server/middlewares/session'
@@ -12,6 +11,7 @@ import Router from 'next/router'
 import { useEffect } from 'react'
 import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { SSRContext, ssr } from 'libs/server/connect'
+import { applyReset } from 'libs/server/middlewares/reset'
 
 const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   const { ua } = UIState.useContainer()
@@ -44,7 +44,7 @@ export const getServerSideProps = async (ctx: SSRContext) => {
     .use(useSession)
     .use(applyAuth)
     .use(applyRedirectLogin(ctx.resolvedUrl))
-    .use(applyTree)
+    .use(applyReset)
     .use(applySettings)
     .use(applyCsrf)
     .use(applyUA)

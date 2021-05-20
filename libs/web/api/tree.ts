@@ -1,3 +1,4 @@
+import { TreeModel } from 'libs/shared/tree'
 import { useCallback } from 'react'
 import useFetcher from './fetcher'
 
@@ -22,9 +23,17 @@ export default function useTreeAPI() {
     [request]
   )
 
+  const fetch = useCallback(async () => {
+    return request<undefined, TreeModel>({
+      method: 'GET',
+      url: '/api/tree',
+    })
+  }, [request])
+
   return {
     loading,
     abort,
     mutate,
+    fetch,
   }
 }

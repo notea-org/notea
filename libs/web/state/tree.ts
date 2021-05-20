@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty, map } from 'lodash'
+import { isEmpty, map } from 'lodash'
 import { genId } from 'libs/shared/id'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
@@ -14,31 +14,57 @@ import noteCache from '../cache/note'
 import useTreeAPI from '../api/tree'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { NoteModel } from 'libs/shared/note'
+import { useToast } from '../hooks/use-toast'
+import { uiCache } from '../cache'
+
+const TREE_CACHE_KEY = 'tree'
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
-  const { mutate, loading } = useTreeAPI()
+  const { mutate, loading, fetch: fetchTree } = useTreeAPI()
   const [tree, setTree] = useState<TreeModel>(initData)
   const [initLoaded, setInitLoaded] = useState<boolean>(false)
   const { fetch: fetchNote } = useNoteAPI()
   const treeRef = useRef(tree)
+  const toast = useToast()
 
   useEffect(() => {
     treeRef.current = tree
   }, [tree])
 
+  const fetchNotes = useCallback(
+    async (tree: TreeModel) => {
+      await Promise.all(
+        map(tree.items, async (item) => {
+          item.data = await fetchNote(item.id)
+        })
+      )
+
+      return tree
+    },
+    [fetchNote]
+  )
+
   const initTree = useCallback(async () => {
-    const tree = cloneDeep(treeRef.current)
-
-    await Promise.all(
-      map(tree.items, async (item) => {
-        item.data = await fetchNote(item.id)
-      })
-    )
-
-    setTree(tree)
+    const cache = await uiCache.getItem<TreeModel>(TREE_CACHE_KEY)
+    if (cache) {
+      const treeWithNotes = await fetchNotes(cache)
+      setTree(treeWithNotes)
+    }
     setInitLoaded(true)
+
+    const tree = await fetchTree()
+
+    if (!tree) {
+      toast('Failed to load tree', 'error')
+      return
+    }
+
+    const treeWithNotes = await fetchNotes(tree)
+
+    setTree(treeWithNotes)
+    await uiCache.setItem(TREE_CACHE_KEY, tree)
     await noteCache.checkItems(tree.items)
-  }, [fetchNote])
+  }, [fetchNotes, fetchTree, toast])
 
   const addItem = useCallback((item: NoteModel) => {
     const tree = TreeActions.addItem(treeRef.current, item.id, item.pid)

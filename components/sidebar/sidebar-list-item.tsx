@@ -104,7 +104,7 @@ const SidebarListItem: FC<{
               }}
             ></IconButton>
             <span className="flex-1 truncate" dir="auto">
-              {initLoaded ? item.title || t('Untitled') : <TextSkeleton />}
+              {item.title || (initLoaded ? t('Untitled') : <TextSkeleton />)}
             </span>
           </a>
         </Link>
