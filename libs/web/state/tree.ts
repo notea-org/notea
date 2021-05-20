@@ -50,7 +50,6 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       const treeWithNotes = await fetchNotes(cache)
       setTree(treeWithNotes)
     }
-    setInitLoaded(true)
 
     const tree = await fetchTree()
 
@@ -62,8 +61,11 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     const treeWithNotes = await fetchNotes(tree)
 
     setTree(treeWithNotes)
-    await uiCache.setItem(TREE_CACHE_KEY, tree)
-    await noteCache.checkItems(tree.items)
+    await Promise.all([
+      uiCache.setItem(TREE_CACHE_KEY, tree),
+      noteCache.checkItems(tree.items),
+    ])
+    setInitLoaded(true)
   }, [fetchNotes, fetchTree, toast])
 
   const addItem = useCallback((item: NoteModel) => {
