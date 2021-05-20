@@ -60,7 +60,12 @@ const SideBarList = () => {
   return (
     <section className="h-full flex text-sm flex-col flex-grow bg-gray-100 overflow-hidden">
       <div className="p-2 text-gray-500 flex items-center">
-        <span className="flex-auto">{t('My Pages')}</span>
+        <div className="flex-auto flex items-center">
+          <span>{t('My Pages')}</span>
+          {initLoaded ? null : (
+            <CircularProgress className="ml-4" size="14px" color="inherit" />
+          )}
+        </div>
         <HotkeyTooltip
           text={t('Create page')}
           commandKey
@@ -75,43 +80,31 @@ const SideBarList = () => {
         </HotkeyTooltip>
       </div>
       <div className="flex-grow overflow-y-auto pb-10">
-        {!initLoaded && (!tree || !tree.items.length) ? (
-          <div className="text-center">
-            <CircularProgress size="14px" color="inherit" />
-          </div>
-        ) : (
-          <Tree
-            onExpand={onExpand}
-            onCollapse={onCollapse}
-            onDragEnd={onDragEnd}
-            tree={tree}
-            isDragEnabled
-            isNestingEnabled
-            offsetPerLevel={10}
-            renderItem={({
-              provided,
-              item,
-              onExpand,
-              onCollapse,
-              snapshot,
-            }) => (
-              <SidebarListItem
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                onExpand={onExpand}
-                onCollapse={onCollapse}
-                isExpanded={item.isExpanded}
-                innerRef={provided.innerRef}
-                hasChildren={!!item.children.length}
-                item={{
-                  ...item.data,
-                  id: item.id,
-                }}
-                snapshot={snapshot}
-              ></SidebarListItem>
-            )}
-          ></Tree>
-        )}
+        <Tree
+          onExpand={onExpand}
+          onCollapse={onCollapse}
+          onDragEnd={onDragEnd}
+          tree={tree}
+          isDragEnabled
+          isNestingEnabled
+          offsetPerLevel={10}
+          renderItem={({ provided, item, onExpand, onCollapse, snapshot }) => (
+            <SidebarListItem
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              onExpand={onExpand}
+              onCollapse={onCollapse}
+              isExpanded={item.isExpanded}
+              innerRef={provided.innerRef}
+              hasChildren={!!item.children.length}
+              item={{
+                ...item.data,
+                id: item.id,
+              }}
+              snapshot={snapshot}
+            ></SidebarListItem>
+          )}
+        ></Tree>
       </div>
     </section>
   )
