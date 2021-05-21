@@ -7,6 +7,8 @@ module.exports = {
     colors: {
       gray: colors.gray,
       blue: colors.blue,
+      transparent: 'transparent',
+      current: 'currentColor',
     },
     screens: {
       md: '768px',
