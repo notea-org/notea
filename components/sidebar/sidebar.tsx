@@ -10,12 +10,20 @@ const Sidebar: FC = () => {
 }
 
 const BrowserSidebar: FC = () => {
-  const { sidebar } = UIState.useContainer()
+  const {
+    sidebar,
+    split: { sizes },
+  } = UIState.useContainer()
 
   return (
-    <section className="flex h-full">
+    <section
+      className="flex h-full"
+      style={{
+        width: `calc(${sizes[0]}% - 5px)`,
+      }}
+    >
       <SidebarTool />
-      {sidebar.visible ? null : <SideBarList />}
+      {sidebar.isFold ? null : <SideBarList />}
     </section>
   )
 }

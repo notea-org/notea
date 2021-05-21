@@ -17,7 +17,7 @@ import { NoteModel } from 'libs/shared/note'
 
 const MainWrapper: FC = ({ children }) => {
   const {
-    sidebar: { visible },
+    sidebar: { isFold },
   } = UIState.useContainer()
   const { ref, width = 0 } = useResizeDetector<HTMLDivElement>({
     handleHeight: false,
@@ -32,7 +32,7 @@ const MainWrapper: FC = ({ children }) => {
       <style jsx global>
         {`
           .gutter {
-            pointer-events: ${visible ? 'none' : 'auto'};
+            pointer-events: ${isFold ? 'none' : 'auto'};
           }
         `}
       </style>
@@ -42,14 +42,14 @@ const MainWrapper: FC = ({ children }) => {
 
 const MobileMainWrapper: FC = ({ children }) => {
   const {
-    sidebar: { visible, open, close },
+    sidebar: { isFold, open, close },
   } = UIState.useContainer()
 
   return (
     <div className="flex h-full">
       <SwipeableDrawer
         anchor="left"
-        open={visible}
+        open={isFold}
         onClose={close}
         onOpen={open}
         hysteresis={0.4}
