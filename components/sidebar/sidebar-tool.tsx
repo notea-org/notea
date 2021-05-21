@@ -36,7 +36,7 @@ const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
 const ButtonMenu = () => {
   const { t } = useI18n()
   const {
-    sidebar: { toggle, visible },
+    sidebar: { toggle, isFold },
   } = UIState.useContainer()
   const onFold = useCallback(() => {
     toggle()
@@ -52,7 +52,7 @@ const ButtonMenu = () => {
       <ButtonItem onClick={onFold}>
         <IconChevronDoubleLeft
           className={classNames('transform transition-transform', {
-            'rotate-180': visible,
+            'rotate-180': isFold,
           })}
         />
       </ButtonItem>
