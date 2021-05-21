@@ -1,7 +1,16 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
-  purge: ['./**/*.tsx'],
+  purge: false,
   darkMode: 'class',
   theme: {
+    colors: {
+      gray: colors.gray,
+      blue: colors.blue,
+    },
+    screens: {
+      md: '768px',
+    },
     extend: {
       cursor: {
         'col-resize': 'col-resize',

@@ -25,7 +25,7 @@ export const PostContainer: FC<{
   }
 
   return (
-    <article className="prose mx-auto prose-sm lg:prose-2xl px-4 md:px-0">
+    <article className="prose mx-auto prose-sm md:prose-2xl px-4 md:px-0">
       <NextSeo
         title={note?.title}
         titleTemplate="%s - Powered by Notea"
