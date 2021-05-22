@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
     "postinstall": "yarn autoclean --force",
-    "build:i18n": "node scripts/extract-i18n"
+    "build:i18n": "node scripts/extract-i18n",
+    "pack": "nexe -r './.next/**/!(*.pack)' './public/**/*' -b -i server.js"
   },
   "repository": "QingWei-Li/notea",
   "husky": {
@@ -93,6 +94,7 @@
     "husky": "^5.0.9",
     "i18n-extract": "^0.6.7",
     "lint-staged": "^10.5.4",
+    "nexe": "^4.0.0-beta.18",
     "next-pwa": "^5.2.21",
     "nightwind": "^1.1.6",
     "postcss": "^8.2.6",
