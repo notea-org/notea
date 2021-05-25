@@ -5,6 +5,7 @@ import {
   NOTE_DELETED,
   NOTE_SHARED,
   NUMBER_KEYS,
+  NOTE_PINNED,
 } from 'libs/shared/meta'
 
 export function jsonToMeta(meta?: Record<string, any>) {
@@ -42,6 +43,8 @@ export function metaToJson(metaData?: Record<string, any>) {
         meta[key] = value ? strDecompress(value) : NOTE_DELETED.NORMAL
       } else if (key === 'shared') {
         meta[key] = value ? strDecompress(value) : NOTE_SHARED.PRIVATE
+      } else if (key === 'pinned') {
+        meta[key] = value ? strDecompress(value) : NOTE_PINNED.UNPINNED
       }
     })
   }

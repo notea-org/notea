@@ -12,7 +12,7 @@ import SearchState from 'libs/web/state/search'
 import SearchModal from 'components/portal/search-modal/search-modal'
 import ShareModal from 'components/portal/share-modal'
 import { SwipeableDrawer } from '@material-ui/core'
-import SidebarMenu from 'components/portal/sidebar-menu'
+import SidebarMenu from 'components/portal/sidebar-menu/sidebar-menu'
 import { NoteModel } from 'libs/shared/note'
 
 const MainWrapper: FC = ({ children }) => {
@@ -27,7 +27,7 @@ const MainWrapper: FC = ({ children }) => {
     <div className="h-full" ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="relative flex-grow">{children}</main>
+        <main className="relative flex-grow -ml-1.5">{children}</main>
       </Resizable>
       <style jsx global>
         {`

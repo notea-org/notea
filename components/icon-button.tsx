@@ -10,6 +10,7 @@ import Share from 'heroicons/react/outline/Share'
 import Duplicate from 'heroicons/react/outline/Duplicate'
 import Document from 'heroicons/react/outline/Document'
 import DocumentText from 'heroicons/react/outline/DocumentText'
+import Selector from 'heroicons/react/outline/Selector'
 
 export const ICONS = {
   Trash,
@@ -22,6 +23,7 @@ export const ICONS = {
   Duplicate,
   Document,
   DocumentText,
+  Selector,
 }
 
 const IconButton = forwardRef<
