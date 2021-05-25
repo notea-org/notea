@@ -1,19 +1,40 @@
 import Tree from '@atlaskit/tree'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconButton from 'components/icon-button'
-import { ROOT_ID } from 'libs/shared/tree'
+import TreeActions, { ROOT_ID } from 'libs/shared/tree'
 import useI18n from 'libs/web/hooks/use-i18n'
 import NoteTreeState from 'libs/web/state/tree'
-import React, { FC, useMemo, useState } from 'react'
+import { cloneDeep, forEach } from 'lodash'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import SidebarListItem from './sidebar-list-item'
 
 export const Favorites: FC = () => {
   const { t } = useI18n()
   const { pinnedTree } = NoteTreeState.useContainer()
+  const [tree, setTree] = useState(pinnedTree)
   const [isFold, setFold] = useState(false)
-  const hasPinned = useMemo(() => pinnedTree.items[ROOT_ID].children.length, [
-    pinnedTree,
-  ])
+  const hasPinned = useMemo(() => tree.items[ROOT_ID].children.length, [tree])
+
+  const onCollapse = useCallback((id) => {
+    setTree((prev) => TreeActions.mutateItem(prev, id, { isExpanded: false }))
+  }, [])
+  const onExpand = useCallback((id) => {
+    setTree((prev) => TreeActions.mutateItem(prev, id, { isExpanded: true }))
+  }, [])
+
+  useEffect(() => {
+    const items = cloneDeep(pinnedTree.items)
+
+    setTree((prev) => {
+      if (!prev) return { ...pinnedTree, items }
+
+      forEach(items, (item) => {
+        item.isExpanded = prev.items[item.id]?.isExpanded ?? false
+      })
+
+      return { ...pinnedTree, items }
+    })
+  }, [pinnedTree])
 
   if (!hasPinned) {
     return null
@@ -36,7 +57,9 @@ export const Favorites: FC = () => {
       {!isFold ? (
         <div>
           <Tree
-            tree={pinnedTree}
+            onCollapse={onCollapse}
+            onExpand={onExpand}
+            tree={tree}
             offsetPerLevel={10}
             renderItem={({
               provided,

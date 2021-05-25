@@ -171,9 +171,6 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
       ) {
         pinnedIds.push(item.id)
       }
-
-      // clear expanded
-      item.isExpanded = false
     })
 
     items[ROOT_ID] = {
