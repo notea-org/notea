@@ -7,8 +7,10 @@ import { NoteModel } from 'libs/shared/note'
 import TrashState from 'libs/web/state/trash'
 import PortalState from 'libs/web/state/portal'
 import { useRouter } from 'next/router'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 const TrashModal: FC = () => {
+  const { t } = useI18n()
   const { filterNotes, keyword, list } = TrashState.useContainer()
   const {
     trash: { visible, close },
@@ -32,7 +34,7 @@ const TrashModal: FC = () => {
   return (
     <FilterModal open={visible} onClose={close}>
       <FilterModalInput
-        placeholder="Search note in trash"
+        placeholder={t('Search note in trash')}
         doFilter={filterNotes}
         keyword={keyword}
         onClose={close}

@@ -1,6 +1,6 @@
-import { isEmpty, map } from 'lodash'
+import { cloneDeep, forEach, isEmpty, map } from 'lodash'
 import { genId } from 'libs/shared/id'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
 import TreeActions, {
   DEFAULT_TREE,
@@ -12,7 +12,7 @@ import TreeActions, {
 import useNoteAPI from '../api/note'
 import noteCache from '../cache/note'
 import useTreeAPI from '../api/tree'
-import { NOTE_DELETED } from 'libs/shared/meta'
+import { NOTE_DELETED, NOTE_PINNED } from 'libs/shared/meta'
 import { NoteModel } from 'libs/shared/note'
 import { useToast } from '../hooks/use-toast'
 import { uiCache } from '../cache'
@@ -161,8 +161,36 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     return paths
   }, [])
 
+  const pinnedTree = useMemo(() => {
+    const items = cloneDeep(tree.items)
+    const pinnedIds: string[] = []
+    forEach(items, (item) => {
+      if (
+        item.data?.pinned === NOTE_PINNED.PINNED &&
+        item.data.deleted !== NOTE_DELETED.DELETED
+      ) {
+        pinnedIds.push(item.id)
+      }
+
+      // clear expanded
+      item.isExpanded = false
+    })
+
+    items[ROOT_ID] = {
+      id: ROOT_ID,
+      children: pinnedIds,
+      isExpanded: true,
+    }
+
+    return {
+      ...tree,
+      items,
+    }
+  }, [tree])
+
   return {
     tree,
+    pinnedTree,
     initTree,
     genNewId,
     addItem,

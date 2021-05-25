@@ -9,6 +9,7 @@ import noteCache from 'libs/web/cache/note'
 import useSettingsAPI from 'libs/web/api/settings'
 import dynamic from 'next/dynamic'
 import { useToast } from 'libs/web/hooks/use-toast'
+import DeleteAlert from 'components/editor/delete-alert'
 
 const NoteEdit = dynamic(() => import('components/editor/note-edit'))
 
@@ -88,6 +89,7 @@ export const EditContainer = () => {
   return (
     <>
       <NoteNav />
+      <DeleteAlert />
       <section className="overflow-y-scroll h-full">
         <NoteEdit />
       </section>

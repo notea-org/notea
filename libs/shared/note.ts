@@ -1,4 +1,4 @@
-import { NOTE_DELETED, NOTE_SHARED } from './meta'
+import { NOTE_DELETED, NOTE_PINNED, NOTE_SHARED } from './meta'
 
 export interface NoteModel {
   id: string
@@ -9,6 +9,7 @@ export interface NoteModel {
   date?: string
   deleted: NOTE_DELETED
   shared: NOTE_SHARED
+  pinned: NOTE_PINNED
 }
 
 /**
