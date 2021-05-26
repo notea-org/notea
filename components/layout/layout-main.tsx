@@ -27,7 +27,7 @@ const MainWrapper: FC = ({ children }) => {
     <div className="h-full" ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="relative flex-grow -ml-1.5">{children}</main>
+        <main className="relative flex-grow -ml-0.5">{children}</main>
       </Resizable>
       <style jsx global>
         {`

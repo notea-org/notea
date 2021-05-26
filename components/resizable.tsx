@@ -36,7 +36,8 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
     if (isFold) {
       splitRef.current?.split?.collapse(0)
     }
-  }, [isFold])
+    // width 改变引起 sizes 重置
+  }, [isFold, sizes])
 
   const updateSplitSizes = useCallback(
     async (sizes: [number, number]) => {
