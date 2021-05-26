@@ -52,6 +52,10 @@ export const PostContainer: FC<{
         }}
       ></main>
       <style jsx>{`
+        .prose :glboal(img) {
+          margin: auto;
+        }
+
         .prose :glboal([title='left-50']) {
           float: left;
           width: 50%;
