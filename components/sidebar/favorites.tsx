@@ -42,7 +42,7 @@ export const Favorites: FC = () => {
 
   return (
     <>
-      <div className="group h-10 p-2 text-gray-500 flex items-center sticky top-0 bg-gray-100 z-10">
+      <div className="group p-2 text-gray-500 flex items-center sticky top-0 bg-gray-100 z-10">
         <div className="flex-auto flex items-center">
           <span>{t('Favorites')}</span>
         </div>
@@ -50,7 +50,7 @@ export const Favorites: FC = () => {
           <IconButton
             icon="Selector"
             onClick={() => setFold((prev) => !prev)}
-            className="text-gray-700 hidden group-hover:block"
+            className="text-gray-700 invisible group-hover:visible"
           ></IconButton>
         </HotkeyTooltip>
       </div>
