@@ -3,7 +3,7 @@ import markPlugin from 'rich-markdown-editor/dist/lib/markdown/mark'
 import embedsPlugin from 'rich-markdown-editor/dist/lib/markdown/embeds'
 import breakPlugin from 'rich-markdown-editor/dist/lib/markdown/breaks'
 import tablesPlugin from 'rich-markdown-editor/dist/lib/markdown/tables'
-import noticesPlugin from 'rich-markdown-editor/dist/lib/markdown/notices'
+import noticesPlugin from './notice-plugin'
 import underlinesPlugin from 'rich-markdown-editor/dist/lib/markdown/underlines'
 import hljs from 'highlight.js'
 
