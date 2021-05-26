@@ -26,6 +26,7 @@ module.exports = {
   variants: {
     extend: {
       display: ['group-hover'],
+      visibility: ['group-hover'],
       backgroundColor: ['active'],
       borderWidth: ['last'],
     },
