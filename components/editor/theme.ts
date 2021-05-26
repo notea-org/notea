@@ -1,3 +1,4 @@
+import { useTheme } from 'next-themes'
 import { theme } from 'rich-markdown-editor'
 
 export const editorTheme: typeof theme = {
@@ -13,4 +14,10 @@ export const darkTheme: typeof theme = {
 
 export const lightTheme: typeof theme = {
   ...editorTheme,
+}
+
+export const useEditorTheme = () => {
+  const { resolvedTheme } = useTheme()
+
+  return resolvedTheme === 'dark' ? darkTheme : lightTheme
 }

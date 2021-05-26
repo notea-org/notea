@@ -4,8 +4,7 @@ import useEditState from './edit-state'
 import { NoteModel } from 'libs/shared/note'
 import MarkdownEditor from 'rich-markdown-editor'
 import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
-import { useTheme } from 'next-themes'
-import { darkTheme, lightTheme } from './theme'
+import { useEditorTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import useI18n from 'libs/web/hooks/use-i18n'
 
@@ -22,8 +21,8 @@ const Editor: FC<{
   } = useEditState()
   const height = use100vh()
   const mounted = useMounted()
-  const { resolvedTheme } = useTheme()
   const { t } = useI18n()
+  const editorTheme = useEditorTheme()
 
   const dictionary = useMemo(
     () => ({
@@ -103,7 +102,7 @@ const Editor: FC<{
         ref={editorEl}
         value={mounted ? note?.content : ''}
         onChange={onEditorChange}
-        theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}
+        theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}
         onSearchLink={onSearchLink}
         onCreateLink={onCreateLink}
