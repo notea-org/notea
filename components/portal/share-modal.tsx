@@ -43,7 +43,7 @@ const ShareModal: FC = () => {
   return (
     <Popover
       anchorEl={share.anchor}
-      open={!!share.anchor}
+      open={share.visible}
       onClose={share.close}
       classes={{
         paper: 'bg-gray-200 text-gray-800',

@@ -90,7 +90,7 @@ export const EditContainer = () => {
     <>
       <NoteNav />
       <DeleteAlert />
-      <section className="overflow-y-scroll h-full">
+      <section className="h-full">
         <NoteEdit />
       </section>
     </>

@@ -17,7 +17,7 @@ const BrowserSidebar: FC = () => {
 
   return (
     <section
-      className="flex h-full"
+      className="flex h-full fixed left-0"
       style={{
         width: `calc(${sizes[0]}% - 5px)`,
       }}

@@ -1,8 +1,8 @@
 import { NoteModel } from 'libs/shared/note'
-import { useState, useCallback, MouseEvent } from 'react'
+import { useState, useCallback } from 'react'
 import { createContainer } from 'unstated-next'
 
-const useModalIntance = () => {
+const useModalInstance = () => {
   const [visible, setVisible] = useState(false)
 
   const open = useCallback(() => {
@@ -16,27 +16,29 @@ const useModalIntance = () => {
   return { visible, open, close }
 }
 
-const useAnchorIntance = <T>() => {
+const useAnchorInstance = <T>() => {
   const [anchor, setAnchor] = useState<Element | null>(null)
   const [data, setData] = useState<T>()
+  const [visible, setVisible] = useState(false)
 
-  const open = useCallback((target: Element | MouseEvent) => {
-    setAnchor(target instanceof Element ? target : target.currentTarget)
+  const open = useCallback(() => {
+    setVisible(true)
   }, [])
 
   const close = useCallback(() => {
-    setAnchor(null)
+    setVisible(false)
   }, [])
 
-  return { anchor, open, close, data, setData }
+  return { anchor, open, close, data, setData, visible, setAnchor }
 }
 
 const useModal = () => {
   return {
-    search: useModalIntance(),
-    trash: useModalIntance(),
-    menu: useAnchorIntance<NoteModel>(),
-    share: useAnchorIntance<NoteModel>(),
+    search: useModalInstance(),
+    trash: useModalInstance(),
+    menu: useAnchorInstance<NoteModel>(),
+    share: useAnchorInstance<NoteModel>(),
+    preview: useAnchorInstance<{ id: string }>(),
   }
 }
 

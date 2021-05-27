@@ -37,25 +37,24 @@ const NoteNav = () => {
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
-  const {
-    share: { setData: setDataShare, open: openShare },
-    menu: { setData: setDataMenu, open: openMenu },
-  } = PortalState.useContainer()
+  const { share, menu } = PortalState.useContainer()
 
   const handleClickShare = useCallback(
     (event: MouseEvent) => {
-      setDataShare(note)
-      openShare(event)
+      share.setData(note)
+      share.setAnchor(event.target as Element)
+      share.open()
     },
-    [note, setDataShare, openShare]
+    [note, share]
   )
 
   const handleClickMenu = useCallback(
     (event: MouseEvent) => {
-      openMenu(event)
-      setDataMenu(note)
+      menu.setData(note)
+      menu.setAnchor(event.target as Element)
+      menu.open()
     },
-    [note, openMenu, setDataMenu]
+    [note, menu]
   )
 
   if (!note) {
@@ -66,11 +65,14 @@ const NoteNav = () => {
   return (
     <nav
       className={classNames(
-        'absolute bg-gray-50 z-10 p-2 flex items-center left-0 right-0',
+        'fixed bg-gray-50 z-10 p-2 flex items-center right-0',
         {
           shadow: ua.isMobileOnly,
         }
       )}
+      style={{
+        width: ua.isMobileOnly ? '100%' : 'inherit',
+      }}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
       <div className="flex-auto">

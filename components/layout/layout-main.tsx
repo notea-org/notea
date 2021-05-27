@@ -27,7 +27,7 @@ const MainWrapper: FC = ({ children }) => {
     <div className="h-full" ref={ref}>
       <Resizable width={width}>
         <Sidebar />
-        <main className="relative flex-grow -ml-0.5">{children}</main>
+        <main className="relative">{children}</main>
       </Resizable>
       <style jsx global>
         {`
@@ -59,7 +59,7 @@ const MobileMainWrapper: FC = ({ children }) => {
         <Sidebar />
       </SwipeableDrawer>
 
-      <main className="flex-grow overflow-y-auto" onClick={close}>
+      <main className="flex-grow" onClick={close}>
         {children}
       </main>
       <style jsx global>
@@ -80,7 +80,7 @@ const LayoutMain: FC<{
   const { ua } = UIState.useContainer()
 
   useEffect(() => {
-    document.body.classList.add('overflow-hidden')
+    document.body.classList.add('overscroll-none')
   }, [])
 
   return (

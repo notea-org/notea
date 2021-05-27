@@ -12,7 +12,7 @@ import { Item, SidebarMenuItem, MENU_HANDLER_NAME } from './sidebar-menu-item'
 const SidebarMenu: FC = () => {
   const { t } = useI18n()
   const {
-    menu: { close, anchor, data },
+    menu: { close, anchor, data, visible },
   } = PortalState.useContainer()
 
   const MENU_LIST: Item[] = useMemo(
@@ -50,7 +50,7 @@ const SidebarMenu: FC = () => {
   return (
     <Menu
       anchorEl={anchor}
-      open={!!anchor}
+      open={visible}
       onClose={close}
       classes={{
         paper: 'bg-gray-200 text-gray-800',
