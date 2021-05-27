@@ -7,6 +7,7 @@ import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
 import { useEditorTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import useI18n from 'libs/web/hooks/use-i18n'
+import Tooltip from './tooltip'
 
 const Editor: FC<{
   note?: NoteModel
@@ -18,6 +19,7 @@ const Editor: FC<{
     onCreateLink,
     onClickLink,
     onUploadImage,
+    onHoverLink,
   } = useEditState()
   const height = use100vh()
   const mounted = useMounted()
@@ -107,7 +109,9 @@ const Editor: FC<{
         onSearchLink={onSearchLink}
         onCreateLink={onCreateLink}
         onClickLink={onClickLink}
+        onHoverLink={onHoverLink}
         dictionary={dictionary}
+        tooltip={Tooltip}
         className="px-4 md:px-0"
       />
       <style jsx global>{`
