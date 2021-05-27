@@ -10,6 +10,7 @@ import Share from 'heroicons/react/outline/Share'
 import Duplicate from 'heroicons/react/outline/Duplicate'
 import Document from 'heroicons/react/outline/Document'
 import DocumentText from 'heroicons/react/outline/DocumentText'
+import Link from 'heroicons/react/outline/Link'
 import Selector from 'heroicons/react/outline/Selector'
 
 export const ICONS = {
@@ -24,6 +25,7 @@ export const ICONS = {
   Document,
   DocumentText,
   Selector,
+  Link,
 }
 
 const IconButton = forwardRef<
@@ -45,7 +47,7 @@ const IconButton = forwardRef<
         ref={ref}
         {...attrs}
         className={classNames(
-          'p-0.5 hover:bg-gray-400 cursor-pointer w-7 h-7 md:w-6 md:h-6',
+          'block p-0.5 hover:bg-gray-400 cursor-pointer w-7 h-7 md:w-6 md:h-6',
           { rounded },
           className
         )}

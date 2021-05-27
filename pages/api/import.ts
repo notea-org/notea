@@ -9,7 +9,7 @@ import { genId } from 'libs/shared/id'
 import { ROOT_ID } from 'libs/shared/tree'
 import { createNote } from 'libs/server/note'
 import { NoteModel } from 'libs/shared/note'
-import { parseMarkdownTitle } from 'libs/shared/markdown'
+import { parseMarkdownTitle } from 'libs/shared/markdown/parse-markdown-title'
 
 const MARKDOWN_EXT = [
   '.markdown',

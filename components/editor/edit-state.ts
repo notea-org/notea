@@ -6,6 +6,7 @@ import useFetcher from 'libs/web/api/fetcher'
 import { NOTE_DELETED } from 'libs/shared/meta'
 import { isNoteLink } from 'libs/shared/note'
 import { useToast } from 'libs/web/hooks/use-toast'
+import PortalState from 'libs/web/state/portal'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -72,7 +73,28 @@ const useEditState = () => {
     [error, request, toast]
   )
 
-  return { onCreateLink, onSearchLink, onClickLink, onUploadImage }
+  const { preview } = PortalState.useContainer()
+
+  const onHoverLink = useCallback(
+    (event: MouseEvent) => {
+      const link = event.target as HTMLLinkElement
+      const href = link.href.replace(location.origin, '')
+      if (isNoteLink(href)) {
+        preview.setData({ id: href.slice(1) })
+        preview.setAnchor(link)
+      }
+      return true
+    },
+    [preview]
+  )
+
+  return {
+    onCreateLink,
+    onSearchLink,
+    onClickLink,
+    onUploadImage,
+    onHoverLink,
+  }
 }
 
 export default useEditState

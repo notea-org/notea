@@ -1,48 +1,23 @@
 import NoteState from 'libs/web/state/note'
-import { removeMarkdown } from 'libs/web/utils/markdown'
-import { FC, useMemo } from 'react'
-import { NextSeo } from 'next-seo'
+import { FC } from 'react'
 // TODO: Maybe can custom
 import 'highlight.js/styles/zenburn.css'
-import { PageMode } from 'libs/shared/page'
-import Error from 'next/error'
-import useI18n from 'libs/web/hooks/use-i18n'
 import { useEditorTheme } from 'components/editor/theme'
+import classNames from 'classnames'
 
 export const PostContainer: FC<{
-  baseURL: string
-  pageMode: PageMode
   post?: string
-}> = ({ baseURL, pageMode, post = '' }) => {
-  const { t } = useI18n()
+  small?: boolean
+}> = ({ post = '', small = false }) => {
   const { note } = NoteState.useContainer()
-  const description = useMemo(
-    () => removeMarkdown(note?.content).slice(0, 100),
-    [note]
-  )
   const editorTheme = useEditorTheme()
 
-  if (pageMode !== PageMode.PUBLIC) {
-    return <Error statusCode={404} title={t('Not a public page')}></Error>
-  }
-
   return (
-    <article className="prose mx-auto pb-10 prose-sm md:prose-2xl px-4 md:px-0">
-      <NextSeo
-        title={note?.title}
-        titleTemplate="%s - Powered by Notea"
-        description={description}
-        openGraph={{
-          title: note?.title,
-          description,
-          url: `${baseURL}/${note?.id}`,
-          images: [{ url: note?.pic ?? `${baseURL}/logo_1280x640.png` }],
-          type: 'article',
-          article: {
-            publishedTime: note?.date,
-          },
-        }}
-      />
+    <article
+      className={classNames('prose mx-auto pb-10 prose-sm px-4 md:px-0', {
+        'md:prose-2xl': !small,
+      })}
+    >
       <header>
         <h1 className="pt-10">{note?.title}</h1>
       </header>

@@ -16,8 +16,8 @@ export default function SharePage({
   post,
 }: ServerProps) {
   return (
-    <LayoutPublic tree={tree} note={note}>
-      <PostContainer post={post} pageMode={pageMode} baseURL={baseURL} />
+    <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
+      <PostContainer post={post} />
     </LayoutPublic>
   )
 }

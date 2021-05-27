@@ -1,5 +1,5 @@
 import { SSRMiddeware } from '../connect'
-import { renderMarkdown } from '../markdown/render'
+import { renderMarkdown } from 'libs/shared/markdown/render'
 
 export const applyPost: SSRMiddeware = async (req, _res, next) => {
   req.props = {
