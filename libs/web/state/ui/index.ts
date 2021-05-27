@@ -23,7 +23,10 @@ interface Props {
 function useUI({ ua = DEFAULT_UA, settings, disablePassword }: Props = {}) {
   return {
     ua,
-    sidebar: useSidebar(ua?.isMobileOnly ? false : settings?.sidebar_is_fold),
+    sidebar: useSidebar(
+      ua?.isMobileOnly ? false : settings?.sidebar_is_fold,
+      ua.isMobileOnly
+    ),
     split: useSplit(settings?.split_sizes),
     title: useTitle(),
     settings: useSettings(settings),

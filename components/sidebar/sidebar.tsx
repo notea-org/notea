@@ -1,10 +1,16 @@
 import SidebarTool from 'components/sidebar/sidebar-tool'
 import SideBarList from 'components/sidebar/sidebar-list'
 import UIState from 'libs/web/state/ui'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+import NoteTreeState from 'libs/web/state/tree'
 
 const Sidebar: FC = () => {
   const { ua } = UIState.useContainer()
+  const { initTree } = NoteTreeState.useContainer()
+
+  useEffect(() => {
+    initTree()
+  }, [initTree])
 
   return ua?.isMobileOnly ? <MobileSidebar /> : <BrowserSidebar />
 }

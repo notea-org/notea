@@ -1,7 +1,7 @@
 import SidebarListItem from './sidebar-list-item'
 import NoteTreeState from 'libs/web/state/tree'
 import Tree from '@atlaskit/tree'
-import { useEffect, useCallback } from 'react'
+import { useCallback } from 'react'
 import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconButton from 'components/icon-button'
@@ -13,15 +13,10 @@ const SideBarList = () => {
   const { t } = useI18n()
   const {
     tree,
-    initTree,
     moveItem,
     mutateItem,
     initLoaded,
   } = NoteTreeState.useContainer()
-
-  useEffect(() => {
-    initTree()
-  }, [initTree])
 
   const onExpand = useCallback(
     (id) => {

@@ -6,7 +6,7 @@ const renderGutter = () => {
   const gutter = document.createElement('div')
   const line = document.createElement('div')
 
-  gutter.className = 'gutter group cursor-col-resize mr-1.5 px-1.5 z-20'
+  gutter.className = 'gutter group cursor-col-resize z-20'
   line.className =
     'transition-colors delay-150 group-hover:bg-gray-300 dark:group-hover:bg-gray-500 w-1 h-full'
   gutter.appendChild(line)
@@ -54,8 +54,10 @@ const Resizable: FC<{ width: number }> = ({ width, children }) => {
     <Split
       ref={splitRef}
       className="flex h-auto justify-end"
-      minSize={isFold ? 40 : 250}
+      // w-12
+      minSize={isFold ? 48 : 250}
       sizes={sizes}
+      gutterSize={0}
       gutter={renderGutter}
       onDragEnd={updateSplitSizes}
     >
