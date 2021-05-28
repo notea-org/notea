@@ -78,10 +78,12 @@ const useEditState = () => {
   const onHoverLink = useCallback(
     (event: MouseEvent) => {
       const link = event.target as HTMLLinkElement
-      const href = link.href.replace(location.origin, '')
-      if (isNoteLink(href)) {
+      const href = link.getAttribute('href')
+      if (href && isNoteLink(href)) {
         preview.setData({ id: href.slice(1) })
         preview.setAnchor(link)
+      } else {
+        preview.setData({ id: undefined })
       }
       return true
     },
