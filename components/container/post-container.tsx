@@ -1,15 +1,16 @@
-import NoteState from 'libs/web/state/note'
 import { FC } from 'react'
 // TODO: Maybe can custom
 import 'highlight.js/styles/zenburn.css'
 import { useEditorTheme } from 'components/editor/theme'
 import classNames from 'classnames'
+import useI18n from 'libs/web/hooks/use-i18n'
 
 export const PostContainer: FC<{
+  title?: string
   post?: string
   small?: boolean
-}> = ({ post = '', small = false }) => {
-  const { note } = NoteState.useContainer()
+}> = ({ post = '', small = false, title }) => {
+  const { t } = useI18n()
   const editorTheme = useEditorTheme()
 
   return (
@@ -19,7 +20,7 @@ export const PostContainer: FC<{
       })}
     >
       <header>
-        <h1 className="pt-10">{note?.title}</h1>
+        <h1 className="pt-10">{title ?? t('Untitled')}</h1>
       </header>
       <main
         dangerouslySetInnerHTML={{

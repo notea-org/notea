@@ -38,7 +38,7 @@ const useModal = () => {
     trash: useModalInstance(),
     menu: useAnchorInstance<NoteModel>(),
     share: useAnchorInstance<NoteModel>(),
-    preview: useAnchorInstance<{ id: string }>(),
+    preview: useAnchorInstance<{ id?: string }>(),
   }
 }
 
