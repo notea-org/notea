@@ -8,6 +8,7 @@ import { useEditorTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import useI18n from 'libs/web/hooks/use-i18n'
 import Tooltip from './tooltip'
+import extensions from './extensions'
 
 const Editor: FC<{
   note?: NoteModel
@@ -112,6 +113,7 @@ const Editor: FC<{
         onHoverLink={onHoverLink}
         dictionary={dictionary}
         tooltip={Tooltip}
+        extensions={extensions}
         className="px-4 md:px-0"
       />
       <style jsx global>{`
@@ -136,6 +138,9 @@ const Editor: FC<{
         }
         .ProseMirror h3 {
           font-size: 1.5em;
+        }
+        .ProseMirror a {
+          text-decoration: underline;
         }
       `}</style>
     </>
