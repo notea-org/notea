@@ -21,6 +21,7 @@ export const EditContainer = () => {
   const { genNewId } = NoteTreeState.useContainer()
   const {
     fetchNote,
+    abortFindNote,
     findOrCreateNote,
     initNote,
     note,
@@ -46,10 +47,14 @@ export const EditContainer = () => {
 
         router.replace(url, undefined, { shallow: true })
       } else if (id && !has(router.query, 'new')) {
-        fetchNote(id).catch((msg) => {
-          toast(msg.message, 'error')
-          router.push('/', undefined, { shallow: true })
-        })
+        try {
+          await fetchNote(id)
+        } catch (msg) {
+          if (msg.name !== 'AbortError') {
+            toast(msg.message, 'error')
+            router.push('/', undefined, { shallow: true })
+          }
+        }
       } else {
         if (await noteCache.getItem(id)) {
           router.push(`/${id}`, undefined, { shallow: true })
@@ -79,8 +84,9 @@ export const EditContainer = () => {
   )
 
   useEffect(() => {
+    abortFindNote()
     loadNoteById(id)
-  }, [loadNoteById, id])
+  }, [loadNoteById, abortFindNote, id])
 
   useEffect(() => {
     updateTitle(note?.title)

@@ -10,7 +10,7 @@ import { isEmpty, map } from 'lodash'
 
 const useNote = (initData?: NoteModel) => {
   const [note, setNote] = useState<NoteModel | undefined>(initData)
-  const { find } = useNoteAPI()
+  const { find, abort: abortFindNote } = useNoteAPI()
   const { create, error: createError } = useNoteAPI()
   const { mutate, loading, abort } = useNoteAPI()
   const {
@@ -30,7 +30,7 @@ const useNote = (initData?: NoteModel) => {
       const result = await find(id)
 
       if (!result) {
-        throw new Error(`not found note:${id}`)
+        return
       }
 
       result.content = result.content || '\n'
@@ -192,6 +192,7 @@ const useNote = (initData?: NoteModel) => {
   return {
     note,
     fetchNote,
+    abortFindNote,
     createNote,
     findOrCreateNote,
     createNoteWithTitle,
