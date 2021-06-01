@@ -11,6 +11,7 @@ import HotkeyTooltip from './hotkey-tooltip'
 import PortalState from 'libs/web/state/portal'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import useI18n from 'libs/web/hooks/use-i18n'
+import Tooltip from 'rich-markdown-editor/dist/components/Tooltip'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -84,13 +85,18 @@ const NoteNav = () => {
           {getPaths(note)
             .reverse()
             .map((path) => (
-              <Link key={path.id} href={`/${path.id}`} shallow>
-                <a className="hover:bg-gray-200 px-1 py-0.5 rounded text-sm">
-                  {path.title}
-                </a>
-              </Link>
+              <Tooltip key={path.id} tooltip={path.title}>
+                <Link href={`/${path.id}`} shallow>
+                  <a className="block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate max-w-xs">
+                    {path.title}
+                  </a>
+                </Link>
+              </Tooltip>
             ))}
-          <span className="text-gray-600 text-sm" aria-current="page">
+          <span
+            className="block text-gray-600 text-sm truncate max-w-xs"
+            aria-current="page"
+          >
             {note.title}
           </span>
         </Breadcrumbs>

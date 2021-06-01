@@ -24,11 +24,11 @@ const Backlinks: FC = () => {
           <li key={link.id}>
             <Link href={link.id}>
               <a
-                className="p-2 block flex items-center hover:bg-gray-300"
+                className="p-2 block flex items-center hover:bg-gray-300 truncate"
                 onMouseEnter={onHoverLink}
               >
                 <IconButton className="mr-1" icon="DocumentText"></IconButton>
-                <span> {link.title}</span>
+                <span className="flex-1 truncate">{link.title}</span>
               </a>
             </Link>
           </li>
