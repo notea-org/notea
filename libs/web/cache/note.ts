@@ -1,8 +1,9 @@
 import { TreeModel } from 'libs/shared/tree'
 import { noteCacheInstance, NoteCacheItem } from 'libs/web/cache'
-import { NoteModel } from 'libs/shared/note'
+import { isNoteLink, NoteModel } from 'libs/shared/note'
 import { keys, pull } from 'lodash'
 import { removeMarkdown } from '../utils/markdown'
+import markdownLinkExtractor from 'markdown-link-extractor'
 
 /**
  * 清除本地存储中未使用的 note
@@ -22,9 +23,19 @@ async function getItem(id: string) {
 }
 
 async function setItem(id: string, note: NoteModel) {
+  const extractorLinks = markdownLinkExtractor(note.content, false)
+  const linkIds: string[] = []
+  if (Array.isArray(extractorLinks) && extractorLinks.length) {
+    extractorLinks.forEach((link) => {
+      if (isNoteLink(link)) {
+        linkIds.push(link.slice(1))
+      }
+    })
+  }
   return noteCacheInstance.setItem<NoteCacheItem>(id, {
     ...note,
     rawContent: removeMarkdown(note.content),
+    linkIds,
   })
 }
 

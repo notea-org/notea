@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Paper, Popper } from '@material-ui/core'
+import { Paper, Popper, Fade } from '@material-ui/core'
 import PortalState from 'libs/web/state/portal'
 import { useRouter } from 'next/router'
 import { NoteCacheItem } from 'libs/web/cache'
@@ -18,7 +18,7 @@ import HotkeyTooltip from 'components/hotkey-tooltip'
 import useI18n from 'libs/web/hooks/use-i18n'
 
 const LEAVE_DELAY = 200
-const ENTER_DELAY = 500
+const ENTER_DELAY = 200
 
 const PreviewModal: FC = () => {
   const { t } = useI18n()
@@ -107,17 +107,31 @@ const PreviewModal: FC = () => {
       placement="bottom"
       anchorEl={anchor}
       open={visible}
+      transition
     >
-      <Paper className="relative bg-gray-50 text-gray-800 w-full h-96 md:w-96 dark:bg-gray-800">
-        <div className="absolute right-2 top-2">
-          <HotkeyTooltip text={t('Open link')}>
-            <IconButton onClick={gotoLink} icon="Link"></IconButton>
-          </HotkeyTooltip>
-        </div>
-        <div className="overflow-y-scroll h-full p-4">
-          <PostContainer small post={post} title={note?.title}></PostContainer>
-        </div>
-      </Paper>
+      {({ TransitionProps }) => (
+        <Fade
+          {...TransitionProps}
+          timeout={{
+            enter: 200,
+          }}
+        >
+          <Paper className="relative bg-gray-50 text-gray-800 w-full h-96 md:w-96 dark:bg-gray-800">
+            <div className="absolute right-2 top-2">
+              <HotkeyTooltip text={t('Open link')}>
+                <IconButton onClick={gotoLink} icon="Link"></IconButton>
+              </HotkeyTooltip>
+            </div>
+            <div className="overflow-y-scroll h-full p-4">
+              <PostContainer
+                small
+                post={post}
+                title={note?.title}
+              ></PostContainer>
+            </div>
+          </Paper>
+        </Fade>
+      )}
     </Popper>
   )
 }
