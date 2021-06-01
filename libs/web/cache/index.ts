@@ -14,4 +14,6 @@ export interface NoteCacheItem extends NoteModel {
    * remove markdown tag
    */
   rawContent?: string
+
+  linkIds?: string[]
 }

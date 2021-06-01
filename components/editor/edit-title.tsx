@@ -1,24 +1,12 @@
 import { TextareaAutosize } from '@material-ui/core'
 import useI18n from 'libs/web/hooks/use-i18n'
-import { NoteModel } from 'libs/shared/note'
 import { has } from 'lodash'
 import { useRouter } from 'next/router'
-import {
-  FC,
-  useCallback,
-  KeyboardEvent,
-  RefObject,
-  useRef,
-  useMemo,
-} from 'react'
-import MarkdownEditor from 'rich-markdown-editor'
-import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
+import { FC, useCallback, KeyboardEvent, useRef, useMemo } from 'react'
+import EditorState from 'libs/web/state/editor'
 
-const EditTitle: FC<{
-  note?: NoteModel
-  onNoteChange: DebouncedState<(data: Partial<NoteModel>) => Promise<void>>
-  editorEl: RefObject<MarkdownEditor>
-}> = ({ onNoteChange, editorEl, note }) => {
+const EditTitle: FC = () => {
+  const { editorEl, onNoteChange, note } = EditorState.useContainer()
   const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const onInputTitle = useCallback(

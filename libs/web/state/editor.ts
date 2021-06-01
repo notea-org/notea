@@ -1,12 +1,24 @@
 import NoteState from 'libs/web/state/note'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import {
+  useCallback,
+  MouseEvent as ReactMouseEvent,
+  useState,
+  useRef,
+} from 'react'
 import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import useFetcher from 'libs/web/api/fetcher'
 import { NOTE_DELETED } from 'libs/shared/meta'
-import { isNoteLink } from 'libs/shared/note'
+import { isNoteLink, NoteModel } from 'libs/shared/note'
 import { useToast } from 'libs/web/hooks/use-toast'
 import PortalState from 'libs/web/state/portal'
+import { NoteCacheItem } from 'libs/web/cache'
+import noteCache from 'libs/web/cache/note'
+import { createContainer } from 'unstated-next'
+import MarkdownEditor from 'rich-markdown-editor'
+import { useDebouncedCallback } from 'use-debounce'
+import { ROOT_ID } from 'libs/shared/tree'
+import { has } from 'lodash'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -23,11 +35,36 @@ const onSearchLink = async (keyword: string) => {
   }))
 }
 
-const useEditState = () => {
-  const { createNoteWithTitle } = NoteState.useContainer()
+const useEditor = () => {
+  const {
+    createNoteWithTitle,
+    updateNote,
+    createNote,
+    note,
+  } = NoteState.useContainer()
   const router = useRouter()
   const { request, error } = useFetcher()
   const toast = useToast()
+  const editorEl = useRef<MarkdownEditor>(null)
+
+  const onNoteChange = useDebouncedCallback(
+    async (data: Partial<NoteModel>) => {
+      const isNew = has(router.query, 'new')
+
+      if (isNew) {
+        data.pid = (router.query.pid as string) || ROOT_ID
+        const item = await createNote({ ...note, ...data })
+        const noteUrl = `/${item?.id}`
+
+        if (router.asPath !== noteUrl) {
+          await router.replace(noteUrl, undefined, { shallow: true })
+        }
+      } else {
+        await updateNote(data)
+      }
+    },
+    500
+  )
 
   const onCreateLink = useCallback(
     async (title) => {
@@ -76,10 +113,11 @@ const useEditState = () => {
   const { preview } = PortalState.useContainer()
 
   const onHoverLink = useCallback(
-    (event: MouseEvent) => {
+    (event: MouseEvent | ReactMouseEvent) => {
       const link = event.target as HTMLLinkElement
       const href = link.getAttribute('href')
       if (href && isNoteLink(href)) {
+        preview.close()
         preview.setData({ id: href.slice(1) })
         preview.setAnchor(link)
       } else {
@@ -90,13 +128,34 @@ const useEditState = () => {
     [preview]
   )
 
+  const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
+
+  const getBackLinks = useCallback(async () => {
+    const linkNotes: NoteCacheItem[] = []
+    if (!note?.id) return linkNotes
+    setBackLinks([])
+    await noteCache.iterate<NoteCacheItem, void>((value) => {
+      if (value.linkIds?.includes(note.id)) {
+        linkNotes.push(value)
+      }
+    })
+    setBackLinks(linkNotes)
+  }, [note?.id])
+
   return {
     onCreateLink,
     onSearchLink,
     onClickLink,
     onUploadImage,
     onHoverLink,
+    getBackLinks,
+    onNoteChange,
+    backlinks,
+    editorEl,
+    note,
   }
 }
 
-export default useEditState
+const EditorState = createContainer(useEditor)
+
+export default EditorState

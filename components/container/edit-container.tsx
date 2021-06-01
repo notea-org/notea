@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic'
 import { useToast } from 'libs/web/hooks/use-toast'
 import DeleteAlert from 'components/editor/delete-alert'
 
-const NoteEdit = dynamic(() => import('components/editor/note-edit'))
+const MainEditor = dynamic(() => import('components/editor/main-editor'))
 
 export const EditContainer = () => {
   const {
@@ -98,7 +98,7 @@ export const EditContainer = () => {
       <NoteNav />
       <DeleteAlert />
       <section className="h-full">
-        <NoteEdit />
+        <MainEditor />
       </section>
     </>
   )

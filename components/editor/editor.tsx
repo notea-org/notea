@@ -1,31 +1,30 @@
-import { FC, RefObject, useCallback, useMemo } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
-import useEditState from './edit-state'
-import { NoteModel } from 'libs/shared/note'
 import MarkdownEditor from 'rich-markdown-editor'
-import { DebouncedState } from 'use-debounce/lib/useDebouncedCallback'
 import { useEditorTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import useI18n from 'libs/web/hooks/use-i18n'
 import Tooltip from './tooltip'
 import extensions from './extensions'
+import EditorState from 'libs/web/state/editor'
 
-const Editor: FC<{
-  note?: NoteModel
-  onNoteChange: DebouncedState<(data: Partial<NoteModel>) => Promise<void>>
-  editorEl: RefObject<MarkdownEditor>
-}> = ({ onNoteChange, editorEl, note }) => {
+const Editor: FC = () => {
   const {
     onSearchLink,
     onCreateLink,
     onClickLink,
     onUploadImage,
     onHoverLink,
-  } = useEditState()
+    onNoteChange,
+    backlinks,
+    editorEl,
+    note,
+  } = EditorState.useContainer()
   const height = use100vh()
   const mounted = useMounted()
   const { t } = useI18n()
   const editorTheme = useEditorTheme()
+  const [hasMinHeight, setHasMinHeight] = useState(true)
 
   const dictionary = useMemo(
     () => ({
@@ -98,6 +97,10 @@ const Editor: FC<{
     [onNoteChange]
   )
 
+  useEffect(() => {
+    setHasMinHeight((backlinks?.length ?? 0) <= 0)
+  }, [backlinks])
+
   return (
     <>
       <MarkdownEditor
@@ -126,7 +129,9 @@ const Editor: FC<{
         }
 
         .ProseMirror {
-          min-height: calc(${height ? height + 'px' : '100vh'} - 14rem);
+          ${hasMinHeight
+            ? `min-height: calc(${height ? height + 'px' : '100vh'} - 14rem);`
+            : ''}
           padding-bottom: 10rem;
         }
 
