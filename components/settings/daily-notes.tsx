@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import NoteTreeState from 'libs/web/state/tree'
@@ -14,19 +14,27 @@ export const DailyNotes: FC = () => {
     settings: { settings, updateSettings },
   } = UIState.useContainer()
   const options = useTreeOptions(tree)
-  const selected = useMemo(
+  const defaultSelected = useMemo(
     () => options.find((i) => i.id === settings.daily_root_id),
     [options, settings.daily_root_id]
   )
+  const [selected, setSelected] = useState(defaultSelected ?? options[0])
 
   const handleChange = useCallback(
     (_event, item: TreeOption | null) => {
       if (item) {
         updateSettings({ daily_root_id: item.id })
+        setSelected(item)
       }
     },
     [updateSettings]
   )
+
+  useEffect(() => {
+    if (defaultSelected) {
+      setSelected(defaultSelected)
+    }
+  }, [defaultSelected])
 
   return (
     <Autocomplete

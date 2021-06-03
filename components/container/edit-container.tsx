@@ -50,6 +50,7 @@ export const EditContainer = () => {
         try {
           await fetchNote(id)
         } catch (msg) {
+          console.log(111, msg)
           if (msg.name !== 'AbortError') {
             toast(msg.message, 'error')
             router.push('/', undefined, { shallow: true })

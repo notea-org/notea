@@ -36,6 +36,8 @@ const useNote = (initData?: NoteModel) => {
       result.content = result.content || '\n'
       setNote(result)
       await noteCache.setItem(id, result)
+
+      return result
     },
     [find]
   )
@@ -178,7 +180,10 @@ const useNote = (initData?: NoteModel) => {
   const findOrCreateNote = useCallback(
     async (id: string, note: Partial<NoteModel>) => {
       try {
-        await fetchNote(id)
+        const data = await fetchNote(id)
+        if (!data) {
+          throw data
+        }
       } catch (e) {
         await createNote({
           id,
