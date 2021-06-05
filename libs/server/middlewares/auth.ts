@@ -23,10 +23,13 @@ export function isLoggedIn(req: ApiRequest) {
 }
 
 export const applyAuth: SSRMiddeware = async (req, _res, next) => {
+  const IS_DEMO = getEnv<boolean>('IS_DEMO', false)
+
   req.props = {
     ...req.props,
     isLoggedIn: isLoggedIn(req),
-    disablePassword: getEnv('IS_DEMO') || getEnv('DISABLE_PASSWORD', false),
+    disablePassword: IS_DEMO || getEnv('DISABLE_PASSWORD', false),
+    IS_DEMO,
   }
 
   next()

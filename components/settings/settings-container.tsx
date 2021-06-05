@@ -34,9 +34,9 @@ export const SettingsContainer: FC = () => {
       <SettingsHeader
         id="import-and-export"
         title={t('Import & Export')}
-        description={t([
-          'Import a zip file containing markdown files to this location, or export all pages from this location.',
-        ])}
+        description={t(
+          'Import a zip file containing markdown files to this location, or export all pages from this location.'
+        )}
       ></SettingsHeader>
 
       <ImportOrExport></ImportOrExport>

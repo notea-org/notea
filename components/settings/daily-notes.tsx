@@ -40,6 +40,7 @@ export const DailyNotes: FC = () => {
     <Autocomplete
       options={options}
       getOptionLabel={(option) => option.label}
+      getOptionSelected={(option) => option.id === selected.id}
       value={selected}
       onChange={handleChange}
       renderInput={(params) => (

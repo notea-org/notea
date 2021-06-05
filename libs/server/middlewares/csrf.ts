@@ -1,5 +1,5 @@
 import Tokens from 'csrf'
-import { CRSF_HEADER_KEY } from 'libs/shared/const'
+import { CSRF_HEADER_KEY } from 'libs/shared/const'
 import { getEnv } from 'libs/shared/env'
 import md5 from 'md5'
 import { ApiNext, ApiRequest, ApiResponse, SSRMiddeware } from '../connect'
@@ -19,7 +19,7 @@ export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
     ...req.props,
     csrfToken: getCsrfToken(),
   }
-  req.session.set(CRSF_HEADER_KEY, req.props.csrfToken)
+  req.session.set(CSRF_HEADER_KEY, req.props.csrfToken)
   await req.session.save()
   next()
 }
@@ -27,8 +27,8 @@ export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
 const ignoredMethods = ['GET', 'HEAD', 'OPTIONS']
 
 export function useCsrf(req: ApiRequest, res: ApiResponse, next: ApiNext) {
-  const token = req.headers[CRSF_HEADER_KEY] as string
-  const sessionToken = req.session.get(CRSF_HEADER_KEY)
+  const token = req.headers[CSRF_HEADER_KEY] as string
+  const sessionToken = req.session.get(CSRF_HEADER_KEY)
 
   if (ignoredMethods.includes(req.method?.toLocaleUpperCase() as string)) {
     return next()

@@ -1,14 +1,15 @@
-import { ChangeEvent, FC, FocusEvent, useCallback } from 'react'
+import { ChangeEvent, FC, FocusEvent, useCallback, useEffect } from 'react'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { TextField } from '@material-ui/core'
 import { defaultFieldConfig } from './settings-container'
 import UIState from 'libs/web/state/ui'
+import { DEMO_INJECTION } from 'libs/shared/const'
 
 export const SnippetInjection: FC = () => {
   const { t } = useI18n()
-
   const {
     settings: { settings, updateSettings, setSettings },
+    IS_DEMO,
   } = UIState.useContainer()
 
   const saveValue = useCallback(
@@ -27,11 +28,19 @@ export const SnippetInjection: FC = () => {
     [setSettings]
   )
 
+  useEffect(() => {
+    if (IS_DEMO && settings.injection !== DEMO_INJECTION) {
+      updateSettings({ injection: DEMO_INJECTION })
+      setSettings((prev) => ({ ...prev, injection: DEMO_INJECTION }))
+    }
+  }, [settings.injection, IS_DEMO, updateSettings, setSettings])
+
   return (
     <div>
       <TextField
         {...defaultFieldConfig}
         multiline
+        disabled={IS_DEMO}
         label={t('Snippet injection')}
         placeholder="HTML"
         value={settings.injection}
@@ -39,7 +48,9 @@ export const SnippetInjection: FC = () => {
         onBlur={saveValue}
         rows={8}
         helperText={
-          'Inject analytics or other scripts into the HTML of your site.'
+          t(
+            'Inject analytics or other scripts into the HTML of your sharing page'
+          ) + (IS_DEMO ? t('Disable editing in the demo.') : '')
         }
       ></TextField>
     </div>

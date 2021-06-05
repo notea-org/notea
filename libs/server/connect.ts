@@ -26,6 +26,7 @@ export interface ServerState {
 
 export interface ServerProps {
   isLoggedIn: boolean
+  IS_DEMO: boolean
   csrfToken?: string
   pageMode: PageMode
   note?: NoteModel
