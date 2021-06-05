@@ -32,11 +32,11 @@ export default function I18nProvider({ children, locale, lngDict }: Props) {
 
   const i18nWrapper: ContextProps = {
     activeLocale: activeLocaleRef.current,
-    t: (...args) => {
+    t: (key, ...args) => {
       if (activeLocaleRef.current === defaultLanguage) {
-        return Array.isArray(args[0]) ? args[0].join('') : args[0]
+        return Array.isArray(key) ? key.join('') : key
       }
-      return i18n.t(...args)
+      return i18n.t(Array.isArray(key) ? key : [key], ...args)
     },
     locale: (l: Props['locale'], dict: Props['lngDict']) => {
       i18n.locale(l)

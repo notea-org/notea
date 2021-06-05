@@ -103,6 +103,7 @@ const AppInner = ({
                 ua: pageProps?.ua,
                 settings,
                 disablePassword: pageProps?.disablePassword,
+                IS_DEMO: pageProps.IS_DEMO,
               }}
             >
               <PortalState.Provider>

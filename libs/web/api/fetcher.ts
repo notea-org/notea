@@ -1,4 +1,4 @@
-import { CRSF_HEADER_KEY } from 'libs/shared/const'
+import { CSRF_HEADER_KEY } from 'libs/shared/const'
 import { useCallback, useRef, useState } from 'react'
 import CsrfTokenState from '../state/csrf-token'
 
@@ -31,7 +31,7 @@ export default function useFetcher() {
       }
 
       init.headers = {
-        ...(csrfToken && { [CRSF_HEADER_KEY]: csrfToken }),
+        ...(csrfToken && { [CSRF_HEADER_KEY]: csrfToken }),
       }
 
       if (payload instanceof FormData) {
