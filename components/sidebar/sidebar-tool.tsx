@@ -1,8 +1,10 @@
-import IconSearch from 'heroicons/react/outline/Search'
-import IconTrash from 'heroicons/react/outline/Trash'
-import IconChevronDoubleLeft from 'heroicons/react/outline/ChevronDoubleLeft'
-import IconInbox from 'heroicons/react/outline/Inbox'
-import IconCog from 'heroicons/react/outline/Cog'
+import {
+  SearchIcon,
+  TrashIcon,
+  ChevronDoubleLeftIcon,
+  InboxIcon,
+  CogIcon,
+} from '@heroicons/react/outline'
 import { forwardRef, HTMLProps, useCallback } from 'react'
 import UIState from 'libs/web/state/ui'
 import classNames from 'classnames'
@@ -50,7 +52,7 @@ const ButtonMenu = () => {
       keys={['\\']}
     >
       <ButtonItem onClick={onFold}>
-        <IconChevronDoubleLeft
+        <ChevronDoubleLeftIcon
           className={classNames('transform transition-transform', {
             'rotate-180': isFold,
           })}
@@ -72,7 +74,7 @@ const ButtonSearch = () => {
       keys={['P']}
     >
       <ButtonItem onClick={search.open} aria-label="search">
-        <IconSearch />
+        <SearchIcon />
       </ButtonItem>
     </HotkeyTooltip>
   )
@@ -91,7 +93,7 @@ const ButtonTrash = () => {
       keys={['T']}
     >
       <ButtonItem onClick={trash.open} aria-label="trash">
-        <IconTrash />
+        <TrashIcon />
       </ButtonItem>
     </HotkeyTooltip>
   )
@@ -112,7 +114,7 @@ const ButtonDailyNotes = () => {
           keys={['shift', 'O']}
         >
           <ButtonItem aria-label="daily notes">
-            <IconInbox />
+            <InboxIcon />
           </ButtonItem>
         </HotkeyTooltip>
       </a>
@@ -128,7 +130,7 @@ const ButtonSettings = () => {
       <a>
         <HotkeyTooltip text={t('Settings')}>
           <ButtonItem aria-label="settings">
-            <IconCog />
+            <CogIcon />
           </ButtonItem>
         </HotkeyTooltip>
       </a>

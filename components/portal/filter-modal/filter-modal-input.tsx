@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react'
-import IconSearch from 'heroicons/react/outline/Search'
+import { SearchIcon } from '@heroicons/react/outline'
 import { useDebouncedCallback } from 'use-debounce'
 import useI18n from 'libs/web/hooks/use-i18n'
 
@@ -21,7 +21,7 @@ const FilterModalInput: FC<{
 
   return (
     <div className="flex py-2 px-4">
-      <IconSearch width="20" />
+      <SearchIcon width="20" />
       <input
         ref={inputRef}
         defaultValue={keyword}

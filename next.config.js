@@ -1,5 +1,4 @@
 const withPWA = require('next-pwa')
-const path = require('path')
 
 module.exports = withPWA({
   future: {
@@ -11,16 +10,6 @@ module.exports = withPWA({
   },
 
   target: process.env.NETLIFY ? 'serverless' : 'server',
-
-  webpack(config, { defaultLoaders }) {
-    config.module.rules.push({
-      test: /\.jsx/,
-      use: [defaultLoaders.babel],
-      include: [path.resolve(__dirname, 'node_modules/heroicons')],
-    })
-
-    return config
-  },
 
   pwa: {
     disable: process.env.NODE_ENV === 'development',
