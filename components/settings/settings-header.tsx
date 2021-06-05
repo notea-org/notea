@@ -11,6 +11,7 @@ export const SettingsHeader: FC<{
         <a href={`#${id}`}>{title}</a>
         <style jsx>{`
           a {
+            font-weight: normal;
             text-decoration: none;
           }
         `}</style>

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 // TODO: Maybe can custom
 import 'highlight.js/styles/zenburn.css'
 import { useEditorTheme } from 'components/editor/theme'
@@ -6,12 +6,14 @@ import classNames from 'classnames'
 import useI18n from 'libs/web/hooks/use-i18n'
 import UIState from 'libs/web/state/ui'
 import InnerHTML from 'dangerously-set-html-content'
+import { NoteModel } from 'libs/shared/note'
+import pupa from 'pupa'
 
 export const PostContainer: FC<{
-  title?: string
   post?: string
   small?: boolean
-}> = ({ post = '', small = false, title }) => {
+  note?: NoteModel
+}> = ({ post = '', small = false, note }) => {
   const { t } = useI18n()
   const editorTheme = useEditorTheme()
   const {
@@ -20,6 +22,13 @@ export const PostContainer: FC<{
     },
   } = UIState.useContainer()
 
+  const injectionHTML = useMemo(() => {
+    return pupa(injection ?? '', {
+      ...note,
+      url: typeof window !== 'undefined' ? location.href : null,
+    })
+  }, [injection, note])
+
   return (
     <article
       className={classNames('prose mx-auto pb-10 prose-sm px-4 md:px-0', {
@@ -27,7 +36,7 @@ export const PostContainer: FC<{
       })}
     >
       <header>
-        <h1 className="pt-10">{title ?? t('Untitled')}</h1>
+        <h1 className="pt-10">{note?.title ?? t('Untitled')}</h1>
       </header>
       <main
         dangerouslySetInnerHTML={{
@@ -131,11 +140,30 @@ export const PostContainer: FC<{
         .prose :global(table *) {
           margin: 0;
         }
+
+        footer a {
+          color: currentColor;
+          font-weight: normal;
+        }
       `}</style>
-      {injection ? <InnerHTML id="snippet-injection" html={injection} /> : null}
-      <footer className="text-gray-300 border-gray-200 border-t text-center my-10 py-10">
-        Powered by Notea
-      </footer>
+
+      {small ? null : (
+        <>
+          {injection ? (
+            <InnerHTML id="snippet-injection" html={injectionHTML} />
+          ) : null}
+          <footer className="text-gray-300 text-center my-20 py-10 text-sm">
+            Built with{' '}
+            <a
+              href="https://cinwell.com/notea/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Notea
+            </a>
+          </footer>
+        </>
+      )}
     </article>
   )
 }

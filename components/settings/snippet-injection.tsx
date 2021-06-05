@@ -37,6 +37,7 @@ export const SnippetInjection: FC = () => {
         value={settings.injection}
         onChange={updateValue}
         onBlur={saveValue}
+        rows={8}
         helperText={
           'Inject analytics or other scripts into the HTML of your site.'
         }
