@@ -1,8 +1,10 @@
 import { Menu } from '@material-ui/core'
 import { FC, useMemo } from 'react'
-import IconClipboardCopy from 'heroicons/react/outline/ClipboardCopy'
-import IconStar from 'heroicons/react/outline/Star'
-import IconTrash from 'heroicons/react/outline/Trash'
+import {
+  ClipboardCopyIcon,
+  StarIcon,
+  TrashIcon,
+} from '@heroicons/react/outline'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { NOTE_PINNED } from 'libs/shared/meta'
@@ -19,17 +21,17 @@ const SidebarMenu: FC = () => {
     () => [
       {
         text: t('Remove'),
-        icon: <IconTrash />,
+        icon: <TrashIcon />,
         handler: MENU_HANDLER_NAME.REMOVE_NOTE,
       },
       {
         text: t('Copy Link'),
-        icon: <IconClipboardCopy />,
+        icon: <ClipboardCopyIcon />,
         handler: MENU_HANDLER_NAME.COPY_LINK,
       },
       {
         text: t('Add to Favorites'),
-        icon: <IconStar />,
+        icon: <StarIcon />,
         handler: MENU_HANDLER_NAME.ADD_TO_FAVORITES,
         enable(item?: NoteModel) {
           return item?.pinned !== NOTE_PINNED.PINNED
@@ -37,7 +39,7 @@ const SidebarMenu: FC = () => {
       },
       {
         text: t('Remove from Favorites'),
-        icon: <IconStar />,
+        icon: <StarIcon />,
         handler: MENU_HANDLER_NAME.REMOVE_FROM_FAVORITES,
         enable(item?: NoteModel) {
           return item?.pinned === NOTE_PINNED.PINNED

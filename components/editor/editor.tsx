@@ -7,6 +7,7 @@ import useI18n from 'libs/web/hooks/use-i18n'
 import Tooltip from './tooltip'
 import extensions from './extensions'
 import EditorState from 'libs/web/state/editor'
+import { useToast } from 'libs/web/hooks/use-toast'
 
 const Editor: FC = () => {
   const {
@@ -25,6 +26,7 @@ const Editor: FC = () => {
   const { t } = useI18n()
   const editorTheme = useEditorTheme()
   const [hasMinHeight, setHasMinHeight] = useState(true)
+  const toast = useToast()
 
   const dictionary = useMemo(
     () => ({
@@ -114,6 +116,7 @@ const Editor: FC = () => {
         onCreateLink={onCreateLink}
         onClickLink={onClickLink}
         onHoverLink={onHoverLink}
+        onShowToast={toast}
         dictionary={dictionary}
         tooltip={Tooltip}
         extensions={extensions}

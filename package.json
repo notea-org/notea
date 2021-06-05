@@ -73,6 +73,7 @@
     "use-debounce": "^5.2.1"
   },
   "devDependencies": {
+    "@heroicons/react": "^1.0.1",
     "@tailwindcss/typography": "^0.4.0",
     "@types/adm-zip": "^0.4.34",
     "@types/classnames": "^2.2.11",
@@ -95,7 +96,6 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "heroicons": "^0.4.2",
     "husky": "^5.0.9",
     "i18n-extract": "^0.6.7",
     "lint-staged": "^10.5.4",

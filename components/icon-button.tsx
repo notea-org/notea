@@ -1,31 +1,37 @@
 import classNames from 'classnames'
 import { forwardRef, HTMLProps } from 'react'
-import Trash from 'heroicons/react/outline/Trash'
-import Menu from 'heroicons/react/outline/Menu'
-import Plus from 'heroicons/react/outline/Plus'
-import DotsHorizontal from 'heroicons/react/outline/DotsHorizontal'
-import ChevronRight from 'heroicons/react/outline/ChevronRight'
-import Reply from 'heroicons/react/outline/Reply'
-import Share from 'heroicons/react/outline/Share'
-import Duplicate from 'heroicons/react/outline/Duplicate'
-import Document from 'heroicons/react/outline/Document'
-import DocumentText from 'heroicons/react/outline/DocumentText'
-import Link from 'heroicons/react/outline/Link'
-import Selector from 'heroicons/react/outline/Selector'
+import {
+  TrashIcon,
+  MenuIcon,
+  PlusIcon,
+  DotsHorizontalIcon,
+  ChevronRightIcon,
+  ReplyIcon,
+  ShareIcon,
+  DuplicateIcon,
+  DocumentIcon,
+  DocumentTextIcon,
+  SelectorIcon,
+  LinkIcon,
+  ArrowSmLeftIcon,
+  ArrowSmRightIcon,
+} from '@heroicons/react/outline'
 
 export const ICONS = {
-  Trash,
-  Menu,
-  Plus,
-  DotsHorizontal,
-  ChevronRight,
-  Reply,
-  Share,
-  Duplicate,
-  Document,
-  DocumentText,
-  Selector,
-  Link,
+  Trash: TrashIcon,
+  Menu: MenuIcon,
+  Plus: PlusIcon,
+  DotsHorizontal: DotsHorizontalIcon,
+  ChevronRight: ChevronRightIcon,
+  Reply: ReplyIcon,
+  Share: ShareIcon,
+  Duplicate: DuplicateIcon,
+  Document: DocumentIcon,
+  DocumentText: DocumentTextIcon,
+  Selector: SelectorIcon,
+  Link: LinkIcon,
+  ArrowSmLeft: ArrowSmLeftIcon,
+  ArrowSmRight: ArrowSmRightIcon,
 }
 
 const IconButton = forwardRef<
