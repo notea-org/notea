@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import NoteState from 'libs/web/state/note'
 import UIState from 'libs/web/state/ui'
 import { useCallback, MouseEvent } from 'react'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, Tooltip } from '@material-ui/core'
 import NoteTreeState from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
 import Link from 'next/link'
@@ -11,7 +11,6 @@ import HotkeyTooltip from './hotkey-tooltip'
 import PortalState from 'libs/web/state/portal'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import useI18n from 'libs/web/hooks/use-i18n'
-import Tooltip from 'rich-markdown-editor/dist/components/Tooltip'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -85,12 +84,14 @@ const NoteNav = () => {
           {getPaths(note)
             .reverse()
             .map((path) => (
-              <Tooltip key={path.id} tooltip={path.title}>
-                <Link href={`/${path.id}`} shallow>
-                  <a className="block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate max-w-xs">
-                    {path.title}
-                  </a>
-                </Link>
+              <Tooltip key={path.id} title={path.title}>
+                <div>
+                  <Link href={`/${path.id}`} shallow>
+                    <a className="block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate max-w-xs">
+                      {path.title}
+                    </a>
+                  </Link>
+                </div>
               </Tooltip>
             ))}
           <span
