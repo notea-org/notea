@@ -22,7 +22,7 @@ const Backlinks: FC = () => {
       <ul className="bg-gray-100 mt-2 rounded overflow-hidden">
         {backlinks?.map((link) => (
           <li key={link.id}>
-            <Link href={link.id}>
+            <Link href={link.id} shallow>
               <a
                 className="p-2 block flex items-center hover:bg-gray-300 truncate"
                 onMouseEnter={onHoverLink}

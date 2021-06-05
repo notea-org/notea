@@ -77,7 +77,7 @@ const PreviewModal: FC = () => {
 
   const gotoLink = useCallback(() => {
     if (note?.id) {
-      router.push(note.id)
+      router.push(note.id, undefined, { shallow: true })
     }
   }, [note?.id, router])
 
