@@ -4,6 +4,8 @@ import { TextField } from '@material-ui/core'
 import { defaultFieldConfig } from './settings-container'
 import UIState from 'libs/web/state/ui'
 import { DEMO_INJECTION } from 'libs/shared/const'
+import Link from 'next/link'
+import { QuestionMarkCircleIcon } from '@heroicons/react/outline'
 
 export const SnippetInjection: FC = () => {
   const { t } = useI18n()
@@ -48,9 +50,18 @@ export const SnippetInjection: FC = () => {
         onBlur={saveValue}
         rows={8}
         helperText={
-          t(
-            'Inject analytics or other scripts into the HTML of your sharing page. '
-          ) + (IS_DEMO ? t('Disable editing in the demo.') : '')
+          <div className="flex items-center">
+            <span>
+              {t(
+                'Inject analytics or other scripts into the HTML of your sharing page. '
+              ) + (IS_DEMO ? t('Disable editing in the demo.') : '')}
+            </span>
+            <Link href="https://github.com/QingWei-Li/notea/wiki/Snippet-Injection">
+              <a target="_blank" rel="noreferrer">
+                <QuestionMarkCircleIcon className="w-4 text-gray-500 hover:text-gray-700" />
+              </a>
+            </Link>
+          </div>
         }
       ></TextField>
     </div>
