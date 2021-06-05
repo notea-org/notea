@@ -16,7 +16,13 @@
 
 - Link: https://notea.cinwell.com
 
-## Requirement
+## Roadmap
+
+- [x] Backlinks #39
+- [ ] File embed
+- [ ] Editing offline #14
+- [ ] Note versioning #49
+- [ ] File upload
 
 - [Next.js](https://nextjs.org/)
 - [S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
