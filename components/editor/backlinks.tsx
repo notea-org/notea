@@ -18,7 +18,7 @@ const Backlinks: FC = () => {
 
   return (
     <div className="mb-40">
-      <h4 className="text-sm px-2 text-gray-400">{t('Linked to this page')}</h4>
+      <h4 className="text-xs px-2 text-gray-400">{t('Linked to this page')}</h4>
       <ul className="bg-gray-100 mt-2 rounded overflow-hidden">
         {backlinks?.map((link) => (
           <li key={link.id}>

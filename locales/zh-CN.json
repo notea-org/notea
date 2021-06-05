@@ -47,7 +47,7 @@
   "Import a zip file containing markdown files to this location, or export all pages from this location.": "导入一个包含 markdown 的 zip 文件到指定位置，或者从指定位置导出所有页面。",
   "Info": "Info",
   "Info notice": "Info notice",
-  "Inject analytics or other scripts into the HTML of your sharing page": "注入统计代码或者其他脚本到你的分享页面中。",
+  "Inject analytics or other scripts into the HTML of your sharing page. ": "注入统计代码或者其他脚本到你的分享页面中。",
   "Insert column after": "Insert column after",
   "Insert column before": "Insert column before",
   "Insert row after": "Insert row after",
