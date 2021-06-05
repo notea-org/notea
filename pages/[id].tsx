@@ -31,7 +31,7 @@ export default function EditNotePage({
 
   return (
     <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
-      <PostContainer title={note?.title} post={post} />
+      <PostContainer note={note} post={post} />
     </LayoutPublic>
   )
 }
