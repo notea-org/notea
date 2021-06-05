@@ -8,7 +8,7 @@ import { configLocale, Locale } from 'locales'
 import { map } from 'lodash'
 
 export const Language: FC = () => {
-  const { t } = useI18n()
+  const { t, activeLocale } = useI18n()
   const {
     settings: { settings, updateSettings },
   } = UIState.useContainer()
@@ -24,7 +24,9 @@ export const Language: FC = () => {
   return (
     <TextField
       {...defaultFieldConfig}
-      label={t('Language')}
+      label={`${t('Language')}${
+        activeLocale !== Locale.EN ? '(Language)' : ''
+      }`}
       value={settings.locale}
       onChange={handleChange}
       select

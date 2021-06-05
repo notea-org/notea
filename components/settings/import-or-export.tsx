@@ -32,14 +32,11 @@ export const ImportOrExport: FC = () => {
           <TextField
             {...params}
             {...defaultFieldConfig}
-            label={t('Import & Export')}
-            helperText={t(
-              'Import a zip file containing markdown files to this location, or export all pages from this location'
-            )}
+            label={t('Location')}
           ></TextField>
         )}
       ></Autocomplete>
-      <div className="space-x-4 flex">
+      <div className="space-x-4 flex mt-2">
         <ImportButton parentId={selected.id}></ImportButton>
         <ExportButton parentId={selected.id}></ExportButton>
       </div>
