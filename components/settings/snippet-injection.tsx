@@ -49,7 +49,7 @@ export const SnippetInjection: FC = () => {
         rows={8}
         helperText={
           t(
-            'Inject analytics or other scripts into the HTML of your sharing page'
+            'Inject analytics or other scripts into the HTML of your sharing page. '
           ) + (IS_DEMO ? t('Disable editing in the demo.') : '')
         }
       ></TextField>

@@ -47,7 +47,7 @@
   "Import a zip file containing markdown files to this location, or export all pages from this location.": "Import a zip file containing markdown files to this location, or export all pages from this location.",
   "Info": "Info",
   "Info notice": "Info notice",
-  "Inject analytics or other scripts into the HTML of your sharing page": "Inject analytics or other scripts into the HTML of your sharing page",
+  "Inject analytics or other scripts into the HTML of your sharing page. ": "Inject analytics or other scripts into the HTML of your sharing page. ",
   "Insert column after": "Insert column after",
   "Insert column before": "Insert column before",
   "Insert row after": "Insert row after",
