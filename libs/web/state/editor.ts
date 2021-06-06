@@ -19,6 +19,7 @@ import MarkdownEditor from 'rich-markdown-editor'
 import { useDebouncedCallback } from 'use-debounce'
 import { ROOT_ID } from 'libs/shared/tree'
 import { has } from 'lodash'
+import UIState from './ui'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -42,6 +43,9 @@ const useEditor = () => {
     createNote,
     note,
   } = NoteState.useContainer()
+  const {
+    ua: { isBrowser },
+  } = UIState.useContainer()
   const router = useRouter()
   const { request, error } = useFetcher()
   const toast = useToast()
@@ -114,6 +118,9 @@ const useEditor = () => {
 
   const onHoverLink = useCallback(
     (event: MouseEvent | ReactMouseEvent) => {
+      if (!isBrowser) {
+        return true
+      }
       const link = event.target as HTMLLinkElement
       const href = link.getAttribute('href')
       if (href && isNoteLink(href)) {
@@ -125,7 +132,7 @@ const useEditor = () => {
       }
       return true
     },
-    [preview]
+    [preview, isBrowser]
   )
 
   const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
