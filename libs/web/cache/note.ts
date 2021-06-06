@@ -23,7 +23,7 @@ async function getItem(id: string) {
 }
 
 async function setItem(id: string, note: NoteModel) {
-  const extractorLinks = markdownLinkExtractor(note.content, false)
+  const extractorLinks = markdownLinkExtractor(note.content ?? '', false)
   const linkIds: string[] = []
   if (Array.isArray(extractorLinks) && extractorLinks.length) {
     extractorLinks.forEach((link) => {
