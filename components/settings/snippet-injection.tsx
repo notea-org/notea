@@ -50,7 +50,7 @@ export const SnippetInjection: FC = () => {
         onBlur={saveValue}
         rows={8}
         helperText={
-          <div className="flex items-center">
+          <span className="flex items-center">
             <span>
               {t(
                 'Inject analytics or other scripts into the HTML of your sharing page. '
@@ -61,7 +61,7 @@ export const SnippetInjection: FC = () => {
                 <QuestionMarkCircleIcon className="w-4 text-gray-500 hover:text-gray-700" />
               </a>
             </Link>
-          </div>
+          </span>
         }
       ></TextField>
     </div>

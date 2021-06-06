@@ -43,7 +43,15 @@ const IconButton = forwardRef<
   }
 >(
   (
-    { children, rounded = true, className, iconClassName = '', icon, ...attrs },
+    {
+      children,
+      rounded = true,
+      className,
+      iconClassName = '',
+      icon,
+      disabled,
+      ...attrs
+    },
     ref
   ) => {
     const Icon = ICONS[icon]
@@ -53,8 +61,12 @@ const IconButton = forwardRef<
         ref={ref}
         {...attrs}
         className={classNames(
-          'block p-0.5 hover:bg-gray-400 cursor-pointer w-7 h-7 md:w-6 md:h-6',
-          { rounded },
+          'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6',
+          {
+            rounded,
+            'cursor-not-allowed opacity-20': disabled,
+          },
+          !disabled && 'hover:bg-gray-400',
           className
         )}
       >
