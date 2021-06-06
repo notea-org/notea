@@ -57,7 +57,8 @@ const HotkeyTooltip: FC<{
       enabled: !!keys.length,
       enableOnTags: ['INPUT', 'TEXTAREA'],
       enableOnContentEditable: true,
-    }
+    },
+    [onHotkey]
   )
 
   return (

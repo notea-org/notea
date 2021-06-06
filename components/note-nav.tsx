@@ -11,6 +11,7 @@ import HotkeyTooltip from './hotkey-tooltip'
 import PortalState from 'libs/web/state/portal'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import useI18n from 'libs/web/hooks/use-i18n'
+import NavButtonGroup from './nav-button-group'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -75,7 +76,8 @@ const NoteNav = () => {
       }}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
-      <div className="flex-auto">
+      <NavButtonGroup />
+      <div className="flex-auto ml-4">
         <Breadcrumbs
           maxItems={2}
           className="text-gray-800 leading-none"
@@ -87,20 +89,29 @@ const NoteNav = () => {
               <Tooltip key={path.id} title={path.title}>
                 <div>
                   <Link href={`/${path.id}`} shallow>
-                    <a className="block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate max-w-xs">
+                    <a className="title block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate">
                       {path.title}
                     </a>
                   </Link>
                 </div>
               </Tooltip>
             ))}
-          <span
-            className="block text-gray-600 text-sm truncate max-w-xs"
-            aria-current="page"
-          >
-            {note.title}
-          </span>
+          <Tooltip title={note.title}>
+            <span
+              className="title block text-gray-600 text-sm truncate select-none"
+              aria-current="page"
+            >
+              {note.title}
+            </span>
+          </Tooltip>
         </Breadcrumbs>
+        <style jsx>
+          {`
+            .title {
+              max-width: 120px;
+            }
+          `}
+        </style>
       </div>
       <div
         className={classNames('flex mr-2 transition-opacity delay-100', {
