@@ -1,8 +1,8 @@
 import { DEFAULT_SETTINGS } from 'libs/shared/settings'
 import { getSettings } from 'pages/api/settings'
-import { SSRMiddeware } from '../connect'
+import { SSRMiddleware } from '../connect'
 
-export const applySettings: SSRMiddeware = async (req, _res, next) => {
+export const applySettings: SSRMiddleware = async (req, _res, next) => {
   const settings = await getSettings(req.state.store)
   let lngDict = {}
 

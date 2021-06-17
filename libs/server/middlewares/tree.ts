@@ -1,6 +1,6 @@
-import { SSRMiddeware } from '../connect'
+import { SSRMiddleware } from '../connect'
 
-export const applyTree: SSRMiddeware = async (req, res, next) => {
+export const applyTree: SSRMiddleware = async (req, res, next) => {
   let tree
 
   // todo 分享页面获取指定树结构

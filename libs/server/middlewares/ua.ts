@@ -1,8 +1,8 @@
 import { UserAgentType } from 'libs/shared/ua'
 import UAParser from 'ua-parser-js'
-import { SSRMiddeware } from '../connect'
+import { SSRMiddleware } from '../connect'
 
-export const applyUA: SSRMiddeware = (req, _res, next) => {
+export const applyUA: SSRMiddleware = (req, _res, next) => {
   const ua = new UAParser(req.headers['user-agent']).getResult()
 
   req.props = {

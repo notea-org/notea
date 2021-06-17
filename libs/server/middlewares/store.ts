@@ -1,8 +1,8 @@
 import { createStore } from 'libs/server/store'
-import { ApiRequest, SSRMiddeware } from '../connect'
+import { ApiRequest, SSRMiddleware } from '../connect'
 import TreeStore from 'libs/server/tree'
 
-export const useStore: SSRMiddeware = async (req, _res, next) => {
+export const useStore: SSRMiddleware = async (req, _res, next) => {
   applyStore(req)
 
   return next()

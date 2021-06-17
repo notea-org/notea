@@ -1,7 +1,7 @@
-import { SSRMiddeware } from '../connect'
+import { SSRMiddleware } from '../connect'
 import { renderMarkdown } from 'libs/shared/markdown/render'
 
-export const applyPost: SSRMiddeware = async (req, _res, next) => {
+export const applyPost: SSRMiddleware = async (req, _res, next) => {
   req.props = {
     ...req.props,
     post: renderMarkdown(req.props.note?.content ?? ''),
@@ -10,7 +10,7 @@ export const applyPost: SSRMiddeware = async (req, _res, next) => {
   next()
 }
 
-export const applyPostWithAuth: SSRMiddeware = async (req, res, next) => {
+export const applyPostWithAuth: SSRMiddleware = async (req, res, next) => {
   if (req.props.isLoggedIn) {
     return next()
   }

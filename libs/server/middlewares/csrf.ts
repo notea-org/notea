@@ -2,7 +2,7 @@ import Tokens from 'csrf'
 import { CSRF_HEADER_KEY } from 'libs/shared/const'
 import { getEnv } from 'libs/shared/env'
 import md5 from 'md5'
-import { ApiNext, ApiRequest, ApiResponse, SSRMiddeware } from '../connect'
+import { ApiNext, ApiRequest, ApiResponse, SSRMiddleware } from '../connect'
 
 const tokens = new Tokens()
 
@@ -14,7 +14,7 @@ export const getCsrfToken = () => tokens.create(csrfSecret)
 export const verifyCsrfToken = (token: string) =>
   tokens.verify(csrfSecret, token)
 
-export const applyCsrf: SSRMiddeware = async (req, _res, next) => {
+export const applyCsrf: SSRMiddleware = async (req, _res, next) => {
   req.props = {
     ...req.props,
     csrfToken: getCsrfToken(),

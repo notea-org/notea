@@ -79,4 +79,4 @@ export type SSRContext = GetServerSidePropsContext & {
   res: ApiResponse
 }
 
-export type SSRMiddeware = Middleware<ApiRequest, ApiResponse>
+export type SSRMiddleware = Middleware<ApiRequest, ApiResponse>

@@ -24,7 +24,7 @@ const Backlinks: FC = () => {
           <li key={link.id}>
             <Link href={link.id} shallow>
               <a
-                className="p-2 block flex items-center hover:bg-gray-300 truncate"
+                className="p-2 flex items-center hover:bg-gray-300 truncate"
                 onMouseEnter={onHoverLink}
               >
                 <IconButton className="mr-1" icon="DocumentText"></IconButton>

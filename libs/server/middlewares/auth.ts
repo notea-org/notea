@@ -1,6 +1,6 @@
 import { getEnv } from 'libs/shared/env'
 import { PageMode } from 'libs/shared/page'
-import { ApiRequest, ApiResponse, ApiNext, SSRMiddeware } from '../connect'
+import { ApiRequest, ApiResponse, ApiNext, SSRMiddleware } from '../connect'
 
 export async function useAuth(
   req: ApiRequest,
@@ -22,7 +22,7 @@ export function isLoggedIn(req: ApiRequest) {
   return !!req.session.get('user')?.isLoggedIn
 }
 
-export const applyAuth: SSRMiddeware = async (req, _res, next) => {
+export const applyAuth: SSRMiddleware = async (req, _res, next) => {
   const IS_DEMO = getEnv<boolean>('IS_DEMO', false)
 
   req.props = {
@@ -35,7 +35,7 @@ export const applyAuth: SSRMiddeware = async (req, _res, next) => {
   next()
 }
 
-export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddeware = (
+export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddleware = (
   resolvedUrl: string
 ) => async (req, _res, next) => {
   const redirect = {
