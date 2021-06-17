@@ -44,6 +44,12 @@ export function useCsrf(req: ApiRequest, res: ApiResponse, next: ApiNext) {
   ) {
     next()
   } else {
-    return res.APIError.INVALID_CSRF_TOKEN.throw()
+    let message
+    if (!token) {
+      message = 'Missing CSRF token in headers'
+    } else if (!sessionToken) {
+      message = 'Missing CSRF token in cookies'
+    }
+    return res.APIError.INVALID_CSRF_TOKEN.throw(message)
   }
 }
