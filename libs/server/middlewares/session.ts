@@ -1,6 +1,11 @@
-import { ironSession} from 'next-iron-session'
+import { ironSession } from 'next-iron-session'
 import md5 from 'md5'
 import { getEnv } from 'libs/shared/env'
+
+// Check password is not empty
+if (!getEnv('DISABLE_PASSWORD', false)) {
+  getEnv('PASSWORD', null, true)
+}
 
 const sessionOptions = {
   cookieName: 'notea-auth',
