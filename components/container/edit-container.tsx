@@ -51,7 +51,7 @@ export const EditContainer = () => {
         try {
           const result = await fetchNote(id)
           if (!result) {
-            router.replace({ query: { new: '1' }, path: router.asPath })
+            router.replace({ query: { ...router.query, new: 1 } })
             return
           }
         } catch (msg) {
