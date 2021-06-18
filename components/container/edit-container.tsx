@@ -29,6 +29,7 @@ export const EditContainer = () => {
   const { query } = useRouter()
   const pid = query.pid as string
   const id = query.id as string
+  const isNew = has(query, 'new')
   const { mutate: mutateSettings } = useSettingsAPI()
   const toast = useToast()
 
@@ -46,9 +47,13 @@ export const EditContainer = () => {
         const url = `/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
         router.replace(url, undefined, { shallow: true })
-      } else if (id && !has(router.query, 'new')) {
+      } else if (id && !isNew) {
         try {
-          await fetchNote(id)
+          const result = await fetchNote(id)
+          if (!result) {
+            router.replace({ query: { new: '1' }, path: router.asPath })
+            return
+          }
         } catch (msg) {
           if (msg.name !== 'AbortError') {
             toast(msg.message, 'error')
@@ -67,12 +72,14 @@ export const EditContainer = () => {
         })
       }
 
-      mutateSettings({
-        last_visit: `/${id}`,
-      })
+      if (!isNew && id !== 'new') {
+        mutateSettings({
+          last_visit: `/${id}`,
+        })
+      }
     },
     [
-      mutateSettings,
+      isNew,
       findOrCreateNote,
       settings.daily_root_id,
       genNewId,
@@ -80,6 +87,7 @@ export const EditContainer = () => {
       fetchNote,
       toast,
       initNote,
+      mutateSettings,
     ]
   )
 

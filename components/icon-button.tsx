@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { forwardRef, HTMLProps } from 'react'
+import { forwardRef, HTMLProps, useCallback } from 'react'
 import {
   TrashIcon,
   MenuIcon,
@@ -50,15 +50,26 @@ const IconButton = forwardRef<
       iconClassName = '',
       icon,
       disabled,
+      onClick,
       ...attrs
     },
     ref
   ) => {
     const Icon = ICONS[icon]
 
+    const handleClick = useCallback(
+      (event) => {
+        if (!disabled && onClick) {
+          onClick(event)
+        }
+      },
+      [disabled, onClick]
+    )
+
     return (
       <span
         ref={ref}
+        onClick={handleClick}
         {...attrs}
         className={classNames(
           'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6',
