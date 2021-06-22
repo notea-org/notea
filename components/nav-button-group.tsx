@@ -71,6 +71,7 @@ const NavButtonGroup: FC = () => {
         onHotkey={back}
         keys={['Left']}
         commandKey
+        disableOnContentEditable
       >
         <IconButton disabled={!canBack} icon="ArrowSmLeft" onClick={back} />
       </HotkeyTooltip>
@@ -79,6 +80,7 @@ const NavButtonGroup: FC = () => {
         onHotkey={forward}
         keys={['Right']}
         commandKey
+        disableOnContentEditable
       >
         <IconButton
           disabled={!canForward}
