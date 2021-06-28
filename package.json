@@ -67,7 +67,7 @@
     "react-resize-detector": "^6.6.0",
     "react-split": "^2.0.9",
     "remove-markdown": "^0.3.0",
-    "rich-markdown-editor": "^11.11.1",
+    "rich-markdown-editor": "^11.13.0",
     "rosetta": "^1.1.0",
     "styled-components": "^5.2.1",
     "ua-parser-js": "^0.7.24",
