@@ -39,6 +39,7 @@ const useModal = () => {
     menu: useAnchorInstance<NoteModel>(),
     share: useAnchorInstance<NoteModel>(),
     preview: useAnchorInstance<{ id?: string }>(),
+    linkToolbar: useAnchorInstance<{ href?: string }>(),
   }
 }
 
