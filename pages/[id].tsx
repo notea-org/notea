@@ -9,7 +9,6 @@ import { PostContainer } from 'components/container/post-container'
 import { applyCsrf } from 'libs/server/middlewares/csrf'
 import { ssr, SSRContext, ServerProps } from 'libs/server/connect'
 import { applyUA } from 'libs/server/middlewares/ua'
-import { applyPostWithAuth } from 'libs/server/middlewares/post'
 import { isNoteLink } from 'libs/shared/note'
 import { applyReset } from 'libs/server/middlewares/reset'
 
@@ -55,7 +54,6 @@ export const getServerSideProps = async (
     .use(applySettings)
     .use(applyCsrf)
     .use(applyUA)
-    .use(applyPostWithAuth)
     .run(ctx.req, ctx.res)
 
   return {

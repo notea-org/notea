@@ -30,7 +30,7 @@ export const PostContainer: FC<{
 
   return (
     <>
-      <MainEditor className={className} readOnly />
+      <MainEditor small={small} note={note} className={className} readOnly />
       {small ? null : (
         <>
           {injection ? (
