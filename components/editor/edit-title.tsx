@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { FC, useCallback, KeyboardEvent, useRef, useMemo } from 'react'
 import EditorState from 'libs/web/state/editor'
 
-const EditTitle: FC = () => {
+const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
   const { editorEl, onNoteChange, note } = EditorState.useContainer()
   const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -29,13 +29,13 @@ const EditTitle: FC = () => {
   )
 
   const autoFocus = useMemo(() => has(router.query, 'new'), [router.query])
-
   const { t } = useI18n()
 
   return (
     <h1 className="text-3xl mb-8">
       <TextareaAutosize
         ref={inputRef}
+        readOnly={readOnly}
         className="outline-none w-full resize-none block bg-transparent"
         placeholder={t('New Page')}
         defaultValue={note?.title}

@@ -19,7 +19,6 @@ export default function EditNotePage({
   pageMode,
   baseURL,
   isLoggedIn,
-  post,
 }: ServerProps) {
   if (isLoggedIn) {
     return (
@@ -31,7 +30,7 @@ export default function EditNotePage({
 
   return (
     <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
-      <PostContainer note={note} post={post} />
+      <PostContainer note={note} />
     </LayoutPublic>
   )
 }

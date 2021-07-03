@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
-import MarkdownEditor from 'rich-markdown-editor'
+import MarkdownEditor, { Props } from 'rich-markdown-editor'
 import { useEditorTheme } from './theme'
 import useMounted from 'libs/web/hooks/use-mounted'
 import useI18n from 'libs/web/hooks/use-i18n'
@@ -9,7 +9,9 @@ import extensions from './extensions'
 import EditorState from 'libs/web/state/editor'
 import { useToast } from 'libs/web/hooks/use-toast'
 
-const Editor: FC = () => {
+export type EditorProps = Pick<Props, 'readOnly'>
+
+const Editor: FC<EditorProps> = ({ readOnly }) => {
   const {
     onSearchLink,
     onCreateLink,
@@ -106,6 +108,7 @@ const Editor: FC = () => {
   return (
     <>
       <MarkdownEditor
+        readOnly={readOnly}
         id={note?.id}
         ref={editorEl}
         value={mounted ? note?.content : ''}
