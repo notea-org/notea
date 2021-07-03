@@ -44,7 +44,7 @@ export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
         <div>{url}</div>
       </div>
       {!!image && (
-        <div className="w-32 flex">
+        <div className="md:w-32 flex w-0">
           <img className="m-auto object-cover" src={image} alt={title} />
         </div>
       )}
