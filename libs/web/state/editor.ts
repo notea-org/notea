@@ -36,7 +36,7 @@ const onSearchLink = async (keyword: string) => {
   }))
 }
 
-const useEditor = (initNote: NoteModel) => {
+const useEditor = (initNote?: NoteModel) => {
   const {
     createNoteWithTitle,
     updateNote,
