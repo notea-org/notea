@@ -8,6 +8,7 @@ import { NOTE_ID_REGEXP } from 'libs/shared/note'
 // On aliyun `X-Amz-Expires` must be less than 604800 seconds
 const expires = 86400
 
+// FIXME: 匿名访问是挂的
 export default api()
   .use(useStore)
   .get(async (req, res) => {

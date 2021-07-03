@@ -124,13 +124,16 @@ const useEditor = (initNote?: NoteModel) => {
       }
       const link = event.target as HTMLLinkElement
       const href = link.getAttribute('href')
+      if (link.classList.contains('bookmark')) {
+        return true
+      }
       if (href) {
         if (isNoteLink(href)) {
           preview.close()
           preview.setData({ id: href.slice(1) })
           preview.setAnchor(link)
         } else {
-          linkToolbar.setData({ href })
+          linkToolbar.setData({ href, view: editorEl.current?.view })
           linkToolbar.setAnchor(link)
         }
       } else {
@@ -155,6 +158,13 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
+  const onEditorChange = useCallback(
+    (value: () => string): void => {
+      onNoteChange.callback({ content: value() })
+    },
+    [onNoteChange]
+  )
+
   return {
     onCreateLink,
     onSearchLink,
@@ -162,6 +172,7 @@ const useEditor = (initNote?: NoteModel) => {
     onUploadImage,
     onHoverLink,
     getBackLinks,
+    onEditorChange,
     onNoteChange,
     backlinks,
     editorEl,

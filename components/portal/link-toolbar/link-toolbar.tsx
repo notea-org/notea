@@ -4,12 +4,48 @@ import IconButton from 'components/icon-button'
 import useI18n from 'libs/web/hooks/use-i18n'
 import PortalState from 'libs/web/state/portal'
 import Popover from 'components/popover'
+import { useCallback } from 'react'
+import { findPlaceholderLink } from 'libs/web/editor/link'
 
 const LinkToolbar = () => {
   const { t } = useI18n()
   const {
-    linkToolbar: { anchor, open, close, visible, setAnchor },
+    linkToolbar: { anchor, open, close, visible, data, setAnchor },
   } = PortalState.useContainer()
+
+  const openLink = useCallback(() => {
+    if (data?.href) {
+      window.open(data.href, '_blank')
+    }
+  }, [data?.href])
+
+  const createBookmark = useCallback(() => {
+    const { view, href } = data ?? {}
+    if (!view || !href) {
+      return
+    }
+    const { dispatch, state } = view
+    const result = findPlaceholderLink(state.doc, href)
+
+    if (!result) {
+      return
+    }
+    const bookmarkUrl = `/api/extract/bookmark?url=${href}`
+    const transaction = state.tr.replaceWith(
+      result.pos,
+      result.pos + result.node.nodeSize,
+      state.schema.nodes.embed.create({
+        href: bookmarkUrl,
+        matches: bookmarkUrl,
+      })
+    )
+
+    dispatch(transaction)
+    setAnchor(null)
+    close()
+  }, [data, close, setAnchor])
+
+  const createEmbed = useCallback(() => {}, [])
 
   return (
     <Popover
@@ -23,10 +59,17 @@ const LinkToolbar = () => {
     >
       <Paper className="relative bg-gray-50 flex p-1 space-x-1">
         <HotkeyTooltip text={t('Open link')}>
-          <IconButton icon={'ExternalLink'}></IconButton>
+          <IconButton onClick={openLink} icon={'ExternalLink'}></IconButton>
         </HotkeyTooltip>
-        <IconButton icon={'BookmarkAlt'}></IconButton>
-        <IconButton icon={'Code'}></IconButton>
+        <HotkeyTooltip text={t('Create bookmark')}>
+          <IconButton
+            onClick={createBookmark}
+            icon={'BookmarkAlt'}
+          ></IconButton>
+        </HotkeyTooltip>
+        <HotkeyTooltip text={t('Create embed')}>
+          <IconButton onClick={createEmbed} icon={'Puzzle'}></IconButton>
+        </HotkeyTooltip>
       </Paper>
     </Popover>
   )

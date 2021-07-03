@@ -1,5 +1,6 @@
 import { NoteModel } from 'libs/shared/note'
 import { useState, useCallback } from 'react'
+import RichMarkdownEditor from 'rich-markdown-editor'
 import { createContainer } from 'unstated-next'
 
 const useModalInstance = () => {
@@ -39,7 +40,10 @@ const useModal = () => {
     menu: useAnchorInstance<NoteModel>(),
     share: useAnchorInstance<NoteModel>(),
     preview: useAnchorInstance<{ id?: string }>(),
-    linkToolbar: useAnchorInstance<{ href?: string }>(),
+    linkToolbar: useAnchorInstance<{
+      href: string
+      view?: RichMarkdownEditor['view']
+    }>(),
   }
 }
 
