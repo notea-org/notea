@@ -36,13 +36,14 @@ const onSearchLink = async (keyword: string) => {
   }))
 }
 
-const useEditor = () => {
+const useEditor = (initNote?: NoteModel) => {
   const {
     createNoteWithTitle,
     updateNote,
     createNote,
-    note,
+    note: noteProp,
   } = NoteState.useContainer()
+  const note = initNote ?? noteProp
   const {
     ua: { isBrowser },
   } = UIState.useContainer()
@@ -118,7 +119,7 @@ const useEditor = () => {
 
   const onHoverLink = useCallback(
     (event: MouseEvent | ReactMouseEvent) => {
-      if (!isBrowser) {
+      if (!isBrowser || editorEl.current?.props.readOnly) {
         return true
       }
       const link = event.target as HTMLLinkElement

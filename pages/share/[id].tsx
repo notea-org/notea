@@ -5,7 +5,6 @@ import LayoutPublic from 'components/layout/layout-public'
 import { PostContainer } from 'components/container/post-container'
 import { ServerProps, ssr, SSRContext } from 'libs/server/connect'
 import { useSession } from 'libs/server/middlewares/session'
-import { applyPost } from 'libs/server/middlewares/post'
 import { applyReset } from 'libs/server/middlewares/reset'
 
 export default function SharePage({
@@ -13,11 +12,10 @@ export default function SharePage({
   note,
   pageMode,
   baseURL,
-  post,
 }: ServerProps) {
   return (
     <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
-      <PostContainer note={note} post={post} />
+      <PostContainer note={note} />
     </LayoutPublic>
   )
 }
@@ -35,7 +33,7 @@ export const getServerSideProps = async (
     .use(applyReset)
     .use(applySettings)
     .use(applyUA)
-    .use(applyPost)
+    // .use(applyPost)
     .run(ctx.req, ctx.res)
 
   return {

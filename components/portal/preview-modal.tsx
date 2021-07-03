@@ -1,18 +1,10 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { Paper, Popper, Fade } from '@material-ui/core'
 import PortalState from 'libs/web/state/portal'
 import { useRouter } from 'next/router'
 import { NoteCacheItem } from 'libs/web/cache'
 import useNoteAPI from 'libs/web/api/note'
 import { PostContainer } from 'components/container/post-container'
-import { renderMarkdown } from 'libs/shared/markdown/render'
 import IconButton from 'components/icon-button'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import useI18n from 'libs/web/hooks/use-i18n'
@@ -81,10 +73,6 @@ const PreviewModal: FC = () => {
     }
   }, [note?.id, router])
 
-  const post = useMemo(() => {
-    return renderMarkdown(note?.content ?? '')
-  }, [note?.content])
-
   useEffect(() => {
     setAnchor(null)
     close()
@@ -123,7 +111,7 @@ const PreviewModal: FC = () => {
               </HotkeyTooltip>
             </div>
             <div className="overflow-y-scroll h-full p-4">
-              <PostContainer small post={post} note={note}></PostContainer>
+              <PostContainer small note={note}></PostContainer>
             </div>
           </Paper>
         </Fade>
