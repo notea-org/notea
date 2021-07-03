@@ -31,12 +31,12 @@ export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
 
   return (
     <a
-      className="bookmark border-gray-200 border rounded flex h-32 !no-underline hover:bg-blue-50"
+      className="bookmark overflow-hidden border-gray-200 border rounded flex h-32 !no-underline hover:bg-blue-50"
       href={url}
       target="_blank"
       rel="noreferrer"
     >
-      <div className="flex-1 p-2">
+      <div className="flex-1 p-2 overflow-hidden">
         <div className="mb-2 block text-gray-800 overflow-ellipsis overflow-hidden h-6">
           {title}
         </div>
@@ -48,8 +48,8 @@ export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
         </div>
       </div>
       {!!image && (
-        <div className="md:w-32 flex w-0">
-          <img className="m-auto object-cover" src={image} alt={title} />
+        <div className="md:w-48 flex w-0">
+          <img className="m-auto object-cover h-full" src={image} alt={title} />
         </div>
       )}
     </a>
