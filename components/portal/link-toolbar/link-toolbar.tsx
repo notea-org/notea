@@ -45,7 +45,9 @@ const LinkToolbar = () => {
     close()
   }, [data, close, setAnchor])
 
-  const createEmbed = useCallback(() => {}, [])
+  const createEmbed = useCallback(() => {
+    // console.log()
+  }, [])
 
   return (
     <Popover
