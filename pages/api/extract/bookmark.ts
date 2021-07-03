@@ -1,9 +1,11 @@
 import { api } from 'libs/server/connect'
-import { useStore } from 'libs/server/middlewares/store'
+import { useReferrer } from 'libs/server/middlewares/referrer'
 import { unfurl } from 'unfurl.js'
 
+const expires = 86400
+
 export default api()
-  .use(useStore)
+  .use(useReferrer)
   .get(async (req, res) => {
     const { url } = req.query
     if (!url) {
@@ -13,7 +15,7 @@ export default api()
 
     res.setHeader(
       'Cache-Control',
-      `public, max-age=604800, s-maxage=604800, stale-while-revalidate=604800`
+      `public, max-age=${expires}, s-maxage=${expires}, stale-while-revalidate=${expires}`
     )
     res.json(result)
   })
