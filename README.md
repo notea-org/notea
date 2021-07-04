@@ -19,7 +19,7 @@
 ## Roadmap
 
 - [x] Backlinks [#39](https://github.com/QingWei-Li/notea/issues/39)
-- [ ] File embed
+- [x] Link embed(Youtube, Github Gist, Google Docs, etc.)
 - [ ] Editing offline [#14](https://github.com/QingWei-Li/notea/issues/14)
 - [ ] Note versioning [#49](https://github.com/QingWei-Li/notea/issues/49)
 - [ ] File upload
