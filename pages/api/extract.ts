@@ -31,10 +31,14 @@ export default api()
       oEmbed.html = newHtml
     } else if (/bilibili\.com/.test(url)) {
       const avId = result.open_graph.url?.match(/([^/]*)\/$/)?.[1]
-      console.log('bilibili', avId)
       result.oEmbed = {
         html: `<iframe width="100%" height=400 src="//player.bilibili.com/player.html?bvid=${avId}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`,
       } as any
+    } else if (/gist\.github\.com/.test(url)) {
+      result.open_graph = {
+        ...result.open_graph,
+        url: `${url}.pibb`,
+      }
     }
 
     res.json(result)
