@@ -21,6 +21,10 @@ export const defaultFieldConfig: TextFieldProps = {
   },
 }
 
+const HR = () => {
+  return <hr className="my-10 border-gray-200" />
+}
+
 export const SettingsContainer: FC = () => {
   const { t } = useI18n()
 
@@ -30,7 +34,7 @@ export const SettingsContainer: FC = () => {
       <DailyNotes></DailyNotes>
       <Language></Language>
       <Theme></Theme>
-      <hr />
+      <HR />
       <SettingsHeader
         id="import-and-export"
         title={t('Import & Export')}
@@ -40,7 +44,7 @@ export const SettingsContainer: FC = () => {
       ></SettingsHeader>
 
       <ImportOrExport></ImportOrExport>
-      <hr />
+      <HR />
       <SettingsHeader id="sharing" title={t('Sharing')}></SettingsHeader>
       <SnippetInjection></SnippetInjection>
     </section>

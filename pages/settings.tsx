@@ -18,9 +18,9 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
   return (
     <LayoutMain tree={tree}>
       <section className="py-40 h-full overflow-y-auto">
-        <div className="px-6 prose m-auto">
-          <h1>
-            <span className="font-normal">{t('Settings')}</span>
+        <div className="px-6 max-w-prose m-auto">
+          <h1 className="font-normal text-4xl mb-10">
+            <span>{t('Settings')}</span>
           </h1>
 
           <SettingsContainer />

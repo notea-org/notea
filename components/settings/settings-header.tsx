@@ -7,16 +7,10 @@ export const SettingsHeader: FC<{
 }> = ({ title, id, description }) => {
   return (
     <>
-      <h3 id={id}>
+      <h3 className="my-2" id={id}>
         <a href={`#${id}`}>{title}</a>
-        <style jsx>{`
-          a {
-            font-weight: normal;
-            text-decoration: none;
-          }
-        `}</style>
       </h3>
-      <p className="text-sm">{description}</p>
+      <p className="text-gray-500 text-sm">{description}</p>
     </>
   )
 }
