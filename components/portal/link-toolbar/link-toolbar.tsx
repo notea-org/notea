@@ -19,35 +19,34 @@ const LinkToolbar = () => {
     }
   }, [data?.href])
 
-  const createBookmark = useCallback(() => {
-    const { view, href } = data ?? {}
-    if (!view || !href) {
-      return
-    }
-    const { dispatch, state } = view
-    const result = findPlaceholderLink(state.doc, href)
+  const createEmbed = useCallback(
+    (type: 'bookmark' | 'embed') => {
+      const { view, href } = data ?? {}
+      if (!view || !href) {
+        return
+      }
+      const { dispatch, state } = view
+      const result = findPlaceholderLink(state.doc, href)
 
-    if (!result) {
-      return
-    }
-    const bookmarkUrl = `/api/extract/bookmark?url=${href}`
-    const transaction = state.tr.replaceWith(
-      result.pos,
-      result.pos + result.node.nodeSize,
-      state.schema.nodes.embed.create({
-        href: bookmarkUrl,
-        matches: bookmarkUrl,
-      })
-    )
+      if (!result) {
+        return
+      }
+      const bookmarkUrl = `/api/extract?type=${type}&url=${href}`
+      const transaction = state.tr.replaceWith(
+        result.pos,
+        result.pos + result.node.nodeSize,
+        state.schema.nodes.embed.create({
+          href: bookmarkUrl,
+          matches: bookmarkUrl,
+        })
+      )
 
-    dispatch(transaction)
-    setAnchor(null)
-    close()
-  }, [data, close, setAnchor])
-
-  const createEmbed = useCallback(() => {
-    // console.log()
-  }, [])
+      dispatch(transaction)
+      setAnchor(null)
+      close()
+    },
+    [close, data, setAnchor]
+  )
 
   return (
     <Popover
@@ -65,12 +64,15 @@ const LinkToolbar = () => {
         </HotkeyTooltip>
         <HotkeyTooltip text={t('Create bookmark')}>
           <IconButton
-            onClick={createBookmark}
+            onClick={() => createEmbed('bookmark')}
             icon={'BookmarkAlt'}
           ></IconButton>
         </HotkeyTooltip>
         <HotkeyTooltip text={t('Create embed')}>
-          <IconButton onClick={createEmbed} icon={'Puzzle'}></IconButton>
+          <IconButton
+            onClick={() => createEmbed('embed')}
+            icon={'Puzzle'}
+          ></IconButton>
         </HotkeyTooltip>
       </Paper>
     </Popover>
