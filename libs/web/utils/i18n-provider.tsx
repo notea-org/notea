@@ -3,6 +3,7 @@ import rosetta, { Rosetta } from 'rosetta'
 import { DEFAULT_SETTINGS } from 'libs/shared/settings'
 import { values } from 'lodash'
 import { Locale } from 'locales'
+import pupa from 'pupa'
 
 const i18n = rosetta<Record<string, string>>()
 
@@ -34,7 +35,7 @@ export default function I18nProvider({ children, locale, lngDict }: Props) {
     activeLocale: activeLocaleRef.current,
     t: (key, ...args) => {
       if (activeLocaleRef.current === defaultLanguage) {
-        return Array.isArray(key) ? key.join('') : key
+        return pupa(Array.isArray(key) ? key.join('') : key, args[0] ?? {})
       }
       return i18n.t(Array.isArray(key) ? key : [key], ...args)
     },

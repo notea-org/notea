@@ -115,7 +115,7 @@ const useEditor = (initNote?: NoteModel) => {
     [error, request, toast]
   )
 
-  const { preview } = PortalState.useContainer()
+  const { preview, linkToolbar } = PortalState.useContainer()
 
   const onHoverLink = useCallback(
     (event: MouseEvent | ReactMouseEvent) => {
@@ -124,16 +124,24 @@ const useEditor = (initNote?: NoteModel) => {
       }
       const link = event.target as HTMLLinkElement
       const href = link.getAttribute('href')
-      if (href && isNoteLink(href)) {
-        preview.close()
-        preview.setData({ id: href.slice(1) })
-        preview.setAnchor(link)
+      if (link.classList.contains('bookmark')) {
+        return true
+      }
+      if (href) {
+        if (isNoteLink(href)) {
+          preview.close()
+          preview.setData({ id: href.slice(1) })
+          preview.setAnchor(link)
+        } else {
+          linkToolbar.setData({ href, view: editorEl.current?.view })
+          linkToolbar.setAnchor(link)
+        }
       } else {
         preview.setData({ id: undefined })
       }
       return true
     },
-    [preview, isBrowser]
+    [isBrowser, preview, linkToolbar]
   )
 
   const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
@@ -150,6 +158,13 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
+  const onEditorChange = useCallback(
+    (value: () => string): void => {
+      onNoteChange.callback({ content: value() })
+    },
+    [onNoteChange]
+  )
+
   return {
     onCreateLink,
     onSearchLink,
@@ -157,6 +172,7 @@ const useEditor = (initNote?: NoteModel) => {
     onUploadImage,
     onHoverLink,
     getBackLinks,
+    onEditorChange,
     onNoteChange,
     backlinks,
     editorEl,

@@ -15,6 +15,7 @@ import { SwipeableDrawer } from '@material-ui/core'
 import SidebarMenu from 'components/portal/sidebar-menu/sidebar-menu'
 import { NoteModel } from 'libs/shared/note'
 import PreviewModal from 'components/portal/preview-modal'
+import LinkToolbar from 'components/portal/link-toolbar/link-toolbar'
 
 const MainWrapper: FC = ({ children }) => {
   const {
@@ -103,6 +104,7 @@ const LayoutMain: FC<{
         </SearchState.Provider>
         <ShareModal />
         <PreviewModal />
+        <LinkToolbar />
         <SidebarMenu />
       </NoteState.Provider>
     </NoteTreeState.Provider>
