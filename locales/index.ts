@@ -5,6 +5,7 @@ export enum Locale {
   EN = 'en',
   de_DE = 'de-DE',
   ru_RU = 'ru-RU',
+  ar = 'ar',
 }
 
 export const muiLocale: Record<Locale, Localization> = {
@@ -12,6 +13,8 @@ export const muiLocale: Record<Locale, Localization> = {
   [Locale.EN]: enUS,
   [Locale.de_DE]: deDE,
   [Locale.ru_RU]: ruRU,
+  // FIXME: upgrade material-ui and import arEG
+  [Locale.ar]: enUS,
 }
 
 export const configLocale: Record<Locale, string> = {
@@ -19,4 +22,5 @@ export const configLocale: Record<Locale, string> = {
   [Locale.ZH_CN]: '简体中文',
   [Locale.de_DE]: 'Deutsch',
   [Locale.ru_RU]: 'Русский',
+  [Locale.ar]: 'العربية',
 }

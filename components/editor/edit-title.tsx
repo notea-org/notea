@@ -35,6 +35,7 @@ const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
     <h1 className="text-3xl mb-8">
       <TextareaAutosize
         ref={inputRef}
+        dir="auto"
         readOnly={readOnly}
         className="outline-none w-full resize-none block bg-transparent"
         placeholder={t('New Page')}
