@@ -11,7 +11,6 @@
   "Bold": "Bold",
   "Bulleted list": "Bulleted list",
   "Cancel": "Отмена",
-  "Center large": "Center large",
   "Code": "Code",
   "Code block": "Code block",
   "Copied to clipboard": "Copied to clipboard",
@@ -19,6 +18,8 @@
   "Copy Link": "Копировать ссылку",
   "Copy to clipboard": "Копировать в буфер обмена",
   "Create a new note": "Create a new note",
+  "Create bookmark": "Create bookmark",
+  "Create embed": "Create embed",
   "Create link": "Create link",
   "Create page": "Создать страницу",
   "Daily Notes": "Ежедневные заметки",
@@ -36,8 +37,6 @@
   "Favorites": "Favorites",
   "File size must be less than {{n}}mb": "File size must be less than {{n}}mb",
   "Find or create a note…": "Find or create a note…",
-  "Float left half width": "Float left half width",
-  "Float right half width": "Float right half width",
   "Fold Favorites": "Fold Favorites",
   "Fold sidebar": "Свернуть боковую панель",
   "Forward": "Forward",
@@ -109,5 +108,6 @@
   "Type '/' to insert…": "Type '/' to insert…",
   "Untitled": "Без имени",
   "Warning": "Warning",
-  "Warning notice": "Warning notice"
+  "Warning notice": "Warning notice",
+  "Write something nice…": "Write something nice…"
 }

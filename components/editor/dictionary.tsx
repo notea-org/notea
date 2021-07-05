@@ -25,9 +25,6 @@ export const useDictionary = () => {
       deleteRow: t('Delete row'),
       deleteTable: t('Delete table'),
       deleteImage: t('Delete image'),
-      alignImageLeft: t('Float left half width'),
-      alignImageRight: t('Float right half width'),
-      alignImageDefault: t('Center large'),
       em: t('Italic'),
       embedInvalidLink: t('Sorry, that link won’t work for this embed type'),
       findOrCreateDoc: t('Find or create a note…'),
@@ -64,6 +61,7 @@ export const useDictionary = () => {
       tipNotice: t('Tip notice'),
       warning: t('Warning'),
       warningNotice: t('Warning notice'),
+      editorPlaceholder: t('Write something nice…'),
     }),
     [t]
   )

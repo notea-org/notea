@@ -44,6 +44,7 @@ const Editor: FC<EditorProps> = ({ readOnly }) => {
         ref={editorEl}
         value={mounted ? note?.content : ''}
         onChange={onEditorChange}
+        placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}
         onSearchLink={onSearchLink}
