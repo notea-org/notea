@@ -31,7 +31,7 @@ export const EditorWidth: FC = () => {
       <MenuItem value="max-w-2xl">{t('Medium')}</MenuItem>
       <MenuItem value="max-w-4xl">{t('Large')}</MenuItem>
       <MenuItem value="max-w-6xl">{t('Extra large')}</MenuItem>
-      <MenuItem value="max-w-none	">{t('Full width')}</MenuItem>
+      <MenuItem value="max-w-none">{t('Full width')}</MenuItem>
     </TextField>
   )
 }
