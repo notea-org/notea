@@ -1,4 +1,4 @@
-import { zhCN, enUS, Localization, deDE, ruRU, itIT } from '@material-ui/core/locale'
+import { zhCN, enUS, Localization, deDE, ruRU, itIT, nlNL } from '@material-ui/core/locale'
 
 export enum Locale {
   ZH_CN = 'zh-CN',
@@ -6,7 +6,8 @@ export enum Locale {
   de_DE = 'de-DE',
   ru_RU = 'ru-RU',
   ar = 'ar',
-  it_IT = 'it-IT'
+  it_IT = 'it-IT',
+  nl_NL = 'nl-NL',
 }
 
 export const muiLocale: Record<Locale, Localization> = {
@@ -17,6 +18,7 @@ export const muiLocale: Record<Locale, Localization> = {
   // FIXME: upgrade material-ui and import arEG
   [Locale.ar]: enUS,
   [Locale.it_IT]: itIT,
+  [Locale.nl_NL]: nlNL,
 }
 
 export const configLocale: Record<Locale, string> = {
@@ -26,4 +28,5 @@ export const configLocale: Record<Locale, string> = {
   [Locale.ru_RU]: 'Русский',
   [Locale.ar]: 'العربية',
   [Locale.it_IT]: 'Italiano',
+  [Locale.nl_NL]: 'Nederlands',
 }
