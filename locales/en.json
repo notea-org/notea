@@ -109,5 +109,11 @@
   "Untitled": "Untitled",
   "Warning": "Warning",
   "Warning notice": "Warning notice",
-  "Write something nice…": "Write something nice…"
+  "Write something nice…": "Write something nice…",
+  "Editor width": "Editor width",
+  "Small (default)": "Small (default)",
+  "Medium": "Medium",
+  "Large": "Large",
+  "Extra large": "Extra large",
+  "Full width": "Full width"
 }

@@ -9,6 +9,7 @@ export interface Settings {
   last_visit?: string
   locale: Locale
   injection?: string
+  editor_width: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
@@ -16,6 +17,7 @@ export const DEFAULT_SETTINGS: Settings = Object.freeze({
   daily_root_id: ROOT_ID,
   sidebar_is_fold: false,
   locale: Locale.EN,
+  editor_width: 'max-w-prose',
 })
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -51,6 +53,10 @@ export function formatSettings(body: Record<string, any> = {}) {
 
   if (isString(body.injection)) {
     settings.injection = body.injection
+  }
+
+  if (isString(body.editor_width)) {
+    settings.editor_width = body.editor_width
   }
 
   return settings
