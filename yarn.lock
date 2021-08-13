@@ -6955,10 +6955,10 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rich-markdown-editor@^11.13.0:
-  version "11.13.0"
-  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.13.0.tgz#7009bddbd667c2fdcf6a7d4210913a1c040acdde"
-  integrity sha512-WZLL7z0sE7kogYjpPWPbLnbWjYwCn5RLoju6Vg6WfVDVWPSRRfWo+IHSKpBAK8kP+h9pKxZItwHrHN4ShXapjA==
+rich-markdown-editor@^11.17.2:
+  version "11.17.2"
+  resolved "https://registry.yarnpkg.com/rich-markdown-editor/-/rich-markdown-editor-11.17.2.tgz#dfe37db78f05275a127f3044e37c89e655003927"
+  integrity sha512-YlforkrZlrvzDWz9C58O7+GU7ulJC8M+UdftMObhkt5LagpzBXXzPvOiMkR0qzlouxsEwSA22/S4J16obJpNWA==
   dependencies:
     copy-to-clipboard "^3.0.8"
     lodash "^4.17.11"
