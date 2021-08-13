@@ -1,12 +1,6 @@
 /// <reference types="next" />
 /// <reference types="next/types/global" />
+/// <reference types="next/image-types/global" />
 
-declare module 'react-split'
-
-declare module 'remove-markdown'
-
-declare module 'outline-icons'
-
-declare module '@headwayapp/react-widget'
-
-declare module 'markdown-link-extractor'
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.
