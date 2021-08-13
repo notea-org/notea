@@ -1,7 +1,7 @@
 import { getEnv } from 'libs/shared/env'
 import { StoreS3 } from './providers/s3'
 
-export function createStore(prefix = '') {
+export function createStore() {
   return new StoreS3({
     accessKey: getEnv('STORE_ACCESS_KEY', undefined, true),
     secretKey: getEnv('STORE_SECRET_KEY', undefined, true),
@@ -9,7 +9,7 @@ export function createStore(prefix = '') {
     bucket: getEnv('STORE_BUCKET', 'notea'),
     region: getEnv('STORE_REGION', 'us-east-1'),
     pathStyle: getEnv('STORE_FORCE_PATH_STYLE', false),
-    prefix,
+    prefix: getEnv('STORE_PREFIX', ''),
   })
 }
 

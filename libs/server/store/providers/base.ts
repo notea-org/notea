@@ -14,7 +14,11 @@ export interface ObjectOptions {
 
 export abstract class StoreProvider {
   constructor({ prefix }: StoreProviderConfig) {
-    this.prefix = prefix
+    this.prefix = prefix?.replace(/\/$/, '')
+
+    if (this.prefix) {
+      this.prefix += '/'
+    }
   }
 
   prefix?: string

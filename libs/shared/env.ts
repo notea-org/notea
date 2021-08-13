@@ -11,6 +11,7 @@ type AllowedEnvs =
   | 'DISABLE_PASSWORD'
   | 'DIRECT_RESPONSE_ATTACHMENT'
   | 'IS_DEMO'
+  | 'STORE_PREFIX'
 
 export function getEnv<T>(
   env: AllowedEnvs,
