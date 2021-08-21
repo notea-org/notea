@@ -194,6 +194,27 @@ Personally speaking, the data stored in Notea is mainly files (such as text or p
 
 There are many excellent offline note-taking apps supporting filesystem storage available. However, I couldn't find a APP that supports both self-hosted and easy to manage the synchronized data. The purpose of this project is to mitigate the above pain-point.
 
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/notea#backers)]
+
+<a href="https://opencollective.com/notea#backers" target="_blank"><img src="https://opencollective.com/notea/backers.svg?width=890"></a>
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/notea#sponsors)]
+
+<a href="https://opencollective.com/notea/sponsors/0/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/0/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/1/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/1/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/2/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/2/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/3/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/3/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/4/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/4/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/5/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/5/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/6/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/6/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/7/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/7/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/8/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/8/avatar.svg"></a>
+<a href="https://opencollective.com/notea/sponsors/9/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/9/avatar.svg"></a>
+
 ## LICENSE
 
-MIT
+[MIT](LICENSE)
