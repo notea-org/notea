@@ -110,10 +110,8 @@
   "Warning": "Warning",
   "Warning notice": "Warning notice",
   "Write something nice…": "Write something nice…",
-  "Editor width": "Editor width",
+  "Default editor width": "Default editor width",
   "Small (default)": "Small (default)",
-  "Medium": "Medium",
   "Large": "Large",
-  "Extra large": "Extra large",
-  "Full width": "Full width"
+  "Toggle width": "Toggle width"
 }

@@ -4,6 +4,7 @@ import router from 'next/router'
 import { defaultFieldConfig } from './settings-container'
 import useI18n from 'libs/web/hooks/use-i18n'
 import UIState from 'libs/web/state/ui'
+import { EDITOR_SIZE } from 'libs/shared/meta'
 
 export const EditorWidth: FC = () => {
   const { t } = useI18n()
@@ -13,7 +14,7 @@ export const EditorWidth: FC = () => {
 
   const handleChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
-      await updateSettings({ editor_width: event.target.value as string })
+      await updateSettings({ editorsize: parseInt(event.target.value) })
       router.reload()
     },
     [updateSettings]
@@ -22,16 +23,13 @@ export const EditorWidth: FC = () => {
   return (
     <TextField
       {...defaultFieldConfig}
-      label={t('Editor width')}
-      value={settings.editor_width}
+      label={t('Default editor width')}
+      value={settings.editorsize ?? EDITOR_SIZE.SMALL}
       onChange={handleChange}
       select
     >
-      <MenuItem value="max-w-prose">{t('Small (default)')}</MenuItem>
-      <MenuItem value="max-w-2xl">{t('Medium')}</MenuItem>
-      <MenuItem value="max-w-4xl">{t('Large')}</MenuItem>
-      <MenuItem value="max-w-6xl">{t('Extra large')}</MenuItem>
-      <MenuItem value="max-w-none">{t('Full width')}</MenuItem>
+      <MenuItem value={EDITOR_SIZE.SMALL}>{t('Small (default)')}</MenuItem>
+      <MenuItem value={EDITOR_SIZE.LARGE}>{t('Large')}</MenuItem>
     </TextField>
   )
 }

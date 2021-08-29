@@ -45,6 +45,8 @@ export function metaToJson(metaData?: Record<string, any>) {
         meta[key] = value ? strDecompress(value) : NOTE_SHARED.PRIVATE
       } else if (key === 'pinned') {
         meta[key] = value ? strDecompress(value) : NOTE_PINNED.UNPINNED
+      } else if (key === 'editorsize') {
+        meta[key] = value ? strDecompress(value) : null
       }
     })
   }

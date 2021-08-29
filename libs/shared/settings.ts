@@ -1,5 +1,6 @@
 import { Locale } from 'locales'
 import { isArray, isBoolean, isNumber, isString, values } from 'lodash'
+import { EDITOR_SIZE } from './meta'
 import { ROOT_ID } from './tree'
 
 export interface Settings {
@@ -9,7 +10,7 @@ export interface Settings {
   last_visit?: string
   locale: Locale
   injection?: string
-  editor_width: string;
+  editorsize: EDITOR_SIZE;
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
@@ -17,7 +18,7 @@ export const DEFAULT_SETTINGS: Settings = Object.freeze({
   daily_root_id: ROOT_ID,
   sidebar_is_fold: false,
   locale: Locale.EN,
-  editor_width: 'max-w-prose',
+  editorsize: EDITOR_SIZE.SMALL,
 })
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -55,8 +56,8 @@ export function formatSettings(body: Record<string, any> = {}) {
     settings.injection = body.injection
   }
 
-  if (isString(body.editor_width)) {
-    settings.editor_width = body.editor_width
+  if (isNumber(body.editorsize)) {
+    settings.editorsize = body.editorsize
   }
 
   return settings

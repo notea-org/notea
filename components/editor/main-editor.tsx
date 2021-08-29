@@ -19,7 +19,8 @@ const MainEditor: FC<
   ...props
 }) => {
   const { settings: { settings } } = UIState.useContainer()
-  const articleClassName = className || `pt-40 px-6 m-auto h-full ${settings.editor_width}`
+  const editorWidthClass = (note?.editorsize ?? settings.editorsize) > 0 ? "max-w-4xl" : "max-w-prose"
+  const articleClassName = className || `pt-40 px-6 m-auto h-full ${editorWidthClass}`
 
   return (
     <EditorState.Provider initialState={note}>
