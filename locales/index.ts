@@ -1,4 +1,13 @@
-import { zhCN, enUS, Localization, deDE, ruRU, itIT, nlNL } from '@material-ui/core/locale'
+import {
+  zhCN,
+  enUS,
+  Localization,
+  deDE,
+  ruRU,
+  itIT,
+  nlNL,
+  frFR,
+} from '@material-ui/core/locale'
 
 export enum Locale {
   ZH_CN = 'zh-CN',
@@ -8,6 +17,7 @@ export enum Locale {
   ar = 'ar',
   it_IT = 'it-IT',
   nl_NL = 'nl-NL',
+  fr_FR = 'fr-FR',
 }
 
 export const muiLocale: Record<Locale, Localization> = {
@@ -19,6 +29,7 @@ export const muiLocale: Record<Locale, Localization> = {
   [Locale.ar]: enUS,
   [Locale.it_IT]: itIT,
   [Locale.nl_NL]: nlNL,
+  [Locale.fr_FR]: frFR,
 }
 
 export const configLocale: Record<Locale, string> = {
@@ -29,4 +40,5 @@ export const configLocale: Record<Locale, string> = {
   [Locale.ar]: 'العربية',
   [Locale.it_IT]: 'Italiano',
   [Locale.nl_NL]: 'Nederlands',
+  [Locale.fr_FR]: 'français',
 }
