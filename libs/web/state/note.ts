@@ -171,6 +171,7 @@ const useNote = (initData?: NoteModel) => {
       deleted: NOTE_DELETED.NORMAL,
       shared: NOTE_SHARED.PRIVATE,
       pinned: NOTE_PINNED.UNPINNED,
+      editorsize: null,
       id: '-1',
       title: '',
       ...note,

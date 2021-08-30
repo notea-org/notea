@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { DailyNotes } from './daily-notes'
 import { Language } from './language'
 import { Theme } from './theme'
+import { EditorWidth } from './editor-width'
 import { ImportOrExport } from './import-or-export'
 import { SnippetInjection } from './snippet-injection'
 import useI18n from 'libs/web/hooks/use-i18n'
@@ -34,6 +35,7 @@ export const SettingsContainer: FC = () => {
       <DailyNotes></DailyNotes>
       <Language></Language>
       <Theme></Theme>
+      <EditorWidth></EditorWidth>
       <HR />
       <SettingsHeader
         id="import-and-export"

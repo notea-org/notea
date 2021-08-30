@@ -105,7 +105,7 @@ export const EditContainer = () => {
       <NoteNav />
       <DeleteAlert />
       <section className="h-full">
-        <MainEditor />
+        <MainEditor note={note} />
       </section>
     </>
   )
