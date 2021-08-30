@@ -86,6 +86,10 @@ const Editor: FC<EditorProps> = ({ readOnly }) => {
         .ProseMirror a:not(.bookmark) {
           text-decoration: underline;
         }
+
+        .ProseMirror .image .ProseMirror-selectednode img {
+          pointer-events: unset;
+        }
       `}</style>
     </>
   )
