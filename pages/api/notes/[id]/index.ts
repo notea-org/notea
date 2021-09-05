@@ -61,12 +61,12 @@ export default api()
     res.json(note)
   })
   .post(async (req, res) => {
-    const id = req.query.id as string
+    const id = (req.query ?? {}).id as string
     const { updates } = req.body
     const notePath = getPathNoteById(id)
     const store = req.state.store
 
-    if (!updates.length) {
+    if (!updates?.length) {
       throw res.APIError.NOT_SUPPORTED.throw()
     }
 
