@@ -1,0 +1,13 @@
+name: Test
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn
+      - name: Run MinIO
+        run: docker-compose up -d
+      - name: Run tests
+        run: yarn test

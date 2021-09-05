@@ -27,6 +27,10 @@ export const applyCsrf: SSRMiddleware = async (req, _res, next) => {
 const ignoredMethods = ['GET', 'HEAD', 'OPTIONS']
 
 export function useCsrf(req: ApiRequest, res: ApiResponse, next: ApiNext) {
+  if (process.env.NODE_ENV === 'test') {
+    return next()
+  }
+
   const token = req.headers[CSRF_HEADER_KEY] as string
   const sessionToken = req.session.get(CSRF_HEADER_KEY)
 

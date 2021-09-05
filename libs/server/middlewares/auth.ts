@@ -7,6 +7,10 @@ export async function useAuth(
   res: ApiResponse,
   next: ApiNext
 ) {
+  if (process.env.NODE_ENV === 'test') {
+    return next()
+  }
+
   if (!isLoggedIn(req)) {
     return res.APIError.NEED_LOGIN.throw()
   }
