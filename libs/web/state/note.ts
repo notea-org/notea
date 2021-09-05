@@ -33,7 +33,6 @@ const useNote = (initData?: NoteModel) => {
         return
       }
 
-      result.content = result.content || '\n'
       setNote(result)
       await noteCache.setItem(id, result)
 
@@ -109,7 +108,6 @@ const useNote = (initData?: NoteModel) => {
         return
       }
 
-      result.content = result.content || '\n'
       await noteCache.setItem(result.id, result)
       setNote(result)
       addItem(result)
@@ -131,7 +129,6 @@ const useNote = (initData?: NoteModel) => {
         return
       }
 
-      result.content = result.content || '\n'
       await noteCache.setItem(result.id, result)
       addItem(result)
 

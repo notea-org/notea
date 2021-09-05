@@ -22,12 +22,12 @@ export async function getNote(
   }
 
   const jsonMeta = metaToJson(meta)
-
-  const updates = tryJSON<string[]>(content) ?? []
+  const updates = tryJSON<string[]>(content)
 
   return {
     id,
-    updates: [mergeUpdates(updates, sv)],
+    updates: updates ? [mergeUpdates(updates, sv)] : null,
+    content: updates ? null : content,
     ...jsonMeta,
   } as NoteModel
 }
@@ -64,16 +64,24 @@ export default api()
     const id = req.query.id as string
     const { updates } = req.body
     const notePath = getPathNoteById(id)
+    const store = req.state.store
 
     if (!updates.length) {
       throw res.APIError.NOT_SUPPORTED.throw()
     }
 
-    const {
-      content = '[]',
-      meta: oldMeta,
-    } = await req.state.store.getObjectAndMeta(notePath)
+    const { content = '[]', meta: oldMeta } = await store.getObjectAndMeta(
+      notePath
+    )
     const newUpdates = tryJSON<string[]>(content) ?? []
+
+    // backup older object
+    if (!newUpdates.length && content.length) {
+      await store.copyObject(notePath, store.getPath('backup', notePath), {
+        meta: oldMeta,
+        contentType: 'text/markdown',
+      })
+    }
 
     if (oldMeta) {
       oldMeta['date'] = strCompress(new Date().toISOString())
@@ -81,7 +89,7 @@ export default api()
 
     newUpdates.push(...updates)
 
-    await req.state.store.putObject(notePath, newUpdates, {
+    await store.putObject(notePath, newUpdates, {
       contentType: 'text/markdown',
       meta: oldMeta,
     })

@@ -40,7 +40,6 @@ export const createYDoc = ({
   }
   const onUpdateEditor = (update: Uint8Array) => {
     Y.applyUpdate(editorYDoc, update)
-    // console.log(editorYDoc.getXmlFragment('prosemirror').toJSON())
   }
 
   Y.applyUpdate(editorYDoc, Y.encodeStateAsUpdate(yDoc))

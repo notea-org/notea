@@ -40,7 +40,6 @@ export const EditContainer = () => {
         findOrCreateNote(id, {
           id,
           title: id,
-          content: '\n',
           pid: settings.daily_root_id,
         })
       } else if (id === 'new') {
@@ -70,7 +69,6 @@ export const EditContainer = () => {
 
         initNote({
           id,
-          content: '\n',
         })
       }
 

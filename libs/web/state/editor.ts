@@ -61,7 +61,8 @@ const useEditor = (initNote?: NoteModel) => {
     async (data: Partial<NoteModel>) => {
       const isNew = has(router.query, 'new')
 
-      if (isNew) {
+      // need transform to y-doc
+      if (isNew || note?.content) {
         const update = getYDocUpdate({})
         data.updates = update ? [update] : []
       } else if (updates.current?.length > 0) {
