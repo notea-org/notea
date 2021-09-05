@@ -31,7 +31,7 @@ export default function useNoteAPI() {
 
   const mutate = useCallback(
     async (id: string, body: Partial<NoteModel>) => {
-      const data = body.content
+      const data = body.updates
         ? await request<Partial<NoteModel>, NoteModel>(
             {
               method: 'POST',

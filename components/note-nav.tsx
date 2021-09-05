@@ -58,6 +58,8 @@ const NoteNav = () => {
     [note, menu]
   )
 
+  const getTitle = (title?: string) => title ?? t('Untitled')
+
   return (
     <nav
       className={classNames(
@@ -82,22 +84,22 @@ const NoteNav = () => {
             {getPaths(note)
               .reverse()
               .map((path) => (
-                <Tooltip key={path.id} title={path.title}>
+                <Tooltip key={path.id} title={getTitle(path.title)}>
                   <div>
                     <Link href={`/${path.id}`} shallow>
                       <a className="title block hover:bg-gray-200 px-1 py-0.5 rounded text-sm truncate">
-                        {path.title}
+                        {getTitle(path.title)}
                       </a>
                     </Link>
                   </div>
                 </Tooltip>
               ))}
-            <Tooltip title={note.title}>
+            <Tooltip title={getTitle(note.title)}>
               <span
                 className="title block text-gray-600 text-sm truncate select-none"
                 aria-current="page"
               >
-                {note.title}
+                {getTitle(note.title)}
               </span>
             </Tooltip>
           </Breadcrumbs>

@@ -5,6 +5,7 @@ import {
   MouseEvent as ReactMouseEvent,
   useState,
   useRef,
+  useEffect,
 } from 'react'
 import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import useFetcher from 'libs/web/api/fetcher'
@@ -20,6 +21,9 @@ import { useDebouncedCallback } from 'use-debounce'
 import { ROOT_ID } from 'libs/shared/tree'
 import { has } from 'lodash'
 import UIState from './ui'
+import YSync from 'components/editor/extensions/y-sync'
+import { createYDoc, getYDocUpdate } from '../editor/y-doc'
+import { mergeUpdates } from 'libs/shared/y-doc'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -51,10 +55,19 @@ const useEditor = (initNote?: NoteModel) => {
   const { request, error } = useFetcher()
   const toast = useToast()
   const editorEl = useRef<MarkdownEditor>(null)
+  const updates = useRef<Uint8Array[]>([])
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
       const isNew = has(router.query, 'new')
+
+      if (isNew) {
+        const update = getYDocUpdate({})
+        data.updates = update ? [update] : []
+      } else if (updates.current?.length > 0) {
+        data.updates = [mergeUpdates(updates.current)]
+        updates.current = []
+      }
 
       if (isNew) {
         data.pid = (router.query.pid as string) || ROOT_ID
@@ -158,12 +171,42 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
+  // Now yjs takes over the doc, skip this event during initialization
+  const firstRef = useRef(false)
   const onEditorChange = useCallback(
     (value: () => string): void => {
-      onNoteChange.callback({ content: value() })
+      const val = value()
+      if (val === '\\\n' && !firstRef.current) {
+        firstRef.current = true
+        return
+      }
+      onNoteChange.callback({ content: val })
     },
     [onNoteChange]
   )
+
+  const onEditorUpdate = (update: Uint8Array) => {
+    updates.current.push(update)
+    onNoteChange.callback({})
+  }
+
+  useEffect(() => {
+    if (!note?.id) return
+
+    const { yDoc } = editorEl.current?.extensions.extensions.find(
+      (ext) => ext.name === 'y-sync'
+    ) as YSync
+
+    createYDoc({
+      onUpdate: onEditorUpdate,
+      editorYDoc: yDoc,
+      node: note?.content
+        ? editorEl.current?.createDocument(note.content)
+        : undefined,
+      noteUpdates: note?.updates,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [note?.id])
 
   return {
     onCreateLink,

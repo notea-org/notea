@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
 import MarkdownEditor, { Props } from 'rich-markdown-editor'
 import { useEditorTheme } from './theme'
-import useMounted from 'libs/web/hooks/use-mounted'
 import Tooltip from './tooltip'
 import extensions from './extensions'
 import EditorState from 'libs/web/state/editor'
@@ -19,13 +18,11 @@ const Editor: FC<EditorProps> = ({ readOnly }) => {
     onClickLink,
     onUploadImage,
     onHoverLink,
-    onEditorChange,
     backlinks,
     editorEl,
     note,
   } = EditorState.useContainer()
   const height = use100vh()
-  const mounted = useMounted()
   const editorTheme = useEditorTheme()
   const [hasMinHeight, setHasMinHeight] = useState(true)
   const toast = useToast()
@@ -41,9 +38,8 @@ const Editor: FC<EditorProps> = ({ readOnly }) => {
       <MarkdownEditor
         readOnly={readOnly}
         id={note?.id}
+        key={note?.id}
         ref={editorEl}
-        value={mounted ? note?.content : ''}
-        onChange={onEditorChange}
         placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}
