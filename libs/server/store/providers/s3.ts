@@ -162,7 +162,7 @@ export class StoreS3 extends StoreProvider {
 
   async putObject(
     path: string,
-    raw: string | Buffer,
+    raw: string | Buffer | Array<string>,
     options?: ObjectOptions,
     isCompressed?: boolean
   ) {

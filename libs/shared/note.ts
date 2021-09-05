@@ -11,6 +11,7 @@ export interface NoteModel {
   shared: NOTE_SHARED
   pinned: NOTE_PINNED
   editorsize: EDITOR_SIZE | null
+  updates?: string[]
 }
 
 /**

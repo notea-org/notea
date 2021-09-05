@@ -42,6 +42,7 @@
     "escape-string-regexp": "^4.0.0",
     "formidable": "^1.2.2",
     "highlight.js": "^10.7.2",
+    "js-base64": "^3.6.1",
     "localforage": "^1.9.0",
     "lodash": "^4.17.21",
     "lzutf8": "^0.6.0",
@@ -71,7 +72,10 @@
     "ua-parser-js": "^0.7.24",
     "unfurl.js": "^5.3.0",
     "unstated-next": "^1.1.0",
-    "use-debounce": "^5.2.1"
+    "use-debounce": "^5.2.1",
+    "y-prosemirror": "^1.0.9",
+    "y-protocols": "^1.0.5",
+    "yjs": "^13.5.12"
   },
   "devDependencies": {
     "@heroicons/react": "^1.0.1",

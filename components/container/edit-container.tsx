@@ -55,9 +55,11 @@ export const EditContainer = () => {
             return
           }
         } catch (msg) {
-          if (msg.name !== 'AbortError') {
-            toast(msg.message, 'error')
-            router.push('/', undefined, { shallow: true })
+          if (msg instanceof Error) {
+            if (msg.name !== 'AbortError') {
+              toast(msg.message, 'error')
+              router.push('/', undefined, { shallow: true })
+            }
           }
         }
       } else {
@@ -73,6 +75,7 @@ export const EditContainer = () => {
       }
 
       if (!isNew && id !== 'new') {
+        // todo: store in localStorage
         mutateSettings({
           last_visit: `/${id}`,
         })

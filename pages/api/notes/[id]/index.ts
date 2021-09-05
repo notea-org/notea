@@ -6,12 +6,14 @@ import { getPathNoteById } from 'libs/server/note-path'
 import { NoteModel } from 'libs/shared/note'
 import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
-import { strCompress } from 'libs/shared/str'
+import { strCompress, tryJSON } from 'libs/shared/str'
 import { ROOT_ID } from 'libs/shared/tree'
+import { mergeUpdates } from 'libs/shared/y-doc'
 
 export async function getNote(
   store: StoreProvider,
-  id: string
+  id: string,
+  sv?: string
 ): Promise<NoteModel> {
   const { content, meta } = await store.getObjectAndMeta(getPathNoteById(id))
 
@@ -21,9 +23,11 @@ export async function getNote(
 
   const jsonMeta = metaToJson(meta)
 
+  const updates = tryJSON<string[]>(content) ?? []
+
   return {
     id,
-    content: content || '\n',
+    updates: [mergeUpdates(updates, sv)],
     ...jsonMeta,
   } as NoteModel
 }
@@ -44,6 +48,7 @@ export default api()
   })
   .get(async (req, res) => {
     const id = req.query.id as string
+    const sv = req.query.sv as string
 
     if (id === ROOT_ID) {
       return res.json({
@@ -51,29 +56,32 @@ export default api()
       })
     }
 
-    const note = await getNote(req.state.store, id)
+    const note = await getNote(req.state.store, id, sv)
 
     res.json(note)
   })
   .post(async (req, res) => {
     const id = req.query.id as string
-    const { content } = req.body
+    const { updates } = req.body
     const notePath = getPathNoteById(id)
-    const oldMeta = await req.state.store.getObjectMeta(notePath)
+
+    if (!updates.length) {
+      throw res.APIError.NOT_SUPPORTED.throw()
+    }
+
+    const {
+      content = '[]',
+      meta: oldMeta,
+    } = await req.state.store.getObjectAndMeta(notePath)
+    const newUpdates = tryJSON<string[]>(content) ?? []
 
     if (oldMeta) {
       oldMeta['date'] = strCompress(new Date().toISOString())
     }
 
-    // Empty content may be a misoperation
-    if (!content || content.trim() === '\\') {
-      await req.state.store.copyObject(notePath, notePath + '.bak', {
-        meta: oldMeta,
-        contentType: 'text/markdown',
-      })
-    }
+    newUpdates.push(...updates)
 
-    await req.state.store.putObject(notePath, content, {
+    await req.state.store.putObject(notePath, newUpdates, {
       contentType: 'text/markdown',
       meta: oldMeta,
     })

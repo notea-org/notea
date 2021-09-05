@@ -5,7 +5,7 @@ import { getPathNoteById } from 'libs/server/note-path'
 import { ServerState } from './connect'
 
 export const createNote = async (note: NoteModel, state: ServerState) => {
-  const { content = '\n', ...meta } = note
+  const { updates = [], ...meta } = note
 
   if (!note.id) {
     note.id = genId()
@@ -21,7 +21,7 @@ export const createNote = async (note: NoteModel, state: ServerState) => {
   }
   const metaData = jsonToMeta(metaWithModel)
 
-  await state.store.putObject(getPathNoteById(note.id), content, {
+  await state.store.putObject(getPathNoteById(note.id), updates, {
     contentType: 'text/markdown',
     meta: metaData,
   })
