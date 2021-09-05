@@ -16,5 +16,6 @@ module.exports = {
   moduleNameMapper: {
     'pages/(.*)$': '<rootDir>/pages/$1',
     'libs/(.*)$': '<rootDir>/libs/$1',
+    'tests/(.*)$': '<rootDir>/tests/$1',
   },
 }
