@@ -1,5 +1,10 @@
 name: Publish Docker
-on: [push]
+
+on:
+  workflow_run:
+    workflows: ['Test']
+    types: [completed]
+
 jobs:
   build:
     runs-on: ubuntu-latest
