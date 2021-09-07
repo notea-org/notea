@@ -26,11 +26,13 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
     <LayoutMain tree={tree}>
       <div className="flex flex-col h-screen">
         <div className="m-auto text-center flex flex-col items-center">
-          <Link href="//github.com/qingwei-li/notea">
-            <a target="_blank">
-              <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg" />
-            </a>
-          </Link>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="//github.com/qingwei-li/notea"
+          >
+            <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg" />
+          </a>
         </div>
       </div>
     </LayoutMain>

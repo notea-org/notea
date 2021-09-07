@@ -8,7 +8,7 @@ import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
 import { strCompress, tryJSON } from 'libs/shared/str'
 import { ROOT_ID } from 'libs/shared/tree'
-import { mergeUpdates } from 'libs/shared/y-doc'
+import { mergeUpdates, mergeUpdatesToLimit } from 'libs/shared/y-doc'
 
 export async function getNote(
   store: StoreProvider,
@@ -73,10 +73,10 @@ export default api()
     const { content = '[]', meta: oldMeta } = await store.getObjectAndMeta(
       notePath
     )
-    const newUpdates = tryJSON<string[]>(content) ?? []
+    const oldUpdates = tryJSON<string[]>(content) ?? []
 
     // backup older object
-    if (!newUpdates.length && content.length) {
+    if (!oldUpdates.length && content.length) {
       await store.copyObject(notePath, store.getPath('backup', notePath), {
         meta: oldMeta,
         contentType: 'text/markdown',
@@ -87,7 +87,12 @@ export default api()
       oldMeta['date'] = strCompress(new Date().toISOString())
     }
 
-    newUpdates.push(...updates)
+    let newUpdates = [...oldUpdates, ...updates]
+
+    // Trigger a merge every more than 100 updates, to avoid too much data
+    if (newUpdates.length >= 100) {
+      newUpdates = mergeUpdatesToLimit(newUpdates, 50)
+    }
 
     await store.putObject(notePath, newUpdates, {
       contentType: 'text/markdown',
