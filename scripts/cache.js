@@ -37,14 +37,7 @@ module.exports = [
   },
   {
     urlPattern: /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
-    handler: 'NetworkOnly',
-    options: {
-      cacheName: 'static-image-assets',
-      expiration: {
-        maxEntries: 64,
-        maxAgeSeconds: 24 * 60 * 60 // 24 hours
-      }
-    }
+    handler: 'NetworkOnly'
   },
   {
     urlPattern: /\/_next\/image\?url=.+$/i,
