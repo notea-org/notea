@@ -5,11 +5,7 @@ import Head from 'next/head'
 import { ThemeProvider, useTheme } from 'next-themes'
 import PortalState from 'libs/web/state/portal'
 import Div100vh from 'react-div-100vh'
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  StylesProvider,
-} from '@material-ui/core'
+import { MuiThemeProvider, StylesProvider } from '@material-ui/core'
 import { useEffect, useMemo } from 'react'
 import { Settings } from 'libs/shared/settings'
 import I18nProvider from 'libs/web/utils/i18n-provider'
@@ -17,6 +13,7 @@ import CsrfTokenState from 'libs/web/state/csrf-token'
 import { muiLocale } from 'locales'
 import { ServerProps } from 'libs/server/connect'
 import { SnackbarProvider } from 'notistack'
+import { createTheme } from '@material-ui/core/styles'
 
 const handleRejection = (event: any) => {
   // react-beautiful-dnd 会捕获到 `ResizeObserver loop limit exceeded`
@@ -62,7 +59,7 @@ const AppInner = ({
   const settings = pageProps?.settings as Settings
   const muiTheme = useMemo(
     () =>
-      createMuiTheme(
+      createTheme(
         {
           palette: {
             type: resolvedTheme === 'dark' ? 'dark' : 'light',

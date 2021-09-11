@@ -10,9 +10,9 @@ import MainEditor from 'components/editor/main-editor'
 const MAX_WIDTH = 900
 
 export const PostContainer: FC<{
-  small?: boolean
+  isPreview?: boolean
   note?: NoteModel
-}> = ({ small = false, note }) => {
+}> = ({ isPreview = false, note }) => {
   const {
     settings: {
       settings: { injection },
@@ -30,8 +30,13 @@ export const PostContainer: FC<{
 
   return (
     <>
-      <MainEditor small={small} note={note} className={className} readOnly />
-      {small ? null : (
+      <MainEditor
+        isPreview={isPreview}
+        note={note}
+        className={className}
+        readOnly
+      />
+      {isPreview ? null : (
         <>
           {injection ? (
             <InnerHTML

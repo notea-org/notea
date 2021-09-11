@@ -147,6 +147,7 @@ const useEditor = (initNote?: NoteModel) => {
   const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
 
   const getBackLinks = useCallback(async () => {
+    console.log(note?.id)
     const linkNotes: NoteCacheItem[] = []
     if (!note?.id) return linkNotes
     setBackLinks([])

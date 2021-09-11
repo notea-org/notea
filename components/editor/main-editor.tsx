@@ -9,25 +9,24 @@ import { NoteModel } from 'libs/shared/note'
 const MainEditor: FC<
   EditorProps & {
     note?: NoteModel
-    small?: boolean
+    isPreview?: boolean
     className?: string
   }
-> = ({
-  className,
-  note,
-  small,
-  ...props
-}) => {
-  const { settings: { settings } } = UIState.useContainer()
-  const editorWidthClass = (note?.editorsize ?? settings.editorsize) > 0 ? "max-w-4xl" : "max-w-prose"
-  const articleClassName = className || `pt-40 px-6 m-auto h-full ${editorWidthClass}`
+> = ({ className, note, isPreview, ...props }) => {
+  const {
+    settings: { settings },
+  } = UIState.useContainer()
+  const editorWidthClass =
+    (note?.editorsize ?? settings.editorsize) > 0 ? 'max-w-4xl' : 'max-w-prose'
+  const articleClassName =
+    className || `pt-40 px-6 m-auto h-full ${editorWidthClass}`
 
   return (
     <EditorState.Provider initialState={note}>
       <article className={articleClassName}>
         <EditTitle readOnly={props.readOnly} />
-        <Editor {...props} />
-        {!small && <Backlinks />}
+        <Editor isPreview={isPreview} {...props} />
+        {!isPreview && <Backlinks />}
       </article>
     </EditorState.Provider>
   )

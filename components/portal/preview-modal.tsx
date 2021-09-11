@@ -62,7 +62,7 @@ const PreviewModal: FC = () => {
               </HotkeyTooltip>
             </div>
             <div className="overflow-y-scroll h-full p-4">
-              <PostContainer small note={note}></PostContainer>
+              <PostContainer isPreview note={note}></PostContainer>
             </div>
           </Paper>
         </Fade>

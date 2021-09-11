@@ -10,9 +10,11 @@ import { useToast } from 'libs/web/hooks/use-toast'
 import { useDictionary } from './dictionary'
 import { useEmbeds } from './embeds'
 
-export type EditorProps = Pick<Props, 'readOnly'>
+export interface EditorProps extends Pick<Props, 'readOnly'> {
+  isPreview?: boolean
+}
 
-const Editor: FC<EditorProps> = ({ readOnly }) => {
+const Editor: FC<EditorProps> = ({ readOnly, isPreview }) => {
   const {
     onSearchLink,
     onCreateLink,
@@ -33,8 +35,9 @@ const Editor: FC<EditorProps> = ({ readOnly }) => {
   const embeds = useEmbeds()
 
   useEffect(() => {
+    if (isPreview) return
     setHasMinHeight((backlinks?.length ?? 0) <= 0)
-  }, [backlinks])
+  }, [backlinks, isPreview])
 
   return (
     <>
