@@ -45,6 +45,8 @@ const useEditor = (initNote?: NoteModel) => {
     createNoteWithTitle,
     updateNote,
     createNote,
+    fetchNote,
+    localDocState,
     note: noteProp,
   } = NoteState.useContainer()
   const note = initNote ?? noteProp
@@ -173,31 +175,22 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
-  // Now yjs takes over the doc, skip this event during initialization
-  const firstRef = useRef(false)
-  const onEditorChange = useCallback(
-    (value: () => string): void => {
-      const val = value()
-      if (val === '\\\n' && !firstRef.current) {
-        firstRef.current = true
-        return
-      }
-      onNoteChange.callback({ content: val })
-    },
-    [onNoteChange]
-  )
-
   const onEditorUpdate = (update: Uint8Array) => {
     updates.current.push(update)
     onNoteChange.callback({})
   }
 
-  useEffect(() => {
-    if (!note?.id) return
-
+  const getYDoc = () => {
     const { yDoc } = editorEl.current?.extensions.extensions.find(
       (ext) => ext.name === 'y-sync'
     ) as YSync
+    return yDoc
+  }
+
+  const setEditorDoc = async (note?: NoteModel, yDoc?: YSync['yDoc']) => {
+    if (!yDoc || !note) {
+      return
+    }
 
     createYDoc({
       onUpdate: onEditorUpdate,
@@ -207,8 +200,44 @@ const useEditor = (initNote?: NoteModel) => {
         : undefined,
       noteUpdates: note?.updates,
     })
+  }
+
+  const fetchCurrentNote = async () => {
+    if (!note?.id) {
+      return
+    }
+
+    const yDoc = getYDoc()
+
+    if (!yDoc) {
+      return
+    }
+
+    const newNote = await fetchNote(note.id)
+
+    setEditorDoc(newNote, yDoc)
+  }
+
+  useEffect(() => {
+    window.addEventListener('focus', fetchCurrentNote)
+    return () => {
+      window.removeEventListener('focus', fetchCurrentNote)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [note?.id])
+  }, [])
+
+  useEffect(() => {
+    const yDoc = getYDoc()
+    createYDoc({
+      onUpdate: onEditorUpdate,
+      editorYDoc: yDoc,
+      node: note?.content
+        ? editorEl.current?.createDocument(note.content)
+        : undefined,
+      noteUpdates: localDocState,
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localDocState])
 
   return {
     onCreateLink,
@@ -217,7 +246,6 @@ const useEditor = (initNote?: NoteModel) => {
     onUploadImage,
     onHoverLink,
     getBackLinks,
-    onEditorChange,
     onNoteChange,
     backlinks,
     editorEl,

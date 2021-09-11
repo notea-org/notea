@@ -7,8 +7,10 @@ import noteCache from '../cache/note'
 import { NoteModel } from 'libs/shared/note'
 import { useToast } from '../hooks/use-toast'
 import { isEmpty, map } from 'lodash'
+import { getDocStateVector } from '../editor/y-doc'
 
 const useNote = (initData?: NoteModel) => {
+  const [localDocState, setLocalDocState] = useState<string[]>()
   const [note, setNote] = useState<NoteModel | undefined>(initData)
   const { find, abort: abortFindNote } = useNoteAPI()
   const { create, error: createError } = useNoteAPI()
@@ -21,13 +23,19 @@ const useNote = (initData?: NoteModel) => {
   } = NoteTreeState.useContainer()
   const toast = useToast()
 
+  // fetch current note
   const fetchNote = useCallback(
     async (id: string) => {
       const cache = await noteCache.getItem(id)
       if (cache) {
         setNote(cache)
+        setLocalDocState(cache.updates)
       }
-      const result = await find(id)
+      const params = {} as { sv: string }
+      if (cache?.updates) {
+        params.sv = getDocStateVector(cache.updates)
+      }
+      const result = await find(id, params)
 
       if (!result) {
         return
@@ -194,6 +202,7 @@ const useNote = (initData?: NoteModel) => {
 
   return {
     note,
+    localDocState,
     fetchNote,
     abortFindNote,
     createNote,

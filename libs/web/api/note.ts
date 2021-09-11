@@ -1,4 +1,5 @@
 import { NoteModel } from 'libs/shared/note'
+import { encode } from 'qss'
 import { useCallback } from 'react'
 import noteCache from '../cache/note'
 import useFetcher from './fetcher'
@@ -7,10 +8,14 @@ export default function useNoteAPI() {
   const { loading, request, abort, error } = useFetcher()
 
   const find = useCallback(
-    async (id: string) => {
+    async (id: string, params?: { sv: string }) => {
+      let qs = ''
+      if (params) {
+        qs = '?' + encode(params)
+      }
       return request<null, NoteModel>({
         method: 'GET',
-        url: `/api/notes/${id}`,
+        url: `/api/notes/${id}` + qs,
       })
     },
     [request]

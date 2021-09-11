@@ -1,6 +1,7 @@
 import * as Y from 'yjs'
 import { toUint8Array, fromUint8Array } from 'js-base64'
 import { prosemirrorToYDoc } from 'y-prosemirror'
+import { YJS_DOC_KEY } from 'components/editor/extensions/y-sync'
 
 const yDocMap = new Map<number, Y.Doc>()
 
@@ -92,4 +93,19 @@ export const getYDocUpdate = ({ panelId = 0 }: { panelId?: number }) => {
 
 const getDecodedUpdates = (encodedUpdates: string[]) => {
   return encodedUpdates.map(toUint8Array)
+}
+
+export const getDocStateVector = (updates: string[]) => {
+  return fromUint8Array(
+    Y.encodeStateVectorFromUpdate(Y.mergeUpdates(getDecodedUpdates(updates)))
+  )
+}
+
+export const getXML = (updates: string[] = []) => {
+  const update = Y.mergeUpdates(getDecodedUpdates(updates))
+  const doc = new Y.Doc()
+
+  Y.applyUpdate(doc, update)
+
+  return doc.getXmlFragment(YJS_DOC_KEY).toJSON() as string
 }
