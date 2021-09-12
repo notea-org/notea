@@ -13,6 +13,7 @@ export async function searchNote(keyword: string, deleted: NOTE_DELETED) {
 
   await noteCache.iterate<NoteCacheItem, void>((note) => {
     if (note.deleted !== deleted) return
+
     if (re.test(note.rawContent || '') || re.test(note.title)) {
       data.push(note)
     }

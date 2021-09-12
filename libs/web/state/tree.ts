@@ -23,7 +23,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { mutate, loading, fetch: fetchTree } = useTreeAPI()
   const [tree, setTree] = useState<TreeModel>(initData)
   const [initLoaded, setInitLoaded] = useState<boolean>(false)
-  const { fetch: fetchNote } = useNoteAPI()
+  const { fetch: fetchNoteAPI } = useNoteAPI()
   const treeRef = useRef(tree)
   const toast = useToast()
 
@@ -35,13 +35,13 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     async (tree: TreeModel) => {
       await Promise.all(
         map(tree.items, async (item) => {
-          item.data = await fetchNote(item.id)
+          item.data = await fetchNoteAPI(item.id)
         })
       )
 
       return tree
     },
-    [fetchNote]
+    [fetchNoteAPI]
   )
 
   const initTree = useCallback(async () => {

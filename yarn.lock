@@ -4394,7 +4394,7 @@ debug@2, debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@4:
+debug@4, debug@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
   integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
@@ -6004,6 +6004,19 @@ isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
+isomorphic-unfetch@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-3.1.0.tgz#87341d5f4f7b63843d468438128cb087b7c3e98f"
+  integrity sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==
+  dependencies:
+    node-fetch "^2.6.1"
+    unfetch "^4.2.0"
+
+isomorphic.js@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/isomorphic.js/-/isomorphic.js-0.2.4.tgz#24ca374163ae54a7ce3b86ce63b701b91aa84969"
+  integrity sha512-Y4NjZceAwaPXctwsHgNsmfuPxR8lJ3f8X7QTAkhltrX4oGIv+eTlgHLXn4tWysC9zGTi929gapnPp+8F8cg7nA==
+
 istanbul-lib-coverage@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-3.0.0.tgz#f5944a37c70b550b02a78a5c3b2055b280cec8ec"
@@ -6456,7 +6469,16 @@ jest-worker@^26.2.1:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest-worker@^27.0.6, jest-worker@^27.1.0:
+jest-worker@^27.0.6:
+  version "27.1.1"
+  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-27.1.1.tgz#eb5f05c4657fdcb702c36c48b20d785bd4599378"
+  integrity sha512-XJKCL7tu+362IUYTWvw8+3S75U7qMiYiRU6u5yqscB48bTvzwN6i8L/7wVTXiFLwkRsxARNM7TISnTvcgv9hxA==
+  dependencies:
+    "@types/node" "*"
+    merge-stream "^2.0.0"
+    supports-color "^8.0.0"
+
+jest-worker@^27.1.0:
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-27.1.0.tgz#65f4a88e37148ed984ba8ca8492d6b376938c0aa"
   integrity sha512-mO4PHb2QWLn9yRXGp7rkvXLAYuxwhq1ZYUo0LoDhg8wqvv4QizP1ZWEJOeolgbEgAWZLIEU0wsku8J+lGWfBhg==
@@ -6473,6 +6495,11 @@ jest@^27.1.0:
     "@jest/core" "^27.1.0"
     import-local "^3.0.2"
     jest-cli "^27.1.0"
+
+js-base64@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.6.1.tgz#555aae398b74694b4037af1f8a5a6209d170efbe"
+  integrity sha512-Frdq2+tRRGLQUIQOgsIGSCd1VePCS2fsddTG5dTCqR0JHgltXWfsxnY0gIXPoMeRmdom6Oyq+UMOFg5suduOjQ==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -6713,6 +6740,13 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lib0@^0.2.34, lib0@^0.2.41, lib0@^0.2.42:
+  version "0.2.42"
+  resolved "https://registry.yarnpkg.com/lib0/-/lib0-0.2.42.tgz#6d8bf1fb8205dec37a953c521c5ee403fd8769b0"
+  integrity sha512-8BNM4MiokEKzMvSxTOC3gnCBisJH+jL67CnSnqzHv3jli3pUvGC8wz+0DQ2YvGr4wVQdb2R2uNNPw9LEpVvJ4Q==
+  dependencies:
+    isomorphic.js "^0.2.4"
 
 lie@3.1.1:
   version "3.1.1"
@@ -6965,18 +6999,6 @@ markdown-it@^10.0.0:
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
 
-markdown-link-extractor@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/markdown-link-extractor/-/markdown-link-extractor-1.3.0.tgz#a11954f683134f23edecd74ba35ae7bf7ad3d874"
-  integrity sha512-1qXoYqhsU5qgWtUF9HQlBF82jRrakENh+7nmPUxoMJw13kf92jzb72EchrSsw5vdqbDLJurkpNL50xLFRhjmbw==
-  dependencies:
-    marked "^2.0.5"
-
-marked@^2.0.5:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-2.1.3.tgz#bd017cef6431724fd4b27e0657f5ceb14bff3753"
-  integrity sha512-/Q+7MGzaETqifOMWYEA7HVMaZb4XbcRfaOzcSsHZEith83KGlvaSG33u0SKu89Mj5h+T8V2hM+8O45Qc5XTgwA==
-
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
@@ -7202,6 +7224,15 @@ next-seo@^4.24.0:
   resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-4.24.0.tgz#7c0447da00b8574dcda5c6979771a7f6efd24f55"
   integrity sha512-9VQXfXAelhE+hAWzJ4azigQaW3FPX0kU0eYKFQXKsQjgY7AWtukjRGXls0oSIk8khhDJwmCt46EwsO9n5DDW6Q==
 
+next-test-api-route-handler@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/next-test-api-route-handler/-/next-test-api-route-handler-2.2.1.tgz#162e408c745e2e924ec3bae95d210ea1a3d3f927"
+  integrity sha512-IW9zTfHkNwKjeckfY2IoE0PDSzpukCOcChQZ7kiZoMJ5rUOHAp2GYJSVtvrtFmgrItq+mbtVYqusxSkXtJVGAQ==
+  dependencies:
+    debug "^4.3.2"
+    isomorphic-unfetch "^3.1.0"
+    test-listen "^1.1.0"
+
 next-themes@^0.0.14:
   version "0.0.14"
   resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.0.14.tgz#2b9861990bc453149e23d8e6ef1a25a119e36675"
@@ -7282,7 +7313,7 @@ node-emoji@^1.8.1:
   dependencies:
     lodash.toarray "^4.4.0"
 
-node-fetch@2.6.1:
+node-fetch@2.6.1, node-fetch@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
@@ -9167,6 +9198,11 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
+striptags@^4.0.0-alpha.2:
+  version "4.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/striptags/-/striptags-4.0.0-alpha.2.tgz#e911eb286a3ca5d0c1d53a8449a1a9e933b1305c"
+  integrity sha512-KM2d9idEHtI4961q0UC67uIoNAuRpKh4Asjkjhw/QzXPwQlgEOcmBuP+pw2fTZpqnL2VYc7wUX0xJN/zKvXwWQ==
+
 styled-components@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.2.1.tgz#6ed7fad2dc233825f64c719ffbdedd84ad79101a"
@@ -9410,6 +9446,11 @@ test-exclude@^6.0.0:
     "@istanbuljs/schema" "^0.1.2"
     glob "^7.1.4"
     minimatch "^3.0.4"
+
+test-listen@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/test-listen/-/test-listen-1.1.0.tgz#2ba614d96c3bc9157469003027b42a495dd83b6a"
+  integrity sha512-OyEVi981C1sb9NX1xayfgZls3p8QTDRwp06EcgxSgd1kktaENBW8dO15i8v/7Fi15j0IYQctJzk5J+hyEBId2w==
 
 text-table@^0.2.0:
   version "0.2.0"
@@ -9656,6 +9697,11 @@ unbox-primitive@^1.0.1:
     has-bigints "^1.0.1"
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
+
+unfetch@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
+  integrity sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
 
 unfurl.js@^5.3.0:
   version "5.3.0"
@@ -10184,6 +10230,20 @@ xtend@^4.0.0, xtend@^4.0.2:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
+y-prosemirror@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/y-prosemirror/-/y-prosemirror-1.0.9.tgz#c0b5bf4e2c6620093ba0658c2aca52055346a683"
+  integrity sha512-OM12aPx04lwiIy1IOBidb6ONAof2KFxQE/Gww26SEsMQuA2dibrJkjaMwXwY1KnYY7yOpwbIFRdwecdNXLU9yQ==
+  dependencies:
+    lib0 "^0.2.34"
+
+y-protocols@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/y-protocols/-/y-protocols-1.0.5.tgz#91d574250060b29fcac8f8eb5e276fbad594245e"
+  integrity sha512-Wil92b7cGk712lRHDqS4T90IczF6RkcvCwAD0A2OPg+adKmOe+nOiT/N2hvpQIWS3zfjmtL4CPaH5sIW1Hkm/A==
+  dependencies:
+    lib0 "^0.2.42"
+
 y18n@^5.0.5:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.8.tgz#7f4934d0f7ca8c56f95314939ddcd2dd91ce1d55"
@@ -10221,6 +10281,13 @@ yargs@^16.0.3:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yjs@^13.5.12:
+  version "13.5.12"
+  resolved "https://registry.yarnpkg.com/yjs/-/yjs-13.5.12.tgz#7a0cf3119fb368c07243825e989a55de164b3f9c"
+  integrity sha512-/buy1kh8Ls+t733Lgov9hiNxCsjHSCymTuZNahj2hsPNoGbvnSdDmCz9Z4F19Yr1eUAAXQLJF3q7fiBcvPC6Qg==
+  dependencies:
+    lib0 "^0.2.41"
 
 yocto-queue@^0.1.0:
   version "0.1.0"

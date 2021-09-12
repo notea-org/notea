@@ -5,7 +5,6 @@ import { TreeModel } from 'libs/shared/tree'
 import { useSession } from 'libs/server/middlewares/session'
 import { applySettings } from 'libs/server/middlewares/settings'
 import { applyAuth, applyRedirectLogin } from 'libs/server/middlewares/auth'
-import Link from 'next/link'
 import UIState from 'libs/web/state/ui'
 import Router from 'next/router'
 import { useEffect } from 'react'
@@ -26,11 +25,13 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
     <LayoutMain tree={tree}>
       <div className="flex flex-col h-screen">
         <div className="m-auto text-center flex flex-col items-center">
-          <Link href="//github.com/qingwei-li/notea">
-            <a target="_blank">
-              <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg" />
-            </a>
-          </Link>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="//github.com/qingwei-li/notea"
+          >
+            <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg" />
+          </a>
         </div>
       </div>
     </LayoutMain>

@@ -6,12 +6,14 @@ import { getPathNoteById } from 'libs/server/note-path'
 import { NoteModel } from 'libs/shared/note'
 import { StoreProvider } from 'libs/server/store'
 import { API } from 'libs/server/middlewares/error'
-import { strCompress } from 'libs/shared/str'
+import { strCompress, tryJSON } from 'libs/shared/str'
 import { ROOT_ID } from 'libs/shared/tree'
+import { mergeUpdates, mergeUpdatesToLimit } from 'libs/shared/y-doc'
 
 export async function getNote(
   store: StoreProvider,
-  id: string
+  id: string,
+  sv?: string
 ): Promise<NoteModel> {
   const { content, meta } = await store.getObjectAndMeta(getPathNoteById(id))
 
@@ -20,10 +22,12 @@ export async function getNote(
   }
 
   const jsonMeta = metaToJson(meta)
+  const updates = tryJSON<string[]>(content)
 
   return {
     id,
-    content: content || '\n',
+    updates: updates ? [mergeUpdates(updates, sv)] : null,
+    content: updates ? null : content,
     ...jsonMeta,
   } as NoteModel
 }
@@ -44,6 +48,7 @@ export default api()
   })
   .get(async (req, res) => {
     const id = req.query.id as string
+    const sv = req.query.sv as string
 
     if (id === ROOT_ID) {
       return res.json({
@@ -51,29 +56,45 @@ export default api()
       })
     }
 
-    const note = await getNote(req.state.store, id)
+    const note = await getNote(req.state.store, id, sv)
 
     res.json(note)
   })
   .post(async (req, res) => {
-    const id = req.query.id as string
-    const { content } = req.body
+    const id = (req.query ?? {}).id as string
+    const { updates } = req.body
     const notePath = getPathNoteById(id)
-    const oldMeta = await req.state.store.getObjectMeta(notePath)
+    const store = req.state.store
 
-    if (oldMeta) {
-      oldMeta['date'] = strCompress(new Date().toISOString())
+    if (!updates?.length) {
+      throw res.APIError.NOT_SUPPORTED.throw()
     }
 
-    // Empty content may be a misoperation
-    if (!content || content.trim() === '\\') {
-      await req.state.store.copyObject(notePath, notePath + '.bak', {
+    const { content = '[]', meta: oldMeta } = await store.getObjectAndMeta(
+      notePath
+    )
+    const oldUpdates = tryJSON<string[]>(content) ?? []
+
+    // backup older object
+    if (!oldUpdates.length && content.length) {
+      await store.copyObject(notePath, store.getPath('backup', notePath), {
         meta: oldMeta,
         contentType: 'text/markdown',
       })
     }
 
-    await req.state.store.putObject(notePath, content, {
+    if (oldMeta) {
+      oldMeta['date'] = strCompress(new Date().toISOString())
+    }
+
+    let newUpdates = [...oldUpdates, ...updates]
+
+    // Trigger a merge every more than 100 updates, to avoid too much data
+    if (newUpdates.length >= 100) {
+      newUpdates = mergeUpdatesToLimit(newUpdates, 50)
+    }
+
+    await store.putObject(notePath, newUpdates, {
       contentType: 'text/markdown',
       meta: oldMeta,
     })

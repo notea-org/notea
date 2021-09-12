@@ -23,14 +23,13 @@ export function toStr(
   return deCompressed ? strDecompress(str) : str
 }
 
-export function tryJSON<T>(str?: string | null): T | null {
-  if (isNil(str)) return null
+export function tryJSON<T>(str?: string | null): T | undefined {
+  if (isNil(str)) return undefined
 
   try {
     return JSON.parse(str)
   } catch (e) {
-    console.error('parse error', str)
-    return null
+    console.log('parse error', str)
   }
 }
 

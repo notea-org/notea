@@ -59,7 +59,7 @@ export default function useFetcher() {
         return response.json()
       } catch (e) {
         if (!controller?.signal.aborted) {
-          setError(e)
+          setError(e as any)
         }
       } finally {
         setLoading(false)

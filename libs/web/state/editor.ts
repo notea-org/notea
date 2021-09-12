@@ -5,6 +5,8 @@ import {
   MouseEvent as ReactMouseEvent,
   useState,
   useRef,
+  useEffect,
+  useMemo,
 } from 'react'
 import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import useFetcher from 'libs/web/api/fetcher'
@@ -20,6 +22,9 @@ import { useDebouncedCallback } from 'use-debounce'
 import { ROOT_ID } from 'libs/shared/tree'
 import { has } from 'lodash'
 import UIState from './ui'
+import YSync from 'components/editor/extensions/y-sync'
+import { createYDoc, getYDocUpdate } from '../editor/y-doc'
+import { mergeUpdates } from 'libs/shared/y-doc'
 
 const onSearchLink = async (keyword: string) => {
   const list = await searchNote(keyword, NOTE_DELETED.NORMAL)
@@ -41,6 +46,9 @@ const useEditor = (initNote?: NoteModel) => {
     createNoteWithTitle,
     updateNote,
     createNote,
+    fetchNote,
+    localDocState,
+    resetLocalDocState,
     note: noteProp,
   } = NoteState.useContainer()
   const note = initNote ?? noteProp
@@ -51,10 +59,19 @@ const useEditor = (initNote?: NoteModel) => {
   const { request, error } = useFetcher()
   const toast = useToast()
   const editorEl = useRef<MarkdownEditor>(null)
+  const updates = useRef<Uint8Array[]>([])
+  const isNew = useMemo(() => has(router.query, 'new'), [router.query])
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
-      const isNew = has(router.query, 'new')
+      // need transform to y-doc
+      if (isNew || note?.content) {
+        const update = getYDocUpdate({})
+        data.updates = update ? [update] : []
+      } else if (updates.current?.length > 0) {
+        data.updates = [mergeUpdates(updates.current)]
+        updates.current = []
+      }
 
       if (isNew) {
         data.pid = (router.query.pid as string) || ROOT_ID
@@ -147,7 +164,6 @@ const useEditor = (initNote?: NoteModel) => {
   const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
 
   const getBackLinks = useCallback(async () => {
-    console.log(note?.id)
     const linkNotes: NoteCacheItem[] = []
     if (!note?.id) return linkNotes
     setBackLinks([])
@@ -159,12 +175,76 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
-  const onEditorChange = useCallback(
-    (value: () => string): void => {
-      onNoteChange.callback({ content: value() })
+  const onEditorUpdate = useCallback(
+    (update: Uint8Array) => {
+      updates.current.push(update)
+      onNoteChange.callback({})
     },
     [onNoteChange]
   )
+
+  const getYDoc = () => {
+    const { yDoc } = editorEl.current?.extensions.extensions.find(
+      (ext) => ext.name === 'y-sync'
+    ) as YSync
+    return yDoc
+  }
+
+  const setEditorDoc = useCallback(
+    async (note?: NoteModel, yDoc?: YSync['yDoc']) => {
+      if (!yDoc || !note) {
+        return
+      }
+
+      createYDoc({
+        onUpdate: onEditorUpdate,
+        editorYDoc: yDoc,
+        node: note?.content
+          ? editorEl.current?.createDocument(note.content)
+          : undefined,
+        noteUpdates: note?.updates,
+      })
+    },
+    [onEditorUpdate]
+  )
+
+  const fetchCurrentNote = useCallback(async () => {
+    if (!note?.id || isNew) {
+      return
+    }
+
+    const yDoc = getYDoc()
+
+    if (!yDoc) {
+      return
+    }
+
+    const newNote = await fetchNote(note.id)
+
+    setEditorDoc(newNote, yDoc)
+  }, [fetchNote, isNew, note?.id, setEditorDoc])
+
+  useEffect(() => {
+    window.addEventListener('focus', fetchCurrentNote)
+    return () => {
+      window.removeEventListener('focus', fetchCurrentNote)
+    }
+  }, [fetchCurrentNote])
+
+  // Initialize editor doc
+  useEffect(() => {
+    const yDoc = getYDoc()
+
+    createYDoc({
+      onUpdate: onEditorUpdate,
+      editorYDoc: yDoc,
+      node: note?.content
+        ? editorEl.current?.createDocument(note.content)
+        : undefined,
+      noteUpdates: localDocState,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localDocState])
 
   return {
     onCreateLink,
@@ -173,7 +253,6 @@ const useEditor = (initNote?: NoteModel) => {
     onUploadImage,
     onHoverLink,
     getBackLinks,
-    onEditorChange,
     onNoteChange,
     backlinks,
     editorEl,

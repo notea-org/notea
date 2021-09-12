@@ -16,14 +16,14 @@ const PreviewModal: FC = () => {
     preview: { anchor, open, close, visible, data, setAnchor },
   } = PortalState.useContainer()
   const router = useRouter()
-  const { fetch: fetchNote } = useNoteAPI()
+  const { fetch: fetchNoteAPI } = useNoteAPI()
   const [note, setNote] = useState<NoteCacheItem>()
 
   const findNote = useCallback(
     async (id: string) => {
-      setNote(await fetchNote(id))
+      setNote(await fetchNoteAPI(id))
     },
-    [fetchNote]
+    [fetchNoteAPI]
   )
 
   const gotoLink = useCallback(() => {
