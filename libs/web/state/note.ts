@@ -200,9 +200,14 @@ const useNote = (initData?: NoteModel) => {
     [createNote, fetchNote]
   )
 
+  const resetLocalDocState = () => {
+    setLocalDocState([])
+  }
+
   return {
     note,
     localDocState,
+    resetLocalDocState,
     fetchNote,
     abortFindNote,
     createNote,

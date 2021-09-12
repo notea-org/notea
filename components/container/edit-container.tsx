@@ -24,6 +24,7 @@ export const EditContainer = () => {
     abortFindNote,
     findOrCreateNote,
     initNote,
+    resetLocalDocState,
     note,
   } = NoteState.useContainer()
   const { query } = useRouter()
@@ -42,10 +43,13 @@ export const EditContainer = () => {
           title: id,
           pid: settings.daily_root_id,
         })
+        // you can create a note via `/new`
       } else if (id === 'new') {
         const url = `/${genNewId()}?new` + (pid ? `&pid=${pid}` : '')
 
         router.replace(url, undefined, { shallow: true })
+        resetLocalDocState()
+        // fetch note by id
       } else if (id && !isNew) {
         try {
           const result = await fetchNote(id)
@@ -61,6 +65,7 @@ export const EditContainer = () => {
             }
           }
         }
+        // default
       } else {
         if (await noteCache.getItem(id)) {
           router.push(`/${id}`, undefined, { shallow: true })
@@ -85,6 +90,7 @@ export const EditContainer = () => {
       settings.daily_root_id,
       genNewId,
       pid,
+      resetLocalDocState,
       fetchNote,
       toast,
       initNote,
@@ -95,7 +101,8 @@ export const EditContainer = () => {
   useEffect(() => {
     abortFindNote()
     loadNoteById(id)
-  }, [loadNoteById, abortFindNote, id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   useEffect(() => {
     updateTitle(note?.title)

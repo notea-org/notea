@@ -6,6 +6,7 @@ import {
   useState,
   useRef,
   useEffect,
+  useMemo,
 } from 'react'
 import { searchNote, searchRangeText } from 'libs/web/utils/search'
 import useFetcher from 'libs/web/api/fetcher'
@@ -47,6 +48,7 @@ const useEditor = (initNote?: NoteModel) => {
     createNote,
     fetchNote,
     localDocState,
+    resetLocalDocState,
     note: noteProp,
   } = NoteState.useContainer()
   const note = initNote ?? noteProp
@@ -58,11 +60,10 @@ const useEditor = (initNote?: NoteModel) => {
   const toast = useToast()
   const editorEl = useRef<MarkdownEditor>(null)
   const updates = useRef<Uint8Array[]>([])
+  const isNew = useMemo(() => has(router.query, 'new'), [router.query])
 
   const onNoteChange = useDebouncedCallback(
     async (data: Partial<NoteModel>) => {
-      const isNew = has(router.query, 'new')
-
       // need transform to y-doc
       if (isNew || note?.content) {
         const update = getYDocUpdate({})
@@ -163,7 +164,6 @@ const useEditor = (initNote?: NoteModel) => {
   const [backlinks, setBackLinks] = useState<NoteCacheItem[]>()
 
   const getBackLinks = useCallback(async () => {
-    console.log(note?.id)
     const linkNotes: NoteCacheItem[] = []
     if (!note?.id) return linkNotes
     setBackLinks([])
@@ -175,10 +175,13 @@ const useEditor = (initNote?: NoteModel) => {
     setBackLinks(linkNotes)
   }, [note?.id])
 
-  const onEditorUpdate = (update: Uint8Array) => {
-    updates.current.push(update)
-    onNoteChange.callback({})
-  }
+  const onEditorUpdate = useCallback(
+    (update: Uint8Array) => {
+      updates.current.push(update)
+      onNoteChange.callback({})
+    },
+    [onNoteChange]
+  )
 
   const getYDoc = () => {
     const { yDoc } = editorEl.current?.extensions.extensions.find(
@@ -187,23 +190,26 @@ const useEditor = (initNote?: NoteModel) => {
     return yDoc
   }
 
-  const setEditorDoc = async (note?: NoteModel, yDoc?: YSync['yDoc']) => {
-    if (!yDoc || !note) {
-      return
-    }
+  const setEditorDoc = useCallback(
+    async (note?: NoteModel, yDoc?: YSync['yDoc']) => {
+      if (!yDoc || !note) {
+        return
+      }
 
-    createYDoc({
-      onUpdate: onEditorUpdate,
-      editorYDoc: yDoc,
-      node: note?.content
-        ? editorEl.current?.createDocument(note.content)
-        : undefined,
-      noteUpdates: note?.updates,
-    })
-  }
+      createYDoc({
+        onUpdate: onEditorUpdate,
+        editorYDoc: yDoc,
+        node: note?.content
+          ? editorEl.current?.createDocument(note.content)
+          : undefined,
+        noteUpdates: note?.updates,
+      })
+    },
+    [onEditorUpdate]
+  )
 
-  const fetchCurrentNote = async () => {
-    if (!note?.id) {
+  const fetchCurrentNote = useCallback(async () => {
+    if (!note?.id || isNew) {
       return
     }
 
@@ -216,18 +222,19 @@ const useEditor = (initNote?: NoteModel) => {
     const newNote = await fetchNote(note.id)
 
     setEditorDoc(newNote, yDoc)
-  }
+  }, [fetchNote, isNew, note?.id, setEditorDoc])
 
   useEffect(() => {
     window.addEventListener('focus', fetchCurrentNote)
     return () => {
       window.removeEventListener('focus', fetchCurrentNote)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [fetchCurrentNote])
 
+  // Initialize editor doc
   useEffect(() => {
     const yDoc = getYDoc()
+
     createYDoc({
       onUpdate: onEditorUpdate,
       editorYDoc: yDoc,
@@ -236,7 +243,7 @@ const useEditor = (initNote?: NoteModel) => {
         : undefined,
       noteUpdates: localDocState,
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localDocState])
 
   return {
