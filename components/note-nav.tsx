@@ -12,6 +12,7 @@ import PortalState from 'libs/web/state/portal'
 import { NOTE_SHARED } from 'libs/shared/meta'
 import useI18n from 'libs/web/hooks/use-i18n'
 import NavButtonGroup from './nav-button-group'
+import { EyeIcon } from '@heroicons/react/outline'
 
 const MenuButton = () => {
   const { sidebar } = UIState.useContainer()
@@ -37,7 +38,7 @@ const NoteNav = () => {
   const { t } = useI18n()
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
-  const { getPaths } = NoteTreeState.useContainer()
+  const { getPaths, showItem, checkItemIsShown } = NoteTreeState.useContainer()
   const { share, menu } = PortalState.useContainer()
 
   const handleClickShare = useCallback(
@@ -57,6 +58,11 @@ const NoteNav = () => {
     },
     [note, menu]
   )
+
+  const handleClickOpenInTree = useCallback(() => {
+    if (!note) return
+    showItem(note);
+  }, [note, showItem])
 
   return (
     <nav
@@ -92,14 +98,27 @@ const NoteNav = () => {
                   </div>
                 </Tooltip>
               ))}
-            <Tooltip title={note.title}>
-              <span
-                className="title block text-gray-600 text-sm truncate select-none"
-                aria-current="page"
-              >
-                {note.title}
-              </span>
-            </Tooltip>
+            <span>
+              <Tooltip title={note.title}>
+                <span
+                  className="title inline-block text-gray-600 text-sm truncate select-none align-middle"
+                  aria-current="page"
+                >
+                  {note.title}
+                </span>
+              </Tooltip>
+              {!checkItemIsShown(note) && (
+                <Tooltip title={t('Show note in tree')}>
+                  <span>
+                    <EyeIcon
+                      width="20"
+                      className="inline-block cursor-pointer ml-1"
+                      onClick={handleClickOpenInTree}
+                    />
+                  </span>
+                </Tooltip>
+              )}
+            </span>
           </Breadcrumbs>
         )}
         <style jsx>
