@@ -6,7 +6,7 @@ import router from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
 import IconButton from 'components/icon-button'
 import useI18n from 'libs/web/hooks/use-i18n'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, Tooltip } from '@material-ui/core'
 import { Favorites } from './favorites'
 
 const SideBarList = () => {
@@ -16,6 +16,7 @@ const SideBarList = () => {
     moveItem,
     mutateItem,
     initLoaded,
+    collapseAllItems
   } = NoteTreeState.useContainer()
 
   const onExpand = useCallback(
@@ -66,6 +67,13 @@ const SideBarList = () => {
             <CircularProgress className="ml-4" size="14px" color="inherit" />
           )}
         </div>
+        <Tooltip title={t('Collapse all pages')}>
+          <IconButton
+            icon="ChevronDoubleUp"
+            onClick={collapseAllItems}
+            className="text-gray-700 w-5 h-5 md:w-5 md:h-5"
+          ></IconButton>
+        </Tooltip>
         <HotkeyTooltip
           text={t('Create page')}
           commandKey

@@ -166,25 +166,22 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     return findParentTreeItems(tree, note).map((listItem) => listItem.data!)
   }, [])
 
-  const showItem = useCallback(
-    async (note: NoteModel) => {
-      const tree = treeRef.current
-      const parents = findParentTreeItems(tree, note)
-
+  const setItemsExpandState = useCallback(
+    async (items: TreeItemModel[], newValue: boolean) => {
       const newTree = reduce(
-        parents,
+        items,
         (tempTree, item) =>
-          TreeActions.mutateItem(tempTree, item.id, { isExpanded: true }),
-        tree
+          TreeActions.mutateItem(tempTree, item.id, { isExpanded: newValue }),
+        treeRef.current
       )
       setTree(newTree)
 
-      for (const parent of parents) {
+      for (const item of items) {
         await mutate({
           action: 'mutate',
           data: {
-            isExpanded: true,
-            id: parent.id,
+            isExpanded: newValue,
+            id: item.id,
           },
         })
       }
@@ -192,14 +189,25 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     [mutate]
   )
 
-  const checkItemIsShown = useCallback(
+  const showItem = useCallback(
     (note: NoteModel) => {
-      const tree = treeRef.current
-      const parents = findParentTreeItems(tree, note)
-      return reduce(parents, (value, item) => value && !!item.isExpanded, true)
+      const parents = findParentTreeItems(treeRef.current, note)
+      setItemsExpandState(parents, true)
     },
-    [mutate]
+    [setItemsExpandState]
   )
+
+  const checkItemIsShown = useCallback((note: NoteModel) => {
+    const parents = findParentTreeItems(treeRef.current, note)
+    return reduce(parents, (value, item) => value && !!item.isExpanded, true)
+  }, [])
+
+  const collapseAllItems = useCallback(() => {
+    const expandedItems = TreeActions.flattenTree(treeRef.current).filter(
+      (item) => item.isExpanded
+    )
+    setItemsExpandState(expandedItems, false)
+  }, [setItemsExpandState])
 
   const pinnedTree = useMemo(() => {
     const items = cloneDeep(tree.items)
@@ -239,6 +247,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     getPaths,
     showItem,
     checkItemIsShown,
+    collapseAllItems,
     loading,
     initLoaded,
   }
