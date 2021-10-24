@@ -7,10 +7,11 @@ const expires = 86400
 export default api()
   .use(useReferrer)
   .get(async (req, res) => {
-    const { url } = req.query as { url: string }
+    const url = decodeURIComponent((req.query as { url: string }).url)
     if (!url) {
       return res.APIError.NOT_SUPPORTED.throw('missing url')
     }
+
     const result = await unfurl(url as string, {
       oembed: true,
     })
@@ -38,6 +39,12 @@ export default api()
       result.open_graph = {
         ...result.open_graph,
         url: `${url}.pibb`,
+      }
+    } else if (/(app|viewer).diagrams.net\//.test(url)) {
+      const data = url.split('#')?.[1]
+      result.open_graph = {
+        ...result.open_graph,
+        url: `https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#${data}`,
       }
     }
 
