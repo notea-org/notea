@@ -1,6 +1,6 @@
 import { NoteModel } from 'libs/shared/note'
 import Link from 'next/link'
-import { FC, ReactText, MouseEvent, useCallback } from 'react'
+import { FC, ReactText, MouseEvent, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
@@ -9,6 +9,7 @@ import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
+import emojiRegex from 'emoji-regex'
 
 const TextSkeleton = () => (
   <Skeleton
@@ -72,6 +73,18 @@ const SidebarListItem: FC<{
     [item, open, setAnchor, setData]
   )
 
+  const emoji = useMemo(() => {
+    const emoji = item.title.match(emojiRegex())
+    if (emoji?.length === 1) return emoji[0]
+    return undefined
+  }, [item.title])
+
+  const icon = useMemo(() => {
+    if (emoji) return undefined
+    if (isExpanded || hasChildren) return 'ChevronRight'
+    return item.title ? 'DocumentText' : 'Document'
+  }, [emoji, hasChildren, isExpanded, item.title])
+
   return (
     <>
       <div
@@ -89,15 +102,10 @@ const SidebarListItem: FC<{
           <a className="flex flex-1 items-center truncate px-2 py-1.5">
             <IconButton
               className="mr-1"
-              icon={
-                hasChildren || isExpanded
-                  ? 'ChevronRight'
-                  : item.title
-                  ? 'DocumentText'
-                  : 'Document'
-              }
+              icon={icon || 'Document'}
+              emoji={emoji}
               iconClassName={classNames('transition-transform transform', {
-                'rotate-90': isExpanded,
+                'rotate-90': icon === 'ChevronRight' && isExpanded,
               })}
               onClick={(e) => {
                 e.preventDefault()
@@ -105,7 +113,10 @@ const SidebarListItem: FC<{
               }}
             ></IconButton>
             <span className="flex-1 truncate" dir="auto">
-              {item.title || (initLoaded ? t('Untitled') : <TextSkeleton />)}
+              {(emoji
+                ? item.title.replace(emoji, '').trimLeft()
+                : item.title) ||
+                (initLoaded ? t('Untitled') : <TextSkeleton />)}
             </span>
           </a>
         </Link>

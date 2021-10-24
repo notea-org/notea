@@ -46,6 +46,7 @@ const IconButton = forwardRef<
     icon: keyof typeof ICONS
     iconClassName?: string
     rounded?: boolean
+    emoji?: string;
   }
 >(
   (
@@ -57,6 +58,7 @@ const IconButton = forwardRef<
       icon,
       disabled,
       onClick,
+      emoji,
       ...attrs
     },
     ref
@@ -87,7 +89,7 @@ const IconButton = forwardRef<
           className
         )}
       >
-        <Icon className={classNames(iconClassName)}></Icon>
+        {emoji || <Icon className={classNames(iconClassName)}></Icon>}
         {children}
       </span>
     )
