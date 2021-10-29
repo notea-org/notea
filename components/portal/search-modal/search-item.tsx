@@ -6,6 +6,8 @@ import MarkText from 'components/portal/filter-modal/mark-text'
 import PortalState from 'libs/web/state/portal'
 import classNames from 'classnames'
 import useScrollView from 'libs/web/hooks/use-scroll-view'
+import NoteTreeState from 'libs/web/state/tree'
+import { Breadcrumbs } from '@material-ui/core'
 
 const SearchItem: FC<{
   note: NoteCacheItem
@@ -15,8 +17,9 @@ const SearchItem: FC<{
   const {
     search: { close },
   } = PortalState.useContainer()
-  const ref = useRef<HTMLLIElement>(null)
+  const { getPaths } = NoteTreeState.useContainer()
 
+  const ref = useRef<HTMLLIElement>(null)
   useScrollView(ref, selected)
 
   return (
@@ -31,10 +34,25 @@ const SearchItem: FC<{
           <h4 className="text-sm font-bold">
             <MarkText text={note.title} keyword={keyword} />
           </h4>
+          <Breadcrumbs
+            maxItems={4}
+            itemsBeforeCollapse={2}
+            itemsAfterCollapse={2}
+            className="text-gray-600 leading-none -mx-0.5"
+            aria-label="breadcrumb"
+          >
+            {getPaths(note)
+              .reverse()
+              .map((path) => (
+                <span key={path.id} className="px-0.5 py-0.5 text-xs truncate">
+                  {path.title}
+                </span>
+              ))}
+          </Breadcrumbs>
           <p className="mt-1">
             <MarkText text={note.rawContent} keyword={keyword} />
           </p>
-          <time className="text-gray-300 mt-2 block" dateTime={note.date}>
+          <time className="text-gray-500 mt-2 block" dateTime={note.date}>
             {dayjs(note.date).format('DD/MM/YYYY HH:mm')}
           </time>
         </a>
