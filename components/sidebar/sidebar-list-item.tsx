@@ -1,6 +1,6 @@
 import { NoteModel } from 'libs/shared/note'
 import Link from 'next/link'
-import { FC, ReactText, MouseEvent, useCallback } from 'react'
+import { FC, ReactText, MouseEvent, useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 import router, { useRouter } from 'next/router'
 import HotkeyTooltip from 'components/hotkey-tooltip'
@@ -9,6 +9,7 @@ import NoteTreeState from 'libs/web/state/tree'
 import { Skeleton } from '@material-ui/lab'
 import PortalState from 'libs/web/state/portal'
 import useI18n from 'libs/web/hooks/use-i18n'
+import emojiRegex from 'emoji-regex'
 
 const TextSkeleton = () => (
   <Skeleton
@@ -72,6 +73,20 @@ const SidebarListItem: FC<{
     [item, open, setAnchor, setData]
   )
 
+  const handleClickIcon = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault()
+      isExpanded ? onCollapse(item.id) : onExpand(item.id)
+    },
+    [item.id, isExpanded, onCollapse, onExpand]
+  )
+
+  const emoji = useMemo(() => {
+    const emoji = item.title.match(emojiRegex())
+    if (emoji?.length === 1) return emoji[0]
+    return undefined
+  }, [item.title])
+
   return (
     <>
       <div
@@ -87,25 +102,37 @@ const SidebarListItem: FC<{
       >
         <Link href={`/${item.id}`} shallow>
           <a className="flex flex-1 items-center truncate px-2 py-1.5">
-            <IconButton
-              className="mr-1"
-              icon={
-                hasChildren || isExpanded
-                  ? 'ChevronRight'
-                  : item.title
-                  ? 'DocumentText'
-                  : 'Document'
-              }
-              iconClassName={classNames('transition-transform transform', {
-                'rotate-90': isExpanded,
-              })}
-              onClick={(e) => {
-                e.preventDefault()
-                isExpanded ? onCollapse(item.id) : onExpand(item.id)
-              }}
-            ></IconButton>
+            {emoji ? (
+              <span
+                onClick={handleClickIcon}
+                className={classNames(
+                  'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6 rounded hover:bg-gray-400 mr-1'
+                )}
+              >
+                {emoji}
+              </span>
+            ) : (
+              <IconButton
+                className="mr-1"
+                icon={
+                  hasChildren || isExpanded
+                    ? 'ChevronRight'
+                    : item.title
+                    ? 'DocumentText'
+                    : 'Document'
+                }
+                iconClassName={classNames('transition-transform transform', {
+                  'rotate-90': isExpanded,
+                })}
+                onClick={handleClickIcon}
+              ></IconButton>
+            )}
+
             <span className="flex-1 truncate" dir="auto">
-              {item.title || (initLoaded ? t('Untitled') : <TextSkeleton />)}
+              {(emoji
+                ? item.title.replace(emoji, '').trimLeft()
+                : item.title) ||
+                (initLoaded ? t('Untitled') : <TextSkeleton />)}
             </span>
           </a>
         </Link>
