@@ -1,5 +1,5 @@
 # Stage 1: Building the code
-FROM node:alpine AS builder
+FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN yarn install --production --frozen-lockfile
 
 
 # Stage 2: And then copy over node_modules, etc from that stage to the smaller base image
-FROM node:alpine as production
+FROM node:lts-alpine as production
 
 WORKDIR /app
 
