@@ -18,7 +18,6 @@ const SearchItem: FC<{
     search: { close },
   } = PortalState.useContainer()
   const { getPaths } = NoteTreeState.useContainer()
-  console.log(getPaths(note))
 
   const ref = useRef<HTMLLIElement>(null)
   useScrollView(ref, selected)
