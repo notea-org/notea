@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, isEmpty, map } from 'lodash'
+import { cloneDeep, forEach, isEmpty, map, reduce } from 'lodash'
 import { genId } from 'libs/shared/id'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
@@ -18,6 +18,23 @@ import { useToast } from '../hooks/use-toast'
 import { uiCache } from '../cache'
 
 const TREE_CACHE_KEY = 'tree'
+
+const findParentTreeItems = (tree: TreeModel, note: NoteModel) => {
+  const parents = [] as TreeItemModel[]
+
+  let tempNote = note
+  while (tempNote.pid && tempNote.pid !== ROOT_ID) {
+    const curData = tree.items[tempNote.pid]
+    if (curData?.data) {
+      tempNote = curData.data
+      parents.push(curData)
+    } else {
+      break
+    }
+  }
+
+  return parents
+}
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { mutate, loading, fetch: fetchTree } = useTreeAPI()
@@ -146,20 +163,51 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
   const getPaths = useCallback((note: NoteModel) => {
     const tree = treeRef.current
-    const paths = [] as NoteModel[]
-
-    while (note.pid && note.pid !== ROOT_ID) {
-      const curData = tree.items[note.pid]?.data
-      if (curData) {
-        note = curData
-        paths.push(note)
-      } else {
-        break
-      }
-    }
-
-    return paths
+    return findParentTreeItems(tree, note).map((listItem) => listItem.data!)
   }, [])
+
+  const setItemsExpandState = useCallback(
+    async (items: TreeItemModel[], newValue: boolean) => {
+      const newTree = reduce(
+        items,
+        (tempTree, item) =>
+          TreeActions.mutateItem(tempTree, item.id, { isExpanded: newValue }),
+        treeRef.current
+      )
+      setTree(newTree)
+
+      for (const item of items) {
+        await mutate({
+          action: 'mutate',
+          data: {
+            isExpanded: newValue,
+            id: item.id,
+          },
+        })
+      }
+    },
+    [mutate]
+  )
+
+  const showItem = useCallback(
+    (note: NoteModel) => {
+      const parents = findParentTreeItems(treeRef.current, note)
+      setItemsExpandState(parents, true)
+    },
+    [setItemsExpandState]
+  )
+
+  const checkItemIsShown = useCallback((note: NoteModel) => {
+    const parents = findParentTreeItems(treeRef.current, note)
+    return reduce(parents, (value, item) => value && !!item.isExpanded, true)
+  }, [])
+
+  const collapseAllItems = useCallback(() => {
+    const expandedItems = TreeActions.flattenTree(treeRef.current).filter(
+      (item) => item.isExpanded
+    )
+    setItemsExpandState(expandedItems, false)
+  }, [setItemsExpandState])
 
   const pinnedTree = useMemo(() => {
     const items = cloneDeep(tree.items)
@@ -197,6 +245,9 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     restoreItem,
     deleteItem,
     getPaths,
+    showItem,
+    checkItemIsShown,
+    collapseAllItems,
     loading,
     initLoaded,
   }

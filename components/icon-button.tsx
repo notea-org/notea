@@ -18,6 +18,7 @@ import {
   ExternalLinkIcon,
   BookmarkAltIcon,
   PuzzleIcon,
+  ChevronDoubleUpIcon
 } from '@heroicons/react/outline'
 
 export const ICONS = {
@@ -38,6 +39,7 @@ export const ICONS = {
   ExternalLink: ExternalLinkIcon,
   BookmarkAlt: BookmarkAltIcon,
   Puzzle: PuzzleIcon,
+  ChevronDoubleUp: ChevronDoubleUpIcon,
 }
 
 const IconButton = forwardRef<
