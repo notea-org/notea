@@ -3,17 +3,17 @@ name: Publish Docker
 on: [push]
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install modules
-        run: yarn
-      - name: Run MinIO
-        run: docker-compose up -d
-      - name: Run tests
-        run: yarn test
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Install modules
+  #       run: yarn
+  #     - name: Run MinIO
+  #       run: docker-compose up -d
+  #     - name: Run tests
+  #       run: yarn test
   publish:
     name: Publish
     runs-on: ubuntu-latest
