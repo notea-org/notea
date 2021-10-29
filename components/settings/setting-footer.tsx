@@ -5,7 +5,7 @@ export const SettingFooter = () => {
     <footer className="mt-20 text-center opacity-50 text-xs">
       <div>
         <a
-          href="//github.com/qingwei-li/notea"
+          href="https://github.com/qingwei-li/notea"
           target="_blank"
           rel="noreferrer"
         >

@@ -106,7 +106,7 @@ const SidebarListItem: FC<{
               <span
                 onClick={handleClickIcon}
                 className={classNames(
-                  'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6 rounded hover:bg-gray-400 mr-1'
+                  'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6 rounded hover:bg-gray-400 mr-1 text-center'
                 )}
               >
                 {emoji}
