@@ -116,6 +116,25 @@ const flattenTree = (
   )
 }
 
+function findParentTreeItems(tree: TreeModel, pid?: string) {
+  const parents = [] as TreeItemModel[]
+
+  let tempNotePid: string | undefined = pid
+  while (tempNotePid && tempNotePid !== ROOT_ID) {
+    const curData: TreeItemModel = tree.items[tempNotePid]
+    if (curData?.data) {
+      tempNotePid = curData.data.pid
+      parents.push(curData)
+    } else {
+      break
+    }
+  }
+
+  console.log("\x1b[36mLog%s: %o\x1b[0m", ": findParentTreeItems -> tree", tree);
+  return parents
+}
+
+
 const TreeActions = {
   addItem,
   mutateItem,
@@ -124,6 +143,7 @@ const TreeActions = {
   restoreItem,
   deleteItem,
   flattenTree,
+  findParentTreeItems,
 }
 
 export default TreeActions

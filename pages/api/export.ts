@@ -1,6 +1,7 @@
 import { useAuth } from 'libs/server/middlewares/auth'
 import { useStore } from 'libs/server/middlewares/store'
 import AdmZip from 'adm-zip'
+import emojiRegex from 'emoji-regex'
 import { api } from 'libs/server/connect'
 import TreeActions, { ROOT_ID } from 'libs/shared/tree'
 import { getPathNoteById } from 'libs/server/note-path'
@@ -28,13 +29,23 @@ export default api()
         if (metaJson.deleted === NOTE_DELETED.DELETED) {
           return
         }
-        const title = metaJson.title ?? 'Untitled'
 
+        const title = ((metaJson.title as string) ?? 'Untitled')
+          .replace(/\//, '')
+          .replace(emojiRegex(), '')
+          .trim()
+
+        // TODO: tree is not fully populated (data is missing from items), otherwise this should work
+        const parentPath = TreeActions.findParentTreeItems(tree, metaJson.pid)
+          .map((item) => item.data?.title || 'Untitled')
+          .join('/')
+
+        const path = `${parentPath}${parentPath ? '/' : ''}${title}`
         zip.addFile(
-          `${title}${duplicate[title] ? ` (${duplicate[title]})` : ''}.md`,
+          `${path}${duplicate[path] ? ` (${duplicate[path]})` : ''}.md`,
           toBuffer(note.content)
         )
-        duplicate[title] = (duplicate[title] || 0) + 1
+        duplicate[path] = (duplicate[path] || 0) + 1
       })
     )
 

@@ -19,23 +19,6 @@ import { uiCache } from '../cache'
 
 const TREE_CACHE_KEY = 'tree'
 
-const findParentTreeItems = (tree: TreeModel, note: NoteModel) => {
-  const parents = [] as TreeItemModel[]
-
-  let tempNote = note
-  while (tempNote.pid && tempNote.pid !== ROOT_ID) {
-    const curData = tree.items[tempNote.pid]
-    if (curData?.data) {
-      tempNote = curData.data
-      parents.push(curData)
-    } else {
-      break
-    }
-  }
-
-  return parents
-}
-
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
   const { mutate, loading, fetch: fetchTree } = useTreeAPI()
   const [tree, setTree] = useState<TreeModel>(initData)
@@ -163,7 +146,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
   const getPaths = useCallback((note: NoteModel) => {
     const tree = treeRef.current
-    return findParentTreeItems(tree, note).map((listItem) => listItem.data!)
+    return TreeActions.findParentTreeItems(tree, note.pid).map((listItem) => listItem.data!)
   }, [])
 
   const setItemsExpandState = useCallback(
@@ -191,14 +174,14 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
   const showItem = useCallback(
     (note: NoteModel) => {
-      const parents = findParentTreeItems(treeRef.current, note)
+      const parents = TreeActions.findParentTreeItems(treeRef.current, note.pid)
       setItemsExpandState(parents, true)
     },
     [setItemsExpandState]
   )
 
   const checkItemIsShown = useCallback((note: NoteModel) => {
-    const parents = findParentTreeItems(treeRef.current, note)
+    const parents = TreeActions.findParentTreeItems(treeRef.current, note.pid)
     return reduce(parents, (value, item) => value && !!item.isExpanded, true)
   }, [])
 

@@ -47,7 +47,7 @@ export default api()
     const notes: NoteModel[] = []
 
     await Promise.all(
-      zipEntries.map(async (zipEntry) => {
+      zipEntries.map(async (zipEntry) => { // TODO: support zipEntry also being nested folder
         if (!MARKDOWN_EXT.includes(extname(zipEntry.name))) {
           return
         }
