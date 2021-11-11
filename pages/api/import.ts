@@ -44,31 +44,31 @@ export default api()
     const zip = new AdmZip(file.path)
     const zipEntries = zip.getEntries()
     const total = zipEntries.length
-    const notes: NoteModel[] = []
+    const notes: { path: string; note: NoteModel }[] = []
 
-    await Promise.all(
-      zipEntries.map(async (zipEntry) => { // TODO: support zipEntry also being nested folder
-        if (!MARKDOWN_EXT.includes(extname(zipEntry.name))) {
-          return
-        }
-        const markdown = zipEntry.getData().toString('utf8')
-        const { content, title } = parseMarkdownTitle(markdown)
-        const note = {
-          title: title ?? zipEntry.name,
-          pid,
-          id: genId(),
-          date: zipEntry.header.time.toISOString(),
-          content,
-        } as NoteModel
+    const handleZipEntry = async (zipEntry: AdmZip.IZipEntry) => {
+      if (!MARKDOWN_EXT.includes(extname(zipEntry.name))) {
+        return
+      }
+      const markdown = zipEntry.getData().toString('utf8')
+      const { content, title } = parseMarkdownTitle(markdown)
+      const note = {
+        title: title ?? zipEntry.name,
+        pid,
+        id: genId(),
+        date: zipEntry.header.time.toISOString(),
+        content,
+      } as NoteModel
 
-        notes.push(note)
+      notes.push({ path: zipEntry.entryName, note })
+      return createNote(note, req.state)
+    }
 
-        return createNote(note, req.state)
-      })
-    )
+    await Promise.all(zipEntries.map(handleZipEntry))
 
+    // TODO: add notes in correct tree structure
     await req.state.treeStore.addItems(
-      notes.map((n) => n.id),
+      notes.map((n) => n.note.id),
       pid
     )
 

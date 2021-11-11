@@ -130,7 +130,6 @@ function findParentTreeItems(tree: TreeModel, pid?: string) {
     }
   }
 
-  console.log("\x1b[36mLog%s: %o\x1b[0m", ": findParentTreeItems -> tree", tree);
   return parents
 }
 
