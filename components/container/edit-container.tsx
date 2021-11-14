@@ -1,7 +1,7 @@
 import NoteState from 'libs/web/state/note'
 import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import NoteTreeState from 'libs/web/state/tree'
 import NoteNav from 'components/note-nav'
 import UIState from 'libs/web/state/ui'
@@ -10,6 +10,7 @@ import useSettingsAPI from 'libs/web/api/settings'
 import dynamic from 'next/dynamic'
 import { useToast } from 'libs/web/hooks/use-toast'
 import DeleteAlert from 'components/editor/delete-alert'
+import useRouterWarning from 'libs/web/state/ui/useRouterWarning'
 
 const MainEditor = dynamic(() => import('components/editor/main-editor'))
 
@@ -27,6 +28,7 @@ export const EditContainer = () => {
     note,
   } = NoteState.useContainer()
   const { query } = useRouter()
+  const [isSaved, setSaved] = useState(true)
   const pid = query.pid as string
   const id = query.id as string
   const isNew = has(query, 'new')
@@ -94,19 +96,25 @@ export const EditContainer = () => {
   useEffect(() => {
     abortFindNote()
     loadNoteById(id)
+    setSaved(true)
   }, [loadNoteById, abortFindNote, id])
 
   useEffect(() => {
-    updateTitle(note?.title)
-  }, [note?.title, updateTitle])
-
+    updateTitle(`${(!isSaved && settings.explicitSave) ? "*" : ""}${note?.title}`)
+  }, [isSaved, note?.title, settings.explicitSave, updateTitle])
+  
+  useRouterWarning(!isSaved && settings.explicitSave, () => {
+    return confirm("Warning! You have unsaved changes.")
+  })
+  
   return (
     <>
       <NoteNav />
       <DeleteAlert />
       <section className="h-full">
-        <MainEditor note={note} />
+        <MainEditor note={note} explicitSave={settings.explicitSave} saveState={setSaved}/>
       </section>
+      
     </>
   )
 }
