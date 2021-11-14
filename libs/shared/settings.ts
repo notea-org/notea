@@ -62,7 +62,6 @@ export function formatSettings(body: Record<string, any> = {}) {
     settings.editorsize = body.editorsize
   }
 
-  console.log("settings.ts here>", body.explicitSave, isBoolean(body.explicitSave))
   if (isBoolean(body.explicitSave)) {
     settings.explicitSave = body.explicitSave
   }

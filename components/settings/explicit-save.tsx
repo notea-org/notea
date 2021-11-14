@@ -14,13 +14,11 @@ export const ExplicitSave: FC = () => {
   const handleChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       await updateSettings({ explicitSave: Boolean(event.target.value) })
-      console.log({ explicitSave: Boolean(event.target.value) })
       router.reload()
     },
     [updateSettings]
   )
 
-  console.log(settings)
   return (
     <TextField
       {...defaultFieldConfig}
