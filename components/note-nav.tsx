@@ -61,7 +61,7 @@ const NoteNav = () => {
 
   const handleClickOpenInTree = useCallback(() => {
     if (!note) return
-    showItem(note);
+    showItem(note)
   }, [note, showItem])
 
   return (

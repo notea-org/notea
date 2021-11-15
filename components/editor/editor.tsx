@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
 import MarkdownEditor, { Props } from 'rich-markdown-editor'
 import { useEditorTheme } from './theme'
@@ -11,12 +11,17 @@ import { useDictionary } from './dictionary'
 import { useEmbeds } from './embeds'
 
 export interface EditorProps extends Pick<Props, 'readOnly'> {
-  isPreview?: boolean,
-  explicitSave?: boolean,
-  saveState?: (state: boolean) => void,
+  isPreview?: boolean
+  explicitSave?: boolean
+  saveState?: (state: boolean) => void
 }
 
-const Editor: FC<EditorProps> = ({ readOnly, isPreview, explicitSave, saveState }) => {
+const Editor: FC<EditorProps> = ({
+  readOnly,
+  isPreview,
+  explicitSave,
+  saveState,
+}) => {
   const {
     onSearchLink,
     onCreateLink,
@@ -43,8 +48,8 @@ const Editor: FC<EditorProps> = ({ readOnly, isPreview, explicitSave, saveState 
 
   const handleKeyDown = () => {
     if (editorEl.current?.value) {
-        onEditorChange(editorEl.current?.value);
-        saveState && saveState(true)
+      onEditorChange(editorEl.current?.value)
+      saveState && saveState(true)
     }
   }
 
@@ -55,7 +60,9 @@ const Editor: FC<EditorProps> = ({ readOnly, isPreview, explicitSave, saveState 
         id={note?.id}
         ref={editorEl}
         value={mounted ? note?.content : ''}
-        onChange={explicitSave ? (() => saveState && saveState(false)) : onEditorChange}
+        onChange={
+          explicitSave ? () => saveState && saveState(false) : onEditorChange
+        }
         onSave={explicitSave ? handleKeyDown : undefined}
         placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}

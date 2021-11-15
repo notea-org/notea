@@ -31,7 +31,9 @@ const LinkToolbar = () => {
       if (!result) {
         return
       }
-      const bookmarkUrl = `/api/extract?type=${type}&url=${encodeURIComponent(href)}`
+      const bookmarkUrl = `/api/extract?type=${type}&url=${encodeURIComponent(
+        href
+      )}`
       const transaction = state.tr.replaceWith(
         result.pos,
         result.pos + result.node.nodeSize,

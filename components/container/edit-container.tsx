@@ -18,6 +18,7 @@ export const EditContainer = () => {
   const {
     title: { updateTitle },
     settings: { settings },
+    ua: { isMobile, isTablet, isWechat },
   } = UIState.useContainer()
   const { genNewId } = NoteTreeState.useContainer()
   const {
@@ -100,21 +101,26 @@ export const EditContainer = () => {
   }, [loadNoteById, abortFindNote, id])
 
   useEffect(() => {
-    updateTitle(`${(!isSaved && settings.explicitSave) ? "*" : ""}${note?.title}`)
+    updateTitle(`${!isSaved && settings.explicitSave ? '*' : ''}${note?.title}`)
   }, [isSaved, note?.title, settings.explicitSave, updateTitle])
-  
+
   useRouterWarning(!isSaved && settings.explicitSave, () => {
-    return confirm("Warning! You have unsaved changes.")
+    return confirm('Warning! You have unsaved changes.')
   })
-  
+
   return (
     <>
       <NoteNav />
       <DeleteAlert />
       <section className="h-full">
-        <MainEditor note={note} explicitSave={settings.explicitSave} saveState={setSaved}/>
+        <MainEditor
+          note={note}
+          explicitSave={
+            settings.explicitSave && !(isMobile || isTablet || isWechat)
+          }
+          saveState={setSaved}
+        />
       </section>
-      
     </>
   )
 }

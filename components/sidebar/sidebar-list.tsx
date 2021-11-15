@@ -16,7 +16,7 @@ const SideBarList = () => {
     moveItem,
     mutateItem,
     initLoaded,
-    collapseAllItems
+    collapseAllItems,
   } = NoteTreeState.useContainer()
 
   const onExpand = useCallback(
