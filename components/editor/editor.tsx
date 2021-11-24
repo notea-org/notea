@@ -1,4 +1,4 @@
-import { FC, Ref, useEffect, useState } from 'react'
+import { FC, MutableRefObject, useEffect, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
 import MarkdownEditor, { Props } from 'rich-markdown-editor'
 import { useEditorTheme } from './theme'
@@ -14,7 +14,7 @@ export interface EditorProps extends Pick<Props, 'readOnly'> {
   isPreview?: boolean
   explicitSave?: boolean
   saveState?: (state: boolean) => void
-  saveRef?: Ref<() => void>
+  saveRef?: MutableRefObject<(() => void) | undefined>
 }
 
 const Editor: FC<EditorProps> = ({
@@ -55,7 +55,7 @@ const Editor: FC<EditorProps> = ({
         saveState && saveState(true)
       }
     }
-    if (saveRef) (saveRef as any).current = handleKeyDown
+    if (saveRef) (saveRef as MutableRefObject<() => void>).current = handleKeyDown
   }, [saveState, saveRef, editorEl, onEditorChange])
 
   return (
@@ -68,7 +68,7 @@ const Editor: FC<EditorProps> = ({
         onChange={
           explicitSave ? () => saveState && saveState(false) : onEditorChange
         }
-        onSave={explicitSave ? () => (saveRef as any)?.current?.() : undefined}
+        onSave={explicitSave ? () => (saveRef as MutableRefObject<() => void>)?.current?.() : undefined}
         placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import NoteState from 'libs/web/state/note'
 import UIState from 'libs/web/state/ui'
-import { useCallback, MouseEvent, RefObject } from 'react'
+import { useCallback, MouseEvent, MutableRefObject } from 'react'
 import { CircularProgress, Tooltip } from '@material-ui/core'
 import NoteTreeState from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
@@ -36,7 +36,7 @@ const MenuButton = () => {
 type Props = {
   explicitSave?: boolean
   isSaved?: boolean
-  saveRef: RefObject<() => void>
+  saveRef?: MutableRefObject<(() => void) | undefined>
 }
 
 const NoteNav = ({ explicitSave, isSaved, saveRef }: Props) => {
