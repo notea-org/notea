@@ -163,7 +163,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
   const getPaths = useCallback((note: NoteModel) => {
     const tree = treeRef.current
-    return findParentTreeItems(tree, note).map((listItem) => listItem.data!)
+    return findParentTreeItems(tree, note).map((listItem) => listItem.data)
   }, [])
 
   const setItemsExpandState = useCallback(
