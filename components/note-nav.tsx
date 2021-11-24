@@ -34,12 +34,12 @@ const MenuButton = () => {
   )
 }
 type Props = {
-    explicitSave?: boolean, 
-    isSaved?: boolean, 
-    saveRef: RefObject<() => void>
+  explicitSave?: boolean
+  isSaved?: boolean
+  saveRef: RefObject<() => void>
 }
 
-const NoteNav = ({explicitSave, isSaved, saveRef}: Props) => {
+const NoteNav = ({ explicitSave, isSaved, saveRef }: Props) => {
   const { t } = useI18n()
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
@@ -84,13 +84,15 @@ const NoteNav = ({explicitSave, isSaved, saveRef}: Props) => {
       }}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
-      
-      {(ua.isMobileOnly && explicitSave) ? <IconButton
-        icon="Save"
-        className="mr-2 active:bg-gray-400"
-        onClick={saveNote}
-        disabled={isSaved}
-        ></IconButton> : null}
+
+      {ua.isMobileOnly && explicitSave ? (
+        <IconButton
+          icon="Save"
+          className="mr-2 active:bg-gray-400"
+          onClick={saveNote}
+          disabled={isSaved}
+        ></IconButton>
+      ) : null}
 
       <NavButtonGroup />
       <div className="flex-auto ml-4">

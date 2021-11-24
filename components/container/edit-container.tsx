@@ -17,7 +17,7 @@ const MainEditor = dynamic(() => import('components/editor/main-editor'))
 export const EditContainer = () => {
   const {
     title: { updateTitle },
-    settings: { settings }
+    settings: { settings },
   } = UIState.useContainer()
   const { genNewId } = NoteTreeState.useContainer()
   const {
@@ -110,7 +110,7 @@ export const EditContainer = () => {
 
   return (
     <>
-      <NoteNav 
+      <NoteNav
         explicitSave={settings.explicitSave}
         isSaved={isSaved}
         saveRef={saveRef}
@@ -119,9 +119,7 @@ export const EditContainer = () => {
       <section className="h-full">
         <MainEditor
           note={note}
-          explicitSave={
-            settings.explicitSave
-          }
+          explicitSave={settings.explicitSave}
           saveState={setSaved}
           saveRef={saveRef}
         />

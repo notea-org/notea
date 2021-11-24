@@ -13,7 +13,7 @@ import { useEmbeds } from './embeds'
 export interface EditorProps extends Pick<Props, 'readOnly'> {
   isPreview?: boolean
   explicitSave?: boolean
-  saveState?: (state: boolean) => void,
+  saveState?: (state: boolean) => void
   saveRef?: Ref<() => void>
 }
 
@@ -22,7 +22,7 @@ const Editor: FC<EditorProps> = ({
   isPreview,
   explicitSave,
   saveState,
-  saveRef
+  saveRef,
 }) => {
   const {
     onSearchLink,
@@ -55,9 +55,9 @@ const Editor: FC<EditorProps> = ({
         saveState && saveState(true)
       }
     }
-    if (saveRef) (saveRef as any).current = handleKeyDown;
-  }, [saveState, saveRef, editorEl, onEditorChange] )
-  
+    if (saveRef) (saveRef as any).current = handleKeyDown
+  }, [saveState, saveRef, editorEl, onEditorChange])
+
   return (
     <>
       <MarkdownEditor
@@ -68,7 +68,7 @@ const Editor: FC<EditorProps> = ({
         onChange={
           explicitSave ? () => saveState && saveState(false) : onEditorChange
         }
-        onSave={explicitSave ? (() => (saveRef as any)?.current?.()) : undefined}
+        onSave={explicitSave ? () => (saveRef as any)?.current?.() : undefined}
         placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}
