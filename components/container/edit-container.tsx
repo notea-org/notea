@@ -17,8 +17,7 @@ const MainEditor = dynamic(() => import('components/editor/main-editor'))
 export const EditContainer = () => {
   const {
     title: { updateTitle },
-    settings: { settings },
-    ua: { isMobile, isTablet, isWechat },
+    settings: { settings }
   } = UIState.useContainer()
   const { genNewId } = NoteTreeState.useContainer()
   const {
