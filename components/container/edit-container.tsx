@@ -1,7 +1,7 @@
 import NoteState from 'libs/web/state/note'
 import { has } from 'lodash'
 import router, { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import NoteTreeState from 'libs/web/state/tree'
 import NoteNav from 'components/note-nav'
 import UIState from 'libs/web/state/ui'
@@ -35,6 +35,7 @@ export const EditContainer = () => {
   const isNew = has(query, 'new')
   const { mutate: mutateSettings } = useSettingsAPI()
   const toast = useToast()
+  const saveRef = useRef<() => void>() as RefObject
 
   const loadNoteById = useCallback(
     async (id: string) => {
@@ -110,15 +111,20 @@ export const EditContainer = () => {
 
   return (
     <>
-      <NoteNav />
+      <NoteNav 
+        explicitSave={settings.explicitSave}
+        isSaved={isSaved}
+        saveRef={saveRef}
+      />
       <DeleteAlert />
       <section className="h-full">
         <MainEditor
           note={note}
           explicitSave={
-            settings.explicitSave && !(isMobile || isTablet || isWechat)
+            settings.explicitSave
           }
           saveState={setSaved}
+          saveRef={saveRef}
         />
       </section>
     </>

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, Ref, useEffect, useState } from 'react'
 import { use100vh } from 'react-div-100vh'
 import MarkdownEditor, { Props } from 'rich-markdown-editor'
 import { useEditorTheme } from './theme'
@@ -13,7 +13,8 @@ import { useEmbeds } from './embeds'
 export interface EditorProps extends Pick<Props, 'readOnly'> {
   isPreview?: boolean
   explicitSave?: boolean
-  saveState?: (state: boolean) => void
+  saveState?: (state: boolean) => void,
+  saveRef?: Ref<() => void>
 }
 
 const Editor: FC<EditorProps> = ({
@@ -21,6 +22,7 @@ const Editor: FC<EditorProps> = ({
   isPreview,
   explicitSave,
   saveState,
+  saveRef
 }) => {
   const {
     onSearchLink,
@@ -46,13 +48,16 @@ const Editor: FC<EditorProps> = ({
     setHasMinHeight((backlinks?.length ?? 0) <= 0)
   }, [backlinks, isPreview])
 
-  const handleKeyDown = () => {
-    if (editorEl.current?.value) {
-      onEditorChange(editorEl.current?.value)
-      saveState && saveState(true)
+  useEffect(() => {
+    const handleKeyDown = () => {
+      if (editorEl.current?.value) {
+        onEditorChange(editorEl.current?.value)
+        saveState && saveState(true)
+      }
     }
-  }
-
+    if (saveRef) (saveRef as any).current = handleKeyDown;
+  }, [saveState, saveRef, editorEl, onEditorChange] )
+  
   return (
     <>
       <MarkdownEditor
@@ -63,7 +68,7 @@ const Editor: FC<EditorProps> = ({
         onChange={
           explicitSave ? () => saveState && saveState(false) : onEditorChange
         }
-        onSave={explicitSave ? handleKeyDown : undefined}
+        onSave={explicitSave ? (() => (saveRef as any)?.current?.()) : undefined}
         placeholder={dictionary.editorPlaceholder}
         theme={editorTheme}
         uploadImage={(file) => onUploadImage(file, note?.id)}
