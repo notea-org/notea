@@ -1,3 +1,7 @@
+# The [logseq](https://logseq.com/) is the better choice, and you can sync data via Google Drive and Syncthing. I'm using this right now.
+
+----------
+
 # Notea
 
 > Self hosted note taking app stored on S3.
