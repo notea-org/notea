@@ -10,7 +10,8 @@ export interface Settings {
   last_visit?: string
   locale: Locale
   injection?: string
-  editorsize: EDITOR_SIZE;
+  editorsize: EDITOR_SIZE
+  explicitSave: boolean
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
@@ -19,6 +20,7 @@ export const DEFAULT_SETTINGS: Settings = Object.freeze({
   sidebar_is_fold: false,
   locale: Locale.EN,
   editorsize: EDITOR_SIZE.SMALL,
+  explicitSave: false,
 })
 
 export function formatSettings(body: Record<string, any> = {}) {
@@ -58,6 +60,10 @@ export function formatSettings(body: Record<string, any> = {}) {
 
   if (isNumber(body.editorsize)) {
     settings.editorsize = body.editorsize
+  }
+
+  if (isBoolean(body.explicitSave)) {
+    settings.explicitSave = body.explicitSave
   }
 
   return settings

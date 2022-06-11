@@ -2,7 +2,7 @@ version: '2'
 
 services:
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2020-11-12T22-33-34Z
     ports:
       - '9000:9000'
     environment:

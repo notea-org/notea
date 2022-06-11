@@ -8,6 +8,7 @@ import { ImportOrExport } from './import-or-export'
 import { SnippetInjection } from './snippet-injection'
 import useI18n from 'libs/web/hooks/use-i18n'
 import { SettingsHeader } from './settings-header'
+import { ExplicitSave } from './explicit-save'
 
 export const defaultFieldConfig: TextFieldProps = {
   fullWidth: true,
@@ -36,6 +37,7 @@ export const SettingsContainer: FC = () => {
       <Language></Language>
       <Theme></Theme>
       <EditorWidth></EditorWidth>
+      <ExplicitSave></ExplicitSave>
       <HR />
       <SettingsHeader
         id="import-and-export"

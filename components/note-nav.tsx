@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import NoteState from 'libs/web/state/note'
 import UIState from 'libs/web/state/ui'
-import { useCallback, MouseEvent } from 'react'
+import { useCallback, MouseEvent, MutableRefObject } from 'react'
 import { CircularProgress, Tooltip } from '@material-ui/core'
 import NoteTreeState from 'libs/web/state/tree'
 import { Breadcrumbs } from '@material-ui/core'
@@ -33,8 +33,13 @@ const MenuButton = () => {
     ></IconButton>
   )
 }
+type Props = {
+  explicitSave?: boolean
+  isSaved?: boolean
+  saveRef?: MutableRefObject<(() => void) | undefined>
+}
 
-const NoteNav = () => {
+const NoteNav = ({ explicitSave, isSaved, saveRef }: Props) => {
   const { t } = useI18n()
   const { note, loading } = NoteState.useContainer()
   const { ua } = UIState.useContainer()
@@ -61,8 +66,10 @@ const NoteNav = () => {
 
   const handleClickOpenInTree = useCallback(() => {
     if (!note) return
-    showItem(note);
+    showItem(note)
   }, [note, showItem])
+
+  const saveNote = useCallback(() => saveRef?.current?.(), [saveRef])
 
   return (
     <nav
@@ -77,6 +84,16 @@ const NoteNav = () => {
       }}
     >
       {ua.isMobileOnly ? <MenuButton /> : null}
+
+      {ua.isMobileOnly && explicitSave ? (
+        <IconButton
+          icon="Save"
+          className="mr-2 active:bg-gray-400"
+          onClick={saveNote}
+          disabled={isSaved}
+        ></IconButton>
+      ) : null}
+
       <NavButtonGroup />
       <div className="flex-auto ml-4">
         {note && (

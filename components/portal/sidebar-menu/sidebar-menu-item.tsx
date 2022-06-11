@@ -27,7 +27,9 @@ interface ItemProps {
 
 export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
   ({ item }, ref) => {
-    const { settings: { settings } } = UIState.useContainer()
+    const {
+      settings: { settings },
+    } = UIState.useContainer()
     const { removeNote, mutateNote } = NoteState.useContainer()
     const {
       menu: { close, data },
@@ -66,7 +68,7 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
         })
       }
     }, [close, data, mutateNote])
-    
+
     const toggleWidth = useCallback(() => {
       close()
       if (data?.id) {
