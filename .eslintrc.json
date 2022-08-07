@@ -23,7 +23,10 @@
         }
     },
     "rules": {
-        "indent": 4,
+        "indent": [
+            "warn",
+            4
+        ],
         "react/react-in-jsx-scope": 0,
         "react/display-name": 0,
         "react/prop-types": 0,

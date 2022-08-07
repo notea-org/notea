@@ -1,3 +1,3 @@
 export interface ButtonProps {
-  parentId?: string
+    parentId?: string;
 }

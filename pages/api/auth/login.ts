@@ -1,18 +1,18 @@
-import { api } from 'libs/server/connect'
-import { getEnv } from 'libs/shared/env'
+import { api } from 'libs/server/connect';
+import { getEnv } from 'libs/shared/env';
 
 export default api().post(async (req, res) => {
-  const { password } = req.body
+    const {password} = req.body;
 
-  if (password !== getEnv('PASSWORD') + '') {
-    return res.APIError.NEED_LOGIN.throw()
-  }
+    if (password !== getEnv('PASSWORD') + '') {
+        return res.APIError.NEED_LOGIN.throw();
+    }
 
-  const user = {
-    isLoggedIn: true,
-  }
-  req.session.set('user', user)
-  await req.session.save()
+    const user = {
+        isLoggedIn: true,
+    };
+    req.session.set('user', user);
+    await req.session.save();
 
-  res.json(user)
-})
+    res.json(user);
+});
