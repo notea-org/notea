@@ -35,3 +35,8 @@ yarn-error.log*
 .vercel
 /public/workbox-*.js*
 /public/sw.js*
+
+# Editor files
+# - IntelliJ IDEA
+.idea/
+*.iml
