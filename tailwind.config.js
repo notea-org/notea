@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors');
+const defaultConfig = require('tailwindcss/defaultConfig');
 
 module.exports = {
     mode: 'jit',
@@ -23,6 +24,9 @@ module.exports = {
                 colorClasses: ['divide', 'placeholder'],
             },
         },
+        fontFamily: {
+            'sans': ['Noto Sans'].concat(defaultConfig.theme.fontFamily['sans'])
+        }
     },
     variants: {
         extend: {

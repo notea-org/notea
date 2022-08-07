@@ -1,4 +1,6 @@
 import 'tailwindcss/tailwind.css';
+import '@fontsource/noto-sans/latin.css';
+
 import UIState from 'libs/web/state/ui';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -48,13 +50,7 @@ function DocumentHead() {
     );
 }
 
-const AppInner = ({
-                      Component,
-                      pageProps,
-                  }: {
-    pageProps: ServerProps
-    Component: any
-}) => {
+const AppInner = ({Component, pageProps}: { pageProps: ServerProps; Component: any; }) => {
     const {resolvedTheme} = useTheme();
     const settings = pageProps?.settings as Settings;
     const muiTheme = useMemo(

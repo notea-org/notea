@@ -31,6 +31,7 @@
     "@atlaskit/tree": "^8.3.0",
     "@aws-sdk/client-s3": "^3.10.0",
     "@aws-sdk/s3-request-presigner": "^3.10.0",
+    "@fontsource/noto-sans": "^4.5.10",
     "@headwayapp/react-widget": "^0.0.4",
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
