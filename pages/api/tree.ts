@@ -1,12 +1,23 @@
-import { api } from 'libs/server/connect';
-import { useAuth } from 'libs/server/middlewares/auth';
-import { useStore } from 'libs/server/middlewares/store';
+import {api} from 'libs/server/connect';
+import {useAuth} from 'libs/server/middlewares/auth';
+import {useStore} from 'libs/server/middlewares/store';
+import TreeActions from "libs/shared/tree";
 
 export default api()
     .use(useAuth)
     .use(useStore)
     .get(async (req, res) => {
-        res.json(await req.state.treeStore.get());
+        const tree = await req.state.treeStore.get();
+        const style = req.query['style'];
+        switch (style) {
+            case 'hierarchy':
+                res.json(TreeActions.makeHierarchy(tree))
+                break;
+            case 'list':
+            default:
+                res.json(tree);
+                break;
+        }
     })
     .post(async (req, res) => {
         const {action, data} = req.body as {
