@@ -82,7 +82,7 @@ const SidebarListItem: FC<{
     );
 
     const emoji = useMemo(() => {
-        const emoji = item.title.match(emojiRegex());
+        const emoji = item.title?.match(emojiRegex());
         if (emoji?.length === 1) return emoji[0];
         return undefined;
     }, [item.title]);
