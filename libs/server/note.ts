@@ -9,15 +9,15 @@ export const createNote = async (note: NoteModel, state: ServerState) => {
 
     if (!note.id) {
         note.id = genId();
-        while (await state.store.hasObject(getPathNoteById(note.id))) {
-            note.id = genId();
-        }
+    }
+    while (await state.store.hasObject(getPathNoteById(note.id))) {
+        note.id = genId();
     }
 
     const metaWithModel = {
         ...meta,
         id: note.id,
-        date: new Date().toISOString(),
+        date: note.date ?? new Date().toISOString(),
     };
     const metaData = jsonToMeta(metaWithModel);
 
@@ -26,5 +26,5 @@ export const createNote = async (note: NoteModel, state: ServerState) => {
         meta: metaData,
     });
 
-    return metaWithModel;
+    return metaWithModel as NoteModel;
 };

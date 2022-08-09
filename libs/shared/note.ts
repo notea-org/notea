@@ -3,6 +3,9 @@ import { EDITOR_SIZE, NOTE_DELETED, NOTE_PINNED, NOTE_SHARED } from './meta';
 export interface NoteModel {
     id: string;
     title: string;
+    /**
+     * Parent ID
+     */
     pid?: string;
     content?: string;
     pic?: string;

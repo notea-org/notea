@@ -38,7 +38,11 @@ function addItem(tree: TreeModel, id: string, pid = ROOT_ID) {
 
     const parentItem = tree.items[pid];
 
-    parentItem.children = union(parentItem.children, [id]);
+    if (parentItem) {
+        parentItem.children = union(parentItem.children, [id]);
+    } else {
+        throw new Error(`Parent ID '${pid}' does not refer to a valid item`);
+    }
 
     return cloneDeep(tree);
 }

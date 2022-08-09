@@ -76,7 +76,7 @@ export default class TreeStore {
         let tree = await this.get();
 
         ids.forEach((id) => {
-            tree = TreeActions.addItem(tree, id, parentId);
+            tree = TreeActions.addItem(tree, id, parentId); // TODO: Make this more efficient - each call is a deepclone
         });
 
         return this.set(tree);
