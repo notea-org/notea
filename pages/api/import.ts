@@ -56,8 +56,22 @@ export default api()
         // this is the actual code that
         const hierachy: Hierarchy = {};
         zipEntries.forEach((v) => {
+            let name: string = v.name;
+            if (!v.isDirectory) {
+                const entryNameExtension = extname(v.name);
+                let isMarkdown = false;
+                for (const extension of MARKDOWN_EXT) {
+                    if (extension === entryNameExtension) {
+                        name = v.name.substring(0, v.name.length - extension.length);
+                        isMarkdown = true;
+                        break;
+                    }
+                }
+                if (!isMarkdown) {
+                    return; // Don't add it if it's not markdown
+                }
+            }
             const pathParts = v.entryName.split('/');
-
 
             let currentHierarchy = hierachy;
             let me: HierarchyNode | undefined;
@@ -74,32 +88,26 @@ export default api()
             if (!me) {
                 throw Error("Current hierarchy node is undefined");
             }
+            me.name = name;
             me.entry = v;
         });
 
         let count: number = 0;
 
-        async function createNotes(root: HierarchyNode, parent?: string): Promise<string> {
+        async function createNotes(currentNode: HierarchyNode, parent?: string): Promise<string> {
             let date: string | undefined, title: string | undefined, content: string | undefined;
-            if (root.entry) {
-                const entry = root.entry;
+            if (currentNode.entry) {
+                const entry = currentNode.entry;
                 date = entry.header.time.toISOString();
                 if (!entry.isDirectory) {
-                    const actualExtension = extname(entry.name);
-                    for (const extension of MARKDOWN_EXT) {
-                        if (extension === actualExtension) {
-                            const rawContent = entry.getData().toString('utf-8');
-                            const parsed = parseMarkdownTitle(rawContent);
-                            title = parsed.title ?? entry.name.substring(0, entry.name.length - extension.length);
-                            content = parsed.content;
-                            break;
-                        }
-                    }
+                    const rawContent = entry.getData().toString('utf-8');
+                    const parsed = parseMarkdownTitle(rawContent);
+                    title = parsed.title;
+                    content = parsed.content;
                 }
-
             }
             const note = {
-                title: title ?? root.name,
+                title: title ?? currentNode.name,
                 pid: parent,
                 id: genId(),
                 date,
@@ -109,7 +117,10 @@ export default api()
             const createdNote = await createNote(note, req.state);
             await req.state.treeStore.addItem(createdNote.id, parent);
             count++;
-            await Promise.all(Object.values(root.children).map((v) => createNotes(v, createdNote.id)));
+            // Object.values(currentNode.children).map((v) => createNotes(v, createdNote.id))
+            for (const child of Object.values(currentNode.children)) {
+                await createNotes(child, createdNote.id);
+            }
 
             return createdNote.id;
         }
