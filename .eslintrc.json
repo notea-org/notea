@@ -25,7 +25,14 @@
     "rules": {
         "indent": [
             "warn",
-            4
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "object-curly-spacing": [
+            "warn",
+            "always"
         ],
         "react/react-in-jsx-scope": 0,
         "react/display-name": 0,
@@ -38,6 +45,7 @@
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/no-use-before-define": 0,
+        "@typescript-eslint/no-inferrable-types": 0,
         "@typescript-eslint/no-unused-vars": [
             2,
             {
