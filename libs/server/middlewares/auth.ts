@@ -1,6 +1,6 @@
-import { getEnv } from 'libs/shared/env';
 import { PageMode } from 'libs/shared/page';
 import { ApiRequest, ApiResponse, ApiNext, SSRMiddleware } from '../connect';
+import { config } from "libs/server/config";
 
 export async function useAuth(
     req: ApiRequest,
@@ -19,7 +19,8 @@ export async function useAuth(
 }
 
 export function isLoggedIn(req: ApiRequest) {
-    if (getEnv('IS_DEMO') || getEnv('DISABLE_PASSWORD', false)) {
+    const cfg = config();
+    if (cfg.auth.type === 'none') {
         return true;
     }
 
@@ -27,13 +28,13 @@ export function isLoggedIn(req: ApiRequest) {
 }
 
 export const applyAuth: SSRMiddleware = async (req, _res, next) => {
-    const IS_DEMO = getEnv<boolean>('IS_DEMO', false);
+    // const IS_DEMO = getEnv<boolean>('IS_DEMO', false);
 
     req.props = {
         ...req.props,
         isLoggedIn: isLoggedIn(req),
-        disablePassword: IS_DEMO || getEnv('DISABLE_PASSWORD', false),
-        IS_DEMO,
+        disablePassword: config().auth.type === 'none',
+        IS_DEMO: false,
     };
 
     next();
