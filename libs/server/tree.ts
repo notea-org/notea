@@ -50,7 +50,7 @@ export default class TreeStore {
         const res = await this.store.getObject(this.treePath);
 
         if (!res) {
-            return this.set(DEFAULT_TREE);
+            return await this.set(DEFAULT_TREE);
         }
 
         const tree = JSON.parse(res) as TreeModel;
@@ -69,46 +69,46 @@ export default class TreeStore {
     async addItem(id: string, parentId = ROOT_ID) {
         const tree = await this.get();
 
-        return this.set(TreeActions.addItem(tree, id, parentId));
+        return await this.set(TreeActions.addItem(tree, id, parentId));
     }
 
     async addItems(ids: string[], parentId = ROOT_ID) {
         let tree = await this.get();
 
         ids.forEach((id) => {
-            tree = TreeActions.addItem(tree, id, parentId); // TODO: Make this more efficient - each call is a deepclone
+            tree = TreeActions.addItem(tree, id, parentId);
         });
 
-        return this.set(tree);
+        return await this.set(tree);
     }
 
     async removeItem(id: string) {
         const tree = await this.get();
 
-        return this.set(TreeActions.removeItem(tree, id));
+        return await this.set(TreeActions.removeItem(tree, id));
     }
 
     async moveItem(source: movePosition, destination: movePosition) {
         const tree = await this.get();
 
-        return this.set(TreeActions.moveItem(tree, source, destination));
+        return await this.set(TreeActions.moveItem(tree, source, destination));
     }
 
     async mutateItem(id: string, data: TreeItemModel) {
         const tree = await this.get();
 
-        return this.set(TreeActions.mutateItem(tree, id, data));
+        return await this.set(TreeActions.mutateItem(tree, id, data));
     }
 
     async restoreItem(id: string, parentId: string) {
         const tree = await this.get();
 
-        return this.set(TreeActions.restoreItem(tree, id, parentId));
+        return await this.set(TreeActions.restoreItem(tree, id, parentId));
     }
 
     async deleteItem(id: string) {
         const tree = await this.get();
 
-        return this.set(TreeActions.deleteItem(tree, id));
+        return await this.set(TreeActions.deleteItem(tree, id));
     }
 }
