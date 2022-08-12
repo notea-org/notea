@@ -12,6 +12,7 @@ type AllowedEnvs =
     | 'DIRECT_RESPONSE_ATTACHMENT'
     | 'IS_DEMO'
     | 'STORE_PREFIX'
+    | 'CONFIG_FILE'
 
 export function getEnv<T>(
     env: AllowedEnvs,
