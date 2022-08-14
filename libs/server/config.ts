@@ -87,7 +87,7 @@ export function loadConfig() {
     loaded = {
         auth,
         store,
-        baseUrl: getEnv<string>("BASE_URL")
+        baseUrl: getEnv<string>("BASE_URL")?.toString() ?? baseConfig.baseUrl
     };
 }
 
