@@ -3,7 +3,7 @@ import { NOTE_SHARED } from 'libs/shared/meta';
 import { getNote } from 'pages/api/notes/[id]';
 import { SSRMiddleware } from '../connect';
 import { NoteModel } from 'libs/shared/note';
-import { getEnv } from 'libs/shared/env';
+import { config } from "libs/server/config";
 
 const RESERVED_ROUTES = ['new', 'settings', 'login'];
 
@@ -35,7 +35,7 @@ export const applyNote: (id: string) => SSRMiddleware = (id: string) => async (
     req.props = {
         ...req.props,
         ...props,
-        baseURL: getEnv('BASE_URL', '//' + req.headers.host),
+        baseURL: config()?.baseUrl || 'http://' + req.headers.host,
     };
 
     next();
