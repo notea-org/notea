@@ -3,9 +3,11 @@ import { getEnv } from "libs/shared/env";
 import { existsSync, readFileSync } from "fs";
 
 export type BasicUser = { username: string; password: string };
+type BasicMultiUserConfiguration = { username?: never; password?: never; users: BasicUser[] };
+type BasicSingleUserConfiguration = ({ username?: string; password: string }) & { users?: never };
 export type BasicAuthConfiguration =
     { type: 'basic' }
-    & (Omit<BasicUser, "username"> | BasicUser | { users: BasicUser[] })
+    & (BasicSingleUserConfiguration | BasicMultiUserConfiguration)
 export type AuthConfiguration = { type: 'none' } | BasicAuthConfiguration;
 
 export interface S3StoreConfiguration {
