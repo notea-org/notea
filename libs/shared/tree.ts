@@ -1,6 +1,6 @@
 import { moveItemOnTree, mutateTree, TreeData, TreeItem } from '@atlaskit/tree';
 import { NoteModel } from 'libs/shared/note';
-import { cloneDeep, forEach, pull, reduce, union } from 'lodash';
+import { cloneDeep, forEach, pull, reduce } from 'lodash';
 
 export interface TreeItemModel extends TreeItem {
     id: string;
@@ -39,12 +39,12 @@ function addItem(tree: TreeModel, id: string, pid = ROOT_ID) {
     const parentItem = tree.items[pid];
 
     if (parentItem) {
-        parentItem.children = union(parentItem.children, [id]);
+        parentItem.children = [...parentItem.children, id];
     } else {
         throw new Error(`Parent ID '${pid}' does not refer to a valid item`);
     }
 
-    return cloneDeep(tree);
+    return tree;
 }
 
 function mutateItem(tree: TreeModel, id: string, data: Partial<TreeItemModel>) {
