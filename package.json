@@ -1,6 +1,6 @@
 {
   "name": "notea",
-  "version": "0.3.6",
+  "version": "0.3.7-alpha",
   "private": true,
   "scripts": {
     "dev": "next",
@@ -14,7 +14,10 @@
     "build:i18n": "node scripts/extract-i18n",
     "test": "jest"
   },
-  "repository": "QingWei-Li/notea",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecc/notea"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
