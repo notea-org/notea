@@ -1,29 +1,26 @@
-# The [logseq](https://logseq.com/) is the better choice, and you can sync data via Google Drive and Syncthing. I'm using this right now.
+# Notea (fork)
 
-----------
-
-# Notea
-
-> Self hosted note taking app stored on S3.
+> Self-hosted note-taking app stored on S3.
 
 ![screenshot](https://cdn.statically.io/gh/QingWei-Li/notea/gh-pages/screen.png)
 
 <a href="https://www.producthunt.com/posts/notea?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-notea" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=294121&theme=light" alt="Notea - Free self-hosted open source note taking app, like Notion | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
+## Notice
+
+This is a fork of the original project, which was abandoned.
+I am the only maintainer of this fork so far.
+
 ## Features
 
 - One-click deploy to Vercel/Netlify or deploy to host with Docker
 - Support storage in Amazon S3, MinIO, Aliyun OSS, etc
-- Notion like markdown editor
-
-## Demo
-
-- Link: https://notea.cinwell.com
+- Notion-like markdown editor
 
 ## Roadmap
 
 - [x] Backlinks [#39](https://github.com/QingWei-Li/notea/issues/39)
-- [x] Link embed(Youtube, Github Gist, Google Docs, etc.)
+- [x] Link embedding (YouTube, Github Gist, Google Docs, etc.)
 - [ ] Editing offline [#14](https://github.com/QingWei-Li/notea/issues/14)
 - [ ] Note versioning [#49](https://github.com/QingWei-Li/notea/issues/49)
 - [ ] File upload
@@ -31,12 +28,12 @@
 ## Quickstart
 
 1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
-1. [Choose Storage](#storage) and **manually create bucket**.
-1. [Deploy App](#deploy)
+2. [Choose Storage](#storage) and **manually create bucket**.
+3. [Deploy App](#deploy)
 
 ## Deploy
 
-### Vercel(Recommended)
+### Vercel (Recommended)
 
 Click https://vercel.com/new to deploy your fork repo.
 
@@ -162,7 +159,7 @@ Contribution examples are welcome.
 ## Environment variables
 
 | Name                       | Description                                                                                                                                                                                                                                           | Default   | Optional | Required |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------- |
+|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|----------|----------|
 | PASSWORD                   | Password to login to the app                                                                                                                                                                                                                          |           |          | true     |
 | STORE_ACCESS_KEY           | AccessKey                                                                                                                                                                                                                                             |           |          | true     |
 | STORE_SECRET_KEY           | SecretKey                                                                                                                                                                                                                                             |           |          | true     |
