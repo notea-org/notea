@@ -31,6 +31,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Developer files
+.dev/
+
 # vercel
 .vercel
 /public/workbox-*.js*

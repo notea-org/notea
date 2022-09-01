@@ -3,3 +3,4 @@
 .next
 .vercel
 node_modules
+.dev
