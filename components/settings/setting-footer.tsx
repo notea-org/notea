@@ -14,7 +14,11 @@ export const SettingFooter = () => {
             </div>
             <div className="space-x-1">
                 <span>MIT &copy;</span>
-                <a href="https://github.com/qingwei-li" target="_blank" rel="noreferrer">
+                <a
+                    href="https://github.com/qingwei-li"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     Cinwell
                 </a>
                 <span>2021-2022</span>

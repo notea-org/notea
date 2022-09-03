@@ -3,7 +3,7 @@ import useFetcher from './fetcher';
 import { Settings } from 'libs/shared/settings';
 
 export default function useSettingsAPI() {
-    const {request} = useFetcher();
+    const { request } = useFetcher();
 
     const mutate = useCallback(
         async (body: Partial<Settings>) => {

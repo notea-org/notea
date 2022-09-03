@@ -1,9 +1,9 @@
-declare module 'react-split'
+declare module 'react-split';
 
-declare module 'remove-markdown'
+declare module 'remove-markdown';
 
-declare module 'outline-icons'
+declare module 'outline-icons';
 
-declare module '@headwayapp/react-widget'
+declare module '@headwayapp/react-widget';
 
-declare module 'markdown-link-extractor'
+declare module 'markdown-link-extractor';

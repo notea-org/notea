@@ -39,17 +39,17 @@ export interface ServerProps {
 }
 
 export type ApiRequest = NextApiRequest & {
-    session: Session
-    state: ServerState
-    props: ServerProps
-    redirect: Redirect
-}
+    session: Session;
+    state: ServerState;
+    props: ServerProps;
+    redirect: Redirect;
+};
 
 export type ApiResponse = NextApiResponse & {
-    APIError: typeof API
-}
+    APIError: typeof API;
+};
 
-export type ApiNext = () => void
+export type ApiNext = () => void;
 
 export const api = () =>
     nc<ApiRequest, ApiResponse>({
@@ -74,8 +74,8 @@ export const ssr = () =>
         .use(useStore);
 
 export type SSRContext = GetServerSidePropsContext & {
-    req: ApiRequest
-    res: ApiResponse
-}
+    req: ApiRequest;
+    res: ApiResponse;
+};
 
-export type SSRMiddleware = Middleware<ApiRequest, ApiResponse>
+export type SSRMiddleware = Middleware<ApiRequest, ApiResponse>;

@@ -23,39 +23,39 @@ const TextSkeleton = () => (
 );
 
 const SidebarListItem: FC<{
-    item: NoteModel
-    innerRef: (el: HTMLElement | null) => void
-    onExpand: (itemId?: ReactText) => void
-    onCollapse: (itemId?: ReactText) => void
-    isExpanded: boolean
-    hasChildren: boolean
+    item: NoteModel;
+    innerRef: (el: HTMLElement | null) => void;
+    onExpand: (itemId?: ReactText) => void;
+    onCollapse: (itemId?: ReactText) => void;
+    isExpanded: boolean;
+    hasChildren: boolean;
     snapshot: {
-        isDragging: boolean
-    }
+        isDragging: boolean;
+    };
     style?: {
-        paddingLeft: number
-    }
+        paddingLeft: number;
+    };
 }> = ({
-          item,
-          innerRef,
-          onExpand,
-          onCollapse,
-          isExpanded,
-          snapshot,
-          hasChildren,
-          ...attrs
-      }) => {
-    const {t} = useI18n();
-    const {query} = useRouter();
-    const {mutateItem, initLoaded} = NoteTreeState.useContainer();
+    item,
+    innerRef,
+    onExpand,
+    onCollapse,
+    isExpanded,
+    snapshot,
+    hasChildren,
+    ...attrs
+}) => {
+    const { t } = useI18n();
+    const { query } = useRouter();
+    const { mutateItem, initLoaded } = NoteTreeState.useContainer();
     const {
-        menu: {open, setData, setAnchor},
+        menu: { open, setData, setAnchor },
     } = PortalState.useContainer();
 
     const onAddNote = useCallback(
         (e: MouseEvent) => {
             e.preventDefault();
-            router.push(`/new?pid=` + item.id, undefined, {shallow: true});
+            router.push(`/new?pid=` + item.id, undefined, { shallow: true });
             mutateItem(item.id, {
                 isExpanded: true,
             });
@@ -109,8 +109,8 @@ const SidebarListItem: FC<{
                                     'block p-0.5 cursor-pointer w-7 h-7 md:w-6 md:h-6 rounded hover:bg-gray-400 mr-1 text-center'
                                 )}
                             >
-                {emoji}
-              </span>
+                                {emoji}
+                            </span>
                         ) : (
                             <IconButton
                                 className="mr-1"
@@ -118,22 +118,25 @@ const SidebarListItem: FC<{
                                     hasChildren || isExpanded
                                         ? 'ChevronRight'
                                         : item.title
-                                            ? 'DocumentText'
-                                            : 'Document'
+                                        ? 'DocumentText'
+                                        : 'Document'
                                 }
-                                iconClassName={classNames('transition-transform transform', {
-                                    'rotate-90': isExpanded,
-                                })}
+                                iconClassName={classNames(
+                                    'transition-transform transform',
+                                    {
+                                        'rotate-90': isExpanded,
+                                    }
+                                )}
                                 onClick={handleClickIcon}
                             ></IconButton>
                         )}
 
                         <span className="flex-1 truncate" dir="auto">
-              {(emoji
-                      ? item.title.replace(emoji, '').trimLeft()
-                      : item.title) ||
-                  (initLoaded ? t('Untitled') : <TextSkeleton/>)}
-            </span>
+                            {(emoji
+                                ? item.title.replace(emoji, '').trimLeft()
+                                : item.title) ||
+                                (initLoaded ? t('Untitled') : <TextSkeleton />)}
+                        </span>
                     </a>
                 </Link>
 
@@ -161,7 +164,7 @@ const SidebarListItem: FC<{
                         paddingLeft: attrs.style?.paddingLeft,
                     }}
                 >
-                    {initLoaded ? t('No notes inside') : <TextSkeleton/>}
+                    {initLoaded ? t('No notes inside') : <TextSkeleton />}
                 </div>
             )}
         </>

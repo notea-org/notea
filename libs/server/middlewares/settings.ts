@@ -13,7 +13,7 @@ export const applySettings: SSRMiddleware = async (req, _res, next) => {
 
     req.props = {
         ...req.props,
-        ...{settings, lngDict},
+        ...{ settings, lngDict },
     };
     next();
 };

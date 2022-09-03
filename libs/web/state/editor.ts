@@ -45,10 +45,10 @@ const useEditor = (initNote?: NoteModel) => {
     } = NoteState.useContainer();
     const note = initNote ?? noteProp;
     const {
-        ua: {isBrowser},
+        ua: { isBrowser },
     } = UIState.useContainer();
     const router = useRouter();
-    const {request, error} = useFetcher();
+    const { request, error } = useFetcher();
     const toast = useToast();
     const editorEl = useRef<MarkdownEditor>(null);
 
@@ -58,11 +58,11 @@ const useEditor = (initNote?: NoteModel) => {
 
             if (isNew) {
                 data.pid = (router.query.pid as string) || ROOT_ID;
-                const item = await createNote({...note, ...data});
+                const item = await createNote({ ...note, ...data });
                 const noteUrl = `/${item?.id}`;
 
                 if (router.asPath !== noteUrl) {
-                    await router.replace(noteUrl, undefined, {shallow: true});
+                    await router.replace(noteUrl, undefined, { shallow: true });
                 }
             } else {
                 await updateNote(data);
@@ -87,7 +87,7 @@ const useEditor = (initNote?: NoteModel) => {
     const onClickLink = useCallback(
         (href: string) => {
             if (isNoteLink(href.replace(location.origin, ''))) {
-                router.push(href, undefined, {shallow: true});
+                router.push(href, undefined, { shallow: true });
             } else {
                 window.open(href, '_blank');
             }
@@ -115,7 +115,7 @@ const useEditor = (initNote?: NoteModel) => {
         [error, request, toast]
     );
 
-    const {preview, linkToolbar} = PortalState.useContainer();
+    const { preview, linkToolbar } = PortalState.useContainer();
 
     const onHoverLink = useCallback(
         (event: MouseEvent | ReactMouseEvent) => {
@@ -130,14 +130,14 @@ const useEditor = (initNote?: NoteModel) => {
             if (href) {
                 if (isNoteLink(href)) {
                     preview.close();
-                    preview.setData({id: href.slice(1)});
+                    preview.setData({ id: href.slice(1) });
                     preview.setAnchor(link);
                 } else {
-                    linkToolbar.setData({href, view: editorEl.current?.view});
+                    linkToolbar.setData({ href, view: editorEl.current?.view });
                     linkToolbar.setAnchor(link);
                 }
             } else {
-                preview.setData({id: undefined});
+                preview.setData({ id: undefined });
             }
             return true;
         },
@@ -161,7 +161,7 @@ const useEditor = (initNote?: NoteModel) => {
 
     const onEditorChange = useCallback(
         (value: () => string): void => {
-            onNoteChange.callback({content: value()});
+            onNoteChange.callback({ content: value() });
         },
         [onNoteChange]
     );

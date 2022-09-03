@@ -5,39 +5,39 @@ import { FC } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
 const Title: FC<{
-    text: string
-    keys: string[]
-}> = ({text, keys}) => {
+    text: string;
+    keys: string[];
+}> = ({ text, keys }) => {
     return (
         <span>
-      {text} {keys.join('+')}
-    </span>
+            {text} {keys.join('+')}
+        </span>
     );
 };
 
 const HotkeyTooltip: FC<{
-    text: string
-    keys?: string[]
+    text: string;
+    keys?: string[];
     /**
      * first key
      */
-    commandKey?: boolean
-    optionKey?: boolean
-    onClose?: TooltipProps['onClose']
-    onHotkey?: () => void
-    disableOnContentEditable?: boolean
+    commandKey?: boolean;
+    optionKey?: boolean;
+    onClose?: TooltipProps['onClose'];
+    onHotkey?: () => void;
+    disableOnContentEditable?: boolean;
 }> = ({
-          text,
-          keys = [],
-          children,
-          onClose,
-          commandKey,
-          optionKey,
-          onHotkey = noop,
-          disableOnContentEditable = false,
-      }) => {
+    text,
+    keys = [],
+    children,
+    onClose,
+    commandKey,
+    optionKey,
+    onHotkey = noop,
+    disableOnContentEditable = false,
+}) => {
     const {
-        ua: {isMac},
+        ua: { isMac },
     } = UIState.useContainer();
     const keyMap = [...keys];
 
@@ -66,8 +66,8 @@ const HotkeyTooltip: FC<{
     return (
         <Tooltip
             enterDelay={200}
-            TransitionProps={{timeout: 0}}
-            title={<Title text={text} keys={keyMap}/>}
+            TransitionProps={{ timeout: 0 }}
+            title={<Title text={text} keys={keyMap} />}
             onClose={onClose}
             placement="bottom-start"
         >

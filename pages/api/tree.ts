@@ -1,7 +1,7 @@
-import {api} from 'libs/server/connect';
-import {useAuth} from 'libs/server/middlewares/auth';
-import {useStore} from 'libs/server/middlewares/store';
-import TreeActions from "libs/shared/tree";
+import { api } from 'libs/server/connect';
+import { useAuth } from 'libs/server/middlewares/auth';
+import { useStore } from 'libs/server/middlewares/store';
+import TreeActions from 'libs/shared/tree';
 
 export default api()
     .use(useAuth)
@@ -11,7 +11,7 @@ export default api()
         const style = req.query['style'];
         switch (style) {
             case 'hierarchy':
-                res.json(TreeActions.makeHierarchy(tree))
+                res.json(TreeActions.makeHierarchy(tree));
                 break;
             case 'list':
             default:
@@ -20,14 +20,17 @@ export default api()
         }
     })
     .post(async (req, res) => {
-        const {action, data} = req.body as {
-            action: 'move' | 'mutate'
-            data: any
+        const { action, data } = req.body as {
+            action: 'move' | 'mutate';
+            data: any;
         };
 
         switch (action) {
             case 'move':
-                await req.state.treeStore.moveItem(data.source, data.destination);
+                await req.state.treeStore.moveItem(
+                    data.source,
+                    data.destination
+                );
                 break;
 
             case 'mutate':

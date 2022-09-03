@@ -13,8 +13,8 @@ import { applyCsrf } from 'libs/server/middlewares/csrf';
 import { SSRContext, ssr } from 'libs/server/connect';
 import { applyReset } from 'libs/server/middlewares/reset';
 
-const EditNotePage: NextPage<{ tree: TreeModel }> = ({tree}) => {
-    const {ua} = UIState.useContainer();
+const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
+    const { ua } = UIState.useContainer();
 
     useEffect(() => {
         if (ua.isMobileOnly) {
@@ -28,7 +28,10 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({tree}) => {
                 <div className="m-auto text-center flex flex-col items-center">
                     <Link href="https://github.com/qingwei-li/notea">
                         <a target="_blank">
-                            <img className="w-60 h-60 opacity-10 -mt-40" src="/logo.svg"/>
+                            <img
+                                className="w-60 h-60 opacity-10 -mt-40"
+                                src="/logo.svg"
+                            />
                         </a>
                     </Link>
                 </div>

@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 
 export default function useSettings(initData = {} as Settings) {
     const [settings, setSettings] = useState<Settings>(initData);
-    const {mutate} = useSettingsAPI();
+    const { mutate } = useSettingsAPI();
 
     const updateSettings = useCallback(
         async (body: Partial<Settings>) => {
@@ -20,5 +20,5 @@ export default function useSettings(initData = {} as Settings) {
         [mutate]
     );
 
-    return {settings, updateSettings, setSettings};
+    return { settings, updateSettings, setSettings };
 }

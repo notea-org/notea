@@ -26,11 +26,13 @@ interface ItemProps {
 }
 
 export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
-    ({item}, ref) => {
-        const {settings: {settings}} = UIState.useContainer();
-        const {removeNote, mutateNote} = NoteState.useContainer();
+    ({ item }, ref) => {
         const {
-            menu: {close, data},
+            settings: { settings },
+        } = UIState.useContainer();
+        const { removeNote, mutateNote } = NoteState.useContainer();
+        const {
+            menu: { close, data },
         } = PortalState.useContainer();
 
         const doRemoveNote = useCallback(() => {
@@ -70,7 +72,8 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
         const toggleWidth = useCallback(() => {
             close();
             if (data?.id) {
-                const resolvedNoteWidth = data.editorsize ?? settings.editorsize;
+                const resolvedNoteWidth =
+                    data.editorsize ?? settings.editorsize;
                 const editorSizesCount = Object.values(EDITOR_SIZE).length / 2; // contains both string & int values
 
                 mutateNote(data.id, {

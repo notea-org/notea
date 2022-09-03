@@ -9,30 +9,36 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import SidebarListItem from './sidebar-list-item';
 
 export const Favorites: FC = () => {
-    const {t} = useI18n();
-    const {pinnedTree} = NoteTreeState.useContainer();
+    const { t } = useI18n();
+    const { pinnedTree } = NoteTreeState.useContainer();
     const [tree, setTree] = useState(pinnedTree);
     const [isFold, setFold] = useState(false);
-    const hasPinned = useMemo(() => tree.items[ROOT_ID].children.length, [tree]);
+    const hasPinned = useMemo(() => tree.items[ROOT_ID].children.length, [
+        tree,
+    ]);
 
     const onCollapse = useCallback((id) => {
-        setTree((prev) => TreeActions.mutateItem(prev, id, {isExpanded: false}));
+        setTree((prev) =>
+            TreeActions.mutateItem(prev, id, { isExpanded: false })
+        );
     }, []);
     const onExpand = useCallback((id) => {
-        setTree((prev) => TreeActions.mutateItem(prev, id, {isExpanded: true}));
+        setTree((prev) =>
+            TreeActions.mutateItem(prev, id, { isExpanded: true })
+        );
     }, []);
 
     useEffect(() => {
         const items = cloneDeep(pinnedTree.items);
 
         setTree((prev) => {
-            if (!prev) return {...pinnedTree, items};
+            if (!prev) return { ...pinnedTree, items };
 
             forEach(items, (item) => {
                 item.isExpanded = prev.items[item.id]?.isExpanded ?? false;
             });
 
-            return {...pinnedTree, items};
+            return { ...pinnedTree, items };
         });
     }, [pinnedTree]);
 
@@ -62,12 +68,12 @@ export const Favorites: FC = () => {
                         tree={tree}
                         offsetPerLevel={10}
                         renderItem={({
-                                         provided,
-                                         item,
-                                         onExpand,
-                                         onCollapse,
-                                         snapshot,
-                                     }) => (
+                            provided,
+                            item,
+                            onExpand,
+                            onCollapse,
+                            snapshot,
+                        }) => (
                             <SidebarListItem
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}

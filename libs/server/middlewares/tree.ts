@@ -14,7 +14,7 @@ export const applyTree: SSRMiddleware = async (req, res, next) => {
 
     req.props = {
         ...req.props,
-        ...(tree && {tree}),
+        ...(tree && { tree }),
     };
 
     next();

@@ -36,12 +36,12 @@ if (typeof window !== 'undefined') {
 }
 
 function DocumentHead() {
-    const {title} = UIState.useContainer();
+    const { title } = UIState.useContainer();
 
     return (
         <Head>
             <title>{title.value}</title>
-            <meta charSet="utf-8"/>
+            <meta charSet="utf-8" />
             <meta
                 name="viewport"
                 content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
@@ -50,8 +50,14 @@ function DocumentHead() {
     );
 }
 
-const AppInner = ({Component, pageProps}: { pageProps: ServerProps; Component: any; }) => {
-    const {resolvedTheme} = useTheme();
+const AppInner = ({
+    Component,
+    pageProps,
+}: {
+    pageProps: ServerProps;
+    Component: any;
+}) => {
+    const { resolvedTheme } = useTheme();
     const settings = pageProps?.settings as Settings;
     const muiTheme = useMemo(
         () =>
@@ -90,7 +96,10 @@ const AppInner = ({Component, pageProps}: { pageProps: ServerProps; Component: a
         <StylesProvider injectFirst>
             <MuiThemeProvider theme={muiTheme}>
                 <CsrfTokenState.Provider initialState={pageProps.csrfToken}>
-                    <I18nProvider locale={settings?.locale} lngDict={pageProps.lngDict}>
+                    <I18nProvider
+                        locale={settings?.locale}
+                        lngDict={pageProps.lngDict}
+                    >
                         <UIState.Provider
                             initialState={{
                                 ua: pageProps?.ua,
@@ -101,7 +110,7 @@ const AppInner = ({Component, pageProps}: { pageProps: ServerProps; Component: a
                         >
                             <PortalState.Provider>
                                 <Div100vh>
-                                    <DocumentHead/>
+                                    <DocumentHead />
                                     <SnackbarProvider>
                                         <Component {...pageProps} />
                                     </SnackbarProvider>

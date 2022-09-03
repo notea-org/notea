@@ -13,23 +13,28 @@ import { isNoteLink } from 'libs/shared/note';
 import { applyReset } from 'libs/server/middlewares/reset';
 
 export default function EditNotePage({
-                                         tree,
-                                         note,
-                                         pageMode,
-                                         baseURL,
-                                         isLoggedIn,
-                                     }: ServerProps) {
+    tree,
+    note,
+    pageMode,
+    baseURL,
+    isLoggedIn,
+}: ServerProps) {
     if (isLoggedIn) {
         return (
             <LayoutMain tree={tree} note={note}>
-                <EditContainer/>
+                <EditContainer />
             </LayoutMain>
         );
     }
 
     return (
-        <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
-            <PostContainer note={note}/>
+        <LayoutPublic
+            tree={tree}
+            note={note}
+            pageMode={pageMode}
+            baseURL={baseURL}
+        >
+            <PostContainer note={note} />
         </LayoutPublic>
     );
 }
@@ -37,12 +42,12 @@ export default function EditNotePage({
 export const getServerSideProps = async (
     ctx: SSRContext & {
         query: {
-            id: string
-        }
+            id: string;
+        };
     }
 ) => {
     if (!isNoteLink('/' + ctx.query.id)) {
-        return {props: {}};
+        return { props: {} };
     }
 
     await ssr()

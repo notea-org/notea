@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 
 export default function useSidebar(initState = false, isMobileOnly = false) {
     const [isFold, setIsFold] = useState(initState);
-    const {mutate} = useSettingsAPI();
+    const { mutate } = useSettingsAPI();
 
     const toggle = useCallback(
         async (state?: boolean) => {
@@ -31,5 +31,5 @@ export default function useSidebar(initState = false, isMobileOnly = false) {
         toggle(false);
     }, [toggle]);
 
-    return {isFold, toggle, open, close};
+    return { isFold, toggle, open, close };
 }

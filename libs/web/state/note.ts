@@ -10,9 +10,9 @@ import { isEmpty, map } from 'lodash';
 
 const useNote = (initData?: NoteModel) => {
     const [note, setNote] = useState<NoteModel | undefined>(initData);
-    const {find, abort: abortFindNote} = useNoteAPI();
-    const {create, error: createError} = useNoteAPI();
-    const {mutate, loading, abort} = useNoteAPI();
+    const { find, abort: abortFindNote } = useNoteAPI();
+    const { create, error: createError } = useNoteAPI();
+    const { mutate, loading, abort } = useNoteAPI();
     const {
         addItem,
         removeItem,
@@ -50,7 +50,7 @@ const useNote = (initData?: NoteModel) => {
 
             setNote((prev) => {
                 if (prev?.id === id) {
-                    return {...prev, ...payload};
+                    return { ...prev, ...payload };
                 }
                 return prev;
             });
@@ -84,7 +84,7 @@ const useNote = (initData?: NoteModel) => {
 
             setNote((prev) => {
                 if (prev?.id === id) {
-                    return {...prev, ...payload};
+                    return { ...prev, ...payload };
                 }
                 return prev;
             });
@@ -135,7 +135,7 @@ const useNote = (initData?: NoteModel) => {
             await noteCache.setItem(result.id, result);
             addItem(result);
 
-            return {id};
+            return { id };
         },
         [addItem, create, genNewId]
     );

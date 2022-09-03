@@ -1,4 +1,4 @@
-require('dotenv').config({path: '.env.test'});
+require('dotenv').config({ path: '.env.test' });
 
 module.exports = {
     collectCoverageFrom: ['**/*.{ts}', '!**/*.d.ts', '!**/node_modules/**'],
@@ -7,7 +7,7 @@ module.exports = {
     transform: {
         /* Use babel-jest to transpile tests with the next/babel preset
          https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object */
-        '^.+\\.(ts)$': ['babel-jest', {presets: ['next/babel']}],
+        '^.+\\.(ts)$': ['babel-jest', { presets: ['next/babel'] }],
     },
     transformIgnorePatterns: [
         '/node_modules/',

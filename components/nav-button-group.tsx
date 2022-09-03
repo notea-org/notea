@@ -5,8 +5,8 @@ import HotkeyTooltip from './hotkey-tooltip';
 import IconButton from './icon-button';
 
 const NavButtonGroup: FC = () => {
-    const {t} = useI18n();
-    const {back: routerBack, beforePopState} = useRouter();
+    const { t } = useI18n();
+    const { back: routerBack, beforePopState } = useRouter();
     const [canBack, setCanBack] = useState(false);
     const [canForward, setCanForward] = useState(false);
     const isBackRef = useRef(false);
@@ -73,7 +73,11 @@ const NavButtonGroup: FC = () => {
                 commandKey
                 disableOnContentEditable
             >
-                <IconButton disabled={!canBack} icon="ArrowSmLeft" onClick={back}/>
+                <IconButton
+                    disabled={!canBack}
+                    icon="ArrowSmLeft"
+                    onClick={back}
+                />
             </HotkeyTooltip>
             <HotkeyTooltip
                 text={t('Forward')}

@@ -17,7 +17,7 @@ export const lightTheme: typeof theme = {
 };
 
 export const useEditorTheme = () => {
-    const {resolvedTheme} = useTheme();
+    const { resolvedTheme } = useTheme();
 
     return resolvedTheme === 'dark' ? darkTheme : lightTheme;
 };

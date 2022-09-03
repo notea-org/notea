@@ -6,10 +6,10 @@ import { Embed } from './embed';
 
 export type EmbedProps = {
     attrs: {
-        href: string
-        matches: string[]
-    }
-}
+        href: string;
+        matches: string[];
+    };
+};
 
 export const useEmbeds = () => {
     const csrfToken = CsrfTokenState.useContainer();

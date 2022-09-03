@@ -3,7 +3,7 @@ import { NOTE_SHARED } from 'libs/shared/meta';
 import { getNote } from 'pages/api/notes/[id]';
 import { SSRMiddleware } from '../connect';
 import { NoteModel } from 'libs/shared/note';
-import { config } from "libs/server/config";
+import { config } from 'libs/server/config';
 
 const RESERVED_ROUTES = ['new', 'settings', 'login'];
 
@@ -13,8 +13,8 @@ export const applyNote: (id: string) => SSRMiddleware = (id: string) => async (
     next
 ) => {
     const props: {
-        note?: NoteModel
-        pageMode: PageMode
+        note?: NoteModel;
+        pageMode: PageMode;
     } = {
         pageMode: PageMode.NOTE,
     };

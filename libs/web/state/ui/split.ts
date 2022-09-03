@@ -5,7 +5,7 @@ import useSettingsAPI from 'libs/web/api/settings';
 export default function useSplit(initData = DEFAULT_SETTINGS.split_sizes) {
     const [sizes, setSizes] = useState(initData);
     const sizesRef = useRef(sizes);
-    const {mutate} = useSettingsAPI();
+    const { mutate } = useSettingsAPI();
 
     useEffect(() => {
         sizesRef.current = sizes;

@@ -1,13 +1,20 @@
 import yaml from 'js-yaml';
-import { getEnv } from "libs/shared/env";
-import { existsSync, readFileSync } from "fs";
+import { getEnv } from 'libs/shared/env';
+import { existsSync, readFileSync } from 'fs';
 
 export type BasicUser = { username: string; password: string };
-type BasicMultiUserConfiguration = { username?: never; password?: never; users: BasicUser[] };
-type BasicSingleUserConfiguration = ({ username?: string; password: string }) & { users?: never };
-export type BasicAuthConfiguration =
-    { type: 'basic' }
-    & (BasicSingleUserConfiguration | BasicMultiUserConfiguration)
+type BasicMultiUserConfiguration = {
+    username?: never;
+    password?: never;
+    users: BasicUser[];
+};
+type BasicSingleUserConfiguration = { username?: string; password: string } & {
+    users?: never;
+};
+export type BasicAuthConfiguration = { type: 'basic' } & (
+    | BasicSingleUserConfiguration
+    | BasicMultiUserConfiguration
+);
 export type AuthConfiguration = { type: 'none' } | BasicAuthConfiguration;
 
 export interface S3StoreConfiguration {
@@ -38,30 +45,30 @@ export function loadConfig() {
     if (existsSync(configFile)) {
         const data = readFileSync(configFile, 'utf-8');
         baseConfig = yaml.load(data) as Configuration;
-
     }
 
-    const disablePassword = getEnv<boolean>("DISABLE_PASSWORD", undefined);
+    const disablePassword = getEnv<boolean>('DISABLE_PASSWORD', undefined);
 
     let auth: AuthConfiguration;
     if (disablePassword === undefined || !disablePassword) {
-        const envPassword = getEnv<string>("PASSWORD", undefined, false);
+        const envPassword = getEnv<string>('PASSWORD', undefined, false);
         if (baseConfig.auth === undefined) {
             if (envPassword === undefined) {
-                throw new Error("Authentication undefined");
+                throw new Error('Authentication undefined');
             } else {
                 auth = {
                     type: 'basic',
-                    password: envPassword
-                }
+                    password: envPassword,
+                };
             }
         } else {
             auth = baseConfig.auth;
             if (envPassword !== undefined) {
-                throw new Error("Cannot specify PASSWORD when auth config section is present")
+                throw new Error(
+                    'Cannot specify PASSWORD when auth config section is present'
+                );
             }
         }
-
     } else {
         auth = { type: 'none' };
     }
@@ -75,19 +82,47 @@ export function loadConfig() {
     }
     // for now, this works
     {
-        store.accessKey = getEnv<string>("STORE_ACCESS_KEY", store.accessKey, !store.accessKey).toString();
-        store.secretKey = getEnv<string>("STORE_SECRET_KEY", store.secretKey, !store.secretKey).toString();
-        store.bucket = getEnv<string>("STORE_BUCKET", store.bucket ?? "notea", false).toString();
-        store.forcePathStyle = getEnv<boolean>("STORE_FORCE_PATH_STYLE", store.forcePathStyle ?? false, !store.forcePathStyle);
-        store.endpoint = getEnv<string>("STORE_END_POINT", store.endpoint, !store.endpoint);
-        store.region = getEnv<string>("STORE_REGION", store.region ?? 'us-east-1', false).toString();
-        store.prefix = getEnv<string>("STORE_PREFIX", store.prefix ?? '', false);
+        store.accessKey = getEnv<string>(
+            'STORE_ACCESS_KEY',
+            store.accessKey,
+            !store.accessKey
+        ).toString();
+        store.secretKey = getEnv<string>(
+            'STORE_SECRET_KEY',
+            store.secretKey,
+            !store.secretKey
+        ).toString();
+        store.bucket = getEnv<string>(
+            'STORE_BUCKET',
+            store.bucket ?? 'notea',
+            false
+        ).toString();
+        store.forcePathStyle = getEnv<boolean>(
+            'STORE_FORCE_PATH_STYLE',
+            store.forcePathStyle ?? false,
+            !store.forcePathStyle
+        );
+        store.endpoint = getEnv<string>(
+            'STORE_END_POINT',
+            store.endpoint,
+            !store.endpoint
+        );
+        store.region = getEnv<string>(
+            'STORE_REGION',
+            store.region ?? 'us-east-1',
+            false
+        ).toString();
+        store.prefix = getEnv<string>(
+            'STORE_PREFIX',
+            store.prefix ?? '',
+            false
+        );
     }
 
     loaded = {
         auth,
         store,
-        baseUrl: getEnv<string>("BASE_URL")?.toString() ?? baseConfig.baseUrl
+        baseUrl: getEnv<string>('BASE_URL')?.toString() ?? baseConfig.baseUrl,
     };
 }
 

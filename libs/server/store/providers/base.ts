@@ -6,14 +6,14 @@ export interface ObjectOptions {
     meta?: { [key: string]: string };
     contentType?: string;
     headers?: {
-        cacheControl?: string
-        contentDisposition?: string
-        contentEncoding?: string
+        cacheControl?: string;
+        contentDisposition?: string;
+        contentEncoding?: string;
     };
 }
 
 export abstract class StoreProvider {
-    constructor({prefix}: StoreProviderConfig) {
+    constructor({ prefix }: StoreProviderConfig) {
         this.prefix = prefix?.replace(/\/$/, '');
 
         if (this.prefix) {
@@ -30,12 +30,12 @@ export abstract class StoreProvider {
     /**
      * 获取签名 URL
      */
-    abstract getSignUrl(path: string, expires: number): Promise<string | null>
+    abstract getSignUrl(path: string, expires: number): Promise<string | null>;
 
     /**
      * 检测对象是否存在
      */
-    abstract hasObject(path: string): Promise<boolean>
+    abstract hasObject(path: string): Promise<boolean>;
 
     /**
      * 获取对象内容
@@ -44,7 +44,7 @@ export abstract class StoreProvider {
     abstract getObject(
         path: string,
         isCompressed?: boolean
-    ): Promise<string | undefined>
+    ): Promise<string | undefined>;
 
     /**
      * 获取对象 Meta
@@ -52,7 +52,7 @@ export abstract class StoreProvider {
      */
     abstract getObjectMeta(
         path: string
-    ): Promise<{ [key: string]: string } | undefined>
+    ): Promise<{ [key: string]: string } | undefined>;
 
     /**
      * 获取对象和对象 Meta
@@ -62,11 +62,11 @@ export abstract class StoreProvider {
         path: string,
         isCompressed?: boolean
     ): Promise<{
-        content?: string
-        meta?: { [key: string]: string }
-        contentType?: string
-        buffer?: Buffer
-    }>
+        content?: string;
+        meta?: { [key: string]: string };
+        contentType?: string;
+        buffer?: Buffer;
+    }>;
 
     /**
      * 存储对象
@@ -76,12 +76,12 @@ export abstract class StoreProvider {
         raw: string | Buffer,
         headers?: ObjectOptions,
         isCompressed?: boolean
-    ): Promise<void>
+    ): Promise<void>;
 
     /**
      * 删除对象
      */
-    abstract deleteObject(path: string): Promise<void>
+    abstract deleteObject(path: string): Promise<void>;
 
     /**
      * 复制对象，可用于更新 meta
@@ -90,5 +90,5 @@ export abstract class StoreProvider {
         fromPath: string,
         toPath: string,
         options: ObjectOptions
-    ): Promise<void>
+    ): Promise<void>;
 }

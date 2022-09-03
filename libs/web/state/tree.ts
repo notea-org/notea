@@ -37,10 +37,10 @@ const findParentTreeItems = (tree: TreeModel, note: NoteModel) => {
 };
 
 const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
-    const {mutate, loading, fetch: fetchTree} = useTreeAPI();
+    const { mutate, loading, fetch: fetchTree } = useTreeAPI();
     const [tree, setTree] = useState<TreeModel>(initData);
     const [initLoaded, setInitLoaded] = useState<boolean>(false);
-    const {fetch: fetchNote} = useNoteAPI();
+    const { fetch: fetchNote } = useNoteAPI();
     const treeRef = useRef(tree);
     const toast = useToast();
 
@@ -100,7 +100,9 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
             map(
                 TreeActions.flattenTree(tree, id),
                 async (item) =>
-                    await noteCache.mutateItem(item.id, {deleted: NOTE_DELETED.DELETED})
+                    await noteCache.mutateItem(item.id, {
+                        deleted: NOTE_DELETED.DELETED,
+                    })
             )
         );
     }, []);
@@ -116,7 +118,11 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     const moveItem = useCallback(
         async (data: { source: movePosition; destination: movePosition }) => {
             setTree(
-                TreeActions.moveItem(treeRef.current, data.source, data.destination)
+                TreeActions.moveItem(
+                    treeRef.current,
+                    data.source,
+                    data.destination
+                )
             );
             await mutate({
                 action: 'move',
@@ -152,7 +158,9 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
             map(
                 TreeActions.flattenTree(tree, id),
                 async (item) =>
-                    await noteCache.mutateItem(item.id, {deleted: NOTE_DELETED.NORMAL})
+                    await noteCache.mutateItem(item.id, {
+                        deleted: NOTE_DELETED.NORMAL,
+                    })
             )
         );
     }, []);
@@ -163,7 +171,9 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
     const getPaths = useCallback((note: NoteModel) => {
         const tree = treeRef.current;
-        return findParentTreeItems(tree, note).map((listItem) => listItem.data!);
+        return findParentTreeItems(tree, note).map(
+            (listItem) => listItem.data!
+        );
     }, []);
 
     const setItemsExpandState = useCallback(
@@ -171,7 +181,9 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
             const newTree = reduce(
                 items,
                 (tempTree, item) =>
-                    TreeActions.mutateItem(tempTree, item.id, {isExpanded: newValue}),
+                    TreeActions.mutateItem(tempTree, item.id, {
+                        isExpanded: newValue,
+                    }),
                 treeRef.current
             );
             setTree(newTree);
@@ -199,7 +211,11 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
 
     const checkItemIsShown = useCallback((note: NoteModel) => {
         const parents = findParentTreeItems(treeRef.current, note);
-        return reduce(parents, (value, item) => value && !!item.isExpanded, true);
+        return reduce(
+            parents,
+            (value, item) => value && !!item.isExpanded,
+            true
+        );
     }, []);
 
     const collapseAllItems = useCallback(() => {

@@ -10,12 +10,12 @@ import { NextSeo } from 'next-seo';
 import { removeMarkdown } from 'libs/web/utils/markdown';
 
 const LayoutPublic: FC<{
-    tree?: TreeModel
-    note?: NoteModel
-    pageMode: PageMode
-    baseURL: string
-}> = ({children, note, tree, pageMode, baseURL}) => {
-    const {t} = useI18n();
+    tree?: TreeModel;
+    note?: NoteModel;
+    pageMode: PageMode;
+    baseURL: string;
+}> = ({ children, note, tree, pageMode, baseURL }) => {
+    const { t } = useI18n();
 
     const description = useMemo(
         () => removeMarkdown(note?.content).slice(0, 100),
@@ -36,7 +36,9 @@ const LayoutPublic: FC<{
                     title: note?.title,
                     description,
                     url: `${baseURL}/${note?.id}`,
-                    images: [{url: note?.pic ?? `${baseURL}/logo_1280x640.png`}],
+                    images: [
+                        { url: note?.pic ?? `${baseURL}/logo_1280x640.png` },
+                    ],
                     type: 'article',
                     article: {
                         publishedTime: note?.date,
@@ -44,7 +46,9 @@ const LayoutPublic: FC<{
                 }}
             />
             <NoteTreeState.Provider initialState={tree}>
-                <NoteState.Provider initialState={note}>{children}</NoteState.Provider>
+                <NoteState.Provider initialState={note}>
+                    {children}
+                </NoteState.Provider>
             </NoteTreeState.Provider>
         </>
     );

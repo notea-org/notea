@@ -10,16 +10,16 @@ import { useRouter } from 'next/router';
 import useI18n from 'libs/web/hooks/use-i18n';
 
 const TrashModal: FC = () => {
-    const {t} = useI18n();
-    const {filterNotes, keyword, list} = TrashState.useContainer();
+    const { t } = useI18n();
+    const { filterNotes, keyword, list } = TrashState.useContainer();
     const {
-        trash: {visible, close},
+        trash: { visible, close },
     } = PortalState.useContainer();
     const router = useRouter();
 
     const onEnter = useCallback(
         (item: NoteModel) => {
-            router.push(`/${item.id}`, `/${item.id}`, {shallow: true});
+            router.push(`/${item.id}`, `/${item.id}`, { shallow: true });
             close();
         },
         [router, close]
@@ -43,7 +43,12 @@ const TrashModal: FC = () => {
                 onEnter={onEnter}
                 items={list ?? []}
                 ItemComponent={(item, props) => (
-                    <TrashItem note={item} keyword={keyword} key={item.id} {...props} />
+                    <TrashItem
+                        note={item}
+                        keyword={keyword}
+                        key={item.id}
+                        {...props}
+                    />
                 )}
             />
         </FilterModal>

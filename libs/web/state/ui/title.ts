@@ -7,5 +7,5 @@ export default function useTitle() {
         setTitle(text ? `${text} - Notea` : 'Notea');
     }, []);
 
-    return {value, updateTitle};
+    return { value, updateTitle };
 }

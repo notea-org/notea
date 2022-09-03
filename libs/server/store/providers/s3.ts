@@ -65,7 +65,10 @@ export class StoreS3 extends StoreProvider {
                     port: toNumber(url.port),
                 });
 
-                return client.presignedGetObject(this.config.bucket, this.getPath(path));
+                return client.presignedGetObject(
+                    this.config.bucket,
+                    this.getPath(path)
+                );
             }
         }
 
@@ -75,7 +78,7 @@ export class StoreS3 extends StoreProvider {
                 Bucket: this.config.bucket,
                 Key: this.getPath(path),
             }),
-            {expiresIn: expires}
+            { expiresIn: expires }
         );
     }
 

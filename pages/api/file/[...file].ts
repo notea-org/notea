@@ -15,7 +15,9 @@ export default api()
             return res.APIError.NEED_LOGIN.throw();
         }
 
-        const objectPath = getPathFileByName((req.query.file as string[]).join('/'));
+        const objectPath = getPathFileByName(
+            (req.query.file as string[]).join('/')
+        );
 
         res.setHeader(
             'Cache-Control',
@@ -25,9 +27,10 @@ export default api()
         const directed = getEnv<boolean>('DIRECT_RESPONSE_ATTACHMENT', false);
 
         if (directed) {
-            const {buffer, contentType} = await req.state.store.getObjectAndMeta(
-                objectPath
-            );
+            const {
+                buffer,
+                contentType,
+            } = await req.state.store.getObjectAndMeta(objectPath);
 
             if (contentType) {
                 res.setHeader('Content-Type', contentType);

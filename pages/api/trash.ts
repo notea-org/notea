@@ -10,12 +10,12 @@ export default api()
     .use(useAuth)
     .use(useStore)
     .post(async (req, res) => {
-        const {action, data} = req.body as {
-            action: 'delete' | 'restore'
+        const { action, data } = req.body as {
+            action: 'delete' | 'restore';
             data: {
-                id: string
-                parentId?: string
-            }
+                id: string;
+                parentId?: string;
+            };
         };
 
         switch (action) {
@@ -49,7 +49,7 @@ async function restoreNote(req: ApiRequest, id: string, parentId = ROOT_ID) {
         deleted: NOTE_DELETED.NORMAL.toString(),
     });
     if (oldMeta) {
-        meta = {...oldMeta, ...meta};
+        meta = { ...oldMeta, ...meta };
     }
 
     await req.state.store.copyObject(notePath, notePath, {

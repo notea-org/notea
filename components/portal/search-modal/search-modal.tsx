@@ -10,16 +10,16 @@ import useI18n from 'libs/web/hooks/use-i18n';
 import { useRouter } from 'next/router';
 
 const SearchModal: FC = () => {
-    const {t} = useI18n();
-    const {filterNotes, keyword, list} = SearchState.useContainer();
+    const { t } = useI18n();
+    const { filterNotes, keyword, list } = SearchState.useContainer();
     const {
-        search: {visible, close},
+        search: { visible, close },
     } = PortalState.useContainer();
     const router = useRouter();
 
     const onEnter = useCallback(
         (item: NoteModel) => {
-            router.push(`/${item.id}`, `/${item.id}`, {shallow: true});
+            router.push(`/${item.id}`, `/${item.id}`, { shallow: true });
             close();
         },
         [router, close]
@@ -37,7 +37,12 @@ const SearchModal: FC = () => {
                 onEnter={onEnter}
                 items={list ?? []}
                 ItemComponent={(item, props) => (
-                    <SearchItem note={item} keyword={keyword} key={item.id} {...props} />
+                    <SearchItem
+                        note={item}
+                        keyword={keyword}
+                        key={item.id}
+                        {...props}
+                    />
                 )}
             />
         </FilterModal>

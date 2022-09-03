@@ -12,13 +12,13 @@ interface Props extends PopperProps {
 }
 
 const Popover: FC<Props> = ({
-                                handleClose,
-                                handleOpen,
-                                setAnchor,
-                                children,
-                                delay = DELAY,
-                                ...props
-                            }) => {
+    handleClose,
+    handleOpen,
+    setAnchor,
+    children,
+    delay = DELAY,
+    ...props
+}) => {
     const anchorRef = useRef<HTMLLinkElement | null>();
     const router = useRouter();
     const leaveTimer = useRef<number>();

@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import router from 'next/router';
 
 const FilterModal: FC<{
-    open: ModalProps['open']
-    onClose: () => void
-    onOpen?: () => void
-}> = ({open, onClose, onOpen, children}) => {
+    open: ModalProps['open'];
+    onClose: () => void;
+    onOpen?: () => void;
+}> = ({ open, onClose, onOpen, children }) => {
     const {
-        ua: {isMobileOnly},
+        ua: { isMobileOnly },
     } = UIState.useContainer();
 
     useEffect(() => {
@@ -28,14 +28,14 @@ const FilterModal: FC<{
 
     const props: Partial<DialogProps> = isMobileOnly
         ? {
-            fullScreen: true,
-        }
+              fullScreen: true,
+          }
         : {
-            style: {
-                inset: '0 0 auto 0',
-                marginTop: '10vh',
-            },
-        };
+              style: {
+                  inset: '0 0 auto 0',
+                  marginTop: '10vh',
+              },
+          };
 
     return (
         <Dialog

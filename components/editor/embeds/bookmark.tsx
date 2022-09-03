@@ -5,8 +5,8 @@ import { FC, useEffect, useState } from 'react';
 import { Metadata } from 'unfurl.js/dist/types';
 import { EmbedProps } from '.';
 
-export const Bookmark: FC<EmbedProps> = ({attrs: {href}}) => {
-    const {request} = useFetcher();
+export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
+    const { request } = useFetcher();
     const [data, setData] = useState<Metadata>();
 
     useEffect(() => {
@@ -49,7 +49,11 @@ export const Bookmark: FC<EmbedProps> = ({attrs: {href}}) => {
             </div>
             {!!image && (
                 <div className="md:w-48 flex w-0">
-                    <img className="m-auto object-cover h-full" src={image} alt={title}/>
+                    <img
+                        className="m-auto object-cover h-full"
+                        src={image}
+                        alt={title}
+                    />
                 </div>
             )}
         </a>

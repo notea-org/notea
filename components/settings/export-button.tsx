@@ -5,8 +5,8 @@ import { ROOT_ID } from 'libs/shared/tree';
 import Link from 'next/link';
 import { ButtonProgress } from 'components/button-progress';
 
-export const ExportButton: FC<ButtonProps> = ({parentId = ROOT_ID}) => {
-    const {t} = useI18n();
+export const ExportButton: FC<ButtonProps> = ({ parentId = ROOT_ID }) => {
+    const { t } = useI18n();
     const [loading, setLoading] = useState(false);
 
     // Fake waiting time

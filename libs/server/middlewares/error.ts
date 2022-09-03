@@ -47,8 +47,8 @@ export class APIError {
     throw(message?: string) {
         const error = new Error(message === undefined ? this.message : message);
 
-        error.name = this.prefix + this.name
-        ;(error as any).status = this.status;
+        error.name = this.prefix + this.name;
+        (error as any).status = this.status;
 
         throw error;
     }

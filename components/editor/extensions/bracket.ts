@@ -15,7 +15,7 @@ export default class Bracket extends Mark {
     inputRules() {
         return [
             new InputRule(/(?:(\[|【){2})$/, (state, _match, start, end) => {
-                const {tr} = state;
+                const { tr } = state;
 
                 tr.delete(start, end);
                 this.editor.handleOpenLinkMenu();

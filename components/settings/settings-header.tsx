@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 export const SettingsHeader: FC<{
-    title: string
-    id: string
-    description?: string
-}> = ({title, id, description}) => {
+    title: string;
+    id: string;
+    description?: string;
+}> = ({ title, id, description }) => {
     return (
         <>
             <h3 className="my-2" id={id}>

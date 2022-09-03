@@ -12,8 +12,8 @@ import { ROOT_ID } from 'libs/shared/tree';
 function useTrash() {
     const [keyword, setKeyword] = useState<string>();
     const [list, setList] = useState<NoteCacheItem[]>();
-    const {restoreItem, deleteItem} = NoteTreeState.useContainer();
-    const {mutate, loading} = useTrashAPI();
+    const { restoreItem, deleteItem } = NoteTreeState.useContainer();
+    const { mutate, loading } = useTrashAPI();
 
     const filterNotes = useCallback(async (keyword = '') => {
         const data = await searchNote(keyword, NOTE_DELETED.DELETED);
@@ -26,7 +26,11 @@ function useTrash() {
         async (note: NoteModel) => {
             // 父页面被删除时，恢复页面的 parent 改成 root
             const pNote = note.pid && (await noteCache.getItem(note.pid));
-            if (!note.pid || !pNote || pNote?.deleted === NOTE_DELETED.DELETED) {
+            if (
+                !note.pid ||
+                !pNote ||
+                pNote?.deleted === NOTE_DELETED.DELETED
+            ) {
                 note.pid = ROOT_ID;
             }
 

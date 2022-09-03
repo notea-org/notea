@@ -30,6 +30,11 @@ export const PAGE_META_KEY = <const>[
     'editorsize',
 ];
 
-export type metaKey = typeof PAGE_META_KEY[number]
+export type metaKey = typeof PAGE_META_KEY[number];
 
-export const NUMBER_KEYS: metaKey[] = ['deleted', 'shared', 'pinned', 'editorsize'];
+export const NUMBER_KEYS: metaKey[] = [
+    'deleted',
+    'shared',
+    'pinned',
+    'editorsize',
+];

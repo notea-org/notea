@@ -17,34 +17,34 @@ import { NoteModel } from 'libs/shared/note';
 import PreviewModal from 'components/portal/preview-modal';
 import LinkToolbar from 'components/portal/link-toolbar/link-toolbar';
 
-const MainWrapper: FC = ({children}) => {
+const MainWrapper: FC = ({ children }) => {
     const {
-        sidebar: {isFold},
+        sidebar: { isFold },
     } = UIState.useContainer();
-    const {ref, width = 0} = useResizeDetector<HTMLDivElement>({
+    const { ref, width = 0 } = useResizeDetector<HTMLDivElement>({
         handleHeight: false,
     });
 
     return (
         <div className="h-full" ref={ref}>
             <Resizable width={width}>
-                <Sidebar/>
+                <Sidebar />
                 <main className="relative">{children}</main>
             </Resizable>
             <style jsx global>
                 {`
-          .gutter {
-            pointer-events: ${isFold ? 'none' : 'auto'};
-          }
-        `}
+                    .gutter {
+                        pointer-events: ${isFold ? 'none' : 'auto'};
+                    }
+                `}
             </style>
         </div>
     );
 };
 
-const MobileMainWrapper: FC = ({children}) => {
+const MobileMainWrapper: FC = ({ children }) => {
     const {
-        sidebar: {isFold, open, close},
+        sidebar: { isFold, open, close },
     } = UIState.useContainer();
 
     return (
@@ -58,7 +58,7 @@ const MobileMainWrapper: FC = ({children}) => {
                 // todo 优化移动端左边按钮和滑动冲突的问题
                 disableDiscovery
             >
-                <Sidebar/>
+                <Sidebar />
             </SwipeableDrawer>
 
             <main className="flex-grow" onClick={close}>
@@ -66,20 +66,20 @@ const MobileMainWrapper: FC = ({children}) => {
             </main>
             <style jsx global>
                 {`
-          .gutter {
-            pointer-events: none;
-          }
-        `}
+                    .gutter {
+                        pointer-events: none;
+                    }
+                `}
             </style>
         </div>
     );
 };
 
 const LayoutMain: FC<{
-    tree?: TreeModel
-    note?: NoteModel
-}> = ({children, tree, note}) => {
-    const {ua} = UIState.useContainer();
+    tree?: TreeModel;
+    note?: NoteModel;
+}> = ({ children, tree, note }) => {
+    const { ua } = UIState.useContainer();
 
     useEffect(() => {
         document.body.classList.add('overscroll-none');
@@ -97,15 +97,15 @@ const LayoutMain: FC<{
 
                 {/* modals */}
                 <TrashState.Provider>
-                    <TrashModal/>
+                    <TrashModal />
                 </TrashState.Provider>
                 <SearchState.Provider>
-                    <SearchModal/>
+                    <SearchModal />
                 </SearchState.Provider>
-                <ShareModal/>
-                <PreviewModal/>
-                <LinkToolbar/>
-                <SidebarMenu/>
+                <ShareModal />
+                <PreviewModal />
+                <LinkToolbar />
+                <SidebarMenu />
             </NoteState.Provider>
         </NoteTreeState.Provider>
     );

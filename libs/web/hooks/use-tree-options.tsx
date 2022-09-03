@@ -10,7 +10,7 @@ export interface TreeOption {
 }
 
 export const useTreeOptions = (tree: TreeModel) => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const options: TreeOption[] = useMemo(
         () =>
             reduce<TreeItemModel, TreeOption[]>(
@@ -21,7 +21,9 @@ export const useTreeOptions = (tree: TreeModel) => {
                             id: cur.id,
                             label:
                                 cur.data?.title ||
-                                (cur.id === tree.rootId ? t('Root Page') : t('Untitled')),
+                                (cur.id === tree.rootId
+                                    ? t('Root Page')
+                                    : t('Untitled')),
                         });
                     }
                     return items;

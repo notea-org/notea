@@ -12,8 +12,8 @@ import { SettingFooter } from 'components/settings/setting-footer';
 import { SSRContext, ssr } from 'libs/server/connect';
 import { applyReset } from 'libs/server/middlewares/reset';
 
-const SettingsPage: NextPage<{ tree: TreeModel }> = ({tree}) => {
-    const {t} = useI18n();
+const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
+    const { t } = useI18n();
 
     return (
         <LayoutMain tree={tree}>
@@ -23,8 +23,8 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({tree}) => {
                         <span>{t('Settings')}</span>
                     </h1>
 
-                    <SettingsContainer/>
-                    <SettingFooter/>
+                    <SettingsContainer />
+                    <SettingFooter />
                 </div>
             </section>
         </LayoutMain>

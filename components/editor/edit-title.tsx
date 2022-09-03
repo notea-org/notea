@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { FC, useCallback, KeyboardEvent, useRef, useMemo } from 'react';
 import EditorState from 'libs/web/state/editor';
 
-const EditTitle: FC<{ readOnly?: boolean }> = ({readOnly}) => {
-    const {editorEl, onNoteChange, note} = EditorState.useContainer();
+const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
+    const { editorEl, onNoteChange, note } = EditorState.useContainer();
     const router = useRouter();
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const onInputTitle = useCallback(
@@ -23,13 +23,13 @@ const EditTitle: FC<{ readOnly?: boolean }> = ({readOnly}) => {
     const onTitleChange = useCallback(
         (event) => {
             const title = event.target.value;
-            onNoteChange.callback({title});
+            onNoteChange.callback({ title });
         },
         [onNoteChange]
     );
 
     const autoFocus = useMemo(() => has(router.query, 'new'), [router.query]);
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return (
         <h1 className="text-3xl mb-8">

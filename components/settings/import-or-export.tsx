@@ -9,8 +9,8 @@ import { ImportButton } from './import-button';
 import { useTreeOptions, TreeOption } from 'libs/web/hooks/use-tree-options';
 
 export const ImportOrExport: FC = () => {
-    const {t} = useI18n();
-    const {tree} = NoteTreeState.useContainer();
+    const { t } = useI18n();
+    const { tree } = NoteTreeState.useContainer();
     const options = useTreeOptions(tree);
     const [selected, setSelected] = useState(options[0]);
 

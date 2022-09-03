@@ -12,7 +12,7 @@ function useSearch() {
         setList(keyword ? await searchNote(keyword, NOTE_DELETED.NORMAL) : []);
     }, []);
 
-    return {list, keyword, filterNotes};
+    return { list, keyword, filterNotes };
 }
 
 const SearchState = createContainer(useSearch);

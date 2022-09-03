@@ -8,12 +8,15 @@ import { FormEvent, useCallback, useEffect } from 'react';
 import { useToast } from 'libs/web/hooks/use-toast';
 
 const LoginPage = () => {
-    const {request, error, loading} = useFetcher();
+    const { request, error, loading } = useFetcher();
     const toast = useToast();
     const onSubmit = useCallback(
         async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const data = await request<{ password: string }, { isLoggedIn: boolean }>(
+            const data = await request<
+                { password: string },
+                { isLoggedIn: boolean }
+            >(
                 {
                     url: '/api/auth/login',
                     method: 'POST',
@@ -38,7 +41,7 @@ const LoginPage = () => {
     return (
         <div className="h-screen flex flex-col">
             <main className="flex flex-col my-auto ">
-                <img className="w-40 h-40 m-auto" src="/logo.svg" alt="Logo"/>
+                <img className="w-40 h-40 m-auto" src="/logo.svg" alt="Logo" />
                 <form
                     className="w-80 mx-auto"
                     action="post"

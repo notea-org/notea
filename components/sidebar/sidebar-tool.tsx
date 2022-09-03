@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 
 const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
     (props, ref) => {
-        const {children, className, ...attrs} = props;
+        const { children, className, ...attrs } = props;
         return (
             <div
                 {...attrs}
@@ -36,9 +36,9 @@ const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
 );
 
 const ButtonMenu = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
-        sidebar: {toggle, isFold},
+        sidebar: { toggle, isFold },
     } = UIState.useContainer();
     const onFold = useCallback(() => {
         toggle();
@@ -63,8 +63,8 @@ const ButtonMenu = () => {
 };
 
 const ButtonSearch = () => {
-    const {t} = useI18n();
-    const {search} = PortalState.useContainer();
+    const { t } = useI18n();
+    const { search } = PortalState.useContainer();
 
     return (
         <HotkeyTooltip
@@ -74,15 +74,15 @@ const ButtonSearch = () => {
             keys={['P']}
         >
             <ButtonItem onClick={search.open} aria-label="search">
-                <SearchIcon/>
+                <SearchIcon />
             </ButtonItem>
         </HotkeyTooltip>
     );
 };
 
 const ButtonTrash = () => {
-    const {t} = useI18n();
-    const {trash} = PortalState.useContainer();
+    const { t } = useI18n();
+    const { trash } = PortalState.useContainer();
 
     return (
         <HotkeyTooltip
@@ -93,14 +93,14 @@ const ButtonTrash = () => {
             keys={['T']}
         >
             <ButtonItem onClick={trash.open} aria-label="trash">
-                <TrashIcon/>
+                <TrashIcon />
             </ButtonItem>
         </HotkeyTooltip>
     );
 };
 
 const ButtonDailyNotes = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const href = `/${dayjs().format('YYYY-MM-DD')}`;
     const router = useRouter();
 
@@ -110,11 +110,11 @@ const ButtonDailyNotes = () => {
                 <HotkeyTooltip
                     text={t('Daily Notes')}
                     commandKey
-                    onHotkey={() => router.push(href, href, {shallow: true})}
+                    onHotkey={() => router.push(href, href, { shallow: true })}
                     keys={['shift', 'O']}
                 >
                     <ButtonItem aria-label="daily notes">
-                        <InboxIcon/>
+                        <InboxIcon />
                     </ButtonItem>
                 </HotkeyTooltip>
             </a>
@@ -123,14 +123,14 @@ const ButtonDailyNotes = () => {
 };
 
 const ButtonSettings = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return (
         <Link href="/settings" shallow>
             <a>
                 <HotkeyTooltip text={t('Settings')}>
                     <ButtonItem aria-label="settings">
-                        <CogIcon/>
+                        <CogIcon />
                     </ButtonItem>
                 </HotkeyTooltip>
             </a>
@@ -143,9 +143,9 @@ const SidebarTool = () => {
 
     return (
         <aside className="h-full flex flex-col w-12  md:w-11 flex-none bg-gray-200">
-            <ButtonSearch/>
-            <ButtonTrash/>
-            <ButtonDailyNotes/>
+            <ButtonSearch />
+            <ButtonTrash />
+            <ButtonDailyNotes />
 
             <div className="tool mt-auto">
                 {mounted ? (
@@ -156,10 +156,10 @@ const SidebarTool = () => {
                 <ButtonMenu></ButtonMenu>
                 <ButtonSettings></ButtonSettings>
                 <style jsx>{`
-          .tool :global(.HW_softHidden) {
-            display: none;
-          }
-        `}</style>
+                    .tool :global(.HW_softHidden) {
+                        display: none;
+                    }
+                `}</style>
             </div>
         </aside>
     );

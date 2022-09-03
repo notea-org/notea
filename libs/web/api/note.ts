@@ -4,7 +4,7 @@ import noteCache from '../cache/note';
 import useFetcher from './fetcher';
 
 export default function useNoteAPI() {
-    const {loading, request, abort, error} = useFetcher();
+    const { loading, request, abort, error } = useFetcher();
 
     const find = useCallback(
         async (id: string) => {
@@ -33,19 +33,19 @@ export default function useNoteAPI() {
         async (id: string, body: Partial<NoteModel>) => {
             const data = body.content
                 ? await request<Partial<NoteModel>, NoteModel>(
-                    {
-                        method: 'POST',
-                        url: `/api/notes/${id}`,
-                    },
-                    body
-                )
+                      {
+                          method: 'POST',
+                          url: `/api/notes/${id}`,
+                      },
+                      body
+                  )
                 : await request<Partial<NoteModel>, NoteModel>(
-                    {
-                        method: 'POST',
-                        url: `/api/notes/${id}/meta`,
-                    },
-                    body
-                );
+                      {
+                          method: 'POST',
+                          url: `/api/notes/${id}/meta`,
+                      },
+                      body
+                  );
 
             return data;
         },

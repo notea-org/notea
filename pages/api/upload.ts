@@ -40,5 +40,5 @@ export default api()
             },
         });
 
-        res.json({url: `/api/file/${fileName}`});
+        res.json({ url: `/api/file/${fileName}` });
     });

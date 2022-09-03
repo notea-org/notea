@@ -22,7 +22,7 @@ export const DEFAULT_SETTINGS: Settings = Object.freeze({
 });
 
 export function formatSettings(body: Record<string, any> = {}) {
-    const settings: Settings = {...DEFAULT_SETTINGS};
+    const settings: Settings = { ...DEFAULT_SETTINGS };
 
     if (isString(body.daily_root_id)) {
         settings.daily_root_id = body.daily_root_id;

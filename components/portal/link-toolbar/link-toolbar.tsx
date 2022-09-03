@@ -8,9 +8,9 @@ import { useCallback } from 'react';
 import { findPlaceholderLink } from 'libs/web/editor/link';
 
 const LinkToolbar = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
-        linkToolbar: {anchor, open, close, visible, data, setAnchor},
+        linkToolbar: { anchor, open, close, visible, data, setAnchor },
     } = PortalState.useContainer();
 
     const openLink = useCallback(() => {
@@ -21,17 +21,19 @@ const LinkToolbar = () => {
 
     const createEmbed = useCallback(
         (type: 'bookmark' | 'embed') => {
-            const {view, href} = data ?? {};
+            const { view, href } = data ?? {};
             if (!view || !href) {
                 return;
             }
-            const {dispatch, state} = view;
+            const { dispatch, state } = view;
             const result = findPlaceholderLink(state.doc, href);
 
             if (!result) {
                 return;
             }
-            const bookmarkUrl = `/api/extract?type=${type}&url=${encodeURIComponent(href)}`;
+            const bookmarkUrl = `/api/extract?type=${type}&url=${encodeURIComponent(
+                href
+            )}`;
             const transaction = state.tr.replaceWith(
                 result.pos,
                 result.pos + result.node.nodeSize,
@@ -60,7 +62,10 @@ const LinkToolbar = () => {
         >
             <Paper className="relative bg-gray-50 flex p-1 space-x-1">
                 <HotkeyTooltip text={t('Open link')}>
-                    <IconButton onClick={openLink} icon={'ExternalLink'}></IconButton>
+                    <IconButton
+                        onClick={openLink}
+                        icon={'ExternalLink'}
+                    ></IconButton>
                 </HotkeyTooltip>
                 <HotkeyTooltip text={t('Create bookmark')}>
                     <IconButton

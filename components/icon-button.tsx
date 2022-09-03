@@ -19,7 +19,7 @@ import {
     BookmarkAltIcon,
     PuzzleIcon,
     ChevronDoubleUpIcon,
-    RefreshIcon
+    RefreshIcon,
 } from '@heroicons/react/outline';
 
 export const ICONS = {
@@ -41,15 +41,17 @@ export const ICONS = {
     BookmarkAlt: BookmarkAltIcon,
     Puzzle: PuzzleIcon,
     ChevronDoubleUp: ChevronDoubleUpIcon,
-    Refresh: RefreshIcon
+    Refresh: RefreshIcon,
 };
 
-const IconButton = forwardRef<HTMLSpanElement,
+const IconButton = forwardRef<
+    HTMLSpanElement,
     HTMLProps<HTMLSpanElement> & {
-    icon: keyof typeof ICONS
-    iconClassName?: string
-    rounded?: boolean
-}>(
+        icon: keyof typeof ICONS;
+        iconClassName?: string;
+        rounded?: boolean;
+    }
+>(
     (
         {
             children,
@@ -89,9 +91,9 @@ const IconButton = forwardRef<HTMLSpanElement,
                     className
                 )}
             >
-        <Icon className={classNames(iconClassName)}></Icon>
+                <Icon className={classNames(iconClassName)}></Icon>
                 {children}
-      </span>
+            </span>
         );
     }
 );

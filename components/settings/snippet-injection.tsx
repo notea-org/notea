@@ -8,9 +8,9 @@ import Link from 'next/link';
 import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 
 export const SnippetInjection: FC = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
-        settings: {settings, updateSettings, setSettings},
+        settings: { settings, updateSettings, setSettings },
         IS_DEMO,
     } = UIState.useContainer();
 
@@ -25,15 +25,15 @@ export const SnippetInjection: FC = () => {
 
     const updateValue = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {
-            setSettings((prev) => ({...prev, injection: event.target.value}));
+            setSettings((prev) => ({ ...prev, injection: event.target.value }));
         },
         [setSettings]
     );
 
     useEffect(() => {
         if (IS_DEMO && settings.injection !== DEMO_INJECTION) {
-            updateSettings({injection: DEMO_INJECTION});
-            setSettings((prev) => ({...prev, injection: DEMO_INJECTION}));
+            updateSettings({ injection: DEMO_INJECTION });
+            setSettings((prev) => ({ ...prev, injection: DEMO_INJECTION }));
         }
     }, [settings.injection, IS_DEMO, updateSettings, setSettings]);
 
@@ -51,17 +51,20 @@ export const SnippetInjection: FC = () => {
                 rows={8}
                 helperText={
                     <span className="flex items-center">
-            <span>
-              {t(
-                  'Inject analytics or other scripts into the HTML of your sharing page. '
-              ) + (IS_DEMO ? t('Disable editing in the demo.') : '')}
-            </span>
-            <Link href="https://github.com/QingWei-Li/notea/wiki/Snippet-Injection">
-              <a target="_blank" rel="noreferrer">
-                <QuestionMarkCircleIcon className="w-4 text-gray-500 hover:text-gray-700"/>
-              </a>
-            </Link>
-          </span>
+                        <span>
+                            {t(
+                                'Inject analytics or other scripts into the HTML of your sharing page. '
+                            ) +
+                                (IS_DEMO
+                                    ? t('Disable editing in the demo.')
+                                    : '')}
+                        </span>
+                        <Link href="https://github.com/QingWei-Li/notea/wiki/Snippet-Injection">
+                            <a target="_blank" rel="noreferrer">
+                                <QuestionMarkCircleIcon className="w-4 text-gray-500 hover:text-gray-700" />
+                            </a>
+                        </Link>
+                    </span>
                 }
             ></TextField>
         </div>

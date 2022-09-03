@@ -8,9 +8,9 @@ import { IMPORT_FILE_LIMIT_SIZE } from 'libs/shared/const';
 import { useRouter } from 'next/router';
 import { ROOT_ID } from 'libs/shared/tree';
 
-export const ImportButton: FC<ButtonProps> = ({parentId = ROOT_ID}) => {
-    const {t} = useI18n();
-    const {request, loading, error} = useFetcher();
+export const ImportButton: FC<ButtonProps> = ({ parentId = ROOT_ID }) => {
+    const { t } = useI18n();
+    const { request, loading, error } = useFetcher();
     const toast = useToast();
     const router = useRouter();
 
@@ -35,8 +35,10 @@ export const ImportButton: FC<ButtonProps> = ({parentId = ROOT_ID}) => {
 
             data.append('file', file);
 
-            const result = await request<FormData,
-                { total: number; imported: number }>(
+            const result = await request<
+                FormData,
+                { total: number; imported: number }
+            >(
                 {
                     method: 'POST',
                     url: '/api/import?pid=' + parentId,

@@ -13,26 +13,26 @@ import { NoteModel } from 'libs/shared/note';
 import { Item, SidebarMenuItem, MENU_HANDLER_NAME } from './sidebar-menu-item';
 
 const SidebarMenu: FC = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
-        menu: {close, anchor, data, visible},
+        menu: { close, anchor, data, visible },
     } = PortalState.useContainer();
 
     const MENU_LIST: Item[] = useMemo(
         () => [
             {
                 text: t('Remove'),
-                icon: <TrashIcon/>,
+                icon: <TrashIcon />,
                 handler: MENU_HANDLER_NAME.REMOVE_NOTE,
             },
             {
                 text: t('Copy Link'),
-                icon: <ClipboardCopyIcon/>,
+                icon: <ClipboardCopyIcon />,
                 handler: MENU_HANDLER_NAME.COPY_LINK,
             },
             {
                 text: t('Add to Favorites'),
-                icon: <StarIcon/>,
+                icon: <StarIcon />,
                 handler: MENU_HANDLER_NAME.ADD_TO_FAVORITES,
                 enable(item?: NoteModel) {
                     return item?.pinned !== NOTE_PINNED.PINNED;
@@ -40,7 +40,7 @@ const SidebarMenu: FC = () => {
             },
             {
                 text: t('Remove from Favorites'),
-                icon: <StarIcon/>,
+                icon: <StarIcon />,
                 handler: MENU_HANDLER_NAME.REMOVE_FROM_FAVORITES,
                 enable(item?: NoteModel) {
                     return item?.pinned === NOTE_PINNED.PINNED;
@@ -49,7 +49,7 @@ const SidebarMenu: FC = () => {
             {
                 text: t('Toggle width'),
                 // TODO: or SwitchHorizontal?
-                icon: <SelectorIcon style={{transform: "rotate(90deg)"}}/>,
+                icon: <SelectorIcon style={{ transform: 'rotate(90deg)' }} />,
                 handler: MENU_HANDLER_NAME.TOGGLE_WIDTH,
             },
         ],
@@ -67,9 +67,11 @@ const SidebarMenu: FC = () => {
         >
             {MENU_LIST.map((item) =>
                 item.enable ? (
-                    item.enable(data) && <SidebarMenuItem key={item.text} item={item}/>
+                    item.enable(data) && (
+                        <SidebarMenuItem key={item.text} item={item} />
+                    )
                 ) : (
-                    <SidebarMenuItem key={item.text} item={item}/>
+                    <SidebarMenuItem key={item.text} item={item} />
                 )
             )}
         </Menu>

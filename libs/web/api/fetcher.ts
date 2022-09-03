@@ -31,7 +31,7 @@ export default function useFetcher() {
             };
 
             init.headers = {
-                ...(csrfToken && {[CSRF_HEADER_KEY]: csrfToken}),
+                ...(csrfToken && { [CSRF_HEADER_KEY]: csrfToken }),
             };
 
             if (payload instanceof FormData) {
@@ -72,5 +72,5 @@ export default function useFetcher() {
         abortRef.current?.abort();
     }, []);
 
-    return {loading, request, abort, error};
+    return { loading, request, abort, error };
 }

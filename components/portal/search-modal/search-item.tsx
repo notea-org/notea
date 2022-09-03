@@ -10,14 +10,14 @@ import NoteTreeState from 'libs/web/state/tree';
 import { Breadcrumbs } from '@material-ui/core';
 
 const SearchItem: FC<{
-    note: NoteCacheItem
-    keyword?: string
-    selected?: boolean
-}> = ({note, keyword, selected}) => {
+    note: NoteCacheItem;
+    keyword?: string;
+    selected?: boolean;
+}> = ({ note, keyword, selected }) => {
     const {
-        search: {close},
+        search: { close },
     } = PortalState.useContainer();
-    const {getPaths} = NoteTreeState.useContainer();
+    const { getPaths } = NoteTreeState.useContainer();
 
     const ref = useRef<HTMLLIElement>(null);
     useScrollView(ref, selected);
@@ -30,9 +30,12 @@ const SearchItem: FC<{
             })}
         >
             <Link href={`/${note.id}`} shallow>
-                <a className="py-2 px-4 block text-xs text-gray-500" onClick={close}>
+                <a
+                    className="py-2 px-4 block text-xs text-gray-500"
+                    onClick={close}
+                >
                     <h4 className="text-sm font-bold">
-                        <MarkText text={note.title} keyword={keyword}/>
+                        <MarkText text={note.title} keyword={keyword} />
                     </h4>
                     <Breadcrumbs
                         maxItems={4}
@@ -44,15 +47,21 @@ const SearchItem: FC<{
                         {getPaths(note)
                             .reverse()
                             .map((path) => (
-                                <span key={path.id} className="px-0.5 py-0.5 text-xs truncate">
-                  {path.title}
-                </span>
+                                <span
+                                    key={path.id}
+                                    className="px-0.5 py-0.5 text-xs truncate"
+                                >
+                                    {path.title}
+                                </span>
                             ))}
                     </Breadcrumbs>
                     <p className="mt-1">
-                        <MarkText text={note.rawContent} keyword={keyword}/>
+                        <MarkText text={note.rawContent} keyword={keyword} />
                     </p>
-                    <time className="text-gray-500 mt-2 block" dateTime={note.date}>
+                    <time
+                        className="text-gray-500 mt-2 block"
+                        dateTime={note.date}
+                    >
                         {dayjs(note.date).format('DD/MM/YYYY HH:mm')}
                     </time>
                 </a>

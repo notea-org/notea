@@ -10,13 +10,13 @@ import { CircularProgress, Tooltip } from '@material-ui/core';
 import { Favorites } from './favorites';
 
 const SideBarList = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
         tree,
         moveItem,
         mutateItem,
         initLoaded,
-        collapseAllItems
+        collapseAllItems,
     } = NoteTreeState.useContainer();
 
     const onExpand = useCallback(
@@ -51,20 +51,24 @@ const SideBarList = () => {
     );
 
     const onCreateNote = useCallback(() => {
-        router.push('/new', undefined, {shallow: true});
+        router.push('/new', undefined, { shallow: true });
     }, []);
 
     return (
         <section className="h-full flex text-sm flex-col flex-grow bg-gray-100 overflow-y-auto">
             {/* Favorites */}
-            <Favorites/>
+            <Favorites />
 
             {/* My Pages */}
             <div className="p-2 text-gray-500 flex items-center sticky top-0 bg-gray-100 z-10">
                 <div className="flex-auto flex items-center">
                     <span>{t('My Pages')}</span>
                     {initLoaded ? null : (
-                        <CircularProgress className="ml-4" size="14px" color="inherit"/>
+                        <CircularProgress
+                            className="ml-4"
+                            size="14px"
+                            color="inherit"
+                        />
                     )}
                 </div>
                 <Tooltip title={t('Collapse all pages')}>
@@ -96,7 +100,13 @@ const SideBarList = () => {
                     isDragEnabled
                     isNestingEnabled
                     offsetPerLevel={10}
-                    renderItem={({provided, item, onExpand, onCollapse, snapshot}) => (
+                    renderItem={({
+                        provided,
+                        item,
+                        onExpand,
+                        onCollapse,
+                        snapshot,
+                    }) => (
                         <SidebarListItem
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}

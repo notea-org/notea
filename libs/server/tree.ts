@@ -22,7 +22,9 @@ import { getPathTree } from './note-path';
 function fixedTree(tree: TreeModel) {
     forEach(tree.items, (item) => {
         if (
-            item.children.find((i) => i === null || i === item.id || !tree.items[i])
+            item.children.find(
+                (i) => i === null || i === item.id || !tree.items[i]
+            )
         ) {
             console.log('item.children error', item);
             tree.items[item.id] = {

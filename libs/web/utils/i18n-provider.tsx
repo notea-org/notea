@@ -27,7 +27,7 @@ interface Props {
     lngDict: Record<string, string>;
 }
 
-export default function I18nProvider({children, locale, lngDict}: Props) {
+export default function I18nProvider({ children, locale, lngDict }: Props) {
     const activeLocaleRef = useRef(locale || defaultLanguage);
     const [, setTick] = useState(0);
     const firstRender = useRef(true);
@@ -36,7 +36,10 @@ export default function I18nProvider({children, locale, lngDict}: Props) {
         activeLocale: activeLocaleRef.current,
         t: (key, ...args) => {
             if (activeLocaleRef.current === defaultLanguage) {
-                return pupa(Array.isArray(key) ? key.join('') : key, args[0] ?? {});
+                return pupa(
+                    Array.isArray(key) ? key.join('') : key,
+                    args[0] ?? {}
+                );
             }
             return i18n.t(Array.isArray(key) ? key : [key], ...args);
         },
@@ -66,6 +69,8 @@ export default function I18nProvider({children, locale, lngDict}: Props) {
     }, [lngDict, locale]);
 
     return (
-        <I18nContext.Provider value={i18nWrapper}>{children}</I18nContext.Provider>
+        <I18nContext.Provider value={i18nWrapper}>
+            {children}
+        </I18nContext.Provider>
     );
 }

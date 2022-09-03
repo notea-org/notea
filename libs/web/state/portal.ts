@@ -14,7 +14,7 @@ const useModalInstance = () => {
         setVisible(false);
     }, []);
 
-    return {visible, open, close};
+    return { visible, open, close };
 };
 
 const useAnchorInstance = <T>() => {
@@ -30,7 +30,7 @@ const useAnchorInstance = <T>() => {
         setVisible(false);
     }, []);
 
-    return {anchor, open, close, data, setData, visible, setAnchor};
+    return { anchor, open, close, data, setData, visible, setAnchor };
 };
 
 const useModal = () => {
@@ -41,8 +41,8 @@ const useModal = () => {
         share: useAnchorInstance<NoteModel>(),
         preview: useAnchorInstance<{ id?: string }>(),
         linkToolbar: useAnchorInstance<{
-            href: string
-            view?: RichMarkdownEditor['view']
+            href: string;
+            view?: RichMarkdownEditor['view'];
         }>(),
     };
 };

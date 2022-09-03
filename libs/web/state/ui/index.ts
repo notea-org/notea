@@ -23,11 +23,11 @@ interface Props {
 }
 
 function useUI({
-                   ua = DEFAULT_UA,
-                   settings,
-                   disablePassword,
-                   IS_DEMO,
-               }: Props = {}) {
+    ua = DEFAULT_UA,
+    settings,
+    disablePassword,
+    IS_DEMO,
+}: Props = {}) {
     return {
         ua,
         sidebar: useSidebar(

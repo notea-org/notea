@@ -15,10 +15,10 @@ const MainEditor = dynamic(() => import('components/editor/main-editor'));
 
 export const EditContainer = () => {
     const {
-        title: {updateTitle},
-        settings: {settings},
+        title: { updateTitle },
+        settings: { settings },
     } = UIState.useContainer();
-    const {genNewId} = NoteTreeState.useContainer();
+    const { genNewId } = NoteTreeState.useContainer();
     const {
         fetchNote,
         abortFindNote,
@@ -26,11 +26,11 @@ export const EditContainer = () => {
         initNote,
         note,
     } = NoteState.useContainer();
-    const {query} = useRouter();
+    const { query } = useRouter();
     const pid = query.pid as string;
     const id = query.id as string;
     const isNew = has(query, 'new');
-    const {mutate: mutateSettings} = useSettingsAPI();
+    const { mutate: mutateSettings } = useSettingsAPI();
     const toast = useToast();
 
     const loadNoteById = useCallback(
@@ -46,23 +46,23 @@ export const EditContainer = () => {
             } else if (id === 'new') {
                 const url = `/${genNewId()}?new` + (pid ? `&pid=${pid}` : '');
 
-                router.replace(url, undefined, {shallow: true});
+                router.replace(url, undefined, { shallow: true });
             } else if (id && !isNew) {
                 try {
                     const result = await fetchNote(id);
                     if (!result) {
-                        router.replace({query: {...router.query, new: 1}});
+                        router.replace({ query: { ...router.query, new: 1 } });
                         return;
                     }
                 } catch (msg) {
                     if (msg.name !== 'AbortError') {
                         toast(msg.message, 'error');
-                        router.push('/', undefined, {shallow: true});
+                        router.push('/', undefined, { shallow: true });
                     }
                 }
             } else {
                 if (await noteCache.getItem(id)) {
-                    router.push(`/${id}`, undefined, {shallow: true});
+                    router.push(`/${id}`, undefined, { shallow: true });
                     return;
                 }
 
@@ -102,10 +102,10 @@ export const EditContainer = () => {
 
     return (
         <>
-            <NoteNav/>
-            <DeleteAlert/>
+            <NoteNav />
+            <DeleteAlert />
             <section className="h-full">
-                <MainEditor note={note}/>
+                <MainEditor note={note} />
             </section>
         </>
     );

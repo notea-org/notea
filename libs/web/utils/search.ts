@@ -22,13 +22,13 @@ export async function searchNote(keyword: string, deleted: NOTE_DELETED) {
 }
 
 export function searchRangeText({
-                                    text,
-                                    keyword,
-                                    maxLen = 80,
-                                }: {
-    text: string
-    keyword: string
-    maxLen: number
+    text,
+    keyword,
+    maxLen = 80,
+}: {
+    text: string;
+    keyword: string;
+    maxLen: number;
 }) {
     let start = 0;
     let end = 0;

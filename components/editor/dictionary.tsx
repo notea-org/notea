@@ -2,7 +2,7 @@ import useI18n from 'libs/web/hooks/use-i18n';
 import { useMemo } from 'react';
 
 export const useDictionary = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     const dictionary = useMemo(
         () => ({
@@ -26,7 +26,9 @@ export const useDictionary = () => {
             deleteTable: t('Delete table'),
             deleteImage: t('Delete image'),
             em: t('Italic'),
-            embedInvalidLink: t('Sorry, that link won’t work for this embed type'),
+            embedInvalidLink: t(
+                'Sorry, that link won’t work for this embed type'
+            ),
             findOrCreateDoc: t('Find or create a note…'),
             h1: t('Big heading'),
             h2: t('Medium heading'),
@@ -48,7 +50,7 @@ export const useDictionary = () => {
             pageBreak: t('Page break'),
             pasteLink: t('Paste a link…'),
             pasteLinkWithTitle: (title: string): string =>
-                t(`Paste a {{title}} link…`, {title}),
+                t(`Paste a {{title}} link…`, { title }),
             placeholder: t('Placeholder'),
             quote: t('Quote'),
             removeLink: t('Remove link'),

@@ -14,12 +14,12 @@ const renderGutter = () => {
     return gutter;
 };
 
-const Resizable: FC<{ width: number }> = ({width, children}) => {
+const Resizable: FC<{ width: number }> = ({ width, children }) => {
     const splitRef = useRef<typeof Split>(null);
     const {
-        split: {saveSizes, resize, sizes},
-        ua: {isMobileOnly},
-        sidebar: {isFold},
+        split: { saveSizes, resize, sizes },
+        ua: { isMobileOnly },
+        sidebar: { isFold },
     } = UIState.useContainer();
     const lastWidthRef = useRef(width);
 

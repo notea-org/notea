@@ -4,12 +4,12 @@ import { useDebouncedCallback } from 'use-debounce';
 import useI18n from 'libs/web/hooks/use-i18n';
 
 const FilterModalInput: FC<{
-    doFilter: (keyword: string) => void
-    keyword?: string
-    placeholder: string
-    onClose: () => void
-}> = ({doFilter, keyword, placeholder, onClose}) => {
-    const {t} = useI18n();
+    doFilter: (keyword: string) => void;
+    keyword?: string;
+    placeholder: string;
+    onClose: () => void;
+}> = ({ doFilter, keyword, placeholder, onClose }) => {
+    const { t } = useI18n();
     const inputRef = useRef<HTMLInputElement>(null);
     const debouncedFilter = useDebouncedCallback((value: string) => {
         doFilter(value);
@@ -21,7 +21,7 @@ const FilterModalInput: FC<{
 
     return (
         <div className="flex py-2 px-4">
-            <SearchIcon width="20"/>
+            <SearchIcon width="20" />
             <input
                 ref={inputRef}
                 defaultValue={keyword}

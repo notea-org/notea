@@ -8,14 +8,14 @@ import { configLocale, Locale } from 'locales';
 import { map } from 'lodash';
 
 export const Language: FC = () => {
-    const {t, activeLocale} = useI18n();
+    const { t, activeLocale } = useI18n();
     const {
-        settings: {settings, updateSettings},
+        settings: { settings, updateSettings },
     } = UIState.useContainer();
 
     const handleChange = useCallback(
         async (event: ChangeEvent<HTMLInputElement>) => {
-            await updateSettings({locale: event.target.value as Locale});
+            await updateSettings({ locale: event.target.value as Locale });
             router.reload();
         },
         [updateSettings]

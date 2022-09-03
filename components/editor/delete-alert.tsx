@@ -4,8 +4,8 @@ import NoteState from 'libs/web/state/note';
 import useI18n from 'libs/web/hooks/use-i18n';
 
 const Inner = () => {
-    const {t} = useI18n();
-    const {note} = NoteState.useContainer();
+    const { t } = useI18n();
+    const { note } = NoteState.useContainer();
 
     if (note?.deleted !== NOTE_DELETED.DELETED) {
         return null;
@@ -26,5 +26,5 @@ const Inner = () => {
 };
 
 export default function DeleteAlert() {
-    return <Inner/>;
+    return <Inner />;
 }

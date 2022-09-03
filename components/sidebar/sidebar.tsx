@@ -5,20 +5,20 @@ import { FC, useEffect } from 'react';
 import NoteTreeState from 'libs/web/state/tree';
 
 const Sidebar: FC = () => {
-    const {ua} = UIState.useContainer();
-    const {initTree} = NoteTreeState.useContainer();
+    const { ua } = UIState.useContainer();
+    const { initTree } = NoteTreeState.useContainer();
 
     useEffect(() => {
         initTree();
     }, [initTree]);
 
-    return ua?.isMobileOnly ? <MobileSidebar/> : <BrowserSidebar/>;
+    return ua?.isMobileOnly ? <MobileSidebar /> : <BrowserSidebar />;
 };
 
 const BrowserSidebar: FC = () => {
     const {
         sidebar,
-        split: {sizes},
+        split: { sizes },
     } = UIState.useContainer();
 
     return (
@@ -28,17 +28,17 @@ const BrowserSidebar: FC = () => {
                 width: `calc(${sizes[0]}% - 5px)`,
             }}
         >
-            <SidebarTool/>
-            {sidebar.isFold ? null : <SideBarList/>}
+            <SidebarTool />
+            {sidebar.isFold ? null : <SideBarList />}
         </section>
     );
 };
 
 const MobileSidebar: FC = () => {
     return (
-        <section className="flex h-full" style={{width: '80vw'}}>
-            <SidebarTool/>
-            <SideBarList/>
+        <section className="flex h-full" style={{ width: '80vw' }}>
+            <SidebarTool />
+            <SideBarList />
         </section>
     );
 };

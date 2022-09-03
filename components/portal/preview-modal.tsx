@@ -11,12 +11,12 @@ import useI18n from 'libs/web/hooks/use-i18n';
 import Popover from 'components/popover';
 
 const PreviewModal: FC = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
     const {
-        preview: {anchor, open, close, visible, data, setAnchor},
+        preview: { anchor, open, close, visible, data, setAnchor },
     } = PortalState.useContainer();
     const router = useRouter();
-    const {fetch: fetchNote} = useNoteAPI();
+    const { fetch: fetchNote } = useNoteAPI();
     const [note, setNote] = useState<NoteCacheItem>();
 
     const findNote = useCallback(
@@ -28,7 +28,7 @@ const PreviewModal: FC = () => {
 
     const gotoLink = useCallback(() => {
         if (note?.id) {
-            router.push(note.id, undefined, {shallow: true});
+            router.push(note.id, undefined, { shallow: true });
         }
     }, [note?.id, router]);
 
@@ -48,7 +48,7 @@ const PreviewModal: FC = () => {
             setAnchor={setAnchor}
             transition
         >
-            {({TransitionProps}) => (
+            {({ TransitionProps }) => (
                 <Fade
                     {...TransitionProps}
                     timeout={{
@@ -58,11 +58,17 @@ const PreviewModal: FC = () => {
                     <Paper className="relative bg-gray-50 text-gray-800 w-full h-96 md:w-96 dark:bg-gray-800">
                         <div className="absolute right-2 top-2">
                             <HotkeyTooltip text={t('Open link')}>
-                                <IconButton onClick={gotoLink} icon="ExternalLink"></IconButton>
+                                <IconButton
+                                    onClick={gotoLink}
+                                    icon="ExternalLink"
+                                ></IconButton>
                             </HotkeyTooltip>
                         </div>
                         <div className="overflow-y-scroll h-full p-4">
-                            <PostContainer isPreview note={note}></PostContainer>
+                            <PostContainer
+                                isPreview
+                                note={note}
+                            ></PostContainer>
                         </div>
                     </Paper>
                 </Fade>

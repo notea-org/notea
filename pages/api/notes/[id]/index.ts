@@ -13,7 +13,7 @@ export async function getNote(
     store: StoreProvider,
     id: string
 ): Promise<NoteModel> {
-    const {content, meta} = await store.getObjectAndMeta(getPathNoteById(id));
+    const { content, meta } = await store.getObjectAndMeta(getPathNoteById(id));
 
     if (!content && !meta) {
         throw API.NOT_FOUND.throw();
@@ -57,7 +57,7 @@ export default api()
     })
     .post(async (req, res) => {
         const id = req.query.id as string;
-        const {content} = req.body;
+        const { content } = req.body;
         const notePath = getPathNoteById(id);
         const oldMeta = await req.state.store.getObjectMeta(notePath);
 

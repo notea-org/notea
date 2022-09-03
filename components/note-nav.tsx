@@ -15,7 +15,7 @@ import NavButtonGroup from './nav-button-group';
 import { EyeIcon } from '@heroicons/react/outline';
 
 const MenuButton = () => {
-    const {sidebar} = UIState.useContainer();
+    const { sidebar } = UIState.useContainer();
 
     const onToggle = useCallback(
         (e: MouseEvent) => {
@@ -35,11 +35,15 @@ const MenuButton = () => {
 };
 
 const NoteNav = () => {
-    const {t} = useI18n();
-    const {note, loading} = NoteState.useContainer();
-    const {ua} = UIState.useContainer();
-    const {getPaths, showItem, checkItemIsShown} = NoteTreeState.useContainer();
-    const {share, menu} = PortalState.useContainer();
+    const { t } = useI18n();
+    const { note, loading } = NoteState.useContainer();
+    const { ua } = UIState.useContainer();
+    const {
+        getPaths,
+        showItem,
+        checkItemIsShown,
+    } = NoteTreeState.useContainer();
+    const { share, menu } = PortalState.useContainer();
 
     const handleClickShare = useCallback(
         (event: MouseEvent) => {
@@ -76,8 +80,8 @@ const NoteNav = () => {
                 width: ua.isMobileOnly ? '100%' : 'inherit',
             }}
         >
-            {ua.isMobileOnly ? <MenuButton/> : null}
-            <NavButtonGroup/>
+            {ua.isMobileOnly ? <MenuButton /> : null}
+            <NavButtonGroup />
             <div className="flex-auto ml-4">
                 {note && (
                     <Breadcrumbs
@@ -99,42 +103,45 @@ const NoteNav = () => {
                                 </Tooltip>
                             ))}
                         <span>
-              <Tooltip title={note.title}>
-                <span
-                    className="title inline-block text-gray-600 text-sm truncate select-none align-middle"
-                    aria-current="page"
-                >
-                  {note.title}
-                </span>
-              </Tooltip>
+                            <Tooltip title={note.title}>
+                                <span
+                                    className="title inline-block text-gray-600 text-sm truncate select-none align-middle"
+                                    aria-current="page"
+                                >
+                                    {note.title}
+                                </span>
+                            </Tooltip>
                             {!checkItemIsShown(note) && (
                                 <Tooltip title={t('Show note in tree')}>
-                  <span>
-                    <EyeIcon
-                        width="20"
-                        className="inline-block cursor-pointer ml-1"
-                        onClick={handleClickOpenInTree}
-                    />
-                  </span>
+                                    <span>
+                                        <EyeIcon
+                                            width="20"
+                                            className="inline-block cursor-pointer ml-1"
+                                            onClick={handleClickOpenInTree}
+                                        />
+                                    </span>
                                 </Tooltip>
                             )}
-            </span>
+                        </span>
                     </Breadcrumbs>
                 )}
                 <style jsx>
                     {`
-            .title {
-              max-width: 120px;
-            }
-          `}
+                        .title {
+                            max-width: 120px;
+                        }
+                    `}
                 </style>
             </div>
             <div
-                className={classNames('flex mr-2 transition-opacity delay-100', {
-                    'opacity-0': !loading,
-                })}
+                className={classNames(
+                    'flex mr-2 transition-opacity delay-100',
+                    {
+                        'opacity-0': !loading,
+                    }
+                )}
             >
-                <CircularProgress size="14px" color="inherit"/>
+                <CircularProgress size="14px" color="inherit" />
             </div>
             <HotkeyTooltip text={t('Share page')}>
                 <IconButton

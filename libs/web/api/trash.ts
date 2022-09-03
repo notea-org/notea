@@ -7,7 +7,7 @@ interface MutateBody {
 }
 
 export default function useTrashAPI() {
-    const {loading, request, abort} = useFetcher();
+    const { loading, request, abort } = useFetcher();
 
     const mutate = useCallback(
         async (body: MutateBody) => {

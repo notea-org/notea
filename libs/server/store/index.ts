@@ -1,6 +1,6 @@
 import { StoreS3 } from './providers/s3';
-import { StoreProvider } from "./providers/base";
-import { config } from "libs/server/config";
+import { StoreProvider } from './providers/base';
+import { config } from 'libs/server/config';
 
 export function createStore(): StoreProvider {
     const cfg = config().store;

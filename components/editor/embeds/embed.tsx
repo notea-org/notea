@@ -6,8 +6,8 @@ import { EmbedProps } from '.';
 import InnerHTML from 'dangerously-set-html-content';
 import { decode } from 'qss';
 
-export const Embed: FC<EmbedProps> = ({attrs: {href}}) => {
-    const {request} = useFetcher();
+export const Embed: FC<EmbedProps> = ({ attrs: { href } }) => {
+    const { request } = useFetcher();
     const [data, setData] = useState<Metadata>();
 
     useEffect(() => {
@@ -26,12 +26,12 @@ export const Embed: FC<EmbedProps> = ({attrs: {href}}) => {
     const html = (data?.oEmbed as any)?.html;
 
     if (html) {
-        return <InnerHTML html={html}/>;
+        return <InnerHTML html={html} />;
     }
 
     const url =
         data?.open_graph?.url ??
         decode<{ url: string }>(href.replace(/.*\?/, '')).url;
 
-    return <iframe className="w-full h-96" src={url} allowFullScreen/>;
+    return <iframe className="w-full h-96" src={url} allowFullScreen />;
 };

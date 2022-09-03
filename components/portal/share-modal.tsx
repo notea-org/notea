@@ -10,13 +10,13 @@ import useI18n from 'libs/web/hooks/use-i18n';
 import UIState from 'libs/web/state/ui';
 
 const ShareModal: FC = () => {
-    const {t} = useI18n();
-    const {share} = PortalState.useContainer();
+    const { t } = useI18n();
+    const { share } = PortalState.useContainer();
     const [url, setUrl] = useState<string>();
     const [copied, setCopied] = useState(false);
-    const {note, updateNote} = NoteState.useContainer();
+    const { note, updateNote } = NoteState.useContainer();
     const router = useRouter();
-    const {disablePassword} = UIState.useContainer();
+    const { disablePassword } = UIState.useContainer();
 
     const handleCopy = useCallback(() => {
         url && navigator.clipboard.writeText(url);

@@ -10,12 +10,12 @@ import MainEditor from 'components/editor/main-editor';
 const MAX_WIDTH = 900;
 
 export const PostContainer: FC<{
-    isPreview?: boolean
-    note?: NoteModel
-}> = ({isPreview = false, note}) => {
+    isPreview?: boolean;
+    note?: NoteModel;
+}> = ({ isPreview = false, note }) => {
     const {
         settings: {
-            settings: {injection},
+            settings: { injection },
         },
     } = UIState.useContainer();
 
@@ -42,7 +42,7 @@ export const PostContainer: FC<{
                         <InnerHTML
                             id="snippet-injection"
                             className={className}
-                            style={{width: MAX_WIDTH}}
+                            style={{ width: MAX_WIDTH }}
                             html={injectionHTML}
                         />
                     ) : null}

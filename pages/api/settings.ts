@@ -8,7 +8,9 @@ import { tryJSON } from 'libs/shared/str';
 import { StoreProvider } from 'libs/server/store';
 
 export async function getSettings(store: StoreProvider) {
-    const settings = tryJSON<Settings>(await store.getObject(getPathSettings()));
+    const settings = tryJSON<Settings>(
+        await store.getObject(getPathSettings())
+    );
     const formatted = formatSettings(settings || {});
 
     if (!settings || !isEqual(settings, formatted)) {
@@ -22,14 +24,17 @@ export default api()
     .use(useAuth)
     .use(useStore)
     .post(async (req, res) => {
-        const {body} = req;
+        const { body } = req;
         const prev = await getSettings(req.state.store);
         const settings = formatSettings({
             ...prev,
             ...body,
         });
 
-        await req.state.store.putObject(getPathSettings(), JSON.stringify(settings));
+        await req.state.store.putObject(
+            getPathSettings(),
+            JSON.stringify(settings)
+        );
         res.status(204).end();
     })
     .get(

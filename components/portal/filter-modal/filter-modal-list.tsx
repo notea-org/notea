@@ -14,12 +14,12 @@ interface Props<T> {
 }
 
 export default function FilterModalList<T>({
-                                               ItemComponent,
-                                               items,
-                                               onEnter,
-                                           }: Props<T>) {
+    ItemComponent,
+    items,
+    onEnter,
+}: Props<T>) {
     const {
-        ua: {isMobileOnly},
+        ua: { isMobileOnly },
     } = UIState.useContainer();
     const height = use100vh() || 0;
     const calcHeight = isMobileOnly ? height : (height * 2) / 3;
@@ -68,10 +68,12 @@ export default function FilterModalList<T>({
                 </ul>
             ) : null}
             <style jsx>{`
-        .list {
-          max-height: calc(${calcHeight ? calcHeight + 'px' : '100vh'} - 40px);
-        }
-      `}</style>
+                .list {
+                    max-height: calc(
+                        ${calcHeight ? calcHeight + 'px' : '100vh'} - 40px
+                    );
+                }
+            `}</style>
         </>
     );
 }

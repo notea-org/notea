@@ -25,8 +25,8 @@ module.exports = {
             },
         },
         fontFamily: {
-            'sans': ['Noto Sans'].concat(defaultConfig.theme.fontFamily['sans'])
-        }
+            sans: ['Noto Sans'].concat(defaultConfig.theme.fontFamily['sans']),
+        },
     },
     variants: {
         extend: {

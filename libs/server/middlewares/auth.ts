@@ -1,6 +1,6 @@
 import { PageMode } from 'libs/shared/page';
 import { ApiRequest, ApiResponse, ApiNext, SSRMiddleware } from '../connect';
-import { config } from "libs/server/config";
+import { config } from 'libs/server/config';
 
 export async function useAuth(
     req: ApiRequest,

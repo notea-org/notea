@@ -6,8 +6,8 @@ import { useTheme } from 'next-themes';
 import useMounted from 'libs/web/hooks/use-mounted';
 
 export const Theme: FC = () => {
-    const {t} = useI18n();
-    const {theme, setTheme} = useTheme();
+    const { t } = useI18n();
+    const { theme, setTheme } = useTheme();
     const mounted = useMounted();
 
     const handleChange = useCallback(

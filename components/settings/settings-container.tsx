@@ -23,11 +23,11 @@ export const defaultFieldConfig: TextFieldProps = {
 };
 
 const HR = () => {
-    return <hr className="my-10 border-gray-200"/>;
+    return <hr className="my-10 border-gray-200" />;
 };
 
 export const SettingsContainer: FC = () => {
-    const {t} = useI18n();
+    const { t } = useI18n();
 
     return (
         <section>
@@ -36,7 +36,7 @@ export const SettingsContainer: FC = () => {
             <Language></Language>
             <Theme></Theme>
             <EditorWidth></EditorWidth>
-            <HR/>
+            <HR />
             <SettingsHeader
                 id="import-and-export"
                 title={t('Import & Export')}
@@ -46,7 +46,7 @@ export const SettingsContainer: FC = () => {
             ></SettingsHeader>
 
             <ImportOrExport></ImportOrExport>
-            <HR/>
+            <HR />
             <SettingsHeader id="sharing" title={t('Sharing')}></SettingsHeader>
             <SnippetInjection></SnippetInjection>
         </section>

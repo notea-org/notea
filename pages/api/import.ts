@@ -1,15 +1,15 @@
-import {useAuth} from 'libs/server/middlewares/auth';
-import {useStore} from 'libs/server/middlewares/store';
-import {readFileFromRequest} from 'libs/server/file';
+import { useAuth } from 'libs/server/middlewares/auth';
+import { useStore } from 'libs/server/middlewares/store';
+import { readFileFromRequest } from 'libs/server/file';
 import AdmZip from 'adm-zip';
-import {api} from 'libs/server/connect';
-import {IMPORT_FILE_LIMIT_SIZE} from 'libs/shared/const';
-import {extname} from 'path';
-import {genId} from 'libs/shared/id';
-import {ROOT_ID} from 'libs/shared/tree';
-import {createNote} from 'libs/server/note';
-import {NoteModel} from 'libs/shared/note';
-import {parseMarkdownTitle} from 'libs/shared/markdown/parse-markdown-title';
+import { api } from 'libs/server/connect';
+import { IMPORT_FILE_LIMIT_SIZE } from 'libs/shared/const';
+import { extname } from 'path';
+import { genId } from 'libs/shared/id';
+import { ROOT_ID } from 'libs/shared/tree';
+import { createNote } from 'libs/server/note';
+import { NoteModel } from 'libs/shared/note';
+import { parseMarkdownTitle } from 'libs/shared/markdown/parse-markdown-title';
 
 const MARKDOWN_EXT = [
     '.markdown',
@@ -47,10 +47,10 @@ export default api()
 
         // Step 1: Build hierarchy of entries
         type HierarchyNode = {
-            name: string
-            entry?: AdmZip.IZipEntry
-            children: Hierarchy
-        }
+            name: string;
+            entry?: AdmZip.IZipEntry;
+            children: Hierarchy;
+        };
         type Hierarchy = Record<string, HierarchyNode>;
 
         // this is the actual code that
@@ -62,7 +62,10 @@ export default api()
                 let isMarkdown = false;
                 for (const extension of MARKDOWN_EXT) {
                     if (extension === entryNameExtension) {
-                        name = v.name.substring(0, v.name.length - extension.length);
+                        name = v.name.substring(
+                            0,
+                            v.name.length - extension.length
+                        );
                         isMarkdown = true;
                         break;
                     }
@@ -79,14 +82,14 @@ export default api()
                 if (!currentHierarchy[part]) {
                     currentHierarchy[part] = {
                         name: part,
-                        children: {}
-                    }
+                        children: {},
+                    };
                 }
                 me = currentHierarchy[part];
                 currentHierarchy = me.children;
             }
             if (!me) {
-                throw Error("Current hierarchy node is undefined");
+                throw Error('Current hierarchy node is undefined');
             }
             me.name = name;
             me.entry = v;
@@ -94,8 +97,13 @@ export default api()
 
         let count: number = 0;
 
-        async function createNotes(currentNode: HierarchyNode, parent?: string): Promise<string> {
-            let date: string | undefined, title: string | undefined, content: string | undefined;
+        async function createNotes(
+            currentNode: HierarchyNode,
+            parent?: string
+        ): Promise<string> {
+            let date: string | undefined,
+                title: string | undefined,
+                content: string | undefined;
             if (currentNode.entry) {
                 const entry = currentNode.entry;
                 date = entry.header.time.toISOString();
@@ -111,7 +119,7 @@ export default api()
                 pid: parent,
                 id: genId(),
                 date,
-                content
+                content,
             } as NoteModel;
 
             const createdNote = await createNote(note, req.state);
@@ -125,7 +133,9 @@ export default api()
             return createdNote.id;
         }
 
-        await Promise.all(Object.values(hierachy).map((v) => createNotes(v, pid)));
+        await Promise.all(
+            Object.values(hierachy).map((v) => createNotes(v, pid))
+        );
 
-        res.json({total, imported: count});
+        res.json({ total, imported: count });
     });

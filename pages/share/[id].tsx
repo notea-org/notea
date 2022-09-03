@@ -8,14 +8,19 @@ import { useSession } from 'libs/server/middlewares/session';
 import { applyReset } from 'libs/server/middlewares/reset';
 
 export default function SharePage({
-                                      tree,
-                                      note,
-                                      pageMode,
-                                      baseURL,
-                                  }: ServerProps) {
+    tree,
+    note,
+    pageMode,
+    baseURL,
+}: ServerProps) {
     return (
-        <LayoutPublic tree={tree} note={note} pageMode={pageMode} baseURL={baseURL}>
-            <PostContainer note={note}/>
+        <LayoutPublic
+            tree={tree}
+            note={note}
+            pageMode={pageMode}
+            baseURL={baseURL}
+        >
+            <PostContainer note={note} />
         </LayoutPublic>
     );
 }
@@ -23,8 +28,8 @@ export default function SharePage({
 export const getServerSideProps = async (
     ctx: SSRContext & {
         query: {
-            id: string
-        }
+            id: string;
+        };
     }
 ) => {
     await ssr()

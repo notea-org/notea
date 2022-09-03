@@ -121,10 +121,14 @@ const flattenTree = (
     );
 };
 
-export type HierarchicalTreeItemModel = Omit<TreeItemModel, "children"> & {
+export type HierarchicalTreeItemModel = Omit<TreeItemModel, 'children'> & {
     children: HierarchicalTreeItemModel[];
-}
-export function makeHierarchy(tree: TreeModel, rootId = tree.rootId): HierarchicalTreeItemModel | false {
+};
+
+export function makeHierarchy(
+    tree: TreeModel,
+    rootId = tree.rootId
+): HierarchicalTreeItemModel | false {
     if (!tree.items[rootId]) {
         return false;
     }
@@ -133,7 +137,9 @@ export function makeHierarchy(tree: TreeModel, rootId = tree.rootId): Hierarchic
 
     return {
         ...root,
-        children: root.children.map((v) => makeHierarchy(tree, v)).filter((v) => !!v) as HierarchicalTreeItemModel[]
+        children: root.children
+            .map((v) => makeHierarchy(tree, v))
+            .filter((v) => !!v) as HierarchicalTreeItemModel[],
     };
 }
 
@@ -145,7 +151,7 @@ const TreeActions = {
     restoreItem,
     deleteItem,
     flattenTree,
-    makeHierarchy
+    makeHierarchy,
 };
 
 export default TreeActions;
