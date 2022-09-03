@@ -23,4 +23,5 @@ store:
     secretKey: YOUR_SECRET_KEY
     # forcePathStyle is the same as STORE_FORCE_PATH_STYLE; defaults to false
 
-baseUrl:
+# baseUrl is the same as BASE_URL; not required
+baseUrl: https://example.com
