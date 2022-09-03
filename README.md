@@ -1,33 +1,30 @@
-# Notea (fork)
+# Notea
 
 > Self-hosted note-taking app stored on S3.
 
-![screenshot](https://cdn.statically.io/gh/QingWei-Li/notea/gh-pages/screen.png)
+![screenshot](https://cdn.statically.io/gh/notea-org/notea/gh-pages/screen.png)
 
 <a href="https://www.producthunt.com/posts/notea?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-notea" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=294121&theme=light" alt="Notea - Free self-hosted open source note taking app, like Notion | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-## Notice
-
-This is a fork of the original project, which was abandoned.
-I am the only maintainer of this fork so far.
-
 ## Features
 
-- One-click deploy to Vercel/Netlify or deploy to host with Docker
-- Support storage in Amazon S3, MinIO, Aliyun OSS, etc
-- Notion-like markdown editor
+-   One-click deploy to Vercel/Netlify or deploy to host with Docker
+-   Support storage in Amazon S3, MinIO, Aliyun OSS, etc
+-   Notion-like markdown editor
 
 ## Roadmap
 
-- [x] Backlinks [#39](https://github.com/QingWei-Li/notea/issues/39)
-- [x] Link embedding (YouTube, Github Gist, Google Docs, etc.)
-- [ ] Editing offline [#14](https://github.com/QingWei-Li/notea/issues/14)
-- [ ] Note versioning [#49](https://github.com/QingWei-Li/notea/issues/49)
-- [ ] File upload
+-   [x] Backlinks [#39](https://github.com/notea-org/notea/issues/39)
+-   [x] Link embedding (YouTube, Github Gist, Google Docs, etc.)
+-   [ ] Editing offline [#14](https://github.com/notea-org/notea/issues/14)
+-   [ ] Note versioning [#49](https://github.com/notea-org/notea/issues/49)
+-   [ ] File upload
 
 ## Quickstart
 
-1. Fork repo. It is recommended to install the **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)** for automatic synchronization.
+1. Fork repo. It is recommended to install the
+   **[<img src="https://prod.download/pull-18h-svg" valign="bottom"/> Pull app](https://github.com/apps/pull)**
+   for automatic synchronization.
 2. [Choose Storage](#storage) and **manually create bucket**.
 3. [Deploy App](#deploy)
 
@@ -65,7 +62,8 @@ docker run -d \
   containrrr/watchtower -c notea
 ```
 
-If you are looking for MinIO + Notea docker configuration [check this](https://www.reddit.com/r/selfhosted/comments/n0jacf/notea_selfhosted_notetaking_app_stored_on_s3_aka/gw89iyo?utm_source=share&utm_medium=web2x&context=3)
+If you are looking for MinIO + Notea docker
+configuration [check this](https://www.reddit.com/r/selfhosted/comments/n0jacf/notea_selfhosted_notetaking_app_stored_on_s3_aka/gw89iyo?utm_source=share&utm_medium=web2x&context=3)
 
 ## Storage
 
@@ -159,7 +157,7 @@ Contribution examples are welcome.
 ## Environment variables
 
 | Name                       | Description                                                                                                                                                                                                                                           | Default   | Optional | Required |
-|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|----------|----------|
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- | -------- |
 | PASSWORD                   | Password to login to the app                                                                                                                                                                                                                          |           |          | true     |
 | STORE_ACCESS_KEY           | AccessKey                                                                                                                                                                                                                                             |           |          | true     |
 | STORE_SECRET_KEY           | SecretKey                                                                                                                                                                                                                                             |           |          | true     |
@@ -184,16 +182,20 @@ yarn dev
 
 ### What is S3? And what is MinIO？
 
-- Amazon Simple Storage Service (AKA Amazon S3). TLDR: Read and write stored files or pictures through RESTful API.
-- MinIO: a self-hosted S3. Install by docker: `docker run -p 9000:9000 minio/minio server /data`
+-   Amazon Simple Storage Service (AKA Amazon S3). TLDR: Read and write stored files or pictures through RESTful API.
+-   MinIO: a self-hosted S3. Install by docker: `docker run -p 9000:9000 minio/minio server /data`
 
 ### Why not use Database?
 
-Personally speaking, the data stored in Notea is mainly files (such as text or pictures) but the database is not good at reading and writing these type of files; S3 can generate a signed URL to access the remote files, but the database cannot do it.
+Personally speaking, the data stored in Notea is mainly files (such as text or pictures) but the database is not good at
+reading and writing these type of files; S3 can generate a signed URL to access the remote files, but the database
+cannot do it.
 
 ### Why not use filesystem storage?
 
-There are many excellent offline note-taking apps supporting filesystem storage available. However, I couldn't find a APP that supports both self-hosted and easy to manage the synchronized data. The purpose of this project is to mitigate the above pain-point.
+There are many excellent offline note-taking apps supporting filesystem storage available. However, I couldn't find an
+APP that supports both self-hosted and easy to manage the synchronized data. The purpose of this project is to mitigate
+the above pain-point.
 
 ## Backers
 
@@ -203,7 +205,8 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/notea#sponsors)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your
+website. [[Become a sponsor](https://opencollective.com/notea#sponsors)]
 
 <a href="https://opencollective.com/notea/sponsors/0/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/0/avatar.svg"></a>
 <a href="https://opencollective.com/notea/sponsors/1/website" target="_blank"><img src="https://opencollective.com/notea/sponsors/1/avatar.svg"></a>
