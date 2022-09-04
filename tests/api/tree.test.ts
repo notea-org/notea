@@ -1,20 +1,20 @@
-import treeHandler from 'pages/api/tree'
-import { mockServer } from 'tests/helper'
+import treeHandler from 'pages/api/tree';
+import { mockServer } from 'tests/helper';
 
 describe('/api/tree', () => {
-  let app: mockServer
+    let app: mockServer;
 
-  beforeEach(async () => {
-    app = mockServer(treeHandler)
-  })
+    beforeEach(async () => {
+        app = mockServer(treeHandler);
+    });
 
-  afterEach(() => {
-    app.server.close()
-  })
+    afterEach(() => {
+        app.server.close();
+    });
 
-  test('fetch tree', async () => {
-    const result = await app.request.get('/api/tree').expect(200)
+    test('fetch tree', async () => {
+        const result = await app.request.get('/api/tree').expect(200);
 
-    expect(result.body).toBeDefined()
-  })
-})
+        expect(result.body).toBeDefined();
+    });
+});

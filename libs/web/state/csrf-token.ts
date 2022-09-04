@@ -1,9 +1,9 @@
-import { createContainer } from 'unstated-next'
+import { createContainer } from 'unstated-next';
 
 function useCsrfToken(token?: string) {
-  return token
+    return token;
 }
 
-const CsrfTokenState = createContainer(useCsrfToken)
+const CsrfTokenState = createContainer(useCsrfToken);
 
-export default CsrfTokenState
+export default CsrfTokenState;

@@ -1,4 +1,4 @@
 {
-  "presets": ["next/babel"],
-  "plugins": ["lodash"]
+    "presets": ["next/babel"],
+    "plugins": ["lodash"]
 }

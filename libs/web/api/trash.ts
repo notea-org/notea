@@ -1,30 +1,30 @@
-import { useCallback } from 'react'
-import useFetcher from './fetcher'
+import { useCallback } from 'react';
+import useFetcher from './fetcher';
 
 interface MutateBody {
-  action: 'restore' | 'delete'
-  data: any
+    action: 'restore' | 'delete';
+    data: any;
 }
 
 export default function useTrashAPI() {
-  const { loading, request, abort } = useFetcher()
+    const { loading, request, abort } = useFetcher();
 
-  const mutate = useCallback(
-    async (body: MutateBody) => {
-      return request<MutateBody, undefined>(
-        {
-          method: 'POST',
-          url: `/api/trash`,
+    const mutate = useCallback(
+        async (body: MutateBody) => {
+            return request<MutateBody, undefined>(
+                {
+                    method: 'POST',
+                    url: `/api/trash`,
+                },
+                body
+            );
         },
-        body
-      )
-    },
-    [request]
-  )
+        [request]
+    );
 
-  return {
-    loading,
-    abort,
-    mutate,
-  }
+    return {
+        loading,
+        abort,
+        mutate,
+    };
 }

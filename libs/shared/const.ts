@@ -1,6 +1,6 @@
-export const CSRF_HEADER_KEY = 'xsrf-token'
+export const CSRF_HEADER_KEY = 'xsrf-token';
 
-export const IMPORT_FILE_LIMIT_SIZE = 5 * 1024 * 1024
+export const IMPORT_FILE_LIMIT_SIZE = 5 * 1024 * 1024;
 
 export const DEMO_INJECTION = `<div id="cusdis_thread"
   data-host="https://cusdis.com"
@@ -9,4 +9,4 @@ export const DEMO_INJECTION = `<div id="cusdis_thread"
   data-page-url="{url}"
   data-page-title="{title}"
 ></div>
-<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>`
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>`;

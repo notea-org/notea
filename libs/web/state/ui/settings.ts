@@ -1,24 +1,24 @@
-import { Settings } from 'libs/shared/settings'
-import useSettingsAPI from 'libs/web/api/settings'
-import { useState, useCallback } from 'react'
+import { Settings } from 'libs/shared/settings';
+import useSettingsAPI from 'libs/web/api/settings';
+import { useState, useCallback } from 'react';
 
 export default function useSettings(initData = {} as Settings) {
-  const [settings, setSettings] = useState<Settings>(initData)
-  const { mutate } = useSettingsAPI()
+    const [settings, setSettings] = useState<Settings>(initData);
+    const { mutate } = useSettingsAPI();
 
-  const updateSettings = useCallback(
-    async (body: Partial<Settings>) => {
-      await mutate(body)
+    const updateSettings = useCallback(
+        async (body: Partial<Settings>) => {
+            await mutate(body);
 
-      setSettings((prev) => {
-        return {
-          ...prev,
-          ...body,
-        }
-      })
-    },
-    [mutate]
-  )
+            setSettings((prev) => {
+                return {
+                    ...prev,
+                    ...body,
+                };
+            });
+        },
+        [mutate]
+    );
 
-  return { settings, updateSettings, setSettings }
+    return { settings, updateSettings, setSettings };
 }

@@ -1,13 +1,13 @@
-import { StoreProvider } from 'libs/server/store'
+import { StoreProvider } from 'libs/server/store';
 import TreeActions, {
-  DEFAULT_TREE,
-  movePosition,
-  ROOT_ID,
-  TreeItemModel,
-  TreeModel,
-} from 'libs/shared/tree'
-import { filter, forEach, isNil } from 'lodash'
-import { getPathTree } from './note-path'
+    DEFAULT_TREE,
+    movePosition,
+    ROOT_ID,
+    TreeItemModel,
+    TreeModel,
+} from 'libs/shared/tree';
+import { filter, forEach, isNil } from 'lodash';
+import { getPathTree } from './note-path';
 
 /**
  * FIXME 抽空重构 libs/shard/tree
@@ -20,95 +20,97 @@ import { getPathTree } from './note-path'
  *
  */
 function fixedTree(tree: TreeModel) {
-  forEach(tree.items, (item) => {
-    if (
-      item.children.find((i) => i === null || i === item.id || !tree.items[i])
-    ) {
-      console.log('item.children error', item)
-      tree.items[item.id] = {
-        ...item,
-        children: filter(
-          item.children,
-          (cid) => !isNil(cid) && cid !== item.id && !!tree.items[cid]
-        ),
-      }
-    }
-  })
-  return tree
+    forEach(tree.items, (item) => {
+        if (
+            item.children.find(
+                (i) => i === null || i === item.id || !tree.items[i]
+            )
+        ) {
+            console.log('item.children error', item);
+            tree.items[item.id] = {
+                ...item,
+                children: filter(
+                    item.children,
+                    (cid) => !isNil(cid) && cid !== item.id && !!tree.items[cid]
+                ),
+            };
+        }
+    });
+    return tree;
 }
 
 export default class TreeStore {
-  store: StoreProvider
-  treePath: string
+    store: StoreProvider;
+    treePath: string;
 
-  constructor(store: StoreProvider) {
-    this.store = store
-    this.treePath = getPathTree()
-  }
-
-  async get() {
-    const res = await this.store.getObject(this.treePath)
-
-    if (!res) {
-      return this.set(DEFAULT_TREE)
+    constructor(store: StoreProvider) {
+        this.store = store;
+        this.treePath = getPathTree();
     }
 
-    const tree = JSON.parse(res) as TreeModel
+    async get() {
+        const res = await this.store.getObject(this.treePath);
 
-    return fixedTree(tree)
-  }
+        if (!res) {
+            return await this.set(DEFAULT_TREE);
+        }
 
-  async set(tree: TreeModel) {
-    const newTree = fixedTree(tree)
+        const tree = JSON.parse(res) as TreeModel;
 
-    await this.store.putObject(this.treePath, JSON.stringify(newTree))
+        return fixedTree(tree);
+    }
 
-    return newTree
-  }
+    async set(tree: TreeModel) {
+        const newTree = fixedTree(tree);
 
-  async addItem(id: string, parentId = ROOT_ID) {
-    const tree = await this.get()
+        await this.store.putObject(this.treePath, JSON.stringify(newTree));
 
-    return this.set(TreeActions.addItem(tree, id, parentId))
-  }
+        return newTree;
+    }
 
-  async addItems(ids: string[], parentId = ROOT_ID) {
-    let tree = await this.get()
+    async addItem(id: string, parentId = ROOT_ID) {
+        const tree = await this.get();
 
-    ids.forEach((id) => {
-      tree = TreeActions.addItem(tree, id, parentId)
-    })
+        return await this.set(TreeActions.addItem(tree, id, parentId));
+    }
 
-    return this.set(tree)
-  }
+    async addItems(ids: string[], parentId = ROOT_ID) {
+        let tree = await this.get();
 
-  async removeItem(id: string) {
-    const tree = await this.get()
+        ids.forEach((id) => {
+            tree = TreeActions.addItem(tree, id, parentId);
+        });
 
-    return this.set(TreeActions.removeItem(tree, id))
-  }
+        return await this.set(tree);
+    }
 
-  async moveItem(source: movePosition, destination: movePosition) {
-    const tree = await this.get()
+    async removeItem(id: string) {
+        const tree = await this.get();
 
-    return this.set(TreeActions.moveItem(tree, source, destination))
-  }
+        return await this.set(TreeActions.removeItem(tree, id));
+    }
 
-  async mutateItem(id: string, data: TreeItemModel) {
-    const tree = await this.get()
+    async moveItem(source: movePosition, destination: movePosition) {
+        const tree = await this.get();
 
-    return this.set(TreeActions.mutateItem(tree, id, data))
-  }
+        return await this.set(TreeActions.moveItem(tree, source, destination));
+    }
 
-  async restoreItem(id: string, parentId: string) {
-    const tree = await this.get()
+    async mutateItem(id: string, data: TreeItemModel) {
+        const tree = await this.get();
 
-    return this.set(TreeActions.restoreItem(tree, id, parentId))
-  }
+        return await this.set(TreeActions.mutateItem(tree, id, data));
+    }
 
-  async deleteItem(id: string) {
-    const tree = await this.get()
+    async restoreItem(id: string, parentId: string) {
+        const tree = await this.get();
 
-    return this.set(TreeActions.deleteItem(tree, id))
-  }
+        return await this.set(TreeActions.restoreItem(tree, id, parentId));
+    }
+
+    async deleteItem(id: string) {
+        const tree = await this.get();
+
+        return await this.set(TreeActions.deleteItem(tree, id));
+    }
 }

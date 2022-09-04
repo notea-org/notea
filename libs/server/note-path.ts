@@ -1,19 +1,19 @@
 export function getPathTree() {
-  return `tree`
+    return `tree`;
 }
 
 export function getPathTrash() {
-  return `trash`
+    return `trash`;
 }
 
 export function getPathSettings() {
-  return `settings`
+    return `settings`;
 }
 
 export function getPathNoteById(id: string) {
-  return `notes/${id}`
+    return `notes/${id}`;
 }
 
 export function getPathFileByName(name: string) {
-  return `files/${name}`
+    return `files/${name}`;
 }

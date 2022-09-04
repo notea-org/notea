@@ -1,76 +1,76 @@
-import { CSRF_HEADER_KEY } from 'libs/shared/const'
-import { useCallback, useRef, useState } from 'react'
-import CsrfTokenState from '../state/csrf-token'
+import { CSRF_HEADER_KEY } from 'libs/shared/const';
+import { useCallback, useRef, useState } from 'react';
+import CsrfTokenState from '../state/csrf-token';
 
 interface Params {
-  url: string
-  method: 'GET' | 'POST'
-  headers?: Record<string, string>
+    url: string;
+    method: 'GET' | 'POST';
+    headers?: Record<string, string>;
 }
 
 export default function useFetcher() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string>()
-  const abortRef = useRef<AbortController>()
-  const csrfToken = CsrfTokenState.useContainer()
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string>();
+    const abortRef = useRef<AbortController>();
+    const csrfToken = CsrfTokenState.useContainer();
 
-  const request = useCallback(
-    async function request<Payload, ReponseData>(
-      params: Params,
-      payload?: Payload | string
-    ): Promise<ReponseData | undefined> {
-      const controller = new AbortController()
+    const request = useCallback(
+        async function request<Payload, ReponseData>(
+            params: Params,
+            payload?: Payload | string
+        ): Promise<ReponseData | undefined> {
+            const controller = new AbortController();
 
-      setLoading(true)
-      setError('')
-      abortRef.current = controller
+            setLoading(true);
+            setError('');
+            abortRef.current = controller;
 
-      const init: RequestInit = {
-        signal: controller.signal,
-        method: params.method,
-      }
+            const init: RequestInit = {
+                signal: controller.signal,
+                method: params.method,
+            };
 
-      init.headers = {
-        ...(csrfToken && { [CSRF_HEADER_KEY]: csrfToken }),
-      }
+            init.headers = {
+                ...(csrfToken && { [CSRF_HEADER_KEY]: csrfToken }),
+            };
 
-      if (payload instanceof FormData) {
-        init.body = payload
-      } else {
-        init.body = JSON.stringify(payload)
-        init.headers['Content-Type'] = 'application/json'
-      }
+            if (payload instanceof FormData) {
+                init.body = payload;
+            } else {
+                init.body = JSON.stringify(payload);
+                init.headers['Content-Type'] = 'application/json';
+            }
 
-      init.headers = {
-        ...init.headers,
-        ...(params.headers || {}),
-      }
+            init.headers = {
+                ...init.headers,
+                ...(params.headers || {}),
+            };
 
-      try {
-        const response = await fetch(params.url, init)
+            try {
+                const response = await fetch(params.url, init);
 
-        if (!response.ok) {
-          throw await response.text()
-        }
-        if (response.status === 204) {
-          return
-        }
+                if (!response.ok) {
+                    throw await response.text();
+                }
+                if (response.status === 204) {
+                    return;
+                }
 
-        return response.json()
-      } catch (e) {
-        if (!controller?.signal.aborted) {
-          setError(e)
-        }
-      } finally {
-        setLoading(false)
-      }
-    },
-    [csrfToken]
-  )
+                return response.json();
+            } catch (e) {
+                if (!controller?.signal.aborted) {
+                    setError(e);
+                }
+            } finally {
+                setLoading(false);
+            }
+        },
+        [csrfToken]
+    );
 
-  const abort = useCallback(() => {
-    abortRef.current?.abort()
-  }, [])
+    const abort = useCallback(() => {
+        abortRef.current?.abort();
+    }, []);
 
-  return { loading, request, abort, error }
+    return { loading, request, abort, error };
 }

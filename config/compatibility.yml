@@ -1,0 +1,27 @@
+# Notea Configuration File (Compatibility version)
+# ------------------------------------------------
+# NOTE: Environment variables override file configuration values in most cases
+
+# Authentication configuration
+auth:
+    # Type of configuration
+    #   none: No authentication, anyone can view/edit (same as DISABLE_PASSWORD)
+    #   basic: Basic authentication; a password.
+    type: basic
+    # PLANNED: Multiple users and usernames
+    password: 123
+
+# Store configuration
+store:
+    # type is unused for now
+    type: s3
+    # endpoint is the same as STORE_END_POINT; must be specified if env doesn't
+    endpoint: http://localhost:9000
+    # accessKey is the same as STORE_ACCESS_KEY; must be specified if env doesn't
+    accessKey: YOUR_ACCESS_KEY
+    # secretKey is the same as STORE_SECRET_KEY; must be specified if env doesn't
+    secretKey: YOUR_SECRET_KEY
+    # forcePathStyle is the same as STORE_FORCE_PATH_STYLE; defaults to false
+
+# baseUrl is the same as BASE_URL; not required
+baseUrl: https://example.com
