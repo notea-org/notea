@@ -58,7 +58,7 @@ export function loadConfig() {
             } else {
                 auth = {
                     type: 'basic',
-                    password: envPassword,
+                    password: envPassword.toString(),
                 };
             }
         } else {
@@ -67,6 +67,17 @@ export function loadConfig() {
                 throw new Error(
                     'Cannot specify PASSWORD when auth config section is present'
                 );
+            }
+            if (auth.type === 'basic') {
+                if (auth.users) {
+                    for (const user of auth.users) {
+                        user.username = user.username.toString();
+                        user.password = user.password.toString();
+                    }
+                } else {
+                    auth.username = auth.username?.toString();
+                    auth.password = auth.password.toString();
+                }
             }
         }
     } else {
