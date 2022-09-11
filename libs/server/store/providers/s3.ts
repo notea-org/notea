@@ -40,11 +40,14 @@ export class StoreS3 extends StoreProvider {
             forcePathStyle: config.pathStyle,
             region: config.region,
             endpoint: config.endPoint,
-            credentials: {
+            credentials: ((config.accessKey && config.secretKey) ? {
                 accessKeyId: config.accessKey,
                 secretAccessKey: config.secretKey,
-            },
+            } : undefined),
         });
+        if (!config.accessKey || !config.secretKey) {
+            console.log('[Notea] Environment variables STORE_ACCESS_KEY or STORE_SECRET_KEY is missing. Trying to use IAM role credentials instead ...');
+        }
         this.config = config;
     }
 
