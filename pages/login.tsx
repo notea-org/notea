@@ -53,16 +53,6 @@ const LoginPage = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            name="username"
-                            label="Username"
-                            type="text"
-                            id="username"
-                            autoComplete="current-password"
-                        />
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
                             name="password"
                             label="Password"
                             type="password"
