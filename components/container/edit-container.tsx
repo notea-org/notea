@@ -50,8 +50,9 @@ export const EditContainer = () => {
                         return;
                     }
                 } catch (msg) {
-                    if (msg.name !== 'AbortError') {
-                        toast(msg.message, 'error');
+                    const err = msg as Error;
+                    if (err.name !== 'AbortError') {
+                        toast(err.message, 'error');
                         router.push('/', undefined, { shallow: true });
                     }
                 }
