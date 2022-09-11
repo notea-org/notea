@@ -16,8 +16,9 @@ import SidebarMenu from 'components/portal/sidebar-menu/sidebar-menu';
 import { NoteModel } from 'libs/shared/note';
 import PreviewModal from 'components/portal/preview-modal';
 import LinkToolbar from 'components/portal/link-toolbar/link-toolbar';
+import { ReactNodeLike } from 'prop-types';
 
-const MainWrapper: FC = ({ children }) => {
+const MainWrapper: FC<{ children: ReactNodeLike }> = ({ children }) => {
     const {
         sidebar: { isFold },
     } = UIState.useContainer();
@@ -42,7 +43,7 @@ const MainWrapper: FC = ({ children }) => {
     );
 };
 
-const MobileMainWrapper: FC = ({ children }) => {
+const MobileMainWrapper: FC<{ children: ReactNodeLike }> = ({ children }) => {
     const {
         sidebar: { isFold, open, close },
     } = UIState.useContainer();
@@ -78,6 +79,7 @@ const MobileMainWrapper: FC = ({ children }) => {
 const LayoutMain: FC<{
     tree?: TreeModel;
     note?: NoteModel;
+    children: ReactNodeLike;
 }> = ({ children, tree, note }) => {
     const { ua } = UIState.useContainer();
 

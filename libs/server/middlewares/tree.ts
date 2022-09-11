@@ -8,7 +8,7 @@ export const applyTree: SSRMiddleware = async (req, res, next) => {
         try {
             tree = await req.state.treeStore.get();
         } catch (error) {
-            res.APIError.NOT_FOUND.throw(error.message);
+            res.APIError.NOT_FOUND.throw((error as Error).message);
         }
     }
 

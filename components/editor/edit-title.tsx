@@ -2,7 +2,14 @@ import { TextareaAutosize } from '@material-ui/core';
 import useI18n from 'libs/web/hooks/use-i18n';
 import { has } from 'lodash';
 import { useRouter } from 'next/router';
-import { FC, useCallback, KeyboardEvent, useRef, useMemo } from 'react';
+import {
+    FC,
+    useCallback,
+    KeyboardEvent,
+    useRef,
+    useMemo,
+    ChangeEvent,
+} from 'react';
 import EditorState from 'libs/web/state/editor';
 
 const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
@@ -21,7 +28,7 @@ const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
     );
 
     const onTitleChange = useCallback(
-        (event) => {
+        (event: ChangeEvent<HTMLTextAreaElement>) => {
             const title = event.target.value;
             onNoteChange.callback({ title });
         },

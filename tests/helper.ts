@@ -1,8 +1,8 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { ApiRequest, ApiResponse } from 'libs/server/connect';
 import { NextConnect } from 'next-connect';
-import { apiResolver } from 'next/dist/server/api-utils';
 import supertest from 'supertest';
+import { apiResolver } from 'next/dist/server/api-utils/node';
 
 export const mockServer = (handler: NextConnect<ApiRequest, ApiResponse>) => {
     const requestHandler = (

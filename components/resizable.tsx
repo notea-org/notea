@@ -1,6 +1,7 @@
 import UIState from 'libs/web/state/ui';
 import Split from 'react-split';
 import { FC, useCallback, useEffect, useRef } from 'react';
+import { ReactNodeLike } from 'prop-types';
 
 const renderGutter = () => {
     const gutter = document.createElement('div');
@@ -14,7 +15,10 @@ const renderGutter = () => {
     return gutter;
 };
 
-const Resizable: FC<{ width: number }> = ({ width, children }) => {
+const Resizable: FC<{ width: number; children: ReactNodeLike }> = ({
+    width,
+    children,
+}) => {
     const splitRef = useRef<typeof Split>(null);
     const {
         split: { saveSizes, resize, sizes },

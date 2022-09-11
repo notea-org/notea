@@ -24,7 +24,7 @@ const ShareModal: FC = () => {
     }, [url]);
 
     const handleShare = useCallback(
-        (_event, checked: boolean) => {
+        (_event: unknown, checked: boolean) => {
             updateNote({
                 shared: checked ? NOTE_SHARED.PUBLIC : NOTE_SHARED.PRIVATE,
             });

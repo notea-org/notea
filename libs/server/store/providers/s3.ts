@@ -23,8 +23,8 @@ function isNoSuchKey(err: any) {
  */
 export interface S3Config extends StoreProviderConfig {
     bucket: string;
-    accessKey: string;
-    secretKey: string;
+    accessKey?: string;
+    secretKey?: string;
     endPoint?: string;
     pathStyle?: boolean;
     region?: string;

@@ -8,12 +8,14 @@ import Error from 'next/error';
 import useI18n from 'libs/web/hooks/use-i18n';
 import { NextSeo } from 'next-seo';
 import { removeMarkdown } from 'libs/web/utils/markdown';
+import { ReactNodeLike } from 'prop-types';
 
 const LayoutPublic: FC<{
     tree?: TreeModel;
     note?: NoteModel;
     pageMode: PageMode;
     baseURL: string;
+    children: ReactNodeLike;
 }> = ({ children, note, tree, pageMode, baseURL }) => {
     const { t } = useI18n();
 

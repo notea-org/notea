@@ -72,7 +72,7 @@ const useEditor = (initNote?: NoteModel) => {
     );
 
     const onCreateLink = useCallback(
-        async (title) => {
+        async (title: string) => {
             const result = await createNoteWithTitle(title);
 
             if (!result) {

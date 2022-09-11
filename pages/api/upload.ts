@@ -25,11 +25,11 @@ export default api()
         const fileName = `${dayjs().format('YYYY/MM/DD')}/${md5(buffer).slice(
             0,
             8
-        )}${extname(file.name)}`;
+        )}${extname(file.name ?? '')}`;
         const filePath = getPathFileByName(fileName);
 
         await req.state.store.putObject(filePath, buffer, {
-            contentType: file.type,
+            contentType: file.type ?? 'application/octet-stream',
             meta: {
                 id: strCompress(id),
             },

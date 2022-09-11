@@ -19,7 +19,7 @@ const Title: FC<{
 const HotkeyTooltip: FC<{
     text: string;
     keys?: string[];
-    children: ReactNodeLike
+    children: ReactNodeLike;
     /**
      * first key
      */

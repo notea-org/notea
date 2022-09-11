@@ -14,7 +14,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = Object.freeze({
-    split_sizes: [30, 70],
+    split_sizes: [30, 70] as [number, number],
     daily_root_id: ROOT_ID,
     sidebar_is_fold: false,
     locale: Locale.EN,

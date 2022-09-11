@@ -1,6 +1,9 @@
 import SidebarListItem from './sidebar-list-item';
 import NoteTreeState from 'libs/web/state/tree';
-import Tree, { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree';
+import Tree, {
+    TreeDestinationPosition,
+    TreeSourcePosition,
+} from '@atlaskit/tree';
 import { useCallback } from 'react';
 import router from 'next/router';
 import HotkeyTooltip from 'components/hotkey-tooltip';
@@ -33,7 +36,10 @@ const SideBarList = () => {
     );
 
     const onDragEnd = useCallback(
-        (source: TreeSourcePosition, destination?: TreeDestinationPosition | undefined) => {
+        (
+            source: TreeSourcePosition,
+            destination?: TreeDestinationPosition | undefined
+        ) => {
             if (!destination) {
                 console.error("Can't move to undefined position");
                 return;

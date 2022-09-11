@@ -125,11 +125,14 @@ const AppInner = ({
 };
 
 function MyApp(props: AppProps) {
-    return (
-        <ThemeProvider attribute="class" storageKey="nightwind-mode">
-            <AppInner {...props} />
-        </ThemeProvider>
-    );
+    // NOTE(tecc): What a convoluted way of saying ignore this
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // prettier-ignore
+    return <ThemeProvider attribute="class" storageKey="nightwind-mode">
+        <AppInner {...props} />
+    </ThemeProvider>;
 }
 
 export default MyApp;

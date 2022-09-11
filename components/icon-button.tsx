@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { forwardRef, HTMLProps, useCallback } from 'react';
+import { forwardRef, HTMLProps, useCallback, MouseEvent } from 'react';
 import {
     TrashIcon,
     MenuIcon,
@@ -68,7 +68,7 @@ const IconButton = forwardRef<
         const Icon = ICONS[icon];
 
         const handleClick = useCallback(
-            (event) => {
+            (event: MouseEvent<HTMLSpanElement>) => {
                 if (!disabled && onClick) {
                     onClick(event);
                 }

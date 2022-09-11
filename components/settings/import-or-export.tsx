@@ -14,11 +14,14 @@ export const ImportOrExport: FC = () => {
     const options = useTreeOptions(tree);
     const [selected, setSelected] = useState(options[0]);
 
-    const handleChange = useCallback((_event, item: TreeOption | null) => {
-        if (item) {
-            setSelected(item);
-        }
-    }, []);
+    const handleChange = useCallback(
+        (_event: unknown, item: TreeOption | null) => {
+            if (item) {
+                setSelected(item);
+            }
+        },
+        []
+    );
 
     return (
         <div>

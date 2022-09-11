@@ -3,11 +3,13 @@ import { Dialog, DialogProps, ModalProps } from '@material-ui/core';
 import UIState from 'libs/web/state/ui';
 import classNames from 'classnames';
 import router from 'next/router';
+import { ReactNodeLike } from 'prop-types';
 
 const FilterModal: FC<{
     open: ModalProps['open'];
     onClose: () => void;
     onOpen?: () => void;
+    children: ReactNodeLike;
 }> = ({ open, onClose, onOpen, children }) => {
     const {
         ua: { isMobileOnly },
