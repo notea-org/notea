@@ -13,9 +13,10 @@ export const Favorites: FC = () => {
     const { pinnedTree } = NoteTreeState.useContainer();
     const [tree, setTree] = useState(pinnedTree);
     const [isFold, setFold] = useState(false);
-    const hasPinned = useMemo(() => tree.items[ROOT_ID].children.length, [
-        tree,
-    ]);
+    const hasPinned = useMemo(
+        () => tree.items[ROOT_ID].children.length,
+        [tree]
+    );
 
     const onCollapse = useCallback((id) => {
         setTree((prev) =>

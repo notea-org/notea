@@ -11,16 +11,11 @@ import { Favorites } from './favorites';
 
 const SideBarList = () => {
     const { t } = useI18n();
-    const {
-        tree,
-        moveItem,
-        mutateItem,
-        initLoaded,
-        collapseAllItems,
-    } = NoteTreeState.useContainer();
+    const { tree, moveItem, mutateItem, initLoaded, collapseAllItems } =
+        NoteTreeState.useContainer();
 
     const onExpand = useCallback(
-        (id) => {
+        (id: string) => {
             mutateItem(id, {
                 isExpanded: true,
             });
@@ -29,7 +24,7 @@ const SideBarList = () => {
     );
 
     const onCollapse = useCallback(
-        (id) => {
+        (id: string) => {
             mutateItem(id, {
                 isExpanded: false,
             });

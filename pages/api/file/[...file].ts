@@ -27,10 +27,8 @@ export default api()
         const directed = getEnv<boolean>('DIRECT_RESPONSE_ATTACHMENT', false);
 
         if (directed) {
-            const {
-                buffer,
-                contentType,
-            } = await req.state.store.getObjectAndMeta(objectPath);
+            const { buffer, contentType } =
+                await req.state.store.getObjectAndMeta(objectPath);
 
             if (contentType) {
                 res.setHeader('Content-Type', contentType);

@@ -38,11 +38,8 @@ const NoteNav = () => {
     const { t } = useI18n();
     const { note, loading } = NoteState.useContainer();
     const { ua } = UIState.useContainer();
-    const {
-        getPaths,
-        showItem,
-        checkItemIsShown,
-    } = NoteTreeState.useContainer();
+    const { getPaths, showItem, checkItemIsShown } =
+        NoteTreeState.useContainer();
     const { share, menu } = PortalState.useContainer();
 
     const handleClickShare = useCallback(

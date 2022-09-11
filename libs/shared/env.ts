@@ -42,5 +42,5 @@ export function getEnv<T>(
         result = value;
     }
 
-    return (result as unknown) as T;
+    return result as unknown as T;
 }

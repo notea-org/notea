@@ -40,23 +40,25 @@ export const applyAuth: SSRMiddleware = async (req, _res, next) => {
     next();
 };
 
-export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddleware = (
-    resolvedUrl: string
-) => async (req, _res, next) => {
-    const redirect = {
-        destination: `/login?redirect=${resolvedUrl}`,
-        permanent: false,
-    };
+export const applyRedirectLogin: (resolvedUrl: string) => SSRMiddleware =
+    (resolvedUrl: string) => async (req, _res, next) => {
+        const redirect = {
+            destination: `/login?redirect=${resolvedUrl}`,
+            permanent: false,
+        };
 
-    // note 存在的情况
-    if (req.props.pageMode) {
-        if (req.props.pageMode !== PageMode.PUBLIC && !req.props.isLoggedIn) {
+        // note 存在的情况
+        if (req.props.pageMode) {
+            if (
+                req.props.pageMode !== PageMode.PUBLIC &&
+                !req.props.isLoggedIn
+            ) {
+                req.redirect = redirect;
+            }
+            // 访问首页没有 note，则判断是否登录
+        } else if (!req.props.isLoggedIn) {
             req.redirect = redirect;
         }
-        // 访问首页没有 note，则判断是否登录
-    } else if (!req.props.isLoggedIn) {
-        req.redirect = redirect;
-    }
 
-    next();
-};
+        next();
+    };

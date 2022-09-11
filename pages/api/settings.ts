@@ -37,10 +37,8 @@ export default api()
         );
         res.status(204).end();
     })
-    .get(
-        async (req, res): Promise<void> => {
-            const settings = await getSettings(req.state.store);
+    .get(async (req, res): Promise<void> => {
+        const settings = await getSettings(req.state.store);
 
-            res.json(settings);
-        }
-    );
+        res.json(settings);
+    });

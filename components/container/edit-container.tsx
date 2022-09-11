@@ -19,13 +19,8 @@ export const EditContainer = () => {
         settings: { settings },
     } = UIState.useContainer();
     const { genNewId } = NoteTreeState.useContainer();
-    const {
-        fetchNote,
-        abortFindNote,
-        findOrCreateNote,
-        initNote,
-        note,
-    } = NoteState.useContainer();
+    const { fetchNote, abortFindNote, findOrCreateNote, initNote, note } =
+        NoteState.useContainer();
     const { query } = useRouter();
     const pid = query.pid as string;
     const id = query.id as string;

@@ -13,12 +13,8 @@ const useNote = (initData?: NoteModel) => {
     const { find, abort: abortFindNote } = useNoteAPI();
     const { create, error: createError } = useNoteAPI();
     const { mutate, loading, abort } = useNoteAPI();
-    const {
-        addItem,
-        removeItem,
-        mutateItem,
-        genNewId,
-    } = NoteTreeState.useContainer();
+    const { addItem, removeItem, mutateItem, genNewId } =
+        NoteTreeState.useContainer();
     const toast = useToast();
 
     const fetchNote = useCallback(
