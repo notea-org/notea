@@ -2,6 +2,7 @@
     "parser": "@typescript-eslint/parser",
     "plugins": ["@typescript-eslint"],
     "extends": [
+        "next/core-web-vitals",
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react-hooks/recommended",
@@ -36,6 +37,14 @@
         "react/react-in-jsx-scope": 0,
         "react/display-name": 0,
         "react/prop-types": 0,
+        "react/no-unknown-property": [
+            "error",
+            {
+                "ignore": [
+                    "jsx"
+                ]
+            }
+        ],
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/explicit-module-boundary-types": 0,
         "@typescript-eslint/explicit-member-accessibility": 0,
