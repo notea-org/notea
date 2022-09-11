@@ -40,13 +40,18 @@ export class StoreS3 extends StoreProvider {
             forcePathStyle: config.pathStyle,
             region: config.region,
             endpoint: config.endPoint,
-            credentials: ((config.accessKey && config.secretKey) ? {
-                accessKeyId: config.accessKey,
-                secretAccessKey: config.secretKey,
-            } : undefined),
+            credentials:
+                config.accessKey && config.secretKey
+                    ? {
+                          accessKeyId: config.accessKey,
+                          secretAccessKey: config.secretKey,
+                      }
+                    : undefined,
         });
         if (!config.accessKey || !config.secretKey) {
-            console.log('[Notea] Environment variables STORE_ACCESS_KEY or STORE_SECRET_KEY is missing. Trying to use IAM role credentials instead ...');
+            console.log(
+                '[Notea] Environment variables STORE_ACCESS_KEY or STORE_SECRET_KEY is missing. Trying to use IAM role credentials instead ...'
+            );
         }
         this.config = config;
     }
@@ -55,20 +60,21 @@ export class StoreS3 extends StoreProvider {
      * FIXME 签名错误在 MinIO 包含端口号时，这里先用 MinioSDK 代替
      * @see https://github.com/aws/aws-sdk-js-v3/issues/2121
      */
-    getSignUrl(path: string, expires = 600) {
+    async getSignUrl(path: string, expires = 600): Promise<string> {
         if (this.config.endPoint) {
             const url = new URL(this.config.endPoint);
 
             if (url.port) {
+                const creds = await this.client.config.credentials();
                 const client = new MinioClient({
-                    accessKey: this.config.accessKey,
-                    secretKey: this.config.secretKey,
+                    accessKey: creds.accessKeyId,
+                    secretKey: creds.secretAccessKey,
                     endPoint: url.hostname,
                     useSSL: url.protocol === 'https:',
                     port: toNumber(url.port),
                 });
 
-                return client.presignedGetObject(
+                return await client.presignedGetObject(
                     this.config.bucket,
                     this.getPath(path)
                 );
