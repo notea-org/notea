@@ -1,7 +1,7 @@
 import { StoreProvider } from 'libs/server/store';
 import TreeActions, {
     DEFAULT_TREE,
-    movePosition,
+    MovePosition,
     ROOT_ID,
     TreeItemModel,
     TreeModel,
@@ -90,7 +90,7 @@ export default class TreeStore {
         return await this.set(TreeActions.removeItem(tree, id));
     }
 
-    async moveItem(source: movePosition, destination: movePosition) {
+    async moveItem(source: MovePosition, destination: MovePosition) {
         const tree = await this.get();
 
         return await this.set(TreeActions.moveItem(tree, source, destination));

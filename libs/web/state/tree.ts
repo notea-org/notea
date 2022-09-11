@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createContainer } from 'unstated-next';
 import TreeActions, {
     DEFAULT_TREE,
-    movePosition,
+    MovePosition,
     ROOT_ID,
     TreeItemModel,
     TreeModel,
@@ -116,7 +116,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     }, []);
 
     const moveItem = useCallback(
-        async (data: { source: movePosition; destination: movePosition }) => {
+        async (data: { source: MovePosition; destination: MovePosition }) => {
             setTree(
                 TreeActions.moveItem(
                     treeRef.current,

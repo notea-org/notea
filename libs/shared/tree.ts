@@ -25,7 +25,7 @@ export const DEFAULT_TREE: TreeModel = {
     },
 };
 
-export interface movePosition {
+export interface MovePosition {
     parentId: string;
     index: number;
 }
@@ -71,8 +71,8 @@ function removeItem(tree: TreeModel, id: string) {
 
 function moveItem(
     tree: TreeModel,
-    source: movePosition,
-    destination?: movePosition
+    source: MovePosition,
+    destination?: MovePosition
 ) {
     if (!destination) {
         return tree;
