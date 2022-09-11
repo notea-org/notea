@@ -41,8 +41,8 @@ export class StoreS3 extends StoreProvider {
             region: config.region,
             endpoint: config.endPoint,
             credentials: ((config.accessKey && config.secretKey) ? {
-              accessKeyId: config.accessKey,
-              secretAccessKey: config.secretKey,
+                accessKeyId: config.accessKey,
+                secretAccessKey: config.secretKey,
             } : undefined),
         });
         if (!config.accessKey || !config.secretKey) {
