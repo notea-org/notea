@@ -18,14 +18,14 @@ export const Favorites: FC = () => {
         [tree]
     );
 
-    const onCollapse = useCallback((id) => {
+    const onCollapse = useCallback((id: string | number) => {
         setTree((prev) =>
-            TreeActions.mutateItem(prev, id, { isExpanded: false })
+            TreeActions.mutateItem(prev, String(id), { isExpanded: false })
         );
     }, []);
-    const onExpand = useCallback((id) => {
+    const onExpand = useCallback((id: string | number) => {
         setTree((prev) =>
-            TreeActions.mutateItem(prev, id, { isExpanded: true })
+            TreeActions.mutateItem(prev, String(id), { isExpanded: true })
         );
     }, []);
 

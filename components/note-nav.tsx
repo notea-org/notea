@@ -122,6 +122,7 @@ const NoteNav = () => {
                         </span>
                     </Breadcrumbs>
                 )}
+                {/* eslint-disable-next-line react/no-unknown-property */}
                 <style jsx>
                     {`
                         .title {

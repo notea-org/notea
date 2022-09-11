@@ -1,6 +1,6 @@
 import SidebarListItem from './sidebar-list-item';
 import NoteTreeState from 'libs/web/state/tree';
-import Tree from '@atlaskit/tree';
+import Tree, { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree';
 import { useCallback } from 'react';
 import router from 'next/router';
 import HotkeyTooltip from 'components/hotkey-tooltip';
@@ -15,8 +15,8 @@ const SideBarList = () => {
         NoteTreeState.useContainer();
 
     const onExpand = useCallback(
-        (id: string) => {
-            mutateItem(id, {
+        (id: string | number) => {
+            mutateItem(String(id), {
                 isExpanded: true,
             });
         },
@@ -24,8 +24,8 @@ const SideBarList = () => {
     );
 
     const onCollapse = useCallback(
-        (id: string) => {
-            mutateItem(id, {
+        (id: string | number) => {
+            mutateItem(String(id), {
                 isExpanded: false,
             });
         },
@@ -33,10 +33,20 @@ const SideBarList = () => {
     );
 
     const onDragEnd = useCallback(
-        (source, destination) => {
+        (source: TreeSourcePosition, destination?: TreeDestinationPosition | undefined) => {
+            if (!destination) {
+                console.error("Can't move to undefined position");
+                return;
+            }
             moveItem({
-                source,
-                destination,
+                source: {
+                    parentId: String(source.parentId),
+                    index: source.index,
+                },
+                destination: {
+                    parentId: String(destination.parentId),
+                    index: destination.index ?? 0,
+                },
             }).catch((e) => {
                 // todo: toast
                 console.error('更新错误', e);

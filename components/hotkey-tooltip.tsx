@@ -3,6 +3,7 @@ import UIState from 'libs/web/state/ui';
 import { noop } from 'lodash';
 import { FC } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import type { ReactNodeLike } from 'prop-types';
 
 const Title: FC<{
     text: string;
@@ -18,6 +19,7 @@ const Title: FC<{
 const HotkeyTooltip: FC<{
     text: string;
     keys?: string[];
+    children: ReactNodeLike
     /**
      * first key
      */
