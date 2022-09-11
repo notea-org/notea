@@ -40,9 +40,7 @@
         "react/no-unknown-property": [
             "error",
             {
-                "ignore": [
-                    "jsx"
-                ]
+                "ignore": ["jsx", "global"]
             }
         ],
         "@typescript-eslint/explicit-function-return-type": 0,
