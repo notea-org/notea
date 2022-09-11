@@ -5,7 +5,7 @@ export const SettingFooter = () => {
         <footer className="mt-20 text-center opacity-50 text-xs">
             <div>
                 <a
-                    href="https://github.com/tecc/notea"
+                    href="https://github.com/notea-org/notea"
                     target="_blank"
                     rel="noreferrer"
                 >
@@ -15,17 +15,12 @@ export const SettingFooter = () => {
             <div className="space-x-1">
                 <span>MIT &copy;</span>
                 <a
-                    href="https://github.com/qingwei-li"
+                    href="https://github.com/notea-org/notea"
                     target="_blank"
                     rel="noreferrer"
                 >
-                    Cinwell
+                    Notea Contributors
                 </a>
-                <span>2021-2022</span>
-            </div>
-            <div className="space-x-1">
-                <span>MIT &copy;</span>
-                <a href="https://tecc.me">tecc</a>
                 <span>2022</span>
             </div>
         </footer>
