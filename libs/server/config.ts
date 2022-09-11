@@ -18,8 +18,9 @@ export type BasicAuthConfiguration = { type: 'basic' } & (
 export type AuthConfiguration = { type: 'none' } | BasicAuthConfiguration;
 
 export interface S3StoreConfiguration {
-    accessKey: string;
-    secretKey: string;
+    detectCredentials: boolean;
+    accessKey?: string;
+    secretKey?: string;
     bucket: string;
     endpoint: string;
     region: string;
@@ -93,16 +94,17 @@ export function loadConfig() {
     }
     // for now, this works
     {
+        store.detectCredentials ??= true;
         store.accessKey = getEnv<string>(
             'STORE_ACCESS_KEY',
             store.accessKey,
-            !store.accessKey
-        ).toString();
+            !store.detectCredentials
+        )?.toString();
         store.secretKey = getEnv<string>(
             'STORE_SECRET_KEY',
             store.secretKey,
-            !store.secretKey
-        ).toString();
+            !store.detectCredentials
+        )?.toString();
         store.bucket = getEnv<string>(
             'STORE_BUCKET',
             store.bucket ?? 'notea',
