@@ -70,10 +70,13 @@ export function loadConfig() {
             }
             if (auth.type === 'basic') {
                 if (auth.users) {
-                    for (const user of auth.users) {
+                    // TEMPORARILY;
+                    throw new Error("Multiple users are not yet supported");
+
+                    /*for (const user of auth.users) {
                         user.username = user.username.toString();
                         user.password = user.password.toString();
-                    }
+                    }*/
                 } else {
                     auth.username = auth.username?.toString();
                     auth.password = auth.password.toString();
