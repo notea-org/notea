@@ -7,15 +7,13 @@ import { isEqual } from 'lodash';
 import { tryJSON } from 'libs/shared/str';
 import { StoreProvider } from 'libs/server/store';
 
-export async function getSettings(store: StoreProvider) {
+export async function getSettings(store: StoreProvider): Promise<Settings> {
     const settingsPath = getPathSettings();
     let settings;
     if (await store.hasObject(settingsPath)) {
         settings = tryJSON<Settings>(
             await store.getObject(settingsPath)
         );
-    } else {
-        settings = {};
     }
     const formatted = formatSettings(settings || {});
 
