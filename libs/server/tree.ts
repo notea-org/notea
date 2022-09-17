@@ -49,7 +49,10 @@ export default class TreeStore {
     }
 
     async get() {
-        const res = await this.store.getObject(this.treePath);
+        let res;
+        if (await this.store.hasObject(this.treePath)) {
+            res = await this.store.getObject(this.treePath);
+        }
 
         if (!res) {
             return await this.set(DEFAULT_TREE);
