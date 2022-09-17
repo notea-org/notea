@@ -9,4 +9,4 @@ services:
             MINIO_ACCESS_KEY: minio
             MINIO_SECRET_KEY: minio123
         entrypoint: sh
-        command: -c 'mkdir -p /data/notea && mkdir -p /data/notea-test && /usr/bin/minio server /data'
+        command: -c 'mkdir -p /data/notea && mkdir -p /data/notea-test && minio server /data'
