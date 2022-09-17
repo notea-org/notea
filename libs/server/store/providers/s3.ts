@@ -15,7 +15,7 @@ import { isEmpty, toNumber } from 'lodash';
 import { Client as MinioClient } from 'minio';
 
 function isNoSuchKey(err: any) {
-    return err.code === 'NoSuchKey' || err.message === 'NoSuchKey';
+    return err.code === 'NoSuchKey' || err.message === 'NoSuchKey' || err.name === "NoSuchKey";
 }
 
 /**
