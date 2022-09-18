@@ -33,6 +33,7 @@ yarn-error.log*
 
 # Developer files
 .dev/
+tsconfig.tsbuildinfo
 
 # vercel
 .vercel
