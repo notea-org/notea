@@ -142,8 +142,8 @@ export function loadConfig() {
         server = baseConfig.server;
     }
     {
-        server.useSecureCookies = env.parseBool(env.getEnvRaw('COOKIE_SECURE', false), process.env.NODE_ENV === 'production');
-        server.baseUrl = env.getEnvRaw('BASE_URL', false) ?? baseConfig.server.baseUrl;
+        server.useSecureCookies = env.parseBool(env.getEnvRaw('COOKIE_SECURE', false), server.useSecureCookies ?? process.env.NODE_ENV === 'production');
+        server.baseUrl = env.getEnvRaw('BASE_URL', false) ?? server.baseUrl;
     }
 
     loaded = {
