@@ -124,6 +124,7 @@
     "resolutions": {
         "lodash": "^4.17.21",
         "refractor": "^3.4.0",
+        "prosemirror-model": "1.9.1",
         "@types/react": "17.0.39"
     },
     "license": "MIT"
