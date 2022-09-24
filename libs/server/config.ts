@@ -33,14 +33,13 @@ export type StoreConfiguration = S3StoreConfiguration;
 
 export interface ServerConfiguration {
     useSecureCookies: boolean;
-    // TODO: Move baseUrl to here
+    baseUrl?: string;
 }
 
 export interface Configuration {
     auth: AuthConfiguration;
     store: StoreConfiguration;
     server: ServerConfiguration;
-    baseUrl?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -144,13 +143,13 @@ export function loadConfig() {
     }
     {
         server.useSecureCookies = env.parseBool(env.getEnvRaw('COOKIE_SECURE', false), process.env.NODE_ENV === 'production');
+        server.baseUrl = env.getEnvRaw('BASE_URL', false) ?? baseConfig.server.baseUrl;
     }
 
     loaded = {
         auth,
         store,
-        server,
-        baseUrl: env.getEnvRaw('BASE_URL', false) ?? baseConfig.baseUrl,
+        server
     };
 }
 

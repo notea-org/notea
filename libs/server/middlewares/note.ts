@@ -32,7 +32,7 @@ export const applyNote: (id: string) => SSRMiddleware =
         req.props = {
             ...req.props,
             ...props,
-            baseURL: config()?.baseUrl || 'http://' + req.headers.host,
+            baseURL: config().server.baseUrl ?? 'http://' + req.headers.host,
         };
 
         next();
