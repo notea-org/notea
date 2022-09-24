@@ -7,6 +7,7 @@ import {
     itIT,
     nlNL,
     frFR,
+    svSE
 } from '@material-ui/core/locale';
 
 export enum Locale {
@@ -18,6 +19,7 @@ export enum Locale {
     it_IT = 'it-IT',
     nl_NL = 'nl-NL',
     fr_FR = 'fr-FR',
+    sv_SE = 'sv-SE'
 }
 
 export const muiLocale: Record<Locale, Localization> = {
@@ -30,6 +32,7 @@ export const muiLocale: Record<Locale, Localization> = {
     [Locale.it_IT]: itIT,
     [Locale.nl_NL]: nlNL,
     [Locale.fr_FR]: frFR,
+    [Locale.sv_SE]: svSE
 };
 
 export const configLocale: Record<Locale, string> = {
@@ -41,4 +44,5 @@ export const configLocale: Record<Locale, string> = {
     [Locale.it_IT]: 'Italiano',
     [Locale.nl_NL]: 'Nederlands',
     [Locale.fr_FR]: 'français',
+    [Locale.sv_SE]: 'Svenska'
 };
