@@ -1,16 +1,13 @@
 import { ironSession } from 'next-iron-session';
 import md5 from 'md5';
-import { getEnv } from 'libs/shared/env';
+import { BasicAuthConfiguration, config } from 'libs/server/config';
 
 const sessionOptions = {
     cookieName: 'notea-auth',
-    password: md5('notea' + getEnv('PASSWORD')),
+    password: md5('notea' + (config().auth as BasicAuthConfiguration).password), // NOTE(tecc): in the future, if this field becomes null, it will be an issue
     // if your localhost is served on http:// then disable the secure flag
     cookieOptions: {
-        secure: getEnv<boolean>(
-            'COOKIE_SECURE',
-            process.env.NODE_ENV === 'production'
-        ),
+        secure: config().server.useSecureCookies,
     },
 };
 

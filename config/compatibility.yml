@@ -22,6 +22,13 @@ store:
     # secretKey is the same as STORE_SECRET_KEY; must be specified if env doesn't
     secretKey: YOUR_SECRET_KEY
     # forcePathStyle is the same as STORE_FORCE_PATH_STYLE; defaults to false
+    forcePathStyle: true
+    # proxyAttachments is the same as DIRECT_RESPONSE_ATTACHMENT; defaults to false
+    proxyAttachments: true
 
-# baseUrl is the same as BASE_URL; not required
-baseUrl: https://example.com
+# Server configuration
+server:
+    # useSecureConfig is the same as COOKIE_SECURE; if in production (which is for end-users), it will be true, else it'll be false
+    useSecureConfig: true
+    # baseUrl is the same as BASE_URL; not required
+    baseUrl: https://example.com

@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { getEnv } from 'libs/shared/env';
+import * as env from 'libs/shared/env';
 import { existsSync, readFileSync } from 'fs';
 
 export type BasicUser = { username: string; password: string };
@@ -26,21 +26,27 @@ export interface S3StoreConfiguration {
     region: string;
     forcePathStyle: boolean;
     prefix: string;
+    proxyAttachments: boolean;
 }
 
 export type StoreConfiguration = S3StoreConfiguration;
 
+export interface ServerConfiguration {
+    useSecureCookies: boolean;
+    baseUrl?: string;
+}
+
 export interface Configuration {
     auth: AuthConfiguration;
     store: StoreConfiguration;
-    baseUrl?: string;
+    server: ServerConfiguration;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let loaded: Configuration | undefined = undefined;
 
 export function loadConfig() {
-    const configFile = String(getEnv('CONFIG_FILE', './notea.yml'));
+    const configFile = env.getEnvRaw('CONFIG_FILE', false) ?? './notea.yml';
 
     let baseConfig: Configuration = {} as Configuration;
     if (existsSync(configFile)) {
@@ -48,11 +54,11 @@ export function loadConfig() {
         baseConfig = yaml.load(data) as Configuration;
     }
 
-    const disablePassword = getEnv<boolean>('DISABLE_PASSWORD', undefined);
+    const disablePassword = env.parseBool(env.getEnvRaw('DISABLE_PASSWORD', false), false);
 
     let auth: AuthConfiguration;
-    if (disablePassword === undefined || !disablePassword) {
-        const envPassword = getEnv<string>('PASSWORD', undefined, false);
+    if (!disablePassword) {
+        const envPassword = env.getEnvRaw('PASSWORD', false);
         if (baseConfig.auth === undefined) {
             if (envPassword === undefined) {
                 throw new Error('Authentication undefined');
@@ -98,47 +104,52 @@ export function loadConfig() {
     // for now, this works
     {
         store.detectCredentials ??= true;
-        store.accessKey = getEnv<string>(
+        store.accessKey = env.getEnvRaw(
             'STORE_ACCESS_KEY',
-            store.accessKey,
-            !store.detectCredentials
-        )?.toString();
-        store.secretKey = getEnv<string>(
+            !store.detectCredentials || !store.accessKey
+        ) ?? store.accessKey;
+        store.secretKey = env.getEnvRaw(
             'STORE_SECRET_KEY',
-            store.secretKey,
-            !store.detectCredentials
-        )?.toString();
-        store.bucket = getEnv<string>(
+            !store.detectCredentials || !store.secretKey
+        ) ?? store.secretKey;
+        store.bucket = env.getEnvRaw(
             'STORE_BUCKET',
-            store.bucket ?? 'notea',
             false
-        ).toString();
-        store.forcePathStyle = getEnv<boolean>(
+        ) ?? 'notea';
+        store.forcePathStyle = env.parseBool(env.getEnvRaw(
             'STORE_FORCE_PATH_STYLE',
-            store.forcePathStyle ?? false,
             !store.forcePathStyle
-        );
-        store.endpoint = getEnv<string>(
+        )) ?? store.forcePathStyle;
+        store.endpoint = env.getEnvRaw(
             'STORE_END_POINT',
-            store.endpoint,
-            !store.endpoint
-        );
-        store.region = getEnv<string>(
+            store.endpoint == null
+        ) ?? store.endpoint;
+        store.region = env.getEnvRaw(
             'STORE_REGION',
-            store.region ?? 'us-east-1',
             false
-        ).toString();
-        store.prefix = getEnv<string>(
+        ) ?? store.region ?? 'us-east-1';
+        store.prefix = env.getEnvRaw(
             'STORE_PREFIX',
-            store.prefix ?? '',
-            false
-        );
+            false,
+        ) ?? store.prefix ?? '';
+        store.proxyAttachments = env.parseBool(env.getEnvRaw('DIRECT_RESPONSE_ATTACHMENT', false), store.proxyAttachments ?? false);
+    }
+
+    let server: ServerConfiguration;
+    if (!baseConfig.server) {
+        server = {} as ServerConfiguration;
+    } else {
+        server = baseConfig.server;
+    }
+    {
+        server.useSecureCookies = env.parseBool(env.getEnvRaw('COOKIE_SECURE', false), process.env.NODE_ENV === 'production');
+        server.baseUrl = env.getEnvRaw('BASE_URL', false) ?? baseConfig.server.baseUrl;
     }
 
     loaded = {
         auth,
         store,
-        baseUrl: getEnv<string>('BASE_URL')?.toString() ?? baseConfig.baseUrl,
+        server
     };
 }
 
