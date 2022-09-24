@@ -7,12 +7,13 @@ import { BasicAuthConfiguration, config } from 'libs/server/config';
 const tokens = new Tokens();
 
 // generate CSRF secret
-const csrfSecret = md5('CSRF' + (config().auth as BasicAuthConfiguration).password);
+let _csrfSecret: string;
+const csrfSecret = () => _csrfSecret ?? (_csrfSecret = md5('CSRF' + (config().auth as BasicAuthConfiguration).password));
 
-export const getCsrfToken = () => tokens.create(csrfSecret);
+export const getCsrfToken = () => tokens.create(csrfSecret());
 
 export const verifyCsrfToken = (token: string) =>
-    tokens.verify(csrfSecret, token);
+    tokens.verify(csrfSecret(), token);
 
 export const applyCsrf: SSRMiddleware = async (req, _res, next) => {
     req.props = {
