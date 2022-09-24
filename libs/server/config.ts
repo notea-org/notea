@@ -26,6 +26,7 @@ export interface S3StoreConfiguration {
     region: string;
     forcePathStyle: boolean;
     prefix: string;
+    proxyAttachments: boolean;
 }
 
 export type StoreConfiguration = S3StoreConfiguration;
@@ -126,6 +127,7 @@ export function loadConfig() {
             'STORE_PREFIX',
             false,
         ) ?? store.prefix ?? '';
+        store.proxyAttachments = env.parseBool(env.getEnvRaw('DIRECT_RESPONSE_ATTACHMENT', false), store.proxyAttachments ?? false);
     }
 
     loaded = {
