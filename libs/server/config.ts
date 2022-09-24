@@ -31,9 +31,15 @@ export interface S3StoreConfiguration {
 
 export type StoreConfiguration = S3StoreConfiguration;
 
+export interface ServerConfiguration {
+    useSecureCookies: boolean;
+    // TODO: Move baseUrl to here
+}
+
 export interface Configuration {
     auth: AuthConfiguration;
     store: StoreConfiguration;
+    server: ServerConfiguration;
     baseUrl?: string;
 }
 
@@ -130,9 +136,20 @@ export function loadConfig() {
         store.proxyAttachments = env.parseBool(env.getEnvRaw('DIRECT_RESPONSE_ATTACHMENT', false), store.proxyAttachments ?? false);
     }
 
+    let server: ServerConfiguration;
+    if (!baseConfig.server) {
+        server = {} as ServerConfiguration;
+    } else {
+        server = baseConfig.server;
+    }
+    {
+        server.useSecureCookies = env.parseBool(env.getEnvRaw('COOKIE_SECURE', false), process.env.NODE_ENV === 'production');
+    }
+
     loaded = {
         auth,
         store,
+        server,
         baseUrl: env.getEnvRaw('BASE_URL', false) ?? baseConfig.baseUrl,
     };
 }

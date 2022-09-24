@@ -26,5 +26,10 @@ store:
     # proxyAttachments is the same as DIRECT_RESPONSE_ATTACHMENT; defaults to false
     proxyAttachments: true
 
+# Server configuration
+server:
+    # useSecureConfig is the same as COOKIE_SECURE; if in production (which is for end-users), it will be true, else it'll be false
+    useSecureConfig: true
+
 # baseUrl is the same as BASE_URL; not required
 baseUrl: https://example.com
