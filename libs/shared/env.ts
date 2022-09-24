@@ -14,6 +14,9 @@ type AllowedEnvs =
     | 'STORE_PREFIX'
     | 'CONFIG_FILE';
 
+/**
+ * @deprecated This function should not be used. Prefer the `config()` system.
+ */
 export function getEnv<T>(
     env: AllowedEnvs,
     defaultValue?: any,
