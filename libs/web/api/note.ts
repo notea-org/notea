@@ -61,7 +61,7 @@ export default function useNoteAPI() {
             }
             const note = await find(id);
             if (note) {
-                noteCache.setItem(id, note);
+                await noteCache.setItem(id, note);
             }
 
             return note;

@@ -20,7 +20,8 @@ const MenuButton = () => {
     const onToggle = useCallback(
         (e: MouseEvent) => {
             e.stopPropagation();
-            sidebar.toggle();
+            sidebar.toggle()
+                .catch((v) => console.error('Error whilst toggling sidebar: %O', v));
         },
         [sidebar]
     );

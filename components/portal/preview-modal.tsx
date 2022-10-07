@@ -28,13 +28,15 @@ const PreviewModal: FC = () => {
 
     const gotoLink = useCallback(() => {
         if (note?.id) {
-            router.push(note.id, undefined, { shallow: true });
+            router.push(note.id, undefined, { shallow: true })
+                .catch((v) => console.error('Error whilst pushing to router: %O', v));
         }
     }, [note?.id, router]);
 
     useEffect(() => {
         if (data?.id) {
-            findNote(data?.id);
+            findNote(data?.id)
+                .catch((v) => console.error('Error whilst finding note %s: %O', data.id, v));
         }
     }, [data?.id, findNote]);
 

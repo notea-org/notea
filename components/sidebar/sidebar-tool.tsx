@@ -41,7 +41,8 @@ const ButtonMenu = () => {
         sidebar: { toggle, isFold },
     } = UIState.useContainer();
     const onFold = useCallback(() => {
-        toggle();
+        toggle()
+            .catch((v) => console.error('Error whilst toggling tool: %O', v));
     }, [toggle]);
 
     return (

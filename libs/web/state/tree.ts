@@ -204,7 +204,8 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
     const showItem = useCallback(
         (note: NoteModel) => {
             const parents = findParentTreeItems(treeRef.current, note);
-            setItemsExpandState(parents, true);
+            setItemsExpandState(parents, true)
+                .catch((v) => console.error('Error whilst expanding item: %O', v));
         },
         [setItemsExpandState]
     );
@@ -222,7 +223,8 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
         const expandedItems = TreeActions.flattenTree(treeRef.current).filter(
             (item) => item.isExpanded
         );
-        setItemsExpandState(expandedItems, false);
+        setItemsExpandState(expandedItems, false)
+            .catch((v) => console.error('Error whilst collapsing item: %O', v));
     }, [setItemsExpandState]);
 
     const pinnedTree = useMemo(() => {
