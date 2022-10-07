@@ -32,7 +32,7 @@ const Resizable: FC<{ width: number; children: ReactNodeLike }> = ({
 
         if (width && lastWidth) {
             resize(lastWidth / width)
-                .catch((v) => console.error('Error whilst resizing: %O', v));
+                ?.catch((v) => console.error('Error whilst resizing: %O', v));
         }
         lastWidthRef.current = width;
     }, [resize, width]);

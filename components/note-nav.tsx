@@ -21,7 +21,7 @@ const MenuButton = () => {
         (e: MouseEvent) => {
             e.stopPropagation();
             sidebar.toggle()
-                .catch((v) => console.error('Error whilst toggling sidebar: %O', v));
+                ?.catch((v) => console.error('Error whilst toggling sidebar: %O', v));
         },
         [sidebar]
     );

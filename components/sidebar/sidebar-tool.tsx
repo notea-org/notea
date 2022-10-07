@@ -42,7 +42,7 @@ const ButtonMenu = () => {
     } = UIState.useContainer();
     const onFold = useCallback(() => {
         toggle()
-            .catch((v) => console.error('Error whilst toggling tool: %O', v));
+            ?.catch((v) => console.error('Error whilst toggling tool: %O', v));
     }, [toggle]);
 
     return (

@@ -56,11 +56,11 @@ const SidebarListItem: FC<{
         (e: MouseEvent) => {
             e.preventDefault();
             router.push(`/new?pid=` + item.id, undefined, { shallow: true })
-                .catch((v) => console.error('Error whilst pushing to router: %O', v));
+                ?.catch((v) => console.error('Error whilst pushing to router: %O', v));
             mutateItem(item.id, {
                 isExpanded: true,
             })
-                .catch((v) => console.error('Error whilst mutating item: %O', v));
+                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
         },
         [item.id, mutateItem]
     );

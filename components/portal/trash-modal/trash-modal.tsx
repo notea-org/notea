@@ -20,7 +20,7 @@ const TrashModal: FC = () => {
     const onEnter = useCallback(
         (item: NoteModel) => {
             router.push(`/${item.id}`, `/${item.id}`, { shallow: true })
-                .catch((v) => console.error('Error whilst pushing to router: %O', v));
+                ?.catch((v) => console.error('Error whilst pushing to router: %O', v));
             close();
         },
         [router, close]
@@ -29,7 +29,7 @@ const TrashModal: FC = () => {
     useEffect(() => {
         if (visible) {
             filterNotes()
-                .catch((v) => console.error('Error whilst filtering notes: %O', v));
+                ?.catch((v) => console.error('Error whilst filtering notes: %O', v));
         }
     }, [visible, filterNotes]);
 

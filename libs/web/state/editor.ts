@@ -163,7 +163,7 @@ const useEditor = (initNote?: NoteModel) => {
     const onEditorChange = useCallback(
         (value: () => string): void => {
             onNoteChange.callback({ content: value() })
-                .catch((v) => console.error('Error whilst updating note: %O', v));
+                ?.catch((v) => console.error('Error whilst updating note: %O', v));
         },
         [onNoteChange]
     );

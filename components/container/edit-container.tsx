@@ -90,7 +90,7 @@ export const EditContainer = () => {
     useEffect(() => {
         abortFindNote();
         loadNoteById(id)
-            .catch((v) => console.error('Could not load note: %O', v));
+            ?.catch((v) => console.error('Could not load note: %O', v));
     }, [loadNoteById, abortFindNote, id]);
 
     useEffect(() => {

@@ -10,7 +10,7 @@ const Sidebar: FC = () => {
 
     useEffect(() => {
         initTree()
-            .catch((v) => console.error('Error whilst initialising tree: %O', v));
+            ?.catch((v) => console.error('Error whilst initialising tree: %O', v));
     }, [initTree]);
 
     return ua?.isMobileOnly ? <MobileSidebar /> : <BrowserSidebar />;

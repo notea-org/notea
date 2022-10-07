@@ -33,7 +33,7 @@ export const SnippetInjection: FC = () => {
     useEffect(() => {
         if (IS_DEMO && settings.injection !== DEMO_INJECTION) {
             updateSettings({ injection: DEMO_INJECTION })
-                .catch((v) => console.error('Error whilst updating settings: %O', v));
+                ?.catch((v) => console.error('Error whilst updating settings: %O', v));
             setSettings((prev) => ({ ...prev, injection: DEMO_INJECTION }));
         }
     }, [settings.injection, IS_DEMO, updateSettings, setSettings]);

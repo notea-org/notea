@@ -23,8 +23,8 @@ export const DailyNotes: FC = () => {
     const handleChange = useCallback(
         async (_event: unknown, item: TreeOption | null) => {
             if (item) {
-                updateSettings({ daily_root_id: item.id })
-                    .catch((v) => console.error('Error whilst updating settings: %O', v));
+                await updateSettings({ daily_root_id: item.id })
+                    ?.catch((v) => console.error('Error whilst updating settings: %O', v));
                 setSelected(item);
             }
         },

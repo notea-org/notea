@@ -22,7 +22,7 @@ const SideBarList = () => {
             mutateItem(String(id), {
                 isExpanded: true,
             })
-                .catch((v) => console.error('Error whilst mutating item: %O', v));
+                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
         },
         [mutateItem]
     );
@@ -32,7 +32,7 @@ const SideBarList = () => {
             mutateItem(String(id), {
                 isExpanded: false,
             })
-                .catch((v) => console.error('Error whilst mutating item: %O', v));
+                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
         },
         [mutateItem]
     );

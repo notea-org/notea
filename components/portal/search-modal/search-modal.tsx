@@ -20,7 +20,7 @@ const SearchModal: FC = () => {
     const onEnter = useCallback(
         (item: NoteModel) => {
             router.push(`/${item.id}`, `/${item.id}`, { shallow: true })
-                .catch((v) => console.error('Error whilst pushing item to router: %O', v));
+                ?.catch((v) => console.error('Error whilst pushing item to router: %O', v));
             close();
         },
         [router, close]

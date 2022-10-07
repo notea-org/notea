@@ -205,7 +205,7 @@ const useNoteTree = (initData: TreeModel = DEFAULT_TREE) => {
         (note: NoteModel) => {
             const parents = findParentTreeItems(treeRef.current, note);
             setItemsExpandState(parents, true)
-                .catch((v) => console.error('Error whilst expanding item: %O', v));
+                ?.catch((v) => console.error('Error whilst expanding item: %O', v));
         },
         [setItemsExpandState]
     );
