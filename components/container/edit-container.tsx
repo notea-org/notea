@@ -32,7 +32,7 @@ export const EditContainer = () => {
         async (id: string) => {
             // daily notes
             if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(id)) {
-                findOrCreateNote(id, {
+                await findOrCreateNote(id, {
                     id,
                     title: id,
                     content: '\n',
@@ -41,24 +41,24 @@ export const EditContainer = () => {
             } else if (id === 'new') {
                 const url = `/${genNewId()}?new` + (pid ? `&pid=${pid}` : '');
 
-                router.replace(url, undefined, { shallow: true });
+                await router.replace(url, undefined, { shallow: true });
             } else if (id && !isNew) {
                 try {
                     const result = await fetchNote(id);
                     if (!result) {
-                        router.replace({ query: { ...router.query, new: 1 } });
+                        await router.replace({ query: { ...router.query, new: 1 } });
                         return;
                     }
                 } catch (msg) {
                     const err = msg as Error;
                     if (err.name !== 'AbortError') {
                         toast(err.message, 'error');
-                        router.push('/', undefined, { shallow: true });
+                        await router.push('/', undefined, { shallow: true });
                     }
                 }
             } else {
                 if (await noteCache.getItem(id)) {
-                    router.push(`/${id}`, undefined, { shallow: true });
+                    await router.push(`/${id}`, undefined, { shallow: true });
                     return;
                 }
 
@@ -69,7 +69,7 @@ export const EditContainer = () => {
             }
 
             if (!isNew && id !== 'new') {
-                mutateSettings({
+                await mutateSettings({
                     last_visit: `/${id}`,
                 });
             }
@@ -89,7 +89,8 @@ export const EditContainer = () => {
 
     useEffect(() => {
         abortFindNote();
-        loadNoteById(id);
+        loadNoteById(id)
+            ?.catch((v) => console.error('Could not load note: %O', v));
     }, [loadNoteById, abortFindNote, id]);
 
     useEffect(() => {

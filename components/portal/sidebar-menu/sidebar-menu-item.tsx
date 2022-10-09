@@ -39,15 +39,18 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             close();
             if (data?.id) {
                 // TODO: merge with mutateNote
-                removeNote(data.id);
+                removeNote(data.id)
+                    ?.catch((v) => console.error('Error whilst removing note: %O', v));
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.UNPINNED,
-                });
+                })
+                    ?.catch((v) => console.error('Error whilst mutating item: %O', v));
             }
         }, [close, data, mutateNote, removeNote]);
 
         const doCopyLink = useCallback(() => {
-            navigator.clipboard.writeText(location.origin + '/' + data?.id);
+            navigator.clipboard.writeText(location.origin + '/' + data?.id)
+                ?.catch((v) => console.error('Error whilst writing to clipboard: %O', v));
             close();
         }, [close, data?.id]);
 
@@ -56,7 +59,8 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             if (data?.id) {
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.PINNED,
-                });
+                })
+                    ?.catch((v) => console.error('Error whilst mutating note: %O', v));
             }
         }, [close, data, mutateNote]);
 
@@ -65,7 +69,8 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             if (data?.id) {
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.UNPINNED,
-                });
+                })
+                    ?.catch((v) => console.error('Error whilst mutating note: %O', v));
             }
         }, [close, data, mutateNote]);
 
@@ -78,7 +83,8 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
 
                 mutateNote(data.id, {
                     editorsize: (resolvedNoteWidth + 1) % editorSizesCount,
-                });
+                })
+                    .catch((v) => console.error('Error whilst mutating note: %O', v));
             }
         }, [close, data, mutateNote, settings.editorsize]);
 

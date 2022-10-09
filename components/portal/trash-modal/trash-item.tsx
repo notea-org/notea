@@ -24,12 +24,12 @@ const TrashItem: FC<{
 
     const onClickRestore = useCallback(async () => {
         await restoreNote(note);
-        filterNotes(keyword);
+        await filterNotes(keyword);
     }, [filterNotes, keyword, note, restoreNote]);
 
     const onClickDelete = useCallback(async () => {
         await deleteNote(note.id);
-        filterNotes(keyword);
+        await filterNotes(keyword);
     }, [deleteNote, note.id, filterNotes, keyword]);
 
     useScrollView(ref, selected);

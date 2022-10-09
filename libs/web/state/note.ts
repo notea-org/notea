@@ -153,7 +153,7 @@ const useNote = (initData?: NoteModel) => {
             };
             delete newNote.content;
             setNote(newNote);
-            mutateItem(newNote.id, {
+            await mutateItem(newNote.id, {
                 data: newNote,
             });
             await mutate(note.id, data);

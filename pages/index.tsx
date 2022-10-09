@@ -18,7 +18,8 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 
     useEffect(() => {
         if (ua.isMobileOnly) {
-            Router.push('/new');
+            Router.push('/new')
+                ?.catch((v) => console.error('Error whilst pushing /new route: %O', v));
         }
     }, [ua.isMobileOnly]);
 
