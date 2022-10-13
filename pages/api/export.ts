@@ -1,7 +1,7 @@
 import { useAuth } from 'libs/server/middlewares/auth';
 import { useStore } from 'libs/server/middlewares/store';
 import AdmZip from 'adm-zip';
-import { api } from 'libs/server/connect';
+import { api, type ApiRequest, type ApiResponse } from 'libs/server/connect';
 import TreeActions, {
     ROOT_ID,
     HierarchicalTreeItemModel,
@@ -11,46 +11,89 @@ import { NOTE_DELETED } from 'libs/shared/meta';
 import { metaToJson } from 'libs/server/meta';
 import { toBuffer } from 'libs/shared/str';
 
+async function markdown(req: ApiRequest, res: ApiResponse) {
+    const pid = (req.query.pid as string) || ROOT_ID;
+    const zip = new AdmZip();
+    const tree = await req.state.treeStore.get();
+    const rootItem = TreeActions.makeHierarchy(tree, pid);
+    const duplicate: Record<string, number> = {};
+
+    async function addItem(
+        item: HierarchicalTreeItemModel,
+        prefix: string = ''
+    ): Promise<void> {
+        const note = await req.state.store.getObjectAndMeta(
+            getPathNoteById(item.id)
+        );
+        const metaJson = metaToJson(note.meta);
+
+        if (metaJson.deleted === NOTE_DELETED.DELETED) {
+            return;
+        }
+        const title = metaJson.title ?? 'Untitled';
+
+        const resolvedPrefix = prefix.length === 0 ? '' : prefix + '/';
+        const basePath = resolvedPrefix + title;
+        const uniquePath = duplicate[basePath]
+            ? `${basePath} (${duplicate[basePath]})`
+            : basePath;
+
+        zip.addFile(`${uniquePath}.md`, toBuffer(note.content));
+        duplicate[basePath] = (duplicate[basePath] || 0) + 1;
+        await Promise.all(item.children.map((v) => addItem(v, uniquePath)));
+    }
+
+    if (rootItem) {
+        await Promise.all(rootItem.children.map((v) => addItem(v)));
+    }
+
+    res.setHeader('content-type', 'application/zip');
+    res.setHeader('content-disposition', `attachment; filename=export.zip`);
+    res.send(zip.toBuffer());
+}
+
+export interface ExportMeta {
+    contentType: string;
+    meta: Record<string, string>
+}
+
+const EMPTY_BUFFER = Buffer.of();
+async function notea(req: ApiRequest, res: ApiResponse) {
+    const zip = new AdmZip();
+    const tree = await req.state.treeStore.get();
+
+    zip.addFile('tree', Buffer.from(JSON.stringify(tree)));
+    for (const itemId in tree.items) {
+        if (itemId === tree.rootId) {
+            continue;
+        }
+        const item = tree.items[itemId];
+        const prefix = `notes/${item.id}`;
+        const result = await req.state.store.getObjectAndMeta(getPathNoteById(item.id));
+        const { buffer, contentType, meta } = result;
+        zip.addFile(`${prefix}/content`, buffer ? buffer : EMPTY_BUFFER);
+        const exportMeta: ExportMeta = {
+            contentType: contentType ?? 'text/markdown',
+            meta: meta ?? {}
+        };
+        zip.addFile(`${prefix}/meta`, Buffer.from(JSON.stringify(exportMeta)));
+    }
+
+    res.setHeader('content-type', 'application/zip');
+    res.setHeader('content-disposition', `attachment; filename=backup.zip`);
+    res.send(zip.toBuffer());
+}
+
 export default api()
     .use(useAuth)
     .use(useStore)
     .get(async (req, res) => {
-        const pid = (req.query.pid as string) || ROOT_ID;
-        const zip = new AdmZip();
-        const tree = await req.state.treeStore.get();
-        const rootItem = TreeActions.makeHierarchy(tree, pid);
-        const duplicate: Record<string, number> = {};
-
-        async function addItem(
-            item: HierarchicalTreeItemModel,
-            prefix: string = ''
-        ): Promise<void> {
-            const note = await req.state.store.getObjectAndMeta(
-                getPathNoteById(item.id)
-            );
-            const metaJson = metaToJson(note.meta);
-
-            if (metaJson.deleted === NOTE_DELETED.DELETED) {
-                return;
-            }
-            const title = metaJson.title ?? 'Untitled';
-
-            const resolvedPrefix = prefix.length === 0 ? '' : prefix + '/';
-            const basePath = resolvedPrefix + title;
-            const uniquePath = duplicate[basePath]
-                ? `${basePath} (${duplicate[basePath]})`
-                : basePath;
-
-            zip.addFile(`${uniquePath}.md`, toBuffer(note.content));
-            duplicate[basePath] = (duplicate[basePath] || 0) + 1;
-            await Promise.all(item.children.map((v) => addItem(v, uniquePath)));
+        const type = String(req.query['type'] ?? 'markdown');
+        switch (type) {
+            case 'notea':
+                return await notea(req, res);
+            case 'markdown':
+            default:
+                return await markdown(req, res);
         }
-
-        if (rootItem) {
-            await Promise.all(rootItem.children.map((v) => addItem(v)));
-        }
-
-        res.setHeader('content-type', 'application/zip');
-        res.setHeader('content-disposition', `attachment; filename=export.zip`);
-        res.send(zip.toBuffer());
     });

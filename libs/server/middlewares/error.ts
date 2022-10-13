@@ -24,6 +24,10 @@ export const API_ERROR = {
         status: 401,
         message: `File size limit exceeded ${IMPORT_FILE_LIMIT_SIZE}`,
     },
+    INVALID_DATA: {
+        status: 400,
+        message: `Invalid data`
+    }
 };
 
 export class APIError {

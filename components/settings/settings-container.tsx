@@ -8,6 +8,7 @@ import { ImportOrExport } from './import-or-export';
 import { SnippetInjection } from './snippet-injection';
 import useI18n from 'libs/web/hooks/use-i18n';
 import { SettingsHeader } from './settings-header';
+import { Backups } from 'components/settings/backups';
 
 export const defaultFieldConfig: TextFieldProps = {
     fullWidth: true,
@@ -37,6 +38,7 @@ export const SettingsContainer: FC = () => {
             <Theme></Theme>
             <EditorWidth></EditorWidth>
             <HR />
+
             <SettingsHeader
                 id="import-and-export"
                 title={t('Import & Export')}
@@ -44,9 +46,13 @@ export const SettingsContainer: FC = () => {
                     'Import a zip file containing markdown files to this location, or export all pages from this location.'
                 )}
             ></SettingsHeader>
-
             <ImportOrExport></ImportOrExport>
             <HR />
+
+            <SettingsHeader title={t('Backups')} id={"backups"} description={t('Backup your data, or set up automatic backups.')}/>
+            <Backups/>
+            <HR/>
+
             <SettingsHeader id="sharing" title={t('Sharing')}></SettingsHeader>
             <SnippetInjection></SnippetInjection>
         </section>
