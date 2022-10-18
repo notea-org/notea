@@ -1,5 +1,5 @@
 import { InputRule } from 'prosemirror-inputrules';
-import Mark from 'rich-markdown-editor/dist/marks/Mark';
+import Mark from '@notea/rich-markdown-editor/dist/marks/Mark';
 
 export default class Bracket extends Mark {
     get name() {

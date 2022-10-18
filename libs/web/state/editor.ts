@@ -15,7 +15,7 @@ import PortalState from 'libs/web/state/portal';
 import { NoteCacheItem } from 'libs/web/cache';
 import noteCache from 'libs/web/cache/note';
 import { createContainer } from 'unstated-next';
-import MarkdownEditor from 'rich-markdown-editor';
+import MarkdownEditor from '@notea/rich-markdown-editor';
 import { useDebouncedCallback } from 'use-debounce';
 import { ROOT_ID } from 'libs/shared/tree';
 import { has } from 'lodash';

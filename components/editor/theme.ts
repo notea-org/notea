@@ -1,6 +1,6 @@
 import { useTheme } from 'next-themes';
-import { theme } from 'rich-markdown-editor';
-import { light, dark } from 'rich-markdown-editor/dist/theme';
+import { theme } from '@notea/rich-markdown-editor';
+import { light, dark } from '@notea/rich-markdown-editor/dist/styles/theme';
 
 export const darkTheme: typeof theme = {
     ...dark,

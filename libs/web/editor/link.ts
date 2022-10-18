@@ -1,4 +1,4 @@
-import RichMarkdownEditor from 'rich-markdown-editor';
+import RichMarkdownEditor from '@notea/rich-markdown-editor';
 
 type Node = RichMarkdownEditor['view']['state']['doc'];
 
