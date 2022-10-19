@@ -35,6 +35,7 @@
         "@aws-sdk/s3-request-presigner": "^3.10.0",
         "@fontsource/noto-sans": "^4.5.10",
         "@headwayapp/react-widget": "^0.0.4",
+        "@heroicons/react": "^1.0.1",
         "@material-ui/core": "^4.12.3",
         "@material-ui/lab": "^4.0.0-alpha.60",
         "adm-zip": "^0.5.5",
@@ -80,7 +81,6 @@
         "use-debounce": "^5.2.1"
     },
     "devDependencies": {
-        "@heroicons/react": "^1.0.1",
         "@tailwindcss/typography": "^0.4.0",
         "@types/adm-zip": "^0.4.34",
         "@types/classnames": "^2.2.11",

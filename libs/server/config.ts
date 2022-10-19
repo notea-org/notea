@@ -118,8 +118,8 @@ export function loadConfig() {
         ) ?? 'notea';
         store.forcePathStyle = env.parseBool(env.getEnvRaw(
             'STORE_FORCE_PATH_STYLE',
-            !store.forcePathStyle
-        )) ?? store.forcePathStyle;
+            false
+        )) ?? store.forcePathStyle ?? false;
         store.endpoint = env.getEnvRaw(
             'STORE_END_POINT',
             store.endpoint == null
