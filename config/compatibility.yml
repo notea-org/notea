@@ -21,6 +21,8 @@ store:
     accessKey: YOUR_ACCESS_KEY
     # secretKey is the same as STORE_SECRET_KEY; must be specified if env doesn't
     secretKey: YOUR_SECRET_KEY
+    # bucket is the same as STORE_BUCKET; defaults to "notea"
+    bucket: notea
     # forcePathStyle is the same as STORE_FORCE_PATH_STYLE; defaults to false
     forcePathStyle: true
     # proxyAttachments is the same as DIRECT_RESPONSE_ATTACHMENT; defaults to false
