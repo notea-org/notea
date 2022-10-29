@@ -49,7 +49,7 @@ export const SnippetInjection: FC = () => {
                 value={settings.injection}
                 onChange={updateValue}
                 onBlur={saveValue}
-                rows={8}
+                minRows={8}
                 helperText={
                     <span className="flex items-center">
                         <span>
