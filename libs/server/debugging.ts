@@ -1,10 +1,10 @@
 import { loadConfigAndListErrors } from 'libs/server/config';
 import pino from 'pino';
 import pinoPretty from 'pino-pretty';
-import Logger = pino.Logger;
 import * as path from 'path';
 import * as fs from 'fs';
-import { DebugInformation, Issue } from 'libs/shared/debugging';
+import { DebugInformation, Issue, IssueCategory, IssueSeverity } from 'libs/shared/debugging';
+import Logger = pino.Logger;
 
 export * from 'libs/shared/debugging'; // here's a lil' lesson in trickery
 
@@ -19,8 +19,18 @@ export function reportRuntimeIssue(issue: Issue) {
 export function findIssues(): Array<Issue> {
     const issues: Array<Issue> = [];
 
-    const cfg = loadConfigAndListErrors();
-    issues.push(...cfg.errors);
+    try {
+        const cfg = loadConfigAndListErrors();
+        issues.push(...cfg.errors);
+    } catch (e) {
+        issues.push({
+            severity: IssueSeverity.FATAL_ERROR,
+            category: IssueCategory.CONFIG,
+            name: "Cannot load config",
+            cause: String(e),
+            fixes: []
+        });
+    }
 
     issues.push(...runtimeIssues);
 
