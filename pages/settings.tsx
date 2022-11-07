@@ -11,8 +11,10 @@ import { applyCsrf } from 'libs/server/middlewares/csrf';
 import { SettingFooter } from 'components/settings/setting-footer';
 import { SSRContext, ssr } from 'libs/server/connect';
 import { applyReset } from 'libs/server/middlewares/reset';
+import { applyMisconfiguration } from 'libs/server/middlewares/misconfiguration';
+import { DebugInformation } from 'libs/shared/debugging';
 
-const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
+const SettingsPage: NextPage<{ debugInformation: DebugInformation, tree: TreeModel }> = ({ tree, debugInformation }) => {
     const { t } = useI18n();
 
     return (
@@ -23,7 +25,7 @@ const SettingsPage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
                         <span>{t('Settings')}</span>
                     </h1>
 
-                    <SettingsContainer />
+                    <SettingsContainer debugInfo={debugInformation} />
                     <SettingFooter />
                 </div>
             </section>
@@ -41,6 +43,7 @@ export const getServerSideProps = async (ctx: SSRContext) => {
         .use(applySettings)
         .use(applyCsrf)
         .use(applyUA)
+        .use(applyMisconfiguration)
         .run(ctx.req, ctx.res);
 
     return {

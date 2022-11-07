@@ -18,6 +18,7 @@ import { Settings } from 'libs/shared/settings';
 import { TreeModel } from 'libs/shared/tree';
 import { UserAgentType } from 'libs/shared/ua';
 import { useStore } from './middlewares/store';
+import { DebugInformation } from 'libs/server/debugging';
 
 export interface ServerState {
     store: StoreProvider;
@@ -36,6 +37,7 @@ export interface ServerProps {
     tree?: TreeModel;
     ua?: UserAgentType;
     disablePassword: boolean;
+    debugInformation?: DebugInformation;
 }
 
 export type ApiRequest = NextApiRequest & {

@@ -6,14 +6,31 @@ import { formatSettings, Settings } from 'libs/shared/settings';
 import { isEqual } from 'lodash';
 import { tryJSON } from 'libs/shared/str';
 import { StoreProvider } from 'libs/server/store';
+import { IssueCategory, IssueFixRecommendation, IssueSeverity, reportRuntimeIssue } from 'libs/server/debugging';
 
 export async function getSettings(store: StoreProvider): Promise<Settings> {
     const settingsPath = getPathSettings();
     let settings;
-    if (await store.hasObject(settingsPath)) {
-        settings = tryJSON<Settings>(
-            await store.getObject(settingsPath)
-        );
+    try {
+        if (await store.hasObject(settingsPath)) {
+            settings = tryJSON<Settings>(
+                await store.getObject(settingsPath)
+            );
+        }
+    } catch (e) {
+        reportRuntimeIssue({
+            category: IssueCategory.STORE,
+            severity: IssueSeverity.FATAL_ERROR,
+            name: "Could not get settings",
+            cause: String(e),
+            fixes: [
+                {
+                    description: "Make sure Notea can connect to the store.",
+                    recommendation: IssueFixRecommendation.RECOMMENDED
+                }
+            ]
+        });
+        throw e;
     }
     const formatted = formatSettings(settings || {});
 

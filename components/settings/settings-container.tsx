@@ -8,6 +8,8 @@ import { ImportOrExport } from './import-or-export';
 import { SnippetInjection } from './snippet-injection';
 import useI18n from 'libs/web/hooks/use-i18n';
 import { SettingsHeader } from './settings-header';
+import { Debugging } from 'components/settings/debugging';
+import { DebugInformation } from 'libs/shared/debugging';
 
 export const defaultFieldConfig: TextFieldProps = {
     fullWidth: true,
@@ -26,7 +28,9 @@ const HR = () => {
     return <hr className="my-10 border-gray-200" />;
 };
 
-export const SettingsContainer: FC = () => {
+export const SettingsContainer: FC<{
+    debugInfo: DebugInformation
+}> = (props) => {
     const { t } = useI18n();
 
     return (
@@ -36,6 +40,7 @@ export const SettingsContainer: FC = () => {
             <Language></Language>
             <Theme></Theme>
             <EditorWidth></EditorWidth>
+
             <HR />
             <SettingsHeader
                 id="import-and-export"
@@ -44,11 +49,21 @@ export const SettingsContainer: FC = () => {
                     'Import a zip file containing markdown files to this location, or export all pages from this location.'
                 )}
             ></SettingsHeader>
-
             <ImportOrExport></ImportOrExport>
+
             <HR />
             <SettingsHeader id="sharing" title={t('Sharing')}></SettingsHeader>
             <SnippetInjection></SnippetInjection>
+
+            <HR />
+            <SettingsHeader
+                id="debug"
+                title={t('Debugging')}
+                description={t(
+                    'Provides information about your Notea instance that can be helpful when trying to fix problems.'
+                )}
+            />
+            <Debugging debugInfo={props.debugInfo} />
         </section>
     );
 };

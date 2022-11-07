@@ -10,7 +10,7 @@ const i18n = rosetta<Record<string, string>>();
 export const defaultLanguage = DEFAULT_SETTINGS.locale;
 export const languages = values(Locale);
 
-interface ContextProps {
+export interface ContextProps {
     activeLocale: Locale;
     t: Rosetta<Record<string, string>>['t'];
     locale: (l: Locale, dict: Record<string, string>) => void;
