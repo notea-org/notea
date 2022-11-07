@@ -120,7 +120,7 @@ export const Issue: FC<IssueProps> = function (props) {
             borderColour = "border-red-500";
             break;
         case IssueSeverity.FATAL_ERROR:
-            borderColour = "border-red-900";
+            borderColour = "border-red-300";
             break;
     }
 
