@@ -75,7 +75,7 @@ const Fix: FC<FixProps> = ({ id, fix }) => {
                 id={`${id}-summary`}
             >
                 <div className={"flex flex-col"}>
-                    {fix.recommendation === 0 && (
+                    {fix.recommendation !== 0 && (
                         <span className={"text-xs uppercase"}>{getNameFromRecommendation(fix.recommendation, i18n)}</span>
                     )}
                     <span className={"font-bold"}>{fix.description}</span>
