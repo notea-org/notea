@@ -133,12 +133,21 @@ export const Issue: FC<IssueProps> = function (props) {
                 id={`${id}-summary`}
             >
                 <div className={"flex flex-col bg-transparent"}>
-                    <span className={"text-xs uppercase"}>{getNameFromSeverity(issue.severity, i18n)}</span>
+                    <span className={"text-xs uppercase"}>
+                        {issue.isRuntime === true ? 'Runtime ' : ''}
+                        {getNameFromSeverity(issue.severity, i18n)}
+                    </span>
                     <span className={"font-bold"}>{issue.name}</span>
                 </div>
             </AccordionSummary>
             <AccordionDetails className={"flex flex-col"}>
                 <span>{issue.description ?? t('No description was provided for this issue.')}</span>
+                {issue.cause && (
+                    <div className={"flex flex-col my-1"}>
+                        <span className={"font-bold"}>{t('Cause')}</span>
+                        <span className={"font-mono"}>{String(issue.cause)}</span>
+                    </div>
+                )}
 
                 {issue.fixes.length > 0 ? (
                     <div className={"mt-1 flex flex-col"}>
