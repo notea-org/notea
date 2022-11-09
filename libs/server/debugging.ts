@@ -59,14 +59,19 @@ function getLogFile(name: string) {
 
 const loggerTransport: Parameters<typeof pino.multistream>[0] = [
     {
-        stream: fs.createWriteStream(getLogFile('debug'), { flags: 'a' }),
-        level: "debug"
-    },
-    {
         stream: pinoPretty(),
         level: "info"
     }
 ];
+try {
+    loggerTransport.push({
+        stream: fs.createWriteStream(getLogFile('debug'), { flags: 'a' }),
+        level: "debug"
+    });
+} catch (e) {
+    // well, whoops!
+    console.warn("No file logs: %O", e);
+}
 
 const multistream = pino.multistream(loggerTransport);
 
