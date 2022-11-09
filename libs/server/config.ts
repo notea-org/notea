@@ -1,8 +1,14 @@
 import yaml from 'js-yaml';
 import * as env from 'libs/shared/env';
 import { existsSync, readFileSync } from 'fs';
-import { isProbablyError } from 'libs/shared/util';
-import { createLogger, Issue, IssueCategory, IssueFixRecommendation, IssueSeverity } from 'libs/server/debugging';
+import {
+    coerceToValidCause,
+    createLogger,
+    Issue,
+    IssueCategory,
+    IssueFixRecommendation,
+    IssueSeverity
+} from 'libs/server/debugging';
 
 const logger = createLogger("config");
 
@@ -70,14 +76,10 @@ export function loadConfigAndListErrors(): {
         try {
             data = readFileSync(configFile, 'utf-8');
         } catch (e) {
-            let cause;
-            if (isProbablyError(e)) {
-                cause = e.message;
-            }
             errors.push({
                 name: ErrTitle.CONFIG_FILE_READ_FAIL,
                 description: "The configuration file couldn't be read.",
-                cause,
+                cause: coerceToValidCause(e),
                 severity: IssueSeverity.WARNING,
                 category: IssueCategory.CONFIG,
                 fixes: [
@@ -96,17 +98,13 @@ export function loadConfigAndListErrors(): {
             try {
                 baseConfig = yaml.load(data) as Configuration;
             } catch (e) {
-                let cause;
-                if (isProbablyError(e)) {
-                    cause = e.message;
-                }
                 errors.push({
                     name: ErrTitle.CONFIG_FILE_PARSE_FAIL,
                     description:
                         'The configuration file could not be parsed, probably due to a syntax error.',
                     severity: IssueSeverity.WARNING,
                     category: IssueCategory.CONFIG,
-                    cause,
+                    cause: coerceToValidCause(e),
                     fixes: [
                         {
                             description: 'Check your configuration file for syntax errors.',

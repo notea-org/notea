@@ -6,7 +6,13 @@ import { formatSettings, Settings } from 'libs/shared/settings';
 import { isEqual } from 'lodash';
 import { tryJSON } from 'libs/shared/str';
 import { StoreProvider } from 'libs/server/store';
-import { IssueCategory, IssueFixRecommendation, IssueSeverity, reportRuntimeIssue } from 'libs/server/debugging';
+import {
+    coerceToValidCause,
+    IssueCategory,
+    IssueFixRecommendation,
+    IssueSeverity,
+    reportRuntimeIssue
+} from 'libs/server/debugging';
 
 export async function getSettings(store: StoreProvider): Promise<Settings> {
     const settingsPath = getPathSettings();
@@ -22,7 +28,7 @@ export async function getSettings(store: StoreProvider): Promise<Settings> {
             category: IssueCategory.STORE,
             severity: IssueSeverity.FATAL_ERROR,
             name: "Could not get settings",
-            cause: String(e),
+            cause: coerceToValidCause(e),
             fixes: [
                 {
                     description: "Make sure Notea can connect to the store.",

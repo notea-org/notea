@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import useI18n from 'libs/web/hooks/use-i18n';
+import { errorToString, isProbablyError } from 'libs/shared/util';
 
 const Accordion = withStyles({
     root: {
@@ -103,6 +104,7 @@ interface IssueProps {
     issue: IssueInfo;
     id: string;
 }
+
 export const Issue: FC<IssueProps> = function (props) {
     const { issue, id } = props;
     const i18n = useI18n();
@@ -124,6 +126,28 @@ export const Issue: FC<IssueProps> = function (props) {
             break;
     }
 
+    const Cause: FC<{ value: IssueInfo['cause'] }> = ({ value }) => {
+        if (typeof value === 'string') {
+            return (
+                <div className={"flex flex-row my-1"}>
+                    <span className={"font-bold"}>{t('Cause')}</span>
+                    <span className={"font-mono ml-1"}>{value}</span>
+                </div>
+            );
+        }
+
+        if (isProbablyError(value)) {
+            return (
+                <div className={"flex flex-col my-1"}>
+                    <span className={"font-bold"}>{t('Cause')}</span>
+                    <pre className={"font-mono whitespace-pre"}>{errorToString(value)}</pre>
+                </div>
+            );
+        }
+
+        throw new Error("Invalid value type");
+    };
+
     return (
         <Accordion className={`border-l-4 ${borderColour} bg-gray-200`}>
             <AccordionSummary
@@ -142,12 +166,7 @@ export const Issue: FC<IssueProps> = function (props) {
             </AccordionSummary>
             <AccordionDetails className={"flex flex-col"}>
                 <span>{issue.description ?? t('No description was provided for this issue.')}</span>
-                {issue.cause && (
-                    <div className={"flex flex-col my-1"}>
-                        <span className={"font-bold"}>{t('Cause')}</span>
-                        <span className={"font-mono"}>{String(issue.cause)}</span>
-                    </div>
-                )}
+                {issue.cause && <Cause value={issue.cause}/>}
 
                 {issue.fixes.length > 0 ? (
                     <div className={"mt-1 flex flex-col"}>

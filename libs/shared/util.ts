@@ -4,3 +4,27 @@ export function isProbablyError(e: any): e is Error {
 
     return e && e.stack && e.message;
 }
+
+export function errorToString(error: Error): string {
+    let str = "";
+
+    if (error.stack) {
+        return error.stack;
+    }
+
+    if (error.name) {
+        str += error.name;
+    }
+    if (error.message) {
+        str = ensureEndingUnlessEmpty(str, ": ") + error.message;
+    }
+
+    return str;
+}
+
+export function ensureEndingUnlessEmpty(str: string, ending: string) {
+    if (str.length > 0 && !str.endsWith(ending)) {
+        return str + ending;
+    }
+    return str;
+}

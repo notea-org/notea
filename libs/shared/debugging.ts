@@ -1,5 +1,6 @@
 import { ContextProps as I18nContextProps } from 'libs/web/utils/i18n-provider';
 import pino from 'pino';
+import { isProbablyError } from 'libs/shared/util';
 
 export enum IssueCategory {
     CONFIG = "config",
@@ -62,13 +63,19 @@ export interface IssueFix {
     steps?: Array<string>;
 }
 
+export interface ErrorLike {
+    name?: string;
+    message?: string;
+    stack?: string;
+}
+
 export interface Issue {
     name: string;
     description?: string;
     category: IssueCategory;
     severity: IssueSeverity;
     fixes: Array<IssueFix>;
-    cause?: string;
+    cause?: string | ErrorLike;
     isRuntime?: boolean;
 }
 
@@ -86,4 +93,20 @@ export interface DebugInformation {
 
 export function logLevelToString(level: number) {
     return pino.levels.labels[level];
+}
+
+export function coerceToValidCause(e: any): Issue['cause'] {
+    if (isProbablyError(e)) {
+        return toErrorLike(e);
+    }
+    return String(e);
+}
+
+// NOTE(tecc): This has to be done because otherwise Next just does not play nice
+export function toErrorLike(e: Error): ErrorLike {
+    return {
+        name: e.name,
+        stack: e.stack,
+        message: e.message
+    };
 }

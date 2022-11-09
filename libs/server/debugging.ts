@@ -3,7 +3,7 @@ import pino from 'pino';
 import pinoPretty from 'pino-pretty';
 import * as path from 'path';
 import * as fs from 'fs';
-import { DebugInformation, Issue, IssueCategory, IssueSeverity } from 'libs/shared/debugging';
+import { coerceToValidCause, DebugInformation, Issue, IssueCategory, IssueSeverity } from 'libs/shared/debugging';
 import Logger = pino.Logger;
 
 export * from 'libs/shared/debugging'; // here's a lil' lesson in trickery
@@ -27,7 +27,7 @@ export function findIssues(): Array<Issue> {
             severity: IssueSeverity.FATAL_ERROR,
             category: IssueCategory.CONFIG,
             name: "Cannot load config",
-            cause: String(e),
+            cause: coerceToValidCause(e),
             fixes: []
         });
     }
