@@ -5,6 +5,7 @@ import { IssueList } from 'components/debug/issue-list';
 import { DebugInfoCopyButton } from 'components/debug/debug-info-copy-button';
 import { DebugInformation, IssueSeverity } from 'libs/shared/debugging';
 import { Logs } from 'components/debug/logs';
+import * as env from 'libs/shared/env';
 
 export function DebugPage({ debugInformation }: ServerProps) {
     if (!debugInformation) throw new Error('Missing debug information');
@@ -76,8 +77,14 @@ export const getServerSideProps = async (ctx: SSRContext) => {
     // has to be cast to non-null
     const debugInformation = ctx.req.props.debugInformation as DebugInformation;
 
+
+    const envAllowDebug = env.parseBool(env.getEnvRaw('ALLOW_DEBUG'), false);
+
     let redirect;
-    if (!debugInformation.issues.some((v) => v.severity === IssueSeverity.FATAL_ERROR)) {
+    // It's only allowed if ALLOW_DEBUG is true or if a fatal error was registered
+    // Note that it doesn't work well with Vercel due to the serverless architecture
+    // but some errors can still be detected
+    if (!envAllowDebug && !debugInformation.issues.some((v) => v.severity === IssueSeverity.FATAL_ERROR)) {
         redirect = {
             destination: '/',
             permanent: false,
