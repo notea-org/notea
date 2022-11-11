@@ -59,6 +59,7 @@ enum ErrTitle {
     CONFIG_FILE_READ_FAIL = 'Failed to load configuration file',
     INVALID_AUTH_CONFIG = 'Invalid authorisation configuration',
     CONFIG_FILE_PARSE_FAIL = 'Could not parse configuration file',
+    INVALID_STORE_CONFIG = 'Invalid store configuration',
 }
 
 export function loadConfigAndListErrors(): {
@@ -212,7 +213,7 @@ export function loadConfigAndListErrors(): {
         store = baseConfig.store;
     }
     // for now, this works
-    {
+    try {
         store.detectCredentials ??= true;
         store.accessKey = env.getEnvRaw(
             'STORE_ACCESS_KEY',
@@ -246,6 +247,15 @@ export function loadConfigAndListErrors(): {
             env.getEnvRaw('DIRECT_RESPONSE_ATTACHMENT', false),
             store.proxyAttachments ?? false
         );
+    } catch (e) {
+        errors.push({
+            name: ErrTitle.INVALID_STORE_CONFIG,
+            description: 'Could not load configuration for store',
+            severity: IssueSeverity.FATAL_ERROR,
+            category: IssueCategory.CONFIG,
+            cause: coerceToValidCause(e),
+            fixes: []
+        });
     }
 
     let server: ServerConfiguration;
