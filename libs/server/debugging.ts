@@ -8,12 +8,30 @@ import Logger = pino.Logger;
 
 export * from 'libs/shared/debugging'; // here's a lil' lesson in trickery
 
-const runtimeIssues: Array<Issue> = [];
+const serialRuntimeIssues: Array<Issue> = [];
+const keyedRuntimeIssues: Record<keyof any, Issue | undefined> = {};
 export function reportRuntimeIssue(issue: Issue) {
-    runtimeIssues.push({
+    const complete = {
         ...issue,
         isRuntime: true
+    };
+    serialRuntimeIssues.push(complete);
+}
+export function setKeyedRuntimeIssue(key: keyof typeof keyedRuntimeIssues, issue: Issue | null) {
+    if (issue === null) {
+        delete keyedRuntimeIssues[key];
+    } else {
+        keyedRuntimeIssues[key] = issue;
+    }
+}
+function getAllKeyedRuntimeIssues(): Array<Issue> {
+    const values: Array<Issue> = [];
+    Object.values(keyedRuntimeIssues).forEach((v) => {
+        if (v != undefined) { // non-strict equality because that's better for null checks
+            values.push(v);
+        }
     });
+    return values;
 }
 
 export function findIssues(): Array<Issue> {
@@ -32,7 +50,7 @@ export function findIssues(): Array<Issue> {
         });
     }
 
-    issues.push(...runtimeIssues);
+    issues.push(...serialRuntimeIssues, ...getAllKeyedRuntimeIssues());
 
     return issues;
 }

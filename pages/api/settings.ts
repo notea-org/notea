@@ -11,9 +11,10 @@ import {
     IssueCategory,
     IssueFixRecommendation,
     IssueSeverity,
-    reportRuntimeIssue
+    setKeyedRuntimeIssue
 } from 'libs/server/debugging';
 
+const SYM_ISSUE_CANNOT_GET_SETTINGS = Symbol();
 export async function getSettings(store: StoreProvider): Promise<Settings> {
     const settingsPath = getPathSettings();
     let settings;
@@ -24,7 +25,7 @@ export async function getSettings(store: StoreProvider): Promise<Settings> {
             );
         }
     } catch (e) {
-        reportRuntimeIssue({
+        setKeyedRuntimeIssue(SYM_ISSUE_CANNOT_GET_SETTINGS, {
             category: IssueCategory.STORE,
             severity: IssueSeverity.FATAL_ERROR,
             name: "Could not get settings",
@@ -38,6 +39,7 @@ export async function getSettings(store: StoreProvider): Promise<Settings> {
         });
         throw e;
     }
+    setKeyedRuntimeIssue(SYM_ISSUE_CANNOT_GET_SETTINGS, null); // if no issue is there, it removes the issue
     const formatted = formatSettings(settings || {});
 
     if (!settings || !isEqual(settings, formatted)) {
