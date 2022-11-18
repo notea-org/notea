@@ -106,11 +106,11 @@ export function loadConfig() {
         store.detectCredentials ??= true;
         store.accessKey = env.getEnvRaw(
             'STORE_ACCESS_KEY',
-            !store.detectCredentials || !store.accessKey
+            !store.detectCredentials && !store.accessKey
         ) ?? store.accessKey;
         store.secretKey = env.getEnvRaw(
             'STORE_SECRET_KEY',
-            !store.detectCredentials || !store.secretKey
+            !store.detectCredentials && !store.secretKey
         ) ?? store.secretKey;
         store.bucket = env.getEnvRaw(
             'STORE_BUCKET',
