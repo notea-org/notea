@@ -7,10 +7,10 @@ import {
     Issue,
     IssueCategory,
     IssueFixRecommendation,
-    IssueSeverity
+    IssueSeverity,
 } from 'libs/server/debugging';
 
-const logger = createLogger("config");
+const logger = createLogger('config');
 
 export type BasicUser = { username: string; password: string };
 type BasicMultiUserConfiguration = {
@@ -62,16 +62,23 @@ enum ErrTitle {
     INVALID_STORE_CONFIG = 'Invalid store configuration',
 }
 
+enum ErrInstruction {
+    ENV_EDIT = 'If using Vercel or Netlify, go to the environment settings. If using an environment file, edit that file.',
+    CONFIG_FILE_OPEN = 'Edit the configuration file. Note that this does not work for Vercel nor Netlify.',
+}
+
 export function loadConfigAndListErrors(): {
     config?: Configuration;
     errors: Array<Issue>;
 } {
-    logger.debug("Loading configuration from scratch (loadConfigAndListErrors)");
+    logger.debug(
+        'Loading configuration from scratch (loadConfigAndListErrors)'
+    );
     // TODO: More config errors
     const configFile = env.getEnvRaw('CONFIG_FILE', false) ?? './notea.yml';
     const errors: Array<Issue> = [];
 
-    function tryElseAddError(f: (() => void), issue: ((e: any) => Issue)): void {
+    function tryElseAddError(f: () => void, issue: (e: any) => Issue): void {
         try {
             f();
         } catch (e) {
@@ -93,13 +100,15 @@ export function loadConfigAndListErrors(): {
                 category: IssueCategory.CONFIG,
                 fixes: [
                     {
-                        description: "Make sure Notea has read access to the configuration file",
+                        description:
+                            'Make sure Notea has read access to the configuration file',
                         recommendation: IssueFixRecommendation.NEUTRAL,
                     },
                     {
-                        description: 'Make sure no other programme is using the configuration file',
-                        recommendation: IssueFixRecommendation.NEUTRAL
-                    }
+                        description:
+                            'Make sure no other programme is using the configuration file',
+                        recommendation: IssueFixRecommendation.NEUTRAL,
+                    },
                 ],
             });
         }
@@ -116,9 +125,10 @@ export function loadConfigAndListErrors(): {
                     cause: coerceToValidCause(e),
                     fixes: [
                         {
-                            description: 'Check your configuration file for syntax errors.',
-                            recommendation: IssueFixRecommendation.RECOMMENDED
-                        }
+                            description:
+                                'Check your configuration file for syntax errors.',
+                            recommendation: IssueFixRecommendation.RECOMMENDED,
+                        },
                     ],
                 });
             }
@@ -143,17 +153,30 @@ export function loadConfigAndListErrors(): {
                     category: IssueCategory.CONFIG,
                     fixes: [
                         {
-                            description: 'Include an auth section in the configuration file',
+                            description:
+                                'Set the PASSWORD environment variable',
                             recommendation: IssueFixRecommendation.RECOMMENDED,
+                            steps: [
+                                ErrInstruction.ENV_EDIT,
+                                'Set a variable with PASSWORD as key and your desired password as the variable.',
+                            ],
                         },
                         {
-                            description: 'Set the PASSWORD environment variable',
-                            recommendation: IssueFixRecommendation.NEUTRAL,
+                            description:
+                                'Include an auth section in the configuration file',
+                            recommendation: IssueFixRecommendation.RECOMMENDED,
+                            steps: [
+                                ErrInstruction.CONFIG_FILE_OPEN,
+                                'Configure the auth section as you desire the authentication to work. Note that as of now it only supports basic authentication.',
+                            ],
                         },
                         {
                             description: 'Disable authentication',
-                            recommendation: IssueFixRecommendation.NOT_ADVISED
-                        }
+                            recommendation: IssueFixRecommendation.NOT_ADVISED,
+                            steps: [
+                                'Set either the DISABLE_PASSWORD environment variable or set auth.type to none in the configuration file.',
+                            ],
+                        },
                     ],
                 });
             } else {
@@ -173,13 +196,15 @@ export function loadConfigAndListErrors(): {
                     severity: IssueSeverity.FATAL_ERROR,
                     fixes: [
                         {
-                            description: "Don't set the PASSWORD environment variable prior to running Notea.",
-                            recommendation: IssueFixRecommendation.RECOMMENDED
+                            description:
+                                "Don't set the PASSWORD environment variable prior to running Notea.",
+                            recommendation: IssueFixRecommendation.RECOMMENDED,
                         },
                         {
-                            description: 'Remove the auth section from your file configuration.',
-                            recommendation: IssueFixRecommendation.NEUTRAL
-                        }
+                            description:
+                                'Remove the auth section from your file configuration.',
+                            recommendation: IssueFixRecommendation.NEUTRAL,
+                        },
                     ],
                 });
             }
@@ -193,10 +218,12 @@ export function loadConfigAndListErrors(): {
                         category: IssueCategory.CONFIG,
                         fixes: [
                             {
-                                description: "Change to a single-user configuration.",
-                                recommendation: IssueFixRecommendation.RECOMMENDED
-                            }
-                        ]
+                                description:
+                                    'Change to a single-user configuration.',
+                                recommendation:
+                                    IssueFixRecommendation.RECOMMENDED,
+                            },
+                        ],
                     });
 
                     /*for (const user of auth.users) {
@@ -223,96 +250,115 @@ export function loadConfigAndListErrors(): {
     // for now, this works
     try {
         store.detectCredentials ??= true;
-        tryElseAddError(() => {
-            store.accessKey = env.getEnvRaw(
-                'STORE_ACCESS_KEY',
-                !store.detectCredentials && !store.accessKey
-            ) ?? store.accessKey;
-        }, (e) => ({
-            name: "Store access key was not provided",
-            category: IssueCategory.CONFIG,
-            description: "The store access key was not provided to Notea, and detecting credentials is disabled.",
-            severity: IssueSeverity.FATAL_ERROR,
-            cause: coerceToValidCause(e),
-            fixes: [
-                {
-                    description: "Set the STORE_ACCESS_KEY environment variable",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                },
-                {
-                    description: "Set store.accessKey in the configuration file",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                },
-                {
-                    description: "Allow autodetection of credentials",
-                    recommendation: IssueFixRecommendation.NEUTRAL
-                }
-            ]
-        }));
-        tryElseAddError(() => {
-            store.secretKey = env.getEnvRaw(
-                'STORE_SECRET_KEY',
-                !store.detectCredentials && !store.secretKey
-            ) ?? store.secretKey;
-        }, (e) => ({
-            name: "Store secret key was not provided",
-            category: IssueCategory.CONFIG,
-            description: "The store secret key was not provided to Notea, and detecting credentials is disabled.",
-            severity: IssueSeverity.FATAL_ERROR,
-            cause: coerceToValidCause(e),
-            fixes: [
-                {
-                    description: "Set the STORE_SECRET_KEY environment variable",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                },
-                {
-                    description: "Set store.secretKey in the configuration file",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                },
-                {
-                    description: "Allow autodetection of credentials",
-                    recommendation: IssueFixRecommendation.NEUTRAL
-                }
-            ]
-        }));
-        store.bucket = env.getEnvRaw(
-            'STORE_BUCKET',
-            false
-        ) ?? 'notea';
-        store.forcePathStyle = env.parseBool(env.getEnvRaw(
-            'STORE_FORCE_PATH_STYLE',
-            false
-        )) ?? store.forcePathStyle ?? false;
-        tryElseAddError(() => {
-            store.endpoint = env.getEnvRaw(
-                'STORE_END_POINT',
-                store.endpoint == null
-            ) ?? store.endpoint;
-        }, (e) => ({
-            name: "Store endpoint was not provided",
-            category: IssueCategory.CONFIG,
-            description: "The store endpoint was not provided to Notea.",
-            severity: IssueSeverity.FATAL_ERROR,
-            cause: coerceToValidCause(e),
-            fixes: [
-                {
-                    description: "Set the STORE_END_POINT environment variable",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                },
-                {
-                    description: "Set store.endpoint in the configuration file",
-                    recommendation: IssueFixRecommendation.RECOMMENDED,
-                }
-            ]
-        }));
-        store.region = env.getEnvRaw(
-            'STORE_REGION',
-            false
-        ) ?? store.region ?? 'us-east-1';
-        store.prefix = env.getEnvRaw(
-            'STORE_PREFIX',
-            false,
-        ) ?? store.prefix ?? '';
+        tryElseAddError(
+            () => {
+                store.accessKey =
+                    env.getEnvRaw(
+                        'STORE_ACCESS_KEY',
+                        !store.detectCredentials && !store.accessKey
+                    ) ?? store.accessKey;
+            },
+            (e) => ({
+                name: 'Store access key was not provided',
+                category: IssueCategory.CONFIG,
+                description:
+                    'The store access key was not provided to Notea, and detecting credentials is disabled.',
+                severity: IssueSeverity.FATAL_ERROR,
+                cause: coerceToValidCause(e),
+                fixes: [
+                    {
+                        description:
+                            'Set the STORE_ACCESS_KEY environment variable',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                    },
+                    {
+                        description:
+                            'Set store.accessKey in the configuration file',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                    },
+                    {
+                        description: 'Allow autodetection of credentials',
+                        recommendation: IssueFixRecommendation.NEUTRAL,
+                    },
+                ],
+            })
+        );
+        tryElseAddError(
+            () => {
+                store.secretKey =
+                    env.getEnvRaw(
+                        'STORE_SECRET_KEY',
+                        !store.detectCredentials && !store.secretKey
+                    ) ?? store.secretKey;
+            },
+            (e) => ({
+                name: 'Store secret key was not provided',
+                category: IssueCategory.CONFIG,
+                description:
+                    'The store secret key was not provided to Notea, and detecting credentials is disabled.',
+                severity: IssueSeverity.FATAL_ERROR,
+                cause: coerceToValidCause(e),
+                fixes: [
+                    {
+                        description:
+                            'Set the STORE_SECRET_KEY environment variable',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                    },
+                    {
+                        description:
+                            'Set store.secretKey in the configuration file',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                    },
+                    {
+                        description: 'Allow autodetection of credentials',
+                        recommendation: IssueFixRecommendation.NEUTRAL,
+                    },
+                ],
+            })
+        );
+        store.bucket = env.getEnvRaw('STORE_BUCKET', false) ?? 'notea';
+        store.forcePathStyle =
+            env.parseBool(env.getEnvRaw('STORE_FORCE_PATH_STYLE', false)) ??
+            store.forcePathStyle ??
+            false;
+        tryElseAddError(
+            () => {
+                store.endpoint =
+                    env.getEnvRaw('STORE_END_POINT', store.endpoint == null) ??
+                    store.endpoint;
+            },
+            (e) => ({
+                name: 'Store endpoint was not provided',
+                category: IssueCategory.CONFIG,
+                description: 'The store endpoint was not provided to Notea.',
+                severity: IssueSeverity.FATAL_ERROR,
+                cause: coerceToValidCause(e),
+                fixes: [
+                    {
+                        description:
+                            'Set the STORE_END_POINT environment variable',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                        steps: [
+                            ErrInstruction.ENV_EDIT,
+                            "Set a variable with STORE_END_POINT as key and your store's endpoint as the variable. Note that the endpoint must be resolvable by the server Notea runs on.",
+                        ],
+                    },
+                    {
+                        description:
+                            'Set store.endpoint in the configuration file',
+                        recommendation: IssueFixRecommendation.RECOMMENDED,
+                        steps: [
+                            ErrInstruction.CONFIG_FILE_OPEN,
+                            "In the store section, set endpoint to your store's endpoint.",
+                        ],
+                    },
+                ],
+            })
+        );
+        store.region =
+            env.getEnvRaw('STORE_REGION', false) ?? store.region ?? 'us-east-1';
+        store.prefix =
+            env.getEnvRaw('STORE_PREFIX', false) ?? store.prefix ?? '';
         store.proxyAttachments = env.parseBool(
             env.getEnvRaw('DIRECT_RESPONSE_ATTACHMENT', false),
             store.proxyAttachments ?? false
@@ -324,7 +370,7 @@ export function loadConfigAndListErrors(): {
             severity: IssueSeverity.FATAL_ERROR,
             category: IssueCategory.CONFIG,
             cause: coerceToValidCause(e),
-            fixes: []
+            fixes: [],
         });
     }
 
@@ -376,9 +422,9 @@ export function loadConfig() {
 
 export function config(): Configuration {
     if (!loaded) {
-        logger.debug("Loading configuration");
+        logger.debug('Loading configuration');
         loadConfig();
-        logger.debug("Successfully loaded configuration");
+        logger.debug('Successfully loaded configuration');
     }
 
     return loaded as Configuration;
