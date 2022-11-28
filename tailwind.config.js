@@ -9,6 +9,8 @@ module.exports = {
         colors: {
             gray: colors.gray,
             blue: colors.blue,
+            red: colors.red,
+            yellow: colors.yellow,
             transparent: 'transparent',
             current: 'currentColor',
         },
@@ -26,6 +28,7 @@ module.exports = {
         },
         fontFamily: {
             sans: ['Noto Sans'].concat(defaultConfig.theme.fontFamily['sans']),
+            mono: defaultConfig.theme.fontFamily['mono']
         },
     },
     variants: {

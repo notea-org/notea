@@ -1,0 +1,70 @@
+{
+    "actions": {
+        "cancel": "Cancel",
+        "copy": "Copy to clipboard"
+    },
+    "editor": {
+        "actions": {
+            "delete_column": "Delete column",
+            "delete_image": "Delete image",
+            "delete_row": "Delete row",
+            "delete_table": "Delete table"
+        },
+        "nodes": {
+            "code": "Code",
+            "code_block": "Code block",
+            "image": "Image"
+        }
+    },
+    "page": {
+        "action": {
+            "create": "Create page",
+            "create_subpage": "Create subpage"
+        }
+    },
+    "settings": {
+        "basic": {
+            "descriptions": {
+                "daily_notes_location": "Dagliga anteckningar kommer skapas i denna sida"
+            },
+            "title": "Basic",
+            "vars": {
+                "daily_notes_location": "Daily notes are saved in",
+                "default_editor_width": "Default editor width",
+                "language": "Language",
+                "theme": "Theme"
+            }
+        },
+        "import_export": {
+            "actions": {
+                "import": "Import",
+                "export": "Export"
+            },
+            "description": "Import a zip file containing markdown files to this location, or export all pages from this location.",
+            "title": "Import & export",
+            "vars": {
+                "location": "Location"
+            }
+        },
+        "sharing": {
+            "vars": {
+                "snippet_injection": "Snippet injection"
+            },
+            "descriptions": {
+                "snippet_injection": "Inject analytics or other scripts into the HTML of your sharing page."
+            },
+            "title": "Sharing"
+        },
+        "theme": {
+            "dark": "Dark",
+            "light": "Light",
+            "sync": "Sync with system"
+        }
+    },
+    "sidebar": {
+        "tools": {
+            "search": "Search in notes",
+            "daily_notes": "Daily Notes"
+        }
+    }
+}
