@@ -26,7 +26,7 @@ COPY --from=builder /app/node_modules ./node_modules
 VOLUME /app/config
 # VOLUME /app/data
 
-ENV CONFIG_FILE=/app/config/notea.yml
+ENV CONFIG_FILE=/app/config/notea.yml LOG_DIRECTORY=/app/logs
 
 EXPOSE 3000
 

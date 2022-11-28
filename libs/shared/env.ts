@@ -12,7 +12,8 @@ type AllowedEnvs =
     | 'DIRECT_RESPONSE_ATTACHMENT'
     | 'IS_DEMO'
     | 'STORE_PREFIX'
-    | 'CONFIG_FILE';
+    | 'CONFIG_FILE'
+    | 'ALLOW_DEBUG';
 
 /**
  * @deprecated This function should not be used. Prefer the `config()` system.
