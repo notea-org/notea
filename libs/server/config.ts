@@ -71,6 +71,14 @@ export function loadConfigAndListErrors(): {
     const configFile = env.getEnvRaw('CONFIG_FILE', false) ?? './notea.yml';
     const errors: Array<Issue> = [];
 
+    function tryElseAddError(f: (() => void), issue: ((e: any) => Issue)): void {
+        try {
+            f();
+        } catch (e) {
+            errors.push(issue(e));
+        }
+    }
+
     let baseConfig: Configuration = {} as Configuration;
     if (existsSync(configFile)) {
         let data;
@@ -135,11 +143,11 @@ export function loadConfigAndListErrors(): {
                     category: IssueCategory.CONFIG,
                     fixes: [
                         {
-                            description: 'Include an auth section the configuration file',
+                            description: 'Include an auth section in the configuration file',
                             recommendation: IssueFixRecommendation.RECOMMENDED,
                         },
                         {
-                            description: 'Set the password using the environment variable',
+                            description: 'Set the PASSWORD environment variable',
                             recommendation: IssueFixRecommendation.NEUTRAL,
                         },
                         {
@@ -215,14 +223,58 @@ export function loadConfigAndListErrors(): {
     // for now, this works
     try {
         store.detectCredentials ??= true;
-        store.accessKey = env.getEnvRaw(
-            'STORE_ACCESS_KEY',
-            !store.detectCredentials && !store.accessKey
-        ) ?? store.accessKey;
-        store.secretKey = env.getEnvRaw(
-            'STORE_SECRET_KEY',
-            !store.detectCredentials && !store.secretKey
-        ) ?? store.secretKey;
+        tryElseAddError(() => {
+            store.accessKey = env.getEnvRaw(
+                'STORE_ACCESS_KEY',
+                !store.detectCredentials && !store.accessKey
+            ) ?? store.accessKey;
+        }, (e) => ({
+            name: "Store access key was not provided",
+            category: IssueCategory.CONFIG,
+            description: "The store access key was not provided to Notea, and detecting credentials is disabled.",
+            severity: IssueSeverity.FATAL_ERROR,
+            cause: coerceToValidCause(e),
+            fixes: [
+                {
+                    description: "Set the STORE_ACCESS_KEY environment variable",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+                {
+                    description: "Set store.accessKey in the configuration file",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+                {
+                    description: "Allow autodetection of credentials",
+                    recommendation: IssueFixRecommendation.NEUTRAL
+                }
+            ]
+        }));
+        tryElseAddError(() => {
+            store.secretKey = env.getEnvRaw(
+                'STORE_SECRET_KEY',
+                !store.detectCredentials && !store.secretKey
+            ) ?? store.secretKey;
+        }, (e) => ({
+            name: "Store secret key was not provided",
+            category: IssueCategory.CONFIG,
+            description: "The store secret key was not provided to Notea, and detecting credentials is disabled.",
+            severity: IssueSeverity.FATAL_ERROR,
+            cause: coerceToValidCause(e),
+            fixes: [
+                {
+                    description: "Set the STORE_SECRET_KEY environment variable",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+                {
+                    description: "Set store.secretKey in the configuration file",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+                {
+                    description: "Allow autodetection of credentials",
+                    recommendation: IssueFixRecommendation.NEUTRAL
+                }
+            ]
+        }));
         store.bucket = env.getEnvRaw(
             'STORE_BUCKET',
             false
@@ -231,10 +283,28 @@ export function loadConfigAndListErrors(): {
             'STORE_FORCE_PATH_STYLE',
             false
         )) ?? store.forcePathStyle ?? false;
-        store.endpoint = env.getEnvRaw(
-            'STORE_END_POINT',
-            store.endpoint == null
-        ) ?? store.endpoint;
+        tryElseAddError(() => {
+            store.endpoint = env.getEnvRaw(
+                'STORE_END_POINT',
+                store.endpoint == null
+            ) ?? store.endpoint;
+        }, (e) => ({
+            name: "Store endpoint was not provided",
+            category: IssueCategory.CONFIG,
+            description: "The store endpoint was not provided to Notea.",
+            severity: IssueSeverity.FATAL_ERROR,
+            cause: coerceToValidCause(e),
+            fixes: [
+                {
+                    description: "Set the STORE_END_POINT environment variable",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+                {
+                    description: "Set store.endpoint in the configuration file",
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                }
+            ]
+        }));
         store.region = env.getEnvRaw(
             'STORE_REGION',
             false
