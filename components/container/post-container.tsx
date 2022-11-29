@@ -47,9 +47,9 @@ export const PostContainer: FC<{
                         />
                     ) : null}
                     <footer className="pb-10 text-gray-300 text-center my-20 text-sm">
-                        Built with{' '}
+                        Written with{' '}
                         <a
-                            href="https://cinwell.com/notea/"
+                            href="https://github.com/notea-org/notea"
                             target="_blank"
                             rel="noreferrer"
                         >
