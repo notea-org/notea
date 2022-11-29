@@ -1,119 +1,70 @@
 {
-  "Add a page inside": "Lägg till en sida inuti",
-  "Add to Favorites": "Markera som favorit",
-  "Align center": "Align center",
-  "Align left": "Align left",
-  "Align right": "Align right",
-  "Anyone can visit the page via the link": "Vem som helst kan visit kolla på sidan via länken",
-  "Back": "Tillbaka",
-  "Basic": "Enkel",
-  "Big heading": "Stor rubrik",
-  "Bold": "Fetstilt",
-  "Bulleted list": "Punktlista",
-  "Cancel": "Avbryt",
-  "Code": "Kod",
-  "Code block": "Kodblock",
-  "Collapse all pages": "Kollapsa alla sidor",
-  "Copied to clipboard": "Kopierat till urklipp",
-  "Copied!": "Kopierat!",
-  "Copy Link": "Kopiera länk",
-  "Copy to clipboard": "Kopiera till urklipp",
-  "Create a new note": "Skapa en ny anteckning",
-  "Create bookmark": "Skapa bokmärke",
-  "Create embed": "Skapa inbäddning",
-  "Create link": "Skapa länk",
-  "Create page": "Skapa sida",
-  "Daily Notes": "Dagliga anteckningar",
-  "Daily notes are saved in": "Dagliga anteckningar är sparade i",
-  "Daily notes will be created under this page": "Dagliga anteckningar kommer skapas i denna sida",
-  "Dark": "Mörkt",
-  "Default editor width": "Standardbredd på redigerare",
-  "Delete": "Radera",
-  "Delete column": "Radera kolumn",
-  "Delete image": "Radera bild",
-  "Delete row": "Radera rad",
-  "Delete table": "Radera tabell",
-  "Disable editing in the demo.": "Stäng av redigering i demon.",
-  "Divider": "Avdelare",
-  "Export": "Exportera",
-  "Favorites": "Favoriter",
-  "File size must be less than {{n}}mb": "Filstorleken måste vara mindre än {{n}}mb",
-  "Find or create a note…": "Hitta eller skapa en anteckning…",
-  "Fold Favorites": "Vik ihop favoriter",
-  "Fold sidebar": "Vik ihop sidofält",
-  "Forward": "Framåt",
-  "Heading": "Rubrik",
-  "Highlight": "Markera",
-  "Image": "Bild",
-  "Import": "Importera",
-  "Import & Export": "Importering och exportering",
-  "Import a zip file containing markdown files to this location, or export all pages from this location.": "Importera en zip-fil med Markdown-filer till denna plats, eller exportera alla sidor från denna plats.",
-  "Info": "Info",
-  "Info notice": "Infomeddelande",
-  "Inject analytics or other scripts into the HTML of your sharing page. ": "Injicera analytik eller andra skripter in i delade sidor.",
-  "Insert column after": "Infoga kolumn efter",
-  "Insert column before": "Infoga kolumn före",
-  "Insert row after": "Infoga rad efter",
-  "Insert row before": "Infoga rad före",
-  "Italic": "Kursiv",
-  "Keep typing to filter…": "Fortsätt skriva för att filtrera…",
-  "Language": "Språk",
-  "Large": "Stor",
-  "Light": "Ljust",
-  "Link": "Länk",
-  "Link copied to clipboard": "Länk kopierad till urklipp",
-  "Linked to this page": "Länkad till denna sida",
-  "Location": "Plats",
-  "Medium heading": "Mediumrubrik",
-  "My Pages": "Mina sidor",
-  "New Page": "Ny sida",
-  "No notes inside": "Inga anteckningar inuti",
-  "No results": "Inga resultat",
-  "Not a public page": "Inte en publik sida",
-  "Not found markdown file": "Inte hittad Markdown-sida",
-  "Open link": "Öppna länk",
-  "Ordered list": "Ordnad lista",
-  "Page break": "Sidbrytning",
-  "Paste a link…": "Infoga en länk…",
-  "Paste a {{title}} link…": "Infoga en {{title}}-länk…",
-  "Placeholder": "Platshållare",
-  "Please select zip file": "Vänligen välj en zip-fil",
-  "Quote": "Citat",
-  "Recovery": "Återställning",
-  "Remove": "Ta bort",
-  "Remove from Favorites": "Ta bort från favoriter",
-  "Remove link": "Ta bort länk",
-  "Remove, Copy Link, etc": "Radera, Kopiera Länk, mm.",
-  "Root Page": "Rotsida",
-  "Search note": "Sök anteckning",
-  "Search note in trash": "Sök anteckning i papperskorgen",
-  "Search or paste a link…": "Sök eller infoga en länk…",
-  "Settings": "Inställningar",
-  "Share page": "Dela sida",
-  "Share to web": "Dela på webben",
-  "Sharing": "Delning",
-  "Show note in tree": "Visa anteckning i träd",
-  "Small (default)": "Liten (standard)",
-  "Small heading": "Liten rubrik",
-  "Snippet injection": "Utdragsinjicering",
-  "Sorry, an error occurred creating the link": "Ursäkta, ett problem uppstod medans länken skapades",
-  "Sorry, an error occurred uploading the image": "Ursäkta, ett problem uppstod medans bilden laddades up",
-  "Sorry, that link won’t work for this embed type": "Ursäkta, den där länken kommer ej fungera för denna inbäddningstyp",
-  "Strikethrough": "Strikethrough",
-  "Subheading": "Underrubrik",
-  "Successfully imported {{n}} markdown files": "Importerade {{n}} Markdown-filer",
-  "Sync with system": "Synkronisera med systemet",
-  "Table": "Tabell",
-  "Theme mode": "Tema",
-  "This page is in trash": "Denna sida är i papperskorgen",
-  "Tip": "Tips",
-  "Tip notice": "Tipsmeddelande",
-  "Todo list": "Att göra-lista",
-  "Toggle width": "Växla bredd",
-  "Trash": "Papperskorgen",
-  "Type '/' to insert…": "Skriv '/' för att infoga…",
-  "Untitled": "Namnlös",
-  "Warning": "Varning",
-  "Warning notice": "Varningsmeddelande",
-  "Write something nice…": "Skriv något snällt…"
+    "actions": {
+        "cancel": "Cancel",
+        "copy": "Copy to clipboard"
+    },
+    "editor": {
+        "actions": {
+            "delete_column": "Delete column",
+            "delete_image": "Delete image",
+            "delete_row": "Delete row",
+            "delete_table": "Delete table"
+        },
+        "nodes": {
+            "code": "Code",
+            "code_block": "Code block",
+            "image": "Image"
+        }
+    },
+    "page": {
+        "action": {
+            "create": "Create page",
+            "create_subpage": "Create subpage"
+        }
+    },
+    "settings": {
+        "basic": {
+            "descriptions": {
+                "daily_notes_location": "Dagliga anteckningar kommer skapas i denna sida"
+            },
+            "title": "Basic",
+            "vars": {
+                "daily_notes_location": "Daily notes are saved in",
+                "default_editor_width": "Default editor width",
+                "language": "Language",
+                "theme": "Theme"
+            }
+        },
+        "import_export": {
+            "actions": {
+                "import": "Import",
+                "export": "Export"
+            },
+            "description": "Import a zip file containing markdown files to this location, or export all pages from this location.",
+            "title": "Import & export",
+            "vars": {
+                "location": "Location"
+            }
+        },
+        "sharing": {
+            "vars": {
+                "snippet_injection": "Snippet injection"
+            },
+            "descriptions": {
+                "snippet_injection": "Inject analytics or other scripts into the HTML of your sharing page."
+            },
+            "title": "Sharing"
+        },
+        "theme": {
+            "dark": "Dark",
+            "light": "Light",
+            "sync": "Sync with system"
+        }
+    },
+    "sidebar": {
+        "tools": {
+            "search": "Search in notes",
+            "daily_notes": "Daily Notes"
+        }
+    }
 }
