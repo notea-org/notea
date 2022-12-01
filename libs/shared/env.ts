@@ -63,7 +63,7 @@ export function getEnvRaw(env: AllowedEnvs, required: boolean = false): string |
         }
     }
 
-    return String(value).toLocaleLowerCase();
+    return String(value);
 }
 
 export function parseBool(str: string, invalid?: boolean): boolean;
