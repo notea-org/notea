@@ -99,3 +99,5 @@ export function createLogger(name: string): Logger {
         level: "trace",
     }, multistream);
 }
+
+export type { Logger };

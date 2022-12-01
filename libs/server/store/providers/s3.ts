@@ -13,9 +13,14 @@ import { streamToBuffer } from '../utils';
 import { Readable } from 'stream';
 import { isEmpty, toNumber } from 'lodash';
 import { Client as MinioClient } from 'minio';
+import { createLogger, Logger } from 'libs/server/debugging';
 
 function isNoSuchKey(err: any) {
-    return err.code === 'NoSuchKey' || err.message === 'NoSuchKey' || err.name === "NoSuchKey";
+    return (
+        err.code === 'NoSuchKey' ||
+        err.message === 'NoSuchKey' ||
+        err.name === 'NoSuchKey'
+    );
 }
 
 /**
@@ -33,9 +38,11 @@ export interface S3Config extends StoreProviderConfig {
 export class StoreS3 extends StoreProvider {
     client: S3Client;
     config: S3Config;
+    logger: Logger;
 
     constructor(config: S3Config) {
         super(config);
+        this.logger = createLogger('store.s3');
         this.client = new S3Client({
             forcePathStyle: config.pathStyle,
             region: config.region,
@@ -49,7 +56,7 @@ export class StoreS3 extends StoreProvider {
                     : undefined,
         });
         if (!config.accessKey || !config.secretKey) {
-            console.log(
+            this.logger.warn(
                 '[Notea] Environment variables STORE_ACCESS_KEY or STORE_SECRET_KEY is missing. Trying to use IAM role credentials instead ...'
             );
         }
@@ -102,6 +109,7 @@ export class StoreS3 extends StoreProvider {
 
             return !!data;
         } catch (e) {
+            this.logger.warn(e, "Error whilst checking if object %s exists", path);
             return false;
         }
     }
@@ -178,6 +186,7 @@ export class StoreS3 extends StoreProvider {
         options?: ObjectOptions,
         isCompressed?: boolean
     ) {
+        this.logger.debug('Sending command to put object %s', path);
         await this.client.send(
             new PutObjectCommand({
                 Bucket: this.config.bucket,

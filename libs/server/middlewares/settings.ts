@@ -2,26 +2,21 @@ import { DEFAULT_SETTINGS } from 'libs/shared/settings';
 import { getSettings } from 'pages/api/settings';
 import { SSRMiddleware } from '../connect';
 import { Redirect } from 'next';
-import { coerceToValidCause, IssueCategory, IssueSeverity, setKeyedRuntimeIssue } from 'libs/server/debugging';
+import {
+    createLogger
+} from 'libs/server/debugging';
 
-const SYM_COULD_NOT_GET_SETTINGS = Symbol();
+const logger = createLogger("middlewares.settings");
 export const applySettings: SSRMiddleware = async (req, _res, next) => {
     let settings, redirect: Redirect = req.redirect;
     try {
         settings = await getSettings(req.state.store);
     } catch (e) {
-        setKeyedRuntimeIssue(SYM_COULD_NOT_GET_SETTINGS, {
-            name: "Error when loading settings",
-            description: "An unknown error occurred whilst getting settings from the store.",
-            cause: coerceToValidCause(e),
-            severity: IssueSeverity.FATAL_ERROR,
-            category: IssueCategory.MISC,
-            fixes: []
-        });
         redirect = {
             permanent: false,
             destination: '/debug'
         };
+        logger.error(e, "Error whilst loading settings");
     }
     let lngDict = {};
 
