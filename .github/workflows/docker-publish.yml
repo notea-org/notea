@@ -3,9 +3,13 @@ name: Publish to Docker Hub
 on:
     push:
         branches:
-            - main
+            - 'main'
+            - 'release'
         tags:
             - v**
+    pull_request:
+        - opened
+        - reopened
 
 jobs:
     # test:
