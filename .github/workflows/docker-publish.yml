@@ -39,6 +39,7 @@ jobs:
                       type=ref,event=pr
                       type=semver,pattern={{version}}
                       type=semver,pattern={{major}}.{{minor}}
+                      type=edge,branch=main
             - uses: mstachniuk/ci-skip@v1
               with:
                   fail-fast: true
