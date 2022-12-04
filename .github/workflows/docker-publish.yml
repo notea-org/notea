@@ -8,8 +8,9 @@ on:
         tags:
             - v**
     pull_request:
-        - opened
-        - reopened
+        types:
+            - opened
+            - reopened
 
 jobs:
     # test:
