@@ -143,6 +143,51 @@ export function makeHierarchy(
     };
 }
 
+export function cleanItemModel(model: Partial<TreeItemModel>): TreeItemModel {
+    if (!model.id) throw new Error("Missing id on tree model");
+
+    const children = model.children ?? [];
+
+    return {
+        ...model, // In case
+        id: model.id,
+        children,
+        hasChildren: children.length > 0,
+        data: model.data,
+        isExpanded: model.isExpanded ?? false,
+    };
+}
+export function cleanTreeModel(model: Partial<TreeModel>): TreeModel {
+    const items: TreeModel["items"] = {};
+    if (model.items) {
+        for (const itemId in model.items) {
+            const item = model.items[itemId];
+            if (!item) {
+                continue;
+            }
+
+            const cleanedItem = cleanItemModel(item);
+            const children = [];
+            for (const child of cleanedItem.children) {
+                if (child && model.items[child]) {
+                    children.push(child);
+                }
+            }
+
+            items[itemId] = {
+                ...cleanedItem,
+                children
+            };
+        }
+    }
+
+    return {
+        ...model, // In case
+        rootId: model.rootId ?? ROOT_ID,
+        items: items
+    };
+}
+
 const TreeActions = {
     addItem,
     mutateItem,
@@ -152,6 +197,8 @@ const TreeActions = {
     deleteItem,
     flattenTree,
     makeHierarchy,
+    cleanTreeModel,
+    cleanItemModel
 };
 
 export default TreeActions;
