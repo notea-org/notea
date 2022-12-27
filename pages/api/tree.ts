@@ -7,7 +7,7 @@ export default api()
     .use(useAuth)
     .use(useStore)
     .get(async (req, res) => {
-        const tree = await req.state.treeStore.get();
+        const tree = TreeActions.cleanTreeModel(await req.state.treeStore.get());
         const style = req.query['style'];
         switch (style) {
             case 'hierarchy':
