@@ -13,7 +13,7 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 import PortalState from 'libs/web/state/portal';
 import useI18n from 'libs/web/hooks/use-i18n';
-import HeadwayWidget from '@headwayapp/react-widget';
+import HeadwayWidget from '@notea/headway-widget';
 import useMounted from 'libs/web/hooks/use-mounted';
 import { useRouter } from 'next/router';
 

@@ -2010,13 +2010,6 @@
     "@hapi/cryptiles" "5.x.x"
     "@hapi/hoek" "9.x.x"
 
-"@headwayapp/react-widget@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/@headwayapp/react-widget/-/react-widget-0.0.4.tgz"
-  integrity sha512-Gw7R85tE0LSYFBu7DcnGZUO1AnF2J0+HoCKxlQVCE0GgsQzZjfpoCkq+q6zAy9374zSOl4GmivDhh/wCjhH3Pw==
-  dependencies:
-    prop-types "^15.7.2"
-
 "@heroicons/react@^1.0.1":
   version "1.0.6"
   resolved "https://registry.npmjs.org/@heroicons/react/-/react-1.0.6.tgz"
@@ -2441,6 +2434,13 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
+
+"@notea/headway-widget@^0.0.5-alpha":
+  version "0.0.5-alpha"
+  resolved "https://registry.yarnpkg.com/@notea/headway-widget/-/headway-widget-0.0.5-alpha.tgz#ecc30ede6ee4ed58817933f5eddeaded58c26bcf"
+  integrity sha512-D6j+TTM6X6sv3IBIZku/KLKSQ6Dn4hNvXFG6BWVGqGmpDjMptFekgYrHoMk1M+LpnUHIvCWuo2ZynnIGjx/0EQ==
+  dependencies:
+    prop-types "^15.8.1"
 
 "@notea/rich-markdown-editor@11.22.0":
   version "11.22.0"
