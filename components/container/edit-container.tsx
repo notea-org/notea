@@ -1,7 +1,7 @@
 import NoteState from 'libs/web/state/note';
 import { has } from 'lodash';
 import router, { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import NoteTreeState from 'libs/web/state/tree';
 import NoteNav from 'components/note-nav';
 import UIState from 'libs/web/state/ui';
@@ -27,6 +27,8 @@ export const EditContainer = () => {
     const isNew = has(query, 'new');
     const { mutate: mutateSettings } = useSettingsAPI();
     const toast = useToast();
+
+    const [update, setUpdate] = useState(0);
 
     const loadNoteById = useCallback(
         async (id: string) => {
@@ -91,7 +93,13 @@ export const EditContainer = () => {
         abortFindNote();
         loadNoteById(id)
             ?.catch((v) => console.error('Could not load note: %O', v));
-    }, [loadNoteById, abortFindNote, id]);
+    }, [loadNoteById, abortFindNote, id, update]);
+
+    if (typeof window !== 'undefined') {
+        addEventListener('focus', () => {
+            setUpdate((update + 1) % 2); // so we don't run out of updates
+        });
+    }
 
     useEffect(() => {
         updateTitle(note?.title);
