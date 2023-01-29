@@ -4,6 +4,6 @@ declare module 'remove-markdown';
 
 declare module 'outline-icons';
 
-declare module '@headwayapp/react-widget';
+declare module '@notea/headway-widget';
 
 declare module 'markdown-link-extractor';
