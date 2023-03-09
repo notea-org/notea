@@ -47,10 +47,10 @@ const SidebarMenu: FC = () => {
                 },
             },
             {
-                text: t('Toggle width'),
+                text: t('Toggle width'), // TODO(i18n): Change this to 'Switch width'
                 // TODO: or SwitchHorizontal?
                 icon: <SelectorIcon style={{ transform: 'rotate(90deg)' }} />,
-                handler: MENU_HANDLER_NAME.TOGGLE_WIDTH,
+                handler: MENU_HANDLER_NAME.SWITCH_EDITOR_WIDTH,
             },
         ],
         [t]
