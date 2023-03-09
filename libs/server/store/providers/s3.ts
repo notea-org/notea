@@ -6,7 +6,7 @@ import {
     GetObjectCommand,
     HeadObjectCommand,
     PutObjectCommand,
-    S3Client,
+    S3Client
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { streamToBuffer } from '../utils';
@@ -19,7 +19,8 @@ function isNoSuchKey(err: any) {
     return (
         err.code === 'NoSuchKey' ||
         err.message === 'NoSuchKey' ||
-        err.name === 'NoSuchKey'
+        err.name === 'NoSuchKey' ||
+        err.type == 'NotFound'
     );
 }
 
@@ -50,10 +51,10 @@ export class StoreS3 extends StoreProvider {
             credentials:
                 config.accessKey && config.secretKey
                     ? {
-                          accessKeyId: config.accessKey,
-                          secretAccessKey: config.secretKey,
-                      }
-                    : undefined,
+                        accessKeyId: config.accessKey,
+                        secretAccessKey: config.secretKey
+                    }
+                    : undefined
         });
         if (!config.accessKey || !config.secretKey) {
             this.logger.warn(
@@ -78,7 +79,7 @@ export class StoreS3 extends StoreProvider {
                     secretKey: creds.secretAccessKey,
                     endPoint: url.hostname,
                     useSSL: url.protocol === 'https:',
-                    port: toNumber(url.port),
+                    port: toNumber(url.port)
                 });
 
                 return await client.presignedGetObject(
@@ -92,7 +93,7 @@ export class StoreS3 extends StoreProvider {
             this.client,
             new GetObjectCommand({
                 Bucket: this.config.bucket,
-                Key: this.getPath(path),
+                Key: this.getPath(path)
             }),
             { expiresIn: expires }
         );
@@ -103,13 +104,14 @@ export class StoreS3 extends StoreProvider {
             const data = await this.client.send(
                 new HeadObjectCommand({
                     Bucket: this.config.bucket,
-                    Key: this.getPath(path),
+                    Key: this.getPath(path)
                 })
             );
 
             return !!data;
         } catch (e) {
-            this.logger.warn(e, "Error whilst checking if object %s exists", path);
+            if (!isNoSuchKey(e)) return false;
+            this.logger.warn(e, 'Error whilst checking if object %s exists', path);
             return false;
         }
     }
@@ -121,7 +123,7 @@ export class StoreS3 extends StoreProvider {
             const result = await this.client.send(
                 new GetObjectCommand({
                     Bucket: this.config.bucket,
-                    Key: this.getPath(path),
+                    Key: this.getPath(path)
                 })
             );
             content = await streamToBuffer(result.Body as Readable);
@@ -139,7 +141,7 @@ export class StoreS3 extends StoreProvider {
             const result = await this.client.send(
                 new HeadObjectCommand({
                     Bucket: this.config.bucket,
-                    Key: this.getPath(path),
+                    Key: this.getPath(path)
                 })
             );
             return result.Metadata;
@@ -160,7 +162,7 @@ export class StoreS3 extends StoreProvider {
             const result = await this.client.send(
                 new GetObjectCommand({
                     Bucket: this.config.bucket,
-                    Key: this.getPath(path),
+                    Key: this.getPath(path)
                 })
             );
             content = await streamToBuffer(result.Body as Readable);
@@ -176,7 +178,7 @@ export class StoreS3 extends StoreProvider {
             content: toStr(content, isCompressed),
             meta,
             contentType,
-            buffer: content,
+            buffer: content
         };
     }
 
@@ -196,7 +198,7 @@ export class StoreS3 extends StoreProvider {
                 CacheControl: options?.headers?.cacheControl,
                 ContentDisposition: options?.headers?.contentDisposition,
                 ContentEncoding: options?.headers?.contentEncoding,
-                ContentType: options?.contentType,
+                ContentType: options?.contentType
             })
         );
     }
@@ -205,7 +207,7 @@ export class StoreS3 extends StoreProvider {
         await this.client.send(
             new DeleteObjectCommand({
                 Bucket: this.config.bucket,
-                Key: this.getPath(path),
+                Key: this.getPath(path)
             })
         );
     }
@@ -221,7 +223,7 @@ export class StoreS3 extends StoreProvider {
                 ContentDisposition: options?.headers?.contentDisposition,
                 ContentEncoding: options?.headers?.contentEncoding,
                 ContentType: options?.contentType,
-                MetadataDirective: isEmpty(options?.meta) ? 'COPY' : 'REPLACE',
+                MetadataDirective: isEmpty(options?.meta) ? 'COPY' : 'REPLACE'
             })
         );
     }
