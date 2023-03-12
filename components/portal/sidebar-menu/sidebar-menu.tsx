@@ -46,12 +46,12 @@ const SidebarMenu: FC = () => {
                     return item?.pinned === NOTE_PINNED.PINNED;
                 },
             },
-            {
-                text: t('Toggle width'), // TODO(i18n): Change this to 'Switch width'
-                // TODO: or SwitchHorizontal?
+            // Replaced by dedicated window
+            /*{
+                text: t('Toggle width'),
                 icon: <SelectorIcon style={{ transform: 'rotate(90deg)' }} />,
                 handler: MENU_HANDLER_NAME.SWITCH_EDITOR_WIDTH,
-            },
+            },*/
         ],
         [t]
     );

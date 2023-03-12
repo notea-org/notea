@@ -44,6 +44,7 @@ const useModal = () => {
             href: string;
             view?: RichMarkdownEditor['view'];
         }>(),
+        editorWidthSelect: useAnchorInstance<NoteModel>()
     };
 };
 

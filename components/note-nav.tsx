@@ -41,7 +41,7 @@ const NoteNav = () => {
     const { ua } = UIState.useContainer();
     const { getPaths, showItem, checkItemIsShown } =
         NoteTreeState.useContainer();
-    const { share, menu } = PortalState.useContainer();
+    const { share, menu, editorWidthSelect } = PortalState.useContainer();
 
     const handleClickShare = useCallback(
         (event: MouseEvent) => {
@@ -56,9 +56,18 @@ const NoteNav = () => {
         (event: MouseEvent) => {
             menu.setData(note);
             menu.setAnchor(event.target as Element);
+            // debugger;
             menu.open();
         },
         [note, menu]
+    );
+    const handleClickEditorWidth = useCallback(
+        (event: MouseEvent) => {
+            editorWidthSelect.setData(note);
+            editorWidthSelect.setAnchor(event.target as Element);
+            editorWidthSelect.open();
+        },
+        [note, editorWidthSelect]
     );
 
     const handleClickOpenInTree = useCallback(() => {
@@ -152,6 +161,14 @@ const NoteNav = () => {
                     })}
                     icon="Share"
                 />
+            </HotkeyTooltip>
+            <HotkeyTooltip text={t('Editor width')}>
+                <IconButton
+                    icon="WidthSize"
+                    className="mr-2"
+                    onClick={handleClickEditorWidth}
+                >
+                </IconButton>
             </HotkeyTooltip>
             <HotkeyTooltip text={t('Settings')}>
                 <IconButton
