@@ -2,7 +2,6 @@ import { Menu } from '@material-ui/core';
 import { FC, useMemo } from 'react';
 import {
     ClipboardCopyIcon,
-    SelectorIcon,
     StarIcon,
     TrashIcon,
 } from '@heroicons/react/outline';
