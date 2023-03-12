@@ -31,7 +31,7 @@ const MainEditor: FC<
             break;
     }
     const articleClassName =
-        className || `pt-40 px-6 m-auto h-full ${editorWidthClass}`;
+        className || `pt-16 md:pt-40 px-6 m-auto h-full ${editorWidthClass}`;
 
     return (
         <EditorState.Provider initialState={note}>
