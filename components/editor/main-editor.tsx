@@ -26,7 +26,8 @@ const MainEditor: FC<
             editorWidthClass = 'max-w-4xl';
             break;
         case EDITOR_SIZE.AS_WIDE_AS_POSSIBLE:
-            editorWidthClass = 'max-w-full mx-20';
+            // until we reach md size, just do LARGE to have consistency
+            editorWidthClass = 'max-w-4xl md:max-w-full md:mx-20';
             break;
     }
     const articleClassName =
