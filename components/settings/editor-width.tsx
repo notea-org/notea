@@ -31,7 +31,12 @@ export const EditorWidth: FC = () => {
             <MenuItem value={EDITOR_SIZE.SMALL}>
                 {t('Small (default)')}
             </MenuItem>
-            <MenuItem value={EDITOR_SIZE.LARGE}>{t('Large')}</MenuItem>
+            <MenuItem value={EDITOR_SIZE.LARGE}>
+                {t('Large')}
+            </MenuItem>
+            <MenuItem value={EDITOR_SIZE.AS_WIDE_AS_POSSIBLE}>
+                {t('As wide as possible')}
+            </MenuItem>
         </TextField>
     );
 };
