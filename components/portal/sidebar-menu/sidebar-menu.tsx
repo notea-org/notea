@@ -2,7 +2,6 @@ import { Menu } from '@material-ui/core';
 import { FC, useMemo } from 'react';
 import {
     ClipboardCopyIcon,
-    SelectorIcon,
     StarIcon,
     TrashIcon,
 } from '@heroicons/react/outline';
@@ -46,12 +45,12 @@ const SidebarMenu: FC = () => {
                     return item?.pinned === NOTE_PINNED.PINNED;
                 },
             },
-            {
+            // Replaced by dedicated window
+            /*{
                 text: t('Toggle width'),
-                // TODO: or SwitchHorizontal?
                 icon: <SelectorIcon style={{ transform: 'rotate(90deg)' }} />,
-                handler: MENU_HANDLER_NAME.TOGGLE_WIDTH,
-            },
+                handler: MENU_HANDLER_NAME.SWITCH_EDITOR_WIDTH,
+            },*/
         ],
         [t]
     );

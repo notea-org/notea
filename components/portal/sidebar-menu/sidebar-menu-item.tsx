@@ -11,7 +11,7 @@ export enum MENU_HANDLER_NAME {
     COPY_LINK,
     ADD_TO_FAVORITES,
     REMOVE_FROM_FAVORITES,
-    TOGGLE_WIDTH,
+    SWITCH_EDITOR_WIDTH,
 }
 
 export interface Item {
@@ -74,7 +74,7 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             }
         }, [close, data, mutateNote]);
 
-        const toggleWidth = useCallback(() => {
+        const switchEditorWidth = useCallback(() => {
             close();
             if (data?.id) {
                 const resolvedNoteWidth =
@@ -84,7 +84,7 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
                 mutateNote(data.id, {
                     editorsize: (resolvedNoteWidth + 1) % editorSizesCount,
                 })
-                    .catch((v) => console.error('Error whilst mutating note: %O', v));
+                    .catch((v) => console.error('Error whilst mutating note (editor width): %O', v));
             }
         }, [close, data, mutateNote, settings.editorsize]);
 
@@ -94,9 +94,9 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
                 [MENU_HANDLER_NAME.COPY_LINK]: doCopyLink,
                 [MENU_HANDLER_NAME.ADD_TO_FAVORITES]: doPinned,
                 [MENU_HANDLER_NAME.REMOVE_FROM_FAVORITES]: doUnpinned,
-                [MENU_HANDLER_NAME.TOGGLE_WIDTH]: toggleWidth,
+                [MENU_HANDLER_NAME.SWITCH_EDITOR_WIDTH]: switchEditorWidth,
             }),
-            [doCopyLink, doPinned, doRemoveNote, doUnpinned, toggleWidth]
+            [doCopyLink, doPinned, doRemoveNote, doUnpinned, switchEditorWidth]
         );
 
         return (
