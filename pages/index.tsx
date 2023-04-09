@@ -56,7 +56,7 @@ export const getServerSideProps = async (ctx: SSRContext) => {
 
     const lastVisit = ctx.req.props?.settings?.last_visit;
 
-    if (lastVisit) {
+    if (lastVisit && ctx.req.session.get('user')?.isLoggedIn) {
         return {
             redirect: {
                 destination: lastVisit,
