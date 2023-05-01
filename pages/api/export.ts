@@ -11,6 +11,11 @@ import { NOTE_DELETED } from 'libs/shared/meta';
 import { metaToJson } from 'libs/server/meta';
 import { toBuffer } from 'libs/shared/str';
 
+export function escapeFileName(name: string): string {
+    // list of characters taken from https://www.mtu.edu/umc/services/websites/writing/characters-avoid/
+    return name.replace(/[#%&{}\\<>*?/$!'":@+`|=]/g, "_");
+}
+
 export default api()
     .use(useAuth)
     .use(useStore)
@@ -33,16 +38,16 @@ export default api()
             if (metaJson.deleted === NOTE_DELETED.DELETED) {
                 return;
             }
-            const title = metaJson.title ?? 'Untitled';
+            const title = escapeFileName(metaJson.title ?? 'Untitled');
 
             const resolvedPrefix = prefix.length === 0 ? '' : prefix + '/';
             const basePath = resolvedPrefix + title;
             const uniquePath = duplicate[basePath]
                 ? `${basePath} (${duplicate[basePath]})`
                 : basePath;
+            duplicate[basePath] = (duplicate[basePath] ?? 0) + 1;
 
             zip.addFile(`${uniquePath}.md`, toBuffer(note.content));
-            duplicate[basePath] = (duplicate[basePath] || 0) + 1;
             await Promise.all(item.children.map((v) => addItem(v, uniquePath)));
         }
 
