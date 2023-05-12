@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: "{{ .Values.image }}"
+        env:
+        - name: PASSWORD
+          value: "{{ .Values.application.password }}"
+        - name: STORE_ACCESS_KEY
+          value: "{{ .Values.application.store_access_key }}"
+        - name: STORE_SECRET_KEY
+          value: "{{ .Values.application.store_secret_key }}"
+        - name: STORE_BUCKET
+          value: "{{ .Values.application.store_bucket }}"
+        {{- if .Values.application.store_end_point }}
+        - name: STORE_END_POINT
+          value: "{{ .Values.application.store_end_point }}"
+        {{- end}}
+        {{- if .Values.application.store_force_path_style }}
+        - name: STORE_FORCE_PATH_STYLE
+          value: "{{ .Values.application.store_force_path_style }}"
+        {{- end}}
+        {{- if .Values.application.store_prefix }}
+        - name: STORE_PREFIX
+          value: "{{ .Values.application.store_prefix }}"
+        {{- end}}
+        {{- if .Values.application.cookie_secure }}
+        - name: COOKIE_SECURE
+          value: "{{ .Values.application.cookie_secure }}"
+        {{- end}}
+        {{- if .Values.application.base_url }}
+        - name: BASE_URL
+          value: "{{ .Values.application.base_url }}"
+        {{- end}}
+        {{- if .Values.application.disable_password }}
+        - name: DISABLE_PASSWORD
+          value: "{{ .Values.application.disable_password }}"
+        {{- end}}
+        {{- if .Values.application.direct_response_attachment }}
+        - name: DIRECT_RESPONSE_ATTACHMENT
+          value: "{{ .Values.application.direct_response_attachment }}"
+        {{- end}}
+        ports:
+        - containerPort: {{ .Values.service.port }}

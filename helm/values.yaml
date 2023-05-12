@@ -1,0 +1,45 @@
+# docker image
+image: cinwell/notea
+
+service:
+# service port
+  port: 3000
+# service type
+  type: NodePort
+
+application:
+  # Required parameters:
+  # Password to login to the app
+  password: "<your-password>"
+  # AccessKey
+  store_access_key: "<your-s3-access-key>"
+  # SecretKey
+  store_secret_key: "<your-s3-secret-key>"
+  # Bucket
+  store_bucket: "<your-s3-bucket>"
+  # Optional parameters:
+  # Host name or an IP address.
+  store_end_point: "<your-s3-end-point>"
+  # region
+  store_region: ""
+  # Whether to force path style URLs for S3 objects
+  store_force_path_style: ""
+  # Storage path prefix
+  store_prefix: ""
+  # Only works under https: scheme If the website is not https, you may not be able to log in, and you need to set it to false
+  cookie_secure: ""
+  # The domain of the website, used for SEO
+  base_url: ""
+  # Disable password protection. This means that you need to implement authentication on the server yourself,
+  # but the route /share/:id needs to be accessible anonymously, if you need share page. #31
+  disable_password: ""
+  # By default, requesting attachment links will redirect to S3 URL, Set to true to directly output attachments from the notea services. #28
+  direct_response_attachment: ""
+
+ingress:
+  enabled: false
+  host: hotea.example.com
+  tls:
+  - hosts:
+    - hotea.example.com
+    secretName: example-ca
