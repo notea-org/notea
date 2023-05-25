@@ -65,6 +65,10 @@ docker run -d \
 If you are looking for MinIO + Notea docker
 configuration [check this](https://www.reddit.com/r/selfhosted/comments/n0jacf/notea_selfhosted_notetaking_app_stored_on_s3_aka/gw89iyo?utm_source=share&utm_medium=web2x&context=3)
 
+### Kubernetes Helm Chart
+
+Use [helm chart](/helm) to deploy to Kubernetes via Helm.
+
 ## Storage
 
 Configure environment variables according to storage service.
