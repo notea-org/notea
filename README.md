@@ -155,6 +155,21 @@ STORE_FORCE_PATH_STYLE=true
 PASSWORD=notea
 ```
 
+### Cloudflare R2
+
+`.env`
+
+```sh
+STORE_ACCESS_KEY=
+STORE_SECRET_KEY=
+STORE_BUCKET=notea
+STORE_END_POINT=
+STORE_REGION=us-east-1
+PASSWORD=notea
+
+#  The parameter of STORE_END_POINT is the S3 API link (https://...) stored in r2
+```
+
 Other services that support the s3 protocol can also be used.
 Contribution examples are welcome.
 
