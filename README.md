@@ -1,3 +1,22 @@
+# DEPRECATED, READ BELOW
+
+To put it simply, this project is barely maintained anymore. I don't have time to work on Notea, and I've personally stopped using it too.
+
+Not to fret, however! There are several good alternatives available:
+- If you want something that can synchronise using S3 (or a variety of other methods), then I recommend [Joplin](https://joplinapp.org).
+  It uses Markdown and supports everything that I wanted Notea to support: 
+  sharing (although only if you use Joplin Cloud or its self-hosted alternative Joplin Server), multiple users (Joplin Server), encryption, synchronisation.
+  It even has an iOS app!
+- Qingwei (the original maintainer and creator of Notea) recommended [Logseq](https://logseq.org). It's also decent.
+
+For those that want to continue using Notea, well, good luck. 
+And for those few that want to contribute to Notea, I'll remain maintainer only in name so I can merge PRs and stuff. 
+Unless someone else wants it, in which case they're free to contact me or open an issue about it or something.
+
+That's about all I have to say/write. Farewell.
+
+— [tecc](https://github.com/tecc)
+
 # Notea
 
 > Self-hosted note-taking app stored on S3.
