@@ -20,7 +20,12 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Lint code
-        run: yarn lint
+        run: |
+          yarn lint
+          if [ $? -ne 0 ]; then
+            echo "Lint errors found. Failing the build."
+            exit 1
+          fi
 
       - name: Run SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
