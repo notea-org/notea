@@ -1,40 +1,19 @@
-# version: '3.7' # Disarankan menggunakan versi yang lebih baru seperti 3.7
-
-services:
-  # Layanan aplikasi utama Notea
-  notea-webapp:
-    image: cinwell/notea
-    container_name: pso-notea
-    ports:
-      - "3000:3000"
-    environment:
-      # Kredensial ini harus cocok dengan kredensial MinIO di bawah
-      - STORE_ACCESS_KEY=minio
-      - STORE_SECRET_KEY=minio123
-      - STORE_BUCKET=notea # Nama bucket yang dibuat oleh MinIO
-      - STORE_END_POINT=http://minio:9000 # Menunjuk ke layanan minio
-      - STORE_FORCE_PATH_STYLE=true
-      - PASSWORD=wdwdwdwd # <-- GANTI INI!
-      - COOKIE_SECURE=false # Diperlukan untuk akses via http://
-      - BASE_URL="http://localhost:3000"
-    depends_on:
-      - minio # Memastikan minio berjalan lebih dulu sebelum aplikasi notea
-
-  # Layanan penyimpanan MinIO (dari file Anda)
-  minio:
-    image: minio/minio
-    container_name: minio-storage-notea
-    ports:
-      # Port 9001 untuk mengakses dashboard MinIO agar tidak bentrok
-      - '9001:9001' 
-      - '9000:9000'
-    volumes:
-      - minio-data:/data # Menyimpan data MinIO secara permanen
-    environment:
-      - MINIO_ROOT_USER=minio
-      - MINIO_ROOT_PASSWORD=minio123
-    command: server /data --console-address ":9001"
-
-# Membuat volume agar data tidak hilang saat container dimatikan
-volumes:
-  minio-data:
+notea-webapp:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: asia-southeast2-docker.pkg.dev/pso-notea/docker-repo/notea:latest
+  container_name: pso-notea
+  ports:
+    - "3000:3000"
+  environment:
+    - STORE_ACCESS_KEY=minio
+    - STORE_SECRET_KEY=minio123
+    - STORE_BUCKET=notea
+    - STORE_END_POINT=http://minio:9000 //ubah
+    - STORE_FORCE_PATH_STYLE=true
+    - PASSWORD=wdwdwdwd
+    - COOKIE_SECURE=true
+    - BASE_URL="http://localhost:3000" //ubah
+  depends_on:
+    - minio
