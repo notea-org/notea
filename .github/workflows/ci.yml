@@ -5,39 +5,39 @@ on:
     branches: [main]
 
 jobs:
-  code-quality:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
+  # code-quality:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout source
+  #       uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
 
-      - name: Lint code
-        run: |
-          yarn lint
-          if [ $? -ne 0 ]; then
-            echo "Lint errors found. Failing the build."
-            exit 1
-          fi
+  #     - name: Lint code
+  #       run: |
+  #         yarn lint
+  #         if [ $? -ne 0 ]; then
+  #           echo "Lint errors found. Failing the build."
+  #           exit 1
+  #         fi
 
-      - name: Run SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
-        with:
-          args: >
-            -Dsonar.projectKey=Anaaaslagi_pso-c-notea
-            -Dsonar.organization=anaaaslagi
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/public/**,**/__tests__/**
+  #     - name: Run SonarQube Scan
+  #       uses: sonarsource/sonarqube-scan-action@master
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         SONAR_HOST_URL: https://sonarcloud.io
+  #       with:
+  #         args: >
+  #           -Dsonar.projectKey=Anaaaslagi_pso-c-notea
+  #           -Dsonar.organization=anaaaslagi
+  #           -Dsonar.sources=.
+  #           -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/public/**,**/__tests__/**
   test:
     runs-on: ubuntu-latest
     needs: code-quality

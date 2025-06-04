@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@atlaskit/tree": "^8.6.3",
+    "@aws-sdk/client-s3": "^3.823.0",
     "@fontsource/noto-sans": "^4.5.10",
     "@google-cloud/storage": "^6.11.0",
     "@heroicons/react": "^1.0.1",
