@@ -31,8 +31,13 @@ jobs:
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.projectKey=Anaaaslagi_pso-c-notea
+            -Dsonar.organization=anaaaslagi
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/public/**,**/__tests__/**
   test:
     runs-on: ubuntu-latest
     needs: code-quality
