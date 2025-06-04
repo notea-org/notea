@@ -16,11 +16,11 @@
     "type": "git",
     "url": "https://github.com/Anaaaslagi/notea-pso"
   },
+
   "dependencies": {
     "@atlaskit/tree": "^8.6.3",
-    "@aws-sdk/client-s3": "^3.10.0",
-    "@aws-sdk/s3-request-presigner": "^3.10.0",
     "@fontsource/noto-sans": "^4.5.10",
+    "@google-cloud/storage": "^6.11.0",
     "@heroicons/react": "^1.0.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -28,6 +28,7 @@
     "@notea/rich-markdown-editor": "11.22.0",
     "adm-zip": "^0.5.5",
     "classnames": "^2.2.6",
+    "next-pwa": "^5.6.0",
     "csrf": "^3.1.0",
     "dangerously-set-html-content": "^1.0.8",
     "dayjs": "^1.10.4",
@@ -46,10 +47,8 @@
     "next": "^12",
     "next-connect": "^0.10.1",
     "next-iron-session": "^4.1.11",
-    "next-pwa": "^5.6.0",
     "next-seo": "^4.24.0",
     "next-themes": "^0.0.14",
-    "nightwind": "^1.1.13",
     "notistack": "^1.0.7",
     "outline-icons": "^1.27.0",
     "pino": "^8.7.0",
@@ -81,7 +80,6 @@
     "@types/lodash": "^4.14.168",
     "@types/md5": "^2.3.0",
     "@types/minio": "^7.0.7",
-    "@types/next-pwa": "^5",
     "@types/node": "^12.12.21",
     "@types/prosemirror-inputrules": "^1.0.4",
     "@types/react": "^17.0.2",
@@ -97,10 +95,8 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^5.0.9",
     "i18n-extract": "^0.6.7",
     "jest": "^27.1.0",
-    "lint-staged": "^10.5.4",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.2.6",
     "prettier": "^2.2.1",
@@ -108,10 +104,10 @@
     "tailwindcss": "^2.0.3",
     "typescript": "^4.3.4"
   },
-  "resolutions": {
+    "resolutions": {
     "lodash": "^4.17.21",
     "refractor": "^3.4.0",
-    "@types/react": "17.0.39",
+    "@types/react": "17.0.50",     
     "prosemirror-model": "1.16.1"
   },
   "license": "MIT"
