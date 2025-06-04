@@ -1,19 +1,35 @@
-notea-webapp:
-  build:
-    context: .
-    dockerfile: Dockerfile
-  image: asia-southeast2-docker.pkg.dev/pso-notea/docker-repo/notea:latest
-  container_name: pso-notea
-  ports:
-    - "3000:3000"
-  environment:
-    - STORE_ACCESS_KEY=minio
-    - STORE_SECRET_KEY=minio123
-    - STORE_BUCKET=notea
-    - STORE_END_POINT=http://minio:9000 //ubah
-    - STORE_FORCE_PATH_STYLE=true
-    - PASSWORD=wdwdwdwd
-    - COOKIE_SECURE=true
-    - BASE_URL="http://localhost:3000" //ubah
-  depends_on:
-    - minio
+version: '3.7'
+
+services:  
+  notea-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: asia-southeast2-docker.pkg.dev/pso-notea/docker-repo/notea:latest
+    container_name: pso-notea
+    ports:
+      - "3000:3000"
+    environment:
+      - STORE_ACCESS_KEY=minio
+      - STORE_SECRET_KEY=minio123
+      - STORE_BUCKET=notea
+      - STORE_END_POINT=http://minio:9000 //ubah
+      - STORE_FORCE_PATH_STYLE=true
+      - PASSWORD=wdwdwdwd
+      - COOKIE_SECURE=true
+      - BASE_URL="http://localhost:3000" //ubah
+    depends_on:
+      - minio
+
+  minio:
+    image: minio/minio
+    container_name: minio-storage-notea
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - /mnt/data/minio:/data  # bind mount ke disk real
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=minio123
+    command: server /data --console-address ":9001"
