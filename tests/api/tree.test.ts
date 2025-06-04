@@ -1,3 +1,5 @@
+jest.mock('libs/server/middlewares/store');
+
 import treeHandler from 'pages/api/tree';
 import { mockServer } from 'tests/helper';
 
