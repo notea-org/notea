@@ -120,8 +120,8 @@ const SidebarListItem: FC<{
                                     hasChildren || isExpanded
                                         ? 'ChevronRight'
                                         : item.title
-                                        ? 'DocumentText'
-                                        : 'Document'
+                                            ? 'DocumentText'
+                                            : 'Document'
                                 }
                                 iconClassName={classNames(
                                     'transition-transform transform',

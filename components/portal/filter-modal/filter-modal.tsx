@@ -30,14 +30,14 @@ const FilterModal: FC<{
 
     const props: Partial<DialogProps> = isMobileOnly
         ? {
-              fullScreen: true,
-          }
+            fullScreen: true,
+        }
         : {
-              style: {
-                  inset: '0 0 auto 0',
-                  marginTop: '10vh',
-              },
-          };
+            style: {
+                inset: '0 0 auto 0',
+                marginTop: '10vh',
+            },
+        };
 
     return (
         <Dialog

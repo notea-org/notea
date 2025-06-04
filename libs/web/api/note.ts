@@ -33,19 +33,19 @@ export default function useNoteAPI() {
         async (id: string, body: Partial<NoteModel>) => {
             const data = body.content
                 ? await request<Partial<NoteModel>, NoteModel>(
-                      {
-                          method: 'POST',
-                          url: `/api/notes/${id}`,
-                      },
-                      body
-                  )
+                    {
+                        method: 'POST',
+                        url: `/api/notes/${id}`,
+                    },
+                    body
+                )
                 : await request<Partial<NoteModel>, NoteModel>(
-                      {
-                          method: 'POST',
-                          url: `/api/notes/${id}/meta`,
-                      },
-                      body
-                  );
+                    {
+                        method: 'POST',
+                        url: `/api/notes/${id}/meta`,
+                    },
+                    body
+                );
 
             return data;
         },

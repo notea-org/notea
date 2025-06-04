@@ -70,7 +70,7 @@ enum ErrInstruction {
 export function loadConfigAndListErrors(): {
     config?: Configuration;
     errors: Array<Issue>;
-} {
+    } {
     logger.debug(
         'Loading configuration from scratch (loadConfigAndListErrors)'
     );
