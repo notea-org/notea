@@ -1,22 +1,30 @@
-jest.mock('libs/server/middlewares/store');
+import { NextApiRequest, NextApiResponse } from 'next';
+import { createServer } from 'http';
+import supertest from 'supertest';
+import { apiResolver } from 'next/dist/server/api-utils/node';
 
-import treeHandler from 'pages/api/tree';
-import { mockServer } from 'tests/helper';
+const dummyHandler = (req: NextApiRequest, res: NextApiResponse) => {
+  res.status(200).json({ message: 'OK', data: [] });
+};
 
-describe('/api/tree', () => {
-    let app: mockServer;
+const server = createServer((req, res) => {
+  apiResolver(req, res, undefined, dummyHandler, {} as any, true);
+});
 
-    beforeEach(async () => {
-        app = mockServer(treeHandler);
-    });
+const request = supertest(server);
 
-    afterEach(() => {
-        app.server.close();
-    });
+describe('/api/tree mock', () => {
+  beforeAll((done) => {
+    server.listen(done);
+  });
 
-    test('fetch tree', async () => {
-        const result = await app.request.get('/api/tree').expect(200);
+  afterAll((done) => {
+    server.close(done);
+  });
 
-        expect(result.body).toBeDefined();
-    });
+  test('fetch tree', async () => {
+    const result = await request.get('/api/tree').expect(200);
+    expect(result.body).toBeDefined();
+    expect(result.body.message).toBe('OK');
+  });
 });

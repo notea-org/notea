@@ -3,8 +3,6 @@ name: CI Pipeline
 on:
   push:
     branches: ["**"]
-  pull_request:
-    branches: ["**"]
 
 jobs:
   code-quality:
@@ -40,17 +38,17 @@ jobs:
             -Dsonar.organization=anaaaslagi
             -Dsonar.sources=.
             -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/public/**,**/__tests__/**
-  # test:
-  #   runs-on: ubuntu-latest
-  #   needs: code-quality
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
+  test:
+    runs-on: ubuntu-latest
+    needs: code-quality
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-  #     - run: yarn install --frozen-lockfile
-  #     - run: yarn test
+      - run: yarn install --frozen-lockfile
+      - run: yarn test
 
   build:
     runs-on: ubuntu-latest
