@@ -16,7 +16,6 @@
     "type": "git",
     "url": "https://github.com/Anaaaslagi/notea-pso"
   },
-
   "dependencies": {
     "@atlaskit/tree": "^8.6.3",
     "@fontsource/noto-sans": "^4.5.10",
@@ -28,7 +27,6 @@
     "@notea/rich-markdown-editor": "11.22.0",
     "adm-zip": "^0.5.5",
     "classnames": "^2.2.6",
-    "next-pwa": "^5.6.0",
     "csrf": "^3.1.0",
     "dangerously-set-html-content": "^1.0.8",
     "dayjs": "^1.10.4",
@@ -47,6 +45,7 @@
     "next": "^12",
     "next-connect": "^0.10.1",
     "next-iron-session": "^4.1.11",
+    "next-pwa": "^5.6.0",
     "next-seo": "^4.24.0",
     "next-themes": "^0.0.14",
     "notistack": "^1.0.7",
@@ -104,10 +103,10 @@
     "tailwindcss": "^2.0.3",
     "typescript": "^4.3.4"
   },
-    "resolutions": {
+  "resolutions": {
     "lodash": "^4.17.21",
     "refractor": "^3.4.0",
-    "@types/react": "17.0.50",     
+    "@types/react": "17.0.50",
     "prosemirror-model": "1.16.1"
   },
   "license": "MIT"
