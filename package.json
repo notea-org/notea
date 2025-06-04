@@ -61,6 +61,7 @@
     "qss": "^2.0.3",
     "react": "^17.0.2",
     "react-div-100vh": "^0.5.6",
+    "react-dom": "^19.1.0",
     "react-hotkeys-hook": "^3.3.1",
     "react-resize-detector": "^6.6.0",
     "react-split": "^2.0.9",
