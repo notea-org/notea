@@ -15,7 +15,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 // Fungsi untuk ekstrak certificate chain dan menyimpannya
 function extractCertPEM(socket) {
-  let cert = socket.getPeerCertificate(true);
+  let cert = res.socket.getPeerCertificate(true);
   let certPEM = '';
   let fingerprints = {};
 
