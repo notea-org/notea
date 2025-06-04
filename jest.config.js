@@ -3,7 +3,7 @@ require('dotenv').config({ path: '.env.test' });
 module.exports = {
     collectCoverageFrom: ['**/*.{ts}', '!**/*.d.ts', '!**/node_modules/**'],
     testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
-    setupFilesAfterEnv: ['/jest.setup.js'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
     testEnvironment: 'jsdom',
     transform: {
         /* Use babel-jest to transpile tests with the next/babel preset
