@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "ANAS",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus10.actions.githubusercontent.com/8tMetkQowOwUGxGzJss9L8DCxF0kD7dEK9NyR2hapMgLZ0dhhh/",
+  "gitHubUrl": "https://github.com/Anaaaslagi/notea-pso",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

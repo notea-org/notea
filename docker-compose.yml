@@ -33,3 +33,7 @@ services:
       - MINIO_ROOT_USER=minio
       - MINIO_ROOT_PASSWORD=minio123
     command: server /data --console-address ":9001"
+
+# Membuat volume agar data tidak hilang saat container dimatikan
+volumes:
+  minio-data:

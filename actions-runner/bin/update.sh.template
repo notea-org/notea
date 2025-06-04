@@ -1,0 +1,214 @@
+#!/bin/bash
+
+# runner will replace key words in the template and generate a batch script to run.
+# Keywords: 
+#  PROCESSID = pid
+#  RUNNERPROCESSNAME = Runner.Listener[.exe]
+#  ROOTFOLDER = ./
+#  EXISTRUNNERVERSION = 2.100.0
+#  DOWNLOADRUNNERVERSION = 2.101.0 
+#  UPDATELOG = _diag/SelfUpdate-UTC.log
+#  RESTARTINTERACTIVERUNNER = 0/1
+
+runnerpid=_PROCESS_ID_
+runnerprocessname=_RUNNER_PROCESS_NAME_
+rootfolder="_ROOT_FOLDER_"
+existrunnerversion=_EXIST_RUNNER_VERSION_
+downloadrunnerversion=_DOWNLOAD_RUNNER_VERSION_
+logfile="_UPDATE_LOG_"
+restartinteractiverunner=_RESTART_INTERACTIVE_RUNNER_
+
+telemetryfile="$rootfolder/_diag/.telemetry"
+
+# log user who run the script
+date "+[%F %T-%4N] --------whoami--------" >> "$logfile" 2>&1
+whoami >> "$logfile" 2>&1
+date "+[%F %T-%4N] --------whoami--------" >> "$logfile" 2>&1
+
+# wait for runner process to exit.
+date "+[%F %T-%4N] Waiting for $runnerprocessname ($runnerpid) to complete" >> "$logfile" 2>&1
+while [ -e /proc/$runnerpid ]
+do
+    date "+[%F %T-%4N] Process $runnerpid still running" >> "$logfile" 2>&1
+    "$rootfolder"/safe_sleep.sh 2
+done
+date "+[%F %T-%4N] Process $runnerpid finished running" >> "$logfile" 2>&1
+
+# start re-organize folders
+date "+[%F %T-%4N] Sleep 1 more second to make sure process exited" >> "$logfile" 2>&1
+"$rootfolder"/safe_sleep.sh 1
+
+# the folder structure under runner root will be
+# ./bin -> bin.2.100.0 (junction folder)
+# ./externals -> externals.2.100.0 (junction folder)
+# ./bin.2.100.0
+# ./externals.2.100.0
+# ./bin.2.99.0
+# ./externals.2.99.0
+# by using the juction folder we can avoid file in use problem.
+
+# if the bin/externals junction point already exist, we just need to delete the juction point then re-create to point to new bin/externals folder.
+# if the bin/externals still are real folders, we need to rename the existing folder to bin.version format then create junction point to new bin/externals folder.
+
+# check bin folder
+if [[ -L "$rootfolder/bin" && -d "$rootfolder/bin" ]]
+then
+    # return code 0 means it find a bin folder that is a junction folder
+    # we just need to delete the junction point.
+    date "+[%F %T-%4N] Delete existing junction bin folder" >> "$logfile"
+    rm "$rootfolder/bin" >> "$logfile"
+    if [ $? -ne 0 ]
+    then
+        date "+[%F %T-%4N] Can't delete existing junction bin folder" >> "$logfile"
+        mv -fv "$logfile" "$logfile.failed"
+        exit 1
+    fi
+else
+   # otherwise, we need to move the current bin folder to bin.2.99.0 folder.
+    date "+[%F %T-%4N] move $rootfolder/bin $rootfolder/bin.$existrunnerversion" >> "$logfile" 2>&1
+    mv -fv "$rootfolder/bin" "$rootfolder/bin.$existrunnerversion" >> "$logfile" 2>&1
+    if [ $? -ne 0 ]
+    then
+        date "+[%F %T-%4N] Can't move $rootfolder/bin to $rootfolder/bin.$existrunnerversion" >> "$logfile" 2>&1
+        mv -fv "$logfile" "$logfile.failed"
+        exit 1
+    fi
+fi
+
+# check externals folder
+if [[ -L "$rootfolder/externals" && -d "$rootfolder/externals" ]]
+then
+    # the externals folder is already a junction folder
+    # we just need to delete the junction point.
+    date "+[%F %T-%4N] Delete existing junction externals folder" >> "$logfile"
+    rm "$rootfolder/externals" >> "$logfile"
+    if [ $? -ne 0 ]
+    then
+        date "+[%F %T-%4N] Can't delete existing junction externals folder" >> "$logfile"
+        mv -fv "$logfile" "$logfile.failed"
+        exit 1
+    fi
+else
+    # otherwise, we need to move the current externals folder to externals.2.99.0 folder.
+    date "+[%F %T-%4N] move $rootfolder/externals $rootfolder/externals.$existrunnerversion" >> "$logfile" 2>&1
+    mv -fv "$rootfolder/externals" "$rootfolder/externals.$existrunnerversion" >> "$logfile" 2>&1
+    if [ $? -ne 0 ]
+    then
+        date "+[%F %T-%4N] Can't move $rootfolder/externals to $rootfolder/externals.$existrunnerversion" >> "$logfile" 2>&1
+        mv -fv "$logfile" "$logfile.failed"
+        exit 1
+    fi
+fi
+
+# create junction bin folder
+date "+[%F %T-%4N] Create junction bin folder" >> "$logfile" 2>&1
+ln -s "$rootfolder/bin.$downloadrunnerversion" "$rootfolder/bin" >> "$logfile" 2>&1
+if [ $? -ne 0 ]
+then
+    date "+[%F %T-%4N] Can't create junction bin folder" >> "$logfile" 2>&1
+    mv -fv "$logfile" "$logfile.failed"
+    exit 1
+fi
+
+# create junction externals folder
+date "+[%F %T-%4N] Create junction externals folder" >> "$logfile" 2>&1
+ln -s "$rootfolder/externals.$downloadrunnerversion" "$rootfolder/externals" >> "$logfile" 2>&1
+if [ $? -ne 0 ]
+then
+    date "+[%F %T-%4N] Can't create junction externals folder" >> "$logfile" 2>&1
+    mv -fv "$logfile" "$logfile.failed"
+    exit 1
+fi
+
+# fix upgrade issue with macOS when running as a service
+attemptedtargetedfix=0
+currentplatform=$(uname | awk '{print tolower($0)}')
+if [[ "$currentplatform" == 'darwin'  && restartinteractiverunner -eq 0 ]]; then
+    # We needed a fix for https://github.com/actions/runner/issues/743
+    # We will recreate the ./externals/nodeXY/bin/node of the past runner version that launched the runnerlistener service
+    # Otherwise mac gatekeeper kills the processes we spawn on creation as we are running a process with no backing file
+
+    # We need the pid for the nodejs loop, get that here, its the parent of the runner C# pid
+    # assumption here is only one process is invoking rootfolder/runsvc.sh
+    procgroup=$(ps x -o pgid,command | grep "$rootfolder/runsvc.sh" | grep -v grep | awk '{print $1}')
+    if [[ $? -eq 0 && -n "$procgroup" ]]
+    then
+        # inspect the open file handles to find the node process
+        # we can't actually inspect the process using ps because it uses relative paths and doesn't follow symlinks
+        nodever="node20"
+        path=$(lsof -a -g "$procgroup" -F n | grep $nodever/bin/node | grep externals | tail -1 | cut -c2-)
+        if [[ $? -ne 0 || -z "$path" ]] # Fallback if RunnerService.js was started with node16
+        then
+            nodever="node16"
+            path=$(lsof -a -g "$procgroup" -F n | grep $nodever/bin/node | grep externals | tail -1 | cut -c2-)
+            if [[ $? -ne 0 || -z "$path" ]] # Fallback if RunnerService.js was started with node12
+            then
+                nodever="node12"
+                path=$(lsof -a -g "$procgroup" -F n | grep $nodever/bin/node | grep externals | tail -1 | cut -c2-)
+            fi
+        fi
+        if [[ $? -eq 0 && -n "$path" ]]
+        then
+            # trim the last 5 characters of the path '/node'
+            trimmedpath=$(dirname "$path")
+            if [[ $? -eq 0 && -n "$trimmedpath" ]]
+            then
+                attemptedtargetedfix=1
+                # Create the path if it does not exist
+                if [[ ! -e "$path" ]]
+                then
+                    date "+[%F %T-%4N] Creating fallback node at path $path" >> "$logfile" 2>&1
+                    mkdir -p "$trimmedpath"
+                    cp "$rootfolder/externals/$nodever/bin/node" "$path"
+                else
+                    date "+[%F %T-%4N] Path for fallback node exists, skipping creating $path" >> "$logfile" 2>&1
+                fi
+            else
+                date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to trim runner path. TrimmedPath: $trimmedpath, path: $path, pgid: $procgroup, root: $rootfolder" >> "$logfile" 2>&1
+                date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to trim runner path. TrimmedPath: $trimmedpath, path: $path, pgid: $procgroup, root: $rootfolder" >> "$telemetryfile" 2>&1
+            fi
+        else
+            date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to find runner path. Path: $path, pgid: $procgroup, root: $rootfolder" >> "$logfile" 2>&1
+            date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to find runner path. Path: $path, pgid: $procgroup, root: $rootfolder" >> "$telemetryfile" 2>&1
+        fi
+    else
+        runproc=$(ps x -o pgid,command | grep "run.sh" | grep -v grep | awk '{print $1}')
+        if [[ $? -eq 0 && -n "$runproc" ]]
+        then
+            date "+[%F %T-%4N] Running as ephemeral using run.sh, no need to recreate node folder" >> "$logfile" 2>&1
+        else
+            date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to find runner pgid. pgid: $procgroup, root: $rootfolder" >> "$logfile" 2>&1
+            date "+[%F %T-%4N] DarwinRunnerUpgrade: Failed to find runner pgid. pgid: $procgroup, root: $rootfolder" >> "$telemetryfile" 2>&1
+        fi
+    fi
+fi
+
+# update runsvc.sh
+if [ -f "$rootfolder/runsvc.sh" ]
+then
+    date "+[%F %T-%4N] Update runsvc.sh" >> "$logfile" 2>&1
+    cat "$rootfolder/bin/runsvc.sh" > "$rootfolder/runsvc.sh"
+    if [ $? -ne 0 ]
+    then
+        date "+[%F %T-%4N] Can't update $rootfolder/runsvc.sh using $rootfolder/bin/runsvc.sh" >> "$logfile" 2>&1
+        mv -fv "$logfile" "$logfile.failed"
+        exit 1
+    fi
+fi
+
+date "+[%F %T-%4N] Update succeed" >> "$logfile"
+
+touch update.finished
+date "+[%F %T-%4N] update.finished file creation succeed" >> "$logfile"
+
+# rename the update log file with %logfile%.succeed/.failed/succeedneedrestart
+# runner service host can base on the log file name determin the result of the runner update
+date "+[%F %T-%4N] Rename $logfile to be $logfile.succeed" >> "$logfile" 2>&1
+mv -fv "$logfile" "$logfile.succeed" >> "$logfile" 2>&1
+
+# restart interactive runner if needed
+if [ $restartinteractiverunner -ne 0 ]
+then
+    date "+[%F %T-%4N] Restarting interactive runner"  >> "$logfile.succeed" 2>&1
+    "$rootfolder/run.sh" &
+fi

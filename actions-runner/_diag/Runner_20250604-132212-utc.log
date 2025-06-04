@@ -1,0 +1,196 @@
+[2025-06-04 13:22:12Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'Runner': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.runner'
+[2025-06-04 13:22:12Z INFO Listener] Runner is built for Windows (X64) - win-x64.
+[2025-06-04 13:22:12Z INFO Listener] RuntimeInformation: Microsoft Windows 10.0.22631.
+[2025-06-04 13:22:12Z INFO Listener] Version: 2.324.0
+[2025-06-04 13:22:12Z INFO Listener] Commit: da3412efd49b1cf1a0fbdcbcee4e4ac4cc2177c8
+[2025-06-04 13:22:12Z INFO Listener] Culture: en-US
+[2025-06-04 13:22:12Z INFO Listener] UI Culture: en-US
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO Listener] Validating directory permissions for: 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO CommandLineParser] Parse
+[2025-06-04 13:22:12Z INFO CommandLineParser] Parsing 5 args
+[2025-06-04 13:22:12Z INFO CommandLineParser] parsing argument
+[2025-06-04 13:22:12Z INFO CommandLineParser] HasArgs: False
+[2025-06-04 13:22:12Z INFO CommandLineParser] Adding Command: configure
+[2025-06-04 13:22:12Z INFO CommandLineParser] parsing argument
+[2025-06-04 13:22:12Z INFO CommandLineParser] HasArgs: True
+[2025-06-04 13:22:12Z INFO CommandLineParser] arg: url
+[2025-06-04 13:22:12Z INFO CommandLineParser] parsing argument
+[2025-06-04 13:22:12Z INFO CommandLineParser] HasArgs: True
+[2025-06-04 13:22:12Z INFO CommandLineParser] Adding option 'url': 'https://github.com/Anaaaslagi/notea-pso'
+[2025-06-04 13:22:12Z INFO CommandLineParser] parsing argument
+[2025-06-04 13:22:12Z INFO CommandLineParser] HasArgs: True
+[2025-06-04 13:22:12Z INFO CommandLineParser] arg: token
+[2025-06-04 13:22:12Z INFO CommandLineParser] parsing argument
+[2025-06-04 13:22:12Z INFO CommandLineParser] HasArgs: True
+[2025-06-04 13:22:12Z INFO CommandLineParser] Adding option 'token': '***'
+[2025-06-04 13:22:12Z INFO Listener] Arguments parsed
+[2025-06-04 13:22:12Z INFO Runner] ExecuteCommand
+[2025-06-04 13:22:12Z INFO ConfigurationStore] currentAssemblyLocation: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin\Runner.Listener.dll
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] binPath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] RootFolder: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'Runner': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.runner'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] ConfigFilePath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.runner
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'MigratedRunner': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.runner_migrated'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] MigratedConfigFilePath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.runner_migrated
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] CredFilePath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'MigratedCredentials': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_migrated'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] MigratedCredFilePath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_migrated
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:12Z INFO HostContext] Well known config file 'Service': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.service'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] ServiceConfigFilePath: C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.service
+[2025-06-04 13:22:12Z INFO CommandSettings] Flag 'help': 'False'
+[2025-06-04 13:22:12Z INFO CommandSettings] Flag 'version': 'False'
+[2025-06-04 13:22:12Z INFO CommandSettings] Flag 'commit': 'False'
+[2025-06-04 13:22:12Z INFO CommandSettings] Flag 'check': 'False'
+[2025-06-04 13:22:12Z INFO CommandSettings] Command 'configure': 'True'
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: --------------------------------------------------------------------------------
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |        ____ _ _   _   _       _          _        _   _                      |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |       / ___(_) |_| | | |_   _| |__      / \   ___| |_(_) ___  _ __  ___      |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |      | |  _| | __| |_| | | | | '_ \    / _ \ / __| __| |/ _ \| '_ \/ __|     |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |      | |_| | | |_|  _  | |_| | |_) |  / ___ \ (__| |_| | (_) | | | \__ \     |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |       \____|_|\__|_| |_|\__,_|_.__/  /_/   \_\___|\__|_|\___/|_| |_|___/     |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |                                                                              |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE: |                       
+[2025-06-04 13:22:12Z INFO Terminal] WRITE: Self-hosted runner registration
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE:                         |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: |                                                                              |
+[2025-06-04 13:22:12Z INFO Terminal] WRITE LINE: --------------------------------------------------------------------------------
+[2025-06-04 13:22:12Z INFO ConfigurationManager] ConfigureAsync
+[2025-06-04 13:22:12Z INFO CommandSettings] Flag 'generateServiceConfig': 'False'
+[2025-06-04 13:22:12Z INFO ConfigurationStore] IsConfigured()
+[2025-06-04 13:22:12Z INFO ConfigurationStore] IsConfigured: False
+[2025-06-04 13:22:12Z INFO ConfigurationManager] Is configured: False
+[2025-06-04 13:22:12Z INFO CommandSettings] Arg 'url': 'https://github.com/Anaaaslagi/notea-pso'
+[2025-06-04 13:22:12Z INFO CommandSettings] Remove url from Arg dictionary.
+[2025-06-04 13:22:12Z INFO CommandSettings] Arg 'token': '***'
+[2025-06-04 13:22:12Z INFO CommandSettings] Remove token from Arg dictionary.
+[2025-06-04 13:22:13Z INFO ConfigurationManager] Http response code: OK from 'POST https://api.github.com/actions/runner-registration' (2E50:1F5D41:149A87:182F83:684048AD)
+[2025-06-04 13:22:13Z INFO ConfigurationManager] Using V2 flow: False
+[2025-06-04 13:22:13Z INFO ConfigurationManager] cred retrieved via GitHub auth
+[2025-06-04 13:22:13Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:22:13Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-06-04 13:22:13Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:22:13Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:22:13Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-06-04 13:22:13Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:22:13Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:22:13Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-06-04 13:22:13Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:22:15Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:22:15Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:22:15Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:22:15Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:22:15Z INFO ConfigurationManager] Test Connection complete.
+[2025-06-04 13:22:15Z INFO HostContext] Well known directory 'Bin': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\bin'
+[2025-06-04 13:22:15Z INFO HostContext] Well known directory 'Root': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner'
+[2025-06-04 13:22:15Z INFO HostContext] Well known config file 'RSACredentials': 'C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_rsaparams'
+[2025-06-04 13:22:15Z INFO RSAEncryptedFileKeyManager] Creating new RSA key using 2048-bit key length
+[2025-06-04 13:22:15Z INFO RSAEncryptedFileKeyManager] Successfully saved RSA key parameters to file C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_rsaparams
+[2025-06-04 13:22:16Z INFO CommandSettings] Arg 'runnergroup': ''
+[2025-06-04 13:22:16Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-06-04 13:22:16Z INFO PromptManager] ReadValue
+[2025-06-04 13:22:16Z INFO Terminal] WRITE: Enter the name of the runner group to add this runner to: 
+[2025-06-04 13:22:16Z INFO Terminal] WRITE: [press Enter for Default] 
+[2025-06-04 13:22:16Z INFO Terminal] READ LINE
+[2025-06-04 13:22:46Z INFO Terminal] Read value: ''
+[2025-06-04 13:22:46Z INFO PromptManager] Falling back to the default: 'Default'
+[2025-06-04 13:22:46Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:22:46Z INFO ConfigurationManager] Found a self-hosted runner group with id 1 and name Default
+[2025-06-04 13:22:46Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-06-04 13:22:46Z INFO CommandSettings] Flag 'ephemeral': 'False'
+[2025-06-04 13:22:46Z INFO CommandSettings] Arg 'name': ''
+[2025-06-04 13:22:46Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-06-04 13:22:46Z INFO PromptManager] ReadValue
+[2025-06-04 13:22:46Z INFO Terminal] WRITE: Enter the name of runner: 
+[2025-06-04 13:22:46Z INFO Terminal] WRITE: [press Enter for ANAS] 
+[2025-06-04 13:22:46Z INFO Terminal] READ LINE
+[2025-06-04 13:22:48Z INFO Terminal] Read value: ''
+[2025-06-04 13:22:48Z INFO PromptManager] Falling back to the default: 'ANAS'
+[2025-06-04 13:22:48Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:22:48Z INFO CommandSettings] Arg 'labels': ''
+[2025-06-04 13:22:48Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-06-04 13:22:48Z INFO PromptManager] ReadValue
+[2025-06-04 13:22:48Z INFO Terminal] WRITE: This runner will have the following labels: 'self-hosted', 'Windows', 'X64' 
+Enter any additional labels (ex. label-1,label-2): 
+[2025-06-04 13:22:48Z INFO Terminal] WRITE: [press Enter to skip] 
+[2025-06-04 13:22:48Z INFO Terminal] READ LINE
+[2025-06-04 13:22:59Z INFO Terminal] Read value: ''
+[2025-06-04 13:22:59Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:22:59Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-06-04 13:22:59Z INFO CommandSettings] Flag 'no-default-labels': 'False'
+[2025-06-04 13:22:59Z INFO CommandSettings] Flag 'disableupdate': 'False'
+[2025-06-04 13:22:59Z INFO CommandSettings] Flag 'ephemeral': 'False'
+[2025-06-04 13:22:59Z INFO ConfigurationStore] Saving OAuth credential @ C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials
+[2025-06-04 13:22:59Z INFO ConfigurationStore] Credentials Saved.
+[2025-06-04 13:22:59Z INFO ConfigurationStore] HasCredentials()
+[2025-06-04 13:22:59Z INFO ConfigurationStore] stored True
+[2025-06-04 13:23:00Z INFO CredentialManager] GetCredentialProvider
+[2025-06-04 13:23:00Z INFO CredentialManager] Creating type OAuth
+[2025-06-04 13:23:00Z INFO CredentialManager] Creating credential type: OAuth
+[2025-06-04 13:23:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_rsaparams
+[2025-06-04 13:23:00Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:23:00Z INFO RunnerServer] Establish connection with 100 seconds timeout.
+[2025-06-04 13:23:00Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:23:00Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:23:00Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-06-04 13:23:00Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:23:00Z INFO RunnerServer] EstablishVssConnection
+[2025-06-04 13:23:00Z INFO RunnerServer] Establish connection with 60 seconds timeout.
+[2025-06-04 13:23:00Z INFO GitHubActionsService] Starting operation Location.GetConnectionData
+[2025-06-04 13:23:01Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:23:01Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:23:01Z INFO GitHubActionsService] Finished operation Location.GetConnectionData
+[2025-06-04 13:23:01Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_rsaparams
+[2025-06-04 13:23:01Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\Anas G\Desktop\ANAS BELONGINGS\KULIAH\Semester 6\PSO\fork-notea\notea-pso\actions-runner\.credentials_rsaparams
+[2025-06-04 13:23:03Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-06-04 13:23:03Z INFO ConfigurationManager] Service enforced serverUrlV2: https://broker.actions.githubusercontent.com/
+[2025-06-04 13:23:03Z INFO ConfigurationManager] Service enforced useV2Flow: True
+[2025-06-04 13:23:03Z INFO CommandSettings] Arg 'work': ''
+[2025-06-04 13:23:03Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-06-04 13:23:03Z INFO PromptManager] ReadValue
+[2025-06-04 13:23:03Z INFO Terminal] WRITE: Enter name of work folder: 
+[2025-06-04 13:23:03Z INFO Terminal] WRITE: [press Enter for _work] 
+[2025-06-04 13:23:03Z INFO Terminal] READ LINE
+[2025-06-04 13:23:08Z INFO Terminal] Read value: ''
+[2025-06-04 13:23:08Z INFO PromptManager] Falling back to the default: '_work'
+[2025-06-04 13:23:08Z INFO ConfigurationStore] Saving runner settings.
+[2025-06-04 13:23:08Z INFO ConfigurationStore] Settings Saved.
+[2025-06-04 13:23:08Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:23:08Z INFO Terminal] WRITE LINE: 
+[2025-06-04 13:23:08Z INFO CommandSettings] Flag 'runasservice': 'False'
+[2025-06-04 13:23:08Z INFO CommandSettings] Flag 'unattended': 'False'
+[2025-06-04 13:23:08Z INFO PromptManager] ReadValue
+[2025-06-04 13:23:08Z INFO Terminal] WRITE: Would you like to run the runner as service? (Y/N) 
+[2025-06-04 13:23:08Z INFO Terminal] WRITE: [press Enter for N] 
+[2025-06-04 13:23:08Z INFO Terminal] READ LINE
+[2025-06-04 13:23:17Z INFO Terminal] Read value: 'y'
+[2025-06-04 13:23:17Z INFO ConfigurationManager] Configuring to run the agent as service
+[2025-06-04 13:23:17Z ERR  WindowsServiceControlManager] Needs Administrator privileges for configure runner as windows service.
+[2025-06-04 13:23:17Z ERR  Runner] System.Security.SecurityException: Needs Administrator privileges for configuring runner as windows service.
+   at GitHub.Runner.Listener.Configuration.WindowsServiceControlManager.ConfigureService(RunnerSettings settings, CommandSettings command)
+   at GitHub.Runner.Listener.Configuration.ConfigurationManager.ConfigureAsync(CommandSettings command)
+   at GitHub.Runner.Listener.Runner.ExecuteCommand(CommandSettings command)
+[2025-06-04 13:23:17Z ERR  Terminal] WRITE ERROR: Needs Administrator privileges for configuring runner as windows service.
+[2025-06-04 13:23:17Z INFO Listener] Runner execution has finished with return code 1
