@@ -1,4 +1,4 @@
-version: '3.7' # Disarankan menggunakan versi yang lebih baru seperti 3.7
+version: '2' # Disarankan menggunakan versi yang lebih baru seperti 3.7
 
 services:
   # Layanan aplikasi utama Notea
