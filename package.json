@@ -54,7 +54,7 @@
         "lzutf8": "^0.6.0",
         "markdown-link-extractor": "^4.0.1",
         "md5": "^2.3.0",
-        "minio": "^7.0.18",
+        "minio": "^7.0.32",
         "nanoid": "^3.1.22",
         "next": "^12",
         "next-connect": "^0.10.1",
