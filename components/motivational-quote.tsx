@@ -23,7 +23,7 @@ const MotivationalQuote: FC = () => {
     return (
         <div className="mt-8 max-w-lg mx-auto text-center px-4">
             <blockquote className="text-xl font-medium text-gray-700 italic font-serif">
-                "{quote.text}"
+                &ldquo;{quote.text}&rdquo;
             </blockquote>
             <div className="mt-2 text-gray-500 font-medium">
                 — {quote.author}
