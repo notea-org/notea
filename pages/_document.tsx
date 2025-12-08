@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-document-import-in-page */
 import { ServerStyleSheets } from '@material-ui/core';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { Children } from 'react';

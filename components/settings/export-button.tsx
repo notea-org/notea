@@ -18,7 +18,7 @@ export const ExportButton: FC<ButtonProps> = ({ parentId = ROOT_ID }) => {
     }, []);
 
     return (
-        <Link href={`/api/export?pid=${parentId}`}>
+        <Link href={`/api/export?pid=${parentId}`} passHref>
             <ButtonProgress onClick={handleClick} loading={loading}>
                 {t('Export')}
             </ButtonProgress>

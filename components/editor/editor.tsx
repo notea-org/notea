@@ -73,8 +73,8 @@ const Editor: FC<EditorProps> = ({ readOnly, isPreview }) => {
                 .ProseMirror {
                     ${hasMinHeight
                         ? `min-height: calc(${
-                              height ? height + 'px' : '100vh'
-                          } - 14rem);`
+                            height ? height + 'px' : '100vh'
+                        } - 14rem);`
                         : ''}
                     padding-bottom: 10rem;
                 }
