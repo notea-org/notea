@@ -49,6 +49,7 @@ export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
             </div>
             {!!image && (
                 <div className="md:w-48 flex w-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         className="m-auto object-cover h-full"
                         src={image}

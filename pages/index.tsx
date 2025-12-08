@@ -109,6 +109,7 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
                     <div className="mt-auto pt-12 opacity-30 hover:opacity-100 transition-opacity">
                         <Link href="https://github.com/qingwei-li/notea">
                             <a target="_blank">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     className="w-12 h-12"
                                     src="/logo.svg"

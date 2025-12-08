@@ -61,6 +61,9 @@ export interface DatabaseProperty {
     type: PropertyType;
     options?: SelectOption[];
     formula?: string;
+    relationId?: string; // ID of the related database block
+    relationType?: 'single' | 'multiple'; // Type of relation (single vs multiple)
+    backReferencePropertyId?: string; // ID of back-reference property or 'auto' for auto-creation
 }
 
 export enum PropertyType {
@@ -93,7 +96,16 @@ export interface DatabaseBlock extends Block {
         properties: DatabaseProperty[];
         views: DatabaseView[];
         rows: string[]; // Block IDs of database_row blocks
+        templates?: string[]; // Block IDs of template blocks
+        templateCategories?: TemplateCategory[]; // Template organization
     };
+}
+
+export interface TemplateCategory {
+    id: string;
+    name: string;
+    color: string;
+    templateIds: string[];
 }
 
 export interface DatabaseView {

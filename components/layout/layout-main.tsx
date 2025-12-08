@@ -18,6 +18,7 @@ import PreviewModal from 'components/portal/preview-modal';
 import LinkToolbar from 'components/portal/link-toolbar/link-toolbar';
 import { ReactNodeLike } from 'prop-types';
 import EditorWidthSelect from 'components/portal/editor-width-select';
+import CommandPalette from 'components/portal/command-palette/command-palette';
 
 const MainWrapper: FC<{ children: ReactNodeLike }> = ({ children }) => {
     const {
@@ -110,6 +111,7 @@ const LayoutMain: FC<{
                 <LinkToolbar />
                 <SidebarMenu />
                 <EditorWidthSelect />
+                <CommandPalette />
             </NoteState.Provider>
         </NoteTreeState.Provider>
     );

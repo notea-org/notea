@@ -41,6 +41,7 @@ const LoginPage = () => {
     return (
         <div className="h-screen flex flex-col">
             <main className="flex flex-col my-auto ">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img className="w-40 h-40 m-auto" src="/logo.svg" alt="Logo" />
                 <form
                     className="w-80 mx-auto"

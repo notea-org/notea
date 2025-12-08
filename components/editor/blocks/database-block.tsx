@@ -1,28 +1,122 @@
-import { FC } from 'react';
+import { FC, useState, useMemo, MouseEvent } from 'react';
 import { BlockComponentProps } from './block-renderer';
 import BlockState from 'libs/web/state/block';
-import { DatabaseBlock as DatabaseBlockInterface, DatabaseProperty, PropertyType, BlockType, SelectOption } from 'libs/shared/block';
-import { PlusIcon } from '@heroicons/react/solid';
+import { DatabaseBlock as DatabaseBlockInterface, DatabaseProperty, PropertyType, BlockType, FilterGroup, SortConfig, FilterOperator, ViewType, Block, TemplateCategory } from 'libs/shared/block';
+import { PlusIcon, FilterIcon, SortAscendingIcon, XIcon, TableIcon, ViewBoardsIcon, CalendarIcon, PhotographIcon, ChevronDownIcon, DocumentDuplicateIcon, PencilIcon, TrashIcon } from '@heroicons/react/solid';
+import { Menu, MenuItem, ListItemIcon, ListItemText, Button, ButtonGroup, Dialog } from '@material-ui/core';
+import dynamic from 'next/dynamic';
+
+const BlockEditor = dynamic(() => import('./block-editor'), { ssr: false });
 import { nanoid } from 'nanoid';
+import { DatabaseTableView } from './database-views/database-table-view';
+import { DatabaseBoardView } from './database-views/database-board-view';
+import { DatabaseCalendarView } from './database-views/database-calendar-view';
+import { DatabaseGalleryView } from './database-views/database-gallery-view';
 
 const DatabaseBlock: FC<BlockComponentProps> = ({
     block,
     isSelected,
     onUpdate,
 }) => {
-    const { blocks, createBlock, updateBlock } = BlockState.useContainer();
+    const { blocks, createBlock, updateBlock, duplicateBlock, deleteBlock } = BlockState.useContainer();
     const dbBlock = block as DatabaseBlockInterface;
-    const { properties = [], rows = [] } = dbBlock.data;
+    const { properties = [], rows = [], templates = [], templateCategories = [] } = dbBlock.data;
+    
+    // Local state for view, filter and sort
+    const [activeView, setActiveView] = useState<ViewType>(ViewType.TABLE);
+    const [filterGroup, setFilterGroup] = useState<FilterGroup>({
+        operator: 'and',
+        conditions: []
+    });
+    const [sortConfig, setSortConfig] = useState<SortConfig[]>([]);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
+    const [showSortMenu, setShowSortMenu] = useState(false);
+    const [newMenuAnchor, setNewMenuAnchor] = useState<null | HTMLElement>(null);
+    const [groupBy, setGroupBy] = useState<string | undefined>();
+    const [editingBlockId, setEditingBlockId] = useState<string | null>(null);
+    const [showTemplateManager, setShowTemplateManager] = useState(false);
 
     // Get row blocks. Use children if available, otherwise fall back to rows array
     // We prefer children because createBlock automatically manages the parent-child relationship
-    const rowBlocks = (block.children && block.children.length > 0) 
+    // Filter out templates
+    const rowBlocks = ((block.children && block.children.length > 0) 
         ? block.children 
-        : rows.map((id) => blocks[id]).filter(Boolean);
+        : rows.map((id) => blocks[id]).filter(Boolean))
+        .filter((b) => !templates.includes(b.id));
 
-    const handleAddRow = () => {
+    const templateBlocks = templates.map((id) => blocks[id]).filter(Boolean);
+
+    // Apply filters and sorts
+    const processedRows = useMemo(() => {
+        let result = [...rowBlocks];
+
+        // Filter
+        if (filterGroup.conditions.length > 0) {
+            result = result.filter((row) => {
+                const results = filterGroup.conditions.map((condition) => {
+                    const prop = properties.find((p) => p.id === condition.propertyId);
+                    if (!prop) return true;
+                    const val = row.data.properties?.[prop.id];
+
+                    switch (condition.operator) {
+                        case FilterOperator.EQUALS:
+                            return val == condition.value;
+                        case FilterOperator.NOT_EQUALS:
+                            return val != condition.value;
+                        case FilterOperator.CONTAINS:
+                            return String(val || '').toLowerCase().includes(String(condition.value || '').toLowerCase());
+                        case FilterOperator.NOT_CONTAINS:
+                            return !String(val || '').toLowerCase().includes(String(condition.value || '').toLowerCase());
+                        case FilterOperator.IS_EMPTY:
+                            return !val || val === '';
+                        case FilterOperator.IS_NOT_EMPTY:
+                            return !!val && val !== '';
+                        default:
+                            return true;
+                    }
+                });
+
+                return filterGroup.operator === 'and' 
+                    ? results.every((r) => r) 
+                    : results.some((r) => r);
+            });
+        }
+
+        // Sort
+        if (sortConfig.length > 0) {
+            result.sort((a, b) => {
+                for (const sort of sortConfig) {
+                    const prop = properties.find((p) => p.id === sort.propertyId);
+                    if (!prop) continue;
+                    
+                    const valA = a.data.properties?.[prop.id];
+                    const valB = b.data.properties?.[prop.id];
+                    
+                    if (valA === valB) continue;
+                    if (valA === undefined || valA === null) return 1;
+                    if (valB === undefined || valB === null) return -1;
+                    
+                    let comparison = 0;
+                    if (prop.type === PropertyType.NUMBER) {
+                        comparison = Number(valA) - Number(valB);
+                    } else {
+                        comparison = String(valA).localeCompare(String(valB));
+                    }
+                    
+                    if (comparison !== 0) {
+                        return sort.direction === 'asc' ? comparison : -comparison;
+                    }
+                }
+                return 0;
+            });
+        }
+
+        return result;
+    }, [rowBlocks, filterGroup, sortConfig, properties]);
+
+    const handleAddRow = (initialProps?: Record<string, any>) => {
         // Create a new row block as a child of this database block
-        const newRow = createBlock(BlockType.DATABASE_ROW, {}, block.id);
+        const newRow = createBlock(BlockType.DATABASE_ROW, initialProps || {}, block.id);
         
         // We don't strictly need to update 'rows' if we rely on children, 
         // but to keep the data structure consistent with the interface:
@@ -38,6 +132,93 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
         onUpdate?.({ properties: [...properties, newProperty] });
     };
 
+    const handleUpdateProperties = (newProperties: DatabaseProperty[]) => {
+        onUpdate?.({ properties: newProperties });
+    };
+
+    const handleUpdateBlock = (id: string, data: any) => {
+        updateBlock(id, data);
+    };
+
+    const handleNewMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+        setNewMenuAnchor(event.currentTarget);
+    };
+
+    const handleNewMenuClose = () => {
+        setNewMenuAnchor(null);
+    };
+
+    const handleCreateTemplate = () => {
+        // Create a new row block to serve as a template
+        const newTemplate = createBlock(BlockType.DATABASE_ROW, {
+            text: 'Untitled Template',
+            properties: {}
+        }, block.id);
+
+        // Add to templates list
+        onUpdate?.({ templates: [...templates, newTemplate.id] });
+        handleNewMenuClose();
+        
+        // Open the template for editing
+        setEditingBlockId(newTemplate.id);
+    };
+
+    const handleInstantiateTemplate = (templateId: string) => {
+        // Duplicate the template block
+        // duplicateBlock handles deep copying of children
+        // The new block will be a sibling of the template (child of database)
+        // Since it's not in the 'templates' list, it will appear as a row
+        duplicateBlock(templateId, block.id);
+        handleNewMenuClose();
+    };
+
+    const handleDeleteTemplate = (templateId: string, e: MouseEvent) => {
+        e.stopPropagation();
+        // Remove from templates list
+        onUpdate?.({ templates: templates.filter((id) => id !== templateId) });
+        // Remove from categories
+        const updatedCategories = templateCategories.map((cat) => ({
+            ...cat,
+            templateIds: cat.templateIds.filter((id) => id !== templateId)
+        })).filter((cat) => cat.templateIds.length > 0);
+        onUpdate?.({ templateCategories: updatedCategories });
+        // Delete the block
+        deleteBlock(templateId);
+    };
+
+    const handleCreateTemplateCategory = () => {
+        const newCategory = {
+            id: nanoid(),
+            name: 'New Category',
+            color: '#3b82f6',
+            templateIds: []
+        };
+        onUpdate?.({ templateCategories: [...templateCategories, newCategory] });
+    };
+
+    const handleUpdateTemplateCategory = (categoryId: string, updates: Partial<TemplateCategory>) => {
+        const updatedCategories = templateCategories.map((cat) => 
+            cat.id === categoryId ? { ...cat, ...updates } : cat
+        );
+        onUpdate?.({ templateCategories: updatedCategories });
+    };
+
+    const handleDeleteTemplateCategory = (categoryId: string) => {
+        const updatedCategories = templateCategories.filter((cat) => cat.id !== categoryId);
+        onUpdate?.({ templateCategories: updatedCategories });
+    };
+
+    const handleAssignTemplateToCategory = (templateId: string, categoryId: string) => {
+        const updatedCategories = templateCategories.map((cat) => {
+            if (cat.id === categoryId) {
+                return { ...cat, templateIds: [...cat.templateIds.filter((id) => id !== templateId), templateId] };
+            } else {
+                return { ...cat, templateIds: cat.templateIds.filter((id) => id !== templateId) };
+            }
+        });
+        onUpdate?.({ templateCategories: updatedCategories });
+    };
+
     return (
         <div className={`database-block my-4 ${isSelected ? 'ring-2 ring-blue-200 rounded' : ''}`}>
             <div className="database-header flex items-center justify-between mb-2 px-2">
@@ -45,91 +226,578 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                     <span className="font-medium text-gray-700">
                         {dbBlock.data.text || 'Untitled Database'}
                     </span>
+                    <div className="flex items-center bg-gray-100 rounded p-0.5 ml-4">
+                        <button
+                            className={`p-1 rounded ${activeView === ViewType.TABLE ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            onClick={() => setActiveView(ViewType.TABLE)}
+                            title="Table View"
+                        >
+                            <TableIcon className="w-4 h-4" />
+                        </button>
+                        <button
+                            className={`p-1 rounded ${activeView === ViewType.BOARD ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            onClick={() => setActiveView(ViewType.BOARD)}
+                            title="Board View"
+                        >
+                            <ViewBoardsIcon className="w-4 h-4" />
+                        </button>
+                        <button
+                            className={`p-1 rounded ${activeView === ViewType.CALENDAR ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            onClick={() => setActiveView(ViewType.CALENDAR)}
+                            title="Calendar View"
+                        >
+                            <CalendarIcon className="w-4 h-4" />
+                        </button>
+                        <button
+                            className={`p-1 rounded ${activeView === ViewType.GALLERY ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            onClick={() => setActiveView(ViewType.GALLERY)}
+                            title="Gallery View"
+                        >
+                            <PhotographIcon className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
-                <div className="database-controls">
-                    {/* View switcher and other controls */}
+                <div className="database-controls flex items-center space-x-2">
+                    <button 
+                        className={`p-1 rounded hover:bg-gray-100 ${showFilterMenu ? 'bg-gray-200' : ''}`}
+                        onClick={() => setShowFilterMenu(!showFilterMenu)}
+                        title="Filter"
+                    >
+                        <FilterIcon className="w-4 h-4 text-gray-500" />
+                    </button>
+                    <button 
+                        className={`p-1 rounded hover:bg-gray-100 ${showSortMenu ? 'bg-gray-200' : ''}`}
+                        onClick={() => setShowSortMenu(!showSortMenu)}
+                        title="Sort"
+                    >
+                        <SortAscendingIcon className="w-4 h-4 text-gray-500" />
+                    </button>
+                    <button 
+                        className={`p-1 rounded hover:bg-gray-100 ${showTemplateManager ? 'bg-gray-200' : ''}`}
+                        onClick={() => setShowTemplateManager(!showTemplateManager)}
+                        title="Template Manager"
+                    >
+                        <PencilIcon className="w-4 h-4 text-gray-500" />
+                    </button>
+                    <div className="relative">
+                        <ButtonGroup size="small" variant="contained" color="primary" disableElevation>
+                            <Button onClick={handleAddRow} style={{ textTransform: 'none' }}>
+                                New
+                            </Button>
+                            <Button size="small" onClick={handleNewMenuOpen}>
+                                <ChevronDownIcon className="w-4 h-4" />
+                            </Button>
+                        </ButtonGroup>
+                        <Menu
+                            anchorEl={newMenuAnchor}
+                            open={Boolean(newMenuAnchor)}
+                            onClose={handleNewMenuClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        >
+                            <MenuItem onClick={() => { handleAddRow(); handleNewMenuClose(); }}>
+                                <ListItemIcon>
+                                    <DocumentDuplicateIcon className="w-5 h-5" />
+                                </ListItemIcon>
+                                <ListItemText primary="Empty page" />
+                            </MenuItem>
+                            
+                            {templateBlocks.length > 0 && <div className="border-t my-1" />}
+                            
+                            {templateCategories.length > 0 ? (
+                                // Show categorized templates
+                                templateCategories.map((category) => {
+                                    const categoryTemplates = templateBlocks.filter((t) => 
+                                        category.templateIds.includes(t.id)
+                                    );
+                                    if (categoryTemplates.length === 0) return null;
+                                    
+                                    return (
+                                        <div key={category.id} className="px-2 py-1">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <div className="flex items-center space-x-2">
+                                                    <div 
+                                                        className="w-3 h-3 rounded-full"
+                                                        style={{ backgroundColor: category.color }}
+                                                    />
+                                                    <span className="text-xs font-medium text-gray-600">
+                                                        {category.name}
+                                                    </span>
+                                                </div>
+                                                <span className="text-xs text-gray-400">
+                                                    {categoryTemplates.length}
+                                                </span>
+                                            </div>
+                                            {categoryTemplates.map(template => (
+                                                <MenuItem 
+                                                    key={template.id} 
+                                                    onClick={() => handleInstantiateTemplate(template.id)}
+                                                    className="pl-6"
+                                                >
+                                                    <ListItemText primary={template.data.text || 'Untitled Template'} />
+                                                    <div 
+                                                        className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-500"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setEditingBlockId(template.id);
+                                                            handleNewMenuClose();
+                                                        }}
+                                                        title="Edit template"
+                                                    >
+                                                        <PencilIcon className="w-4 h-4" />
+                                                    </div>
+                                                    <div 
+                                                        className="ml-1 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-red-500"
+                                                        onClick={(e) => handleDeleteTemplate(template.id, e)}
+                                                        title="Delete template"
+                                                    >
+                                                        <XIcon className="w-4 h-4" />
+                                                    </div>
+                                                </MenuItem>
+                                            ))}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                // Show uncategorized templates
+                                templateBlocks.map(template => (
+                                    <MenuItem key={template.id} onClick={() => handleInstantiateTemplate(template.id)}>
+                                        <ListItemText primary={template.data.text || 'Untitled Template'} />
+                                        <div 
+                                            className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-500"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setEditingBlockId(template.id);
+                                                handleNewMenuClose();
+                                            }}
+                                            title="Edit template"
+                                        >
+                                            <PencilIcon className="w-4 h-4" />
+                                        </div>
+                                        <div 
+                                            className="ml-1 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-red-500"
+                                            onClick={(e) => handleDeleteTemplate(template.id, e)}
+                                            title="Delete template"
+                                        >
+                                            <XIcon className="w-4 h-4" />
+                                        </div>
+                                    </MenuItem>
+                                ))
+                            )}
+                            
+                            <div className="border-t my-1" />
+                            
+                            <MenuItem onClick={handleCreateTemplate}>
+                                <ListItemIcon>
+                                    <PlusIcon className="w-5 h-5" />
+                                </ListItemIcon>
+                                <ListItemText primary="New template" />
+                            </MenuItem>
+                        </Menu>
+                    </div>
                 </div>
             </div>
 
-            <div className="database-view border rounded-lg overflow-hidden bg-white shadow-sm">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
-                                    #
-                                </th>
-                                {properties.map((prop) => (
-                                    <th key={prop.id} scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        <div className="flex items-center space-x-1">
-                                            <span>{prop.name}</span>
-                                            {/* Icon based on type */}
-                                        </div>
-                                    </th>
+            {/* Filter Panel */}
+            {showFilterMenu && (
+                <div className="bg-gray-50 border-t border-b p-2 space-y-2 text-sm">
+                    {filterGroup.conditions.map((condition, idx) => (
+                        <div key={idx} className="flex items-center space-x-2">
+                            <span className="text-gray-500 w-16">{idx === 0 ? 'Where' : filterGroup.operator}</span>
+                            <select 
+                                className="border-gray-300 rounded text-sm p-1"
+                                value={condition.propertyId}
+                                onChange={(e) => {
+                                    const newConditions = [...filterGroup.conditions];
+                                    newConditions[idx] = { ...condition, propertyId: e.target.value };
+                                    setFilterGroup({ ...filterGroup, conditions: newConditions });
+                                }}
+                            >
+                                {properties.map(p => (
+                                    <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
-                                <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
-                                    <button 
-                                        onClick={handleAddProperty}
-                                        className="text-gray-400 hover:text-gray-600"
-                                    >
-                                        <PlusIcon className="w-4 h-4" />
-                                    </button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {rowBlocks.map((row, index) => (
-                                <tr key={row.id}>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 border-b border-gray-100">
-                                        {index + 1}
-                                    </td>
-                                    {properties.map((prop) => (
-                                        <td key={prop.id} className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-b border-gray-100">
-                                            <Cell 
-                                                block={row} 
-                                                property={prop}
-                                                onUpdate={(value) => {
-                                                    const currentProps = row.data.properties || {};
-                                                    updateBlock(row.id, {
-                                                        data: {
-                                                            ...row.data,
-                                                            properties: {
-                                                                ...currentProps,
-                                                                [prop.id]: value
-                                                            }
-                                                        }
-                                                    });
-                                                }}
-                                                onPropertyUpdate={(updatedProp) => {
-                                                    const newProperties = properties.map(p => p.id === updatedProp.id ? updatedProp : p);
-                                                    onUpdate?.({ properties: newProperties });
-                                                }}
-                                            />
-                                        </td>
-                                    ))}
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 border-b border-gray-100">
-                                    </td>
-                                </tr>
-                            ))}
-                            {rowBlocks.length === 0 && (
-                                <tr>
-                                    <td colSpan={properties.length + 2} className="px-4 py-8 text-center text-sm text-gray-500">
-                                        No items. Click + to add a new row.
-                                    </td>
-                                </tr>
+                            </select>
+                            <select
+                                className="border-gray-300 rounded text-sm p-1"
+                                value={condition.operator}
+                                onChange={(e) => {
+                                    const newConditions = [...filterGroup.conditions];
+                                    newConditions[idx] = { ...condition, operator: e.target.value as FilterOperator };
+                                    setFilterGroup({ ...filterGroup, conditions: newConditions });
+                                }}
+                            >
+                                <option value={FilterOperator.EQUALS}>Is</option>
+                                <option value={FilterOperator.NOT_EQUALS}>Is not</option>
+                                <option value={FilterOperator.CONTAINS}>Contains</option>
+                                <option value={FilterOperator.NOT_CONTAINS}>Does not contain</option>
+                                <option value={FilterOperator.IS_EMPTY}>Is empty</option>
+                                <option value={FilterOperator.IS_NOT_EMPTY}>Is not empty</option>
+                            </select>
+                            {![FilterOperator.IS_EMPTY, FilterOperator.IS_NOT_EMPTY].includes(condition.operator) && (
+                                <input
+                                    className="border-gray-300 rounded text-sm p-1 flex-1"
+                                    value={condition.value}
+                                    onChange={(e) => {
+                                        const newConditions = [...filterGroup.conditions];
+                                        newConditions[idx] = { ...condition, value: e.target.value };
+                                        setFilterGroup({ ...filterGroup, conditions: newConditions });
+                                    }}
+                                    placeholder="Type a value..."
+                                />
                             )}
-                            <tr>
-                                <td colSpan={properties.length + 2} className="px-4 py-2 text-sm text-gray-500 border-t border-gray-100 cursor-pointer hover:bg-gray-50" onClick={handleAddRow}>
-                                    <div className="flex items-center space-x-2 text-gray-400">
-                                        <PlusIcon className="w-4 h-4" />
-                                        <span>New</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <button onClick={() => {
+                                const newConditions = filterGroup.conditions.filter((_, i) => i !== idx);
+                                setFilterGroup({ ...filterGroup, conditions: newConditions });
+                            }}>
+                                <XIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                            </button>
+                        </div>
+                    ))}
+                    <button 
+                        className="text-gray-500 hover:text-gray-700 flex items-center space-x-1"
+                        onClick={() => {
+                            if (properties.length > 0) {
+                                setFilterGroup({
+                                    ...filterGroup,
+                                    conditions: [...filterGroup.conditions, {
+                                        propertyId: properties[0].id,
+                                        operator: FilterOperator.CONTAINS,
+                                        value: ''
+                                    }]
+                                });
+                            }
+                        }}
+                    >
+                        <PlusIcon className="w-3 h-3" />
+                        <span>Add filter</span>
+                    </button>
                 </div>
-            </div>
+            )}
+
+            {editingBlockId && (
+                <Dialog 
+                    open={!!editingBlockId} 
+                    onClose={() => setEditingBlockId(null)}
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <div className="p-8 h-[80vh] overflow-y-auto bg-white">
+                        <div className="mb-4 border-b pb-2">
+                            <h2 className="text-xl font-bold">
+                                {blocks[editingBlockId]?.data.text || 'Untitled'}
+                            </h2>
+                            <p className="text-sm text-gray-500">
+                                {templates.includes(editingBlockId) ? 'Editing Template' : 'Editing Page'}
+                            </p>
+                        </div>
+                        <BlockEditor 
+                            parentId={editingBlockId}
+                            roots={blocks[editingBlockId]?.children?.map((b: Block) => b.id) || []}
+                        />
+                        {(!blocks[editingBlockId]?.children || blocks[editingBlockId]?.children.length === 0) && (
+                            <div className="mt-8">
+                                <div className="text-gray-400 mb-4 text-sm font-medium">Start with a template:</div>
+                                <div className="grid grid-cols-2 gap-4">
+                                     <div 
+                                        className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
+                                        onClick={() => createBlock(BlockType.PARAGRAPH, {}, editingBlockId)}
+                                     >
+                                        <div className="font-medium mb-1">Empty Page</div>
+                                        <div className="text-xs text-gray-400">Start writing from scratch</div>
+                                     </div>
+                                     {templateBlocks.map(template => (
+                                         <div 
+                                            key={template.id}
+                                            className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
+                                            onClick={() => {
+                                                if (template.children) {
+                                                    template.children.forEach((child: Block) => {
+                                                        duplicateBlock(child.id, editingBlockId);
+                                                    });
+                                                }
+                                            }}
+                                         >
+                                            <div className="font-medium mb-1">{template.data.text || 'Untitled Template'}</div>
+                                            <div className="text-xs text-gray-400">Apply this layout</div>
+                                         </div>
+                                     ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </Dialog>
+            )}
+
+            {/* Sort Panel */}
+            {showSortMenu && (
+                <div className="bg-gray-50 border-t border-b p-2 space-y-2 text-sm">
+                    {sortConfig.map((sort, idx) => (
+                        <div key={idx} className="flex items-center space-x-2">
+                            <span className="text-gray-500 w-16">{idx === 0 ? 'Sort by' : 'Then by'}</span>
+                            <select 
+                                className="border-gray-300 rounded text-sm p-1"
+                                value={sort.propertyId}
+                                onChange={(e) => {
+                                    const newSorts = [...sortConfig];
+                                    newSorts[idx] = { ...sort, propertyId: e.target.value };
+                                    setSortConfig(newSorts);
+                                }}
+                            >
+                                {properties.map(p => (
+                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                ))}
+                            </select>
+                            <select
+                                className="border-gray-300 rounded text-sm p-1"
+                                value={sort.direction}
+                                onChange={(e) => {
+                                    const newSorts = [...sortConfig];
+                                    newSorts[idx] = { ...sort, direction: e.target.value as 'asc' | 'desc' };
+                                    setSortConfig(newSorts);
+                                }}
+                            >
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                            <button onClick={() => {
+                                const newSorts = sortConfig.filter((_, i) => i !== idx);
+                                setSortConfig(newSorts);
+                            }}>
+                                <XIcon className="w-4 h-4 text-gray-400 hover:text-gray-600" />
+                            </button>
+                        </div>
+                    ))}
+                    <button 
+                        className="text-gray-500 hover:text-gray-700 flex items-center space-x-1"
+                        onClick={() => {
+                            if (properties.length > 0) {
+                                setSortConfig([...sortConfig, {
+                                    propertyId: properties[0].id,
+                                    direction: 'asc'
+                                }]);
+                            }
+                        }}
+                    >
+                        <PlusIcon className="w-3 h-3" />
+                        <span>Add sort</span>
+                    </button>
+                </div>
+            )}
+
+            {/* Template Manager Panel */}
+            {showTemplateManager && (
+                <div className="bg-blue-50 border-t border-b p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-semibold text-blue-900">Template Manager</h3>
+                        <div className="flex items-center space-x-2">
+                            <button
+                                onClick={() => handleCreateTemplateCategory()}
+                                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 flex items-center space-x-1"
+                            >
+                                <PlusIcon className="w-4 h-4" />
+                                <span>Add Category</span>
+                            </button>
+                            <button
+                                onClick={() => handleCreateTemplate()}
+                                className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 flex items-center space-x-1"
+                            >
+                                <PlusIcon className="w-4 h-4" />
+                                <span>New Template</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Category Management */}
+                    {templateCategories.length > 0 && (
+                        <div className="space-y-3">
+                            <h4 className="text-sm font-medium text-gray-700">Categories</h4>
+                            {templateCategories.map(category => (
+                                <div key={category.id} className="bg-white rounded-lg p-3 border">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center space-x-2">
+                                            <div 
+                                                className="w-4 h-4 rounded-full"
+                                                style={{ backgroundColor: category.color }}
+                                            />
+                                            <input
+                                                type="text"
+                                                value={category.name}
+                                                onChange={(e) => handleUpdateTemplateCategory(category.id, { name: e.target.value })}
+                                                className="font-medium bg-transparent border-none outline-none focus:bg-white focus:px-2 focus:py-1 focus:rounded"
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={() => handleDeleteTemplateCategory(category.id)}
+                                            className="text-red-500 hover:text-red-700 p-1"
+                                        >
+                                            <TrashIcon className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="text-xs text-gray-500 mb-2">
+                                        {category.templateIds.length} templates
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        {templateBlocks
+                                            .filter((template) => category.templateIds.includes(template.id))
+                                            .map((template) => (
+                                                <div key={template.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                                    <span className="text-sm">{template.data.text || 'Untitled Template'}</span>
+                                                    <div className="flex items-center space-x-1">
+                                                        <button
+                                                            onClick={() => setEditingBlockId(template.id)}
+                                                            className="text-blue-500 hover:text-blue-700 p-1"
+                                                            title="Edit template"
+                                                        >
+                                                            <PencilIcon className="w-3 h-3" />
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => handleDeleteTemplate(template.id, e)}
+                                                            className="text-red-500 hover:text-red-700 p-1"
+                                                            title="Delete template"
+                                                        >
+                                                            <XIcon className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                        {category.templateIds.length === 0 && (
+                                            <div className="text-xs text-gray-400 p-2 text-center">
+                                                No templates in this category
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Uncategorized Templates */}
+                    <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-gray-700">
+                            {templateCategories.length > 0 ? 'Uncategorized Templates' : 'All Templates'}
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {templateBlocks
+                                .filter((template) => !templateCategories.some((cat) => cat.templateIds.includes(template.id)))
+                                .map((template) => (
+                                    <div key={template.id} className="bg-white rounded-lg p-3 border hover:shadow-md transition-shadow">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h5 className="font-medium text-sm truncate">
+                                                {template.data.text || 'Untitled Template'}
+                                            </h5>
+                                            <div className="flex items-center space-x-1">
+                                                <button
+                                                    onClick={() => setEditingBlockId(template.id)}
+                                                    className="text-blue-500 hover:text-blue-700 p-1"
+                                                    title="Edit template"
+                                                >
+                                                    <PencilIcon className="w-3 h-3" />
+                                                </button>
+                                                <button
+                                                    onClick={(e) => handleDeleteTemplate(template.id, e)}
+                                                    className="text-red-500 hover:text-red-700 p-1"
+                                                    title="Delete template"
+                                                >
+                                                    <XIcon className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        {templateCategories.length > 0 && (
+                                            <div className="mb-2">
+                                                <select
+                                                    className="w-full text-xs border rounded p-1"
+                                                    onChange={(e) => {
+                                                        if (e.target.value) {
+                                                            handleAssignTemplateToCategory(template.id, e.target.value);
+                                                        }
+                                                    }}
+                                                    defaultValue=""
+                                                >
+                                                    <option value="">Assign to category...</option>
+                                                    {templateCategories.map(cat => (
+                                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )}
+
+                                        <div className="text-xs text-gray-500">
+                                            {template.children?.length || 0} blocks
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        {templateBlocks.filter((template) => !templateCategories.some((cat) => cat.templateIds.includes(template.id))).length === 0 && (
+                            <div className="text-center text-gray-500 py-8">
+                                <DocumentDuplicateIcon className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                <p className="text-sm">No templates available</p>
+                                <button
+                                    onClick={handleCreateTemplate}
+                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                >
+                                    Create your first template
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Active View */}
+            {activeView === ViewType.TABLE && (
+                <DatabaseTableView 
+                    properties={properties}
+                    processedRows={processedRows}
+                    rowBlocks={rowBlocks}
+                    databaseId={block.id}
+                    handleAddProperty={handleAddProperty}
+                    handleAddRow={handleAddRow}
+                    onUpdateBlock={handleUpdateBlock}
+                    onUpdateProperties={handleUpdateProperties}
+                    onOpenRow={(id) => setEditingBlockId(id)}
+                />
+            )}
+
+            {activeView === ViewType.BOARD && (
+                <DatabaseBoardView 
+                    properties={properties}
+                    processedRows={processedRows}
+                    handleAddRow={handleAddRow}
+                    onUpdateBlock={handleUpdateBlock}
+                    onUpdateProperties={handleUpdateProperties}
+                    groupBy={groupBy}
+                    onGroupByChange={setGroupBy}
+                    onOpenRow={(id) => setEditingBlockId(id)}
+                />
+            )}
+
+            {activeView === ViewType.CALENDAR && (
+                <DatabaseCalendarView 
+                    properties={properties}
+                    processedRows={processedRows}
+                    handleAddRow={handleAddRow}
+                    onUpdateBlock={handleUpdateBlock}
+                    onUpdateProperties={handleUpdateProperties}
+                    onOpenRow={(id) => setEditingBlockId(id)}
+                />
+            )}
+
+            {activeView === ViewType.GALLERY && (
+                <DatabaseGalleryView 
+                    properties={properties}
+                    processedRows={processedRows}
+                    handleAddRow={handleAddRow}
+                    onUpdateBlock={handleUpdateBlock}
+                    onUpdateProperties={handleUpdateProperties}
+                    onOpenRow={(id) => setEditingBlockId(id)}
+                />
+            )}
 
             <style jsx>{`
                 .database-block {
@@ -138,169 +806,6 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
             `}</style>
         </div>
     );
-};
-
-const Cell: FC<{
-    block: any;
-    property: DatabaseProperty;
-    onUpdate: (value: any) => void;
-    onPropertyUpdate?: (property: DatabaseProperty) => void;
-}> = ({ block, property, onUpdate, onPropertyUpdate }) => {
-    const value = block.data.properties?.[property.id];
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        onUpdate(e.target.value);
-    };
-
-    switch (property.type) {
-        case PropertyType.TEXT:
-        case PropertyType.URL:
-        case PropertyType.EMAIL:
-        case PropertyType.PHONE:
-            return (
-                <input 
-                    type="text" 
-                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
-                    value={value || ''}
-                    onChange={handleChange}
-                    placeholder="Empty"
-                />
-            );
-        case PropertyType.NUMBER:
-             return (
-                <input 
-                    type="number" 
-                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
-                    value={value || ''}
-                    onChange={handleChange}
-                    placeholder="Empty"
-                />
-            );
-        case PropertyType.DATE:
-            return (
-                <input 
-                    type="date" 
-                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
-                    value={value || ''}
-                    onChange={handleChange}
-                />
-            );
-        case PropertyType.CHECKBOX:
-            return (
-                <div className="flex justify-center">
-                    <input 
-                        type="checkbox" 
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
-                        checked={!!value}
-                        onChange={(e) => onUpdate(e.target.checked)}
-                    />
-                </div>
-            );
-        case PropertyType.SELECT: {
-            const optionMap = new Map(property.options?.map(o => [o.id, o]) || []);
-            const selectedOption = optionMap.get(value);
-            const displayValue = selectedOption ? selectedOption.name : (value || '');
-            const dataListId = `datalist-${property.id}`;
-
-            const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                const newValue = e.target.value;
-                // Check if it matches an existing option name
-                const existingOption = property.options?.find(o => o.name === newValue);
-                
-                if (existingOption) {
-                    onUpdate(existingOption.id);
-                } else {
-                    // Create new option?
-                    // For now, let's just create it if it's not empty
-                    if (newValue.trim()) {
-                         const newOption = {
-                             id: nanoid(),
-                             name: newValue,
-                             color: 'gray' // default color
-                         };
-                         // Update property with new option
-                         onPropertyUpdate?.({
-                             ...property,
-                             options: [...(property.options || []), newOption]
-                         });
-                         // Update cell value
-                         onUpdate(newOption.id);
-                    } else {
-                        onUpdate('');
-                    }
-                }
-            };
-
-            return (
-                <div className="relative w-full">
-                    <input 
-                        list={dataListId}
-                        className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
-                        value={displayValue}
-                        onChange={handleSelectChange}
-                        placeholder="Select or type..."
-                    />
-                    <datalist id={dataListId}>
-                        {property.options?.map(opt => (
-                            <option key={opt.id} value={opt.name} />
-                        ))}
-                    </datalist>
-                </div>
-            );
-        }
-        case PropertyType.MULTI_SELECT: {
-             const selectedIds = (Array.isArray(value) ? value : []) as string[];
-             const selectedNames = selectedIds.map(id => {
-                 return property.options?.find(o => o.id === id)?.name || id;
-             }).join(', ');
-             
-             const handleMultiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                 const text = e.target.value;
-                 const parts = text.split(',').map(s => s.trim()).filter(Boolean);
-                 
-                 const newIds: string[] = [];
-                 const newOptions: SelectOption[] = [];
-                 const currentOptions = [...(property.options || [])];
-                 
-                 parts.forEach(part => {
-                     const existing = currentOptions.find(o => o.name === part);
-                     if (existing) {
-                         newIds.push(existing.id);
-                     } else {
-                         // Create new
-                         const newOpt = {
-                             id: nanoid(),
-                             name: part,
-                             color: 'gray'
-                         };
-                         currentOptions.push(newOpt);
-                         newOptions.push(newOpt);
-                         newIds.push(newOpt.id);
-                     }
-                 });
-                 
-                 if (newOptions.length > 0 && onPropertyUpdate) {
-                      onPropertyUpdate({
-                          ...property,
-                          options: currentOptions
-                      });
-                 }
-                 onUpdate(newIds);
-             };
-
-             return (
-                 <input 
-                    type="text"
-                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
-                    value={selectedNames}
-                    onChange={handleMultiChange}
-                    placeholder="Type tags separated by comma..."
-                 />
-             );
-        }
-        default:
-            return <span className="text-gray-400 text-sm">{String(value || '')}</span>;
-    }
 };
 
 export default DatabaseBlock;

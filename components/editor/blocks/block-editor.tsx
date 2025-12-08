@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Block } from 'libs/shared/block';
 import {
     DndContext,
     closestCorners,
@@ -22,6 +23,7 @@ import BlockState from 'libs/web/state/block';
 import SortableBlockWrapper from './sortable-block-wrapper';
 import BlockRenderer from './block-renderer';
 import { createPortal } from 'react-dom';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 const dropAnimation: DropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
@@ -33,10 +35,67 @@ const dropAnimation: DropAnimation = {
     }),
 };
 
-const BlockEditor: FC = () => {
+interface BlockEditorProps {
+    roots?: string[];
+    parentId?: string;
+}
+
+const BlockEditor: FC<BlockEditorProps> = ({ roots, parentId }) => {
     const blockState = BlockState.useContainer();
-    const { rootBlocks, blocks, moveBlock, createBlock, updateBlock, deleteBlock, selectBlock } = blockState;
+    const { rootBlocks: contextRootBlocks, blocks, moveBlock, createBlock, updateBlock, deleteBlock, duplicateBlock, selectBlock, selectedBlockIds } = blockState;
+    const rootBlocks = roots || contextRootBlocks;
+    const containerId = parentId || 'root';
     const [activeId, setActiveId] = useState<string | null>(null);
+
+    // Keyboard shortcuts
+    useHotkeys('mod+shift+up', (e) => {
+        e.preventDefault();
+        const selectedId = selectedBlockIds[0];
+        if (!selectedId) return;
+        const block = blocks[selectedId];
+        if (!block) return;
+        
+        const parent = block.parentId ? blocks[block.parentId] : null;
+        const siblings = parent ? parent.children : rootBlocks.map((id: string) => blocks[id]).filter((b: Block | undefined): b is Block => !!b);
+        const index = siblings.findIndex((b: Block) => b.id === selectedId);
+        
+        if (index > 0) {
+            moveBlock(selectedId, block.parentId, index - 1);
+        }
+    }, { enableOnTags: ['INPUT', 'TEXTAREA', 'SELECT'] }, [selectedBlockIds, blocks, rootBlocks, moveBlock]);
+
+    useHotkeys('mod+shift+down', (e) => {
+        e.preventDefault();
+        const selectedId = selectedBlockIds[0];
+        if (!selectedId) return;
+        const block = blocks[selectedId];
+        if (!block) return;
+        
+        const parent = block.parentId ? blocks[block.parentId] : null;
+        const siblings = parent ? parent.children : rootBlocks.map((id: string) => blocks[id]).filter((b: Block | undefined): b is Block => !!b);
+        const index = siblings.findIndex((b: Block) => b.id === selectedId);
+        
+        if (index < siblings.length - 1) {
+            moveBlock(selectedId, block.parentId, index + 1);
+        }
+    }, { enableOnTags: ['INPUT', 'TEXTAREA', 'SELECT'] }, [selectedBlockIds, blocks, rootBlocks, moveBlock]);
+
+    useHotkeys('mod+d', (e) => {
+        e.preventDefault();
+        const selectedId = selectedBlockIds[0];
+        if (!selectedId) return;
+        
+        duplicateBlock(selectedId);
+    }, { enableOnTags: ['INPUT', 'TEXTAREA', 'SELECT'] }, [selectedBlockIds, duplicateBlock]);
+
+    useHotkeys('mod+backspace, mod+delete', (e) => {
+        // Only delete if block is selected and not editing text (handled by block itself usually)
+        // But mod+backspace is explicit block delete command
+        e.preventDefault();
+        const selectedId = selectedBlockIds[0];
+        if (!selectedId) return;
+        deleteBlock(selectedId);
+    }, { enableOnTags: ['INPUT', 'TEXTAREA', 'SELECT'] }, [selectedBlockIds, deleteBlock]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -85,8 +144,8 @@ const BlockEditor: FC = () => {
         const overIndex = overSortable.index;
 
         // Prepare arguments for moveBlock
-        let newParentId: string | undefined = undefined;
-        if (overContainerId !== 'root') {
+        let newParentId: string | undefined = parentId;
+        if (overContainerId !== containerId) {
             newParentId = overContainerId;
         }
 
@@ -113,7 +172,7 @@ const BlockEditor: FC = () => {
                 <SortableContext
                     items={rootBlocks}
                     strategy={verticalListSortingStrategy}
-                    id="root"
+                    id={containerId}
                 >
                     {rootBlocks.map((blockId: string) => {
                         const block = blocks[blockId];
@@ -127,6 +186,7 @@ const BlockEditor: FC = () => {
                                 onSelect={() => selectBlock(block.id)}
                                 onUpdate={(data) => updateBlock(block.id, { data })}
                                 onDelete={() => deleteBlock(block.id)}
+                                onDuplicate={() => duplicateBlock(block.id)}
                                 onAddBlock={(type, data) => createBlock(type, data, block.parentId, block.order + 1)}
                             />
                         );

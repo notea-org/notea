@@ -36,6 +36,7 @@ const useAnchorInstance = <T>() => {
 const useModal = () => {
     return {
         search: useModalInstance(),
+        commandPalette: useModalInstance(),
         trash: useModalInstance(),
         menu: useAnchorInstance<NoteModel>(),
         share: useAnchorInstance<NoteModel>(),

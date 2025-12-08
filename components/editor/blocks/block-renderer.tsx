@@ -1,5 +1,7 @@
-import { FC } from 'react';
+import { FC, useState, MouseEvent } from 'react';
 import { Block, BlockType } from 'libs/shared/block';
+import { Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { TrashIcon, DuplicateIcon } from '@heroicons/react/outline';
 import ParagraphBlock from './paragraph-block';
 import HeadingBlock from './heading-block';
 import ListBlock from './list-block';
@@ -20,6 +22,7 @@ export interface BlockComponentProps {
     onSelect?: () => void;
     onUpdate?: (data: any) => void;
     onDelete?: () => void;
+    onDuplicate?: () => void;
     onAddBlock?: (type: BlockType, data?: any) => void;
     dragHandleProps?: any;
 }
@@ -31,10 +34,31 @@ const BlockRenderer: FC<BlockComponentProps> = ({
     onSelect,
     onUpdate,
     onDelete,
+    onDuplicate,
     onAddBlock,
     dragHandleProps,
 }) => {
     const blockState = BlockState.useContainer();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDuplicate = () => {
+        onDuplicate?.();
+        handleMenuClose();
+    };
+
+    const handleDelete = () => {
+        onDelete?.();
+        handleMenuClose();
+    };
 
     const renderBlock = () => {
         const commonProps = {
@@ -44,6 +68,7 @@ const BlockRenderer: FC<BlockComponentProps> = ({
             onSelect,
             onUpdate,
             onDelete,
+            onDuplicate,
             onAddBlock,
         };
 
@@ -85,25 +110,55 @@ const BlockRenderer: FC<BlockComponentProps> = ({
             onClick={onSelect}
         >
             {dragHandleProps && (
-                <div
-                    className="drag-handle absolute left-[-1.5rem] top-0.5 p-1 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-opacity"
-                    contentEditable={false}
-                    {...dragHandleProps}
-                >
-                    <svg
-                        width="12"
-                        height="20"
-                        viewBox="0 0 6 10"
-                        fill="currentColor"
+                <>
+                    <div
+                        className="drag-handle absolute left-[-1.5rem] top-0.5 p-1 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 rounded hover:bg-gray-100 transition-opacity"
+                        contentEditable={false}
+                        {...dragHandleProps}
+                        onClick={handleMenuOpen}
                     >
-                        <circle cx="1" cy="1" r="1" />
-                        <circle cx="1" cy="5" r="1" />
-                        <circle cx="1" cy="9" r="1" />
-                        <circle cx="5" cy="1" r="1" />
-                        <circle cx="5" cy="5" r="1" />
-                        <circle cx="5" cy="9" r="1" />
-                    </svg>
-                </div>
+                        <svg
+                            width="12"
+                            height="20"
+                            viewBox="0 0 6 10"
+                            fill="currentColor"
+                        >
+                            <circle cx="1" cy="1" r="1" />
+                            <circle cx="1" cy="5" r="1" />
+                            <circle cx="1" cy="9" r="1" />
+                            <circle cx="5" cy="1" r="1" />
+                            <circle cx="5" cy="5" r="1" />
+                            <circle cx="5" cy="9" r="1" />
+                        </svg>
+                    </div>
+                    <Menu
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuItem onClick={handleDuplicate}>
+                            <ListItemIcon>
+                                <DuplicateIcon className="w-5 h-5" />
+                            </ListItemIcon>
+                            <ListItemText primary="Duplicate" />
+                        </MenuItem>
+                        <MenuItem onClick={handleDelete}>
+                            <ListItemIcon>
+                                <TrashIcon className="w-5 h-5" />
+                            </ListItemIcon>
+                            <ListItemText primary="Delete" />
+                        </MenuItem>
+                    </Menu>
+                </>
             )}
             <div className="block-content">{renderBlock()}</div>
             {block.children.length > 0 && block.type !== BlockType.TOGGLE && block.type !== BlockType.DATABASE && (
@@ -127,6 +182,9 @@ const BlockRenderer: FC<BlockComponentProps> = ({
                                 }
                                 onDelete={() =>
                                     blockState.deleteBlock(child.id)
+                                }
+                                onDuplicate={() =>
+                                    blockState.duplicateBlock(child.id)
                                 }
                                 onAddBlock={onAddBlock}
                             />
