@@ -23,7 +23,7 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
         const newContent = evt.currentTarget.textContent || '';
         setContent(newContent);
         contentRef.current = newContent;
-        
+
         if (onUpdate) {
             onUpdate({ text: newContent });
         }

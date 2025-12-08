@@ -34,7 +34,10 @@ export default api()
 
             res.send(buffer);
         } else {
-            const signUrl = await req.state.store.getSignUrl(objectPath, expires);
+            const signUrl = await req.state.store.getSignUrl(
+                objectPath,
+                expires
+            );
 
             if (signUrl) {
                 res.redirect(signUrl);

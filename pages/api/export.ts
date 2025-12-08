@@ -13,7 +13,7 @@ import { toBuffer } from 'libs/shared/str';
 
 export function escapeFileName(name: string): string {
     // list of characters taken from https://www.mtu.edu/umc/services/websites/writing/characters-avoid/
-    return name.replace(/[#%&{}\\<>*?/$!'":@+`|=]/g, "_");
+    return name.replace(/[#%&{}\\<>*?/$!'":@+`|=]/g, '_');
 }
 
 export default api()

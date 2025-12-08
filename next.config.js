@@ -11,5 +11,5 @@ const withPWA = nextPWA({
 });
 
 module.exports = withPWA({
-    swcMinify: true
+    swcMinify: true,
 });

@@ -8,9 +8,7 @@ export const IssueList: FC<{
     return (
         <div className="flex flex-col">
             {issues.map((v, i) => {
-                return (
-                    <IssueDisplay key={i} issue={v} id={`issue-${i}`}/>
-                );
+                return <IssueDisplay key={i} issue={v} id={`issue-${i}`} />;
             })}
         </div>
     );

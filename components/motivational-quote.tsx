@@ -1,15 +1,39 @@
 import { FC, useEffect, useState } from 'react';
 
 const QUOTES = [
-    { text: "Start where you are. Use what you have. Do what you can.", author: "Arthur Ashe" },
-    { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
-    { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
-    { text: "Quality is not an act, it is a habit.", author: "Aristotle" },
-    { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
-    { text: "Either write something worth reading or do something worth writing.", author: "Benjamin Franklin" },
-    { text: "The scariest moment is always just before you start.", author: "Stephen King" },
-    { text: "A word after a word after a word is power.", author: "Margaret Atwood" },
-    { text: "There is no greater agony than bearing an untold story inside you.", author: "Maya Angelou" },
+    {
+        text: 'Start where you are. Use what you have. Do what you can.',
+        author: 'Arthur Ashe',
+    },
+    {
+        text: 'The secret of getting ahead is getting started.',
+        author: 'Mark Twain',
+    },
+    {
+        text: "It always seems impossible until it's done.",
+        author: 'Nelson Mandela',
+    },
+    { text: 'Quality is not an act, it is a habit.', author: 'Aristotle' },
+    {
+        text: "You don't have to be great to start, but you have to start to be great.",
+        author: 'Zig Ziglar',
+    },
+    {
+        text: 'Either write something worth reading or do something worth writing.',
+        author: 'Benjamin Franklin',
+    },
+    {
+        text: 'The scariest moment is always just before you start.',
+        author: 'Stephen King',
+    },
+    {
+        text: 'A word after a word after a word is power.',
+        author: 'Margaret Atwood',
+    },
+    {
+        text: 'There is no greater agony than bearing an untold story inside you.',
+        author: 'Maya Angelou',
+    },
 ];
 
 const MotivationalQuote: FC = () => {

@@ -1,12 +1,12 @@
 store:
-  endpoint: https://s3.example.com
-  bucket: my-bucket
-  accessKey: MY_ACCESS_KEY
-  secretKey: MY_SECRET_KEY
-  region: us-east-1
-  prefix: /
-  forcePathStyle: false
+    endpoint: https://s3.example.com
+    bucket: my-bucket
+    accessKey: MY_ACCESS_KEY
+    secretKey: MY_SECRET_KEY
+    region: us-east-1
+    prefix: /
+    forcePathStyle: false
 
 auth:
-  type: basic
-  password: my-password
+    type: basic
+    password: my-password

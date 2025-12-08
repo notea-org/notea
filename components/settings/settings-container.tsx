@@ -29,7 +29,7 @@ const HR = () => {
 };
 
 export const SettingsContainer: FC<{
-    debugInfo: DebugInformation
+    debugInfo: DebugInformation;
 }> = (props) => {
     const { t } = useI18n();
 

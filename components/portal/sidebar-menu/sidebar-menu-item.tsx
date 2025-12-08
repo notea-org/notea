@@ -1,4 +1,9 @@
-import { EDITOR_SIZE, NOTE_PINNED, NOTE_DELETED, NOTE_SHARED } from 'libs/shared/meta';
+import {
+    EDITOR_SIZE,
+    NOTE_PINNED,
+    NOTE_DELETED,
+    NOTE_SHARED,
+} from 'libs/shared/meta';
 import { NoteModel } from 'libs/shared/note';
 import NoteState from 'libs/web/state/note';
 import PortalState from 'libs/web/state/portal';
@@ -41,18 +46,23 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             close();
             if (data?.id) {
                 // TODO: merge with mutateNote
-                removeNote(data.id)
-                    ?.catch((v) => console.error('Error whilst removing note: %O', v));
+                removeNote(data.id)?.catch((v) =>
+                    console.error('Error whilst removing note: %O', v)
+                );
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.UNPINNED,
-                })
-                    ?.catch((v) => console.error('Error whilst mutating item: %O', v));
+                })?.catch((v) =>
+                    console.error('Error whilst mutating item: %O', v)
+                );
             }
         }, [close, data, mutateNote, removeNote]);
 
         const doCopyLink = useCallback(() => {
-            navigator.clipboard.writeText(location.origin + '/' + data?.id)
-                ?.catch((v) => console.error('Error whilst writing to clipboard: %O', v));
+            navigator.clipboard
+                .writeText(location.origin + '/' + data?.id)
+                ?.catch((v) =>
+                    console.error('Error whilst writing to clipboard: %O', v)
+                );
             close();
         }, [close, data?.id]);
 
@@ -61,8 +71,9 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             if (data?.id) {
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.PINNED,
-                })
-                    ?.catch((v) => console.error('Error whilst mutating note: %O', v));
+                })?.catch((v) =>
+                    console.error('Error whilst mutating note: %O', v)
+                );
             }
         }, [close, data, mutateNote]);
 
@@ -71,8 +82,9 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             if (data?.id) {
                 mutateNote(data.id, {
                     pinned: NOTE_PINNED.UNPINNED,
-                })
-                    ?.catch((v) => console.error('Error whilst mutating note: %O', v));
+                })?.catch((v) =>
+                    console.error('Error whilst mutating note: %O', v)
+                );
             }
         }, [close, data, mutateNote]);
 
@@ -85,8 +97,12 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
 
                 mutateNote(data.id, {
                     editorsize: (resolvedNoteWidth + 1) % editorSizesCount,
-                })
-                    .catch((v) => console.error('Error whilst mutating note (editor width): %O', v));
+                }).catch((v) =>
+                    console.error(
+                        'Error whilst mutating note (editor width): %O',
+                        v
+                    )
+                );
             }
         }, [close, data, mutateNote, settings.editorsize]);
 

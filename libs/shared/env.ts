@@ -50,9 +50,18 @@ export function getEnv<T>(
 }
 
 export function getEnvRaw(env: AllowedEnvs, required: true): string;
-export function getEnvRaw(env: AllowedEnvs, required?: false): string | undefined;
-export function getEnvRaw(env: AllowedEnvs, required?: boolean): string | undefined;
-export function getEnvRaw(env: AllowedEnvs, required: boolean = false): string | undefined {
+export function getEnvRaw(
+    env: AllowedEnvs,
+    required?: false
+): string | undefined;
+export function getEnvRaw(
+    env: AllowedEnvs,
+    required?: boolean
+): string | undefined;
+export function getEnvRaw(
+    env: AllowedEnvs,
+    required: boolean = false
+): string | undefined {
     const value = process.env[env];
 
     if (value == null) {
@@ -68,25 +77,34 @@ export function getEnvRaw(env: AllowedEnvs, required: boolean = false): string |
 
 export function parseBool(str: string, invalid?: boolean): boolean;
 export function parseBool(str: null | undefined): undefined;
-export function parseBool(str: string | null | undefined, invalid: boolean): boolean;
-export function parseBool(str: string | null | undefined, invalid?: boolean): boolean | undefined;
-export function parseBool(str: string | null | undefined, invalid?: boolean): boolean | undefined {
+export function parseBool(
+    str: string | null | undefined,
+    invalid: boolean
+): boolean;
+export function parseBool(
+    str: string | null | undefined,
+    invalid?: boolean
+): boolean | undefined;
+export function parseBool(
+    str: string | null | undefined,
+    invalid?: boolean
+): boolean | undefined {
     if (str == null) {
         return invalid ?? undefined;
     }
     switch (str.toLowerCase()) {
-        case "true":
-        case "1":
-        case "yes":
-        case "on":
+        case 'true':
+        case '1':
+        case 'yes':
+        case 'on':
             return true;
-        case "false":
-        case "0":
-        case "no":
-        case "off":
+        case 'false':
+        case '0':
+        case 'no':
+        case 'off':
             return false;
         default:
-            if (invalid == null) throw new Error("Invalid boolean: " + str);
+            if (invalid == null) throw new Error('Invalid boolean: ' + str);
             else return invalid;
     }
 }

@@ -23,26 +23,27 @@ const EditorWidthSelect: FC = () => {
 
     const items: Array<EditorWidthSelectItem> = [
         {
-            text: t("Small (default)"),
+            text: t('Small (default)'),
             value: EDITOR_SIZE.SMALL,
         },
         {
-            text: t("Large"),
-            value: EDITOR_SIZE.LARGE
+            text: t('Large'),
+            value: EDITOR_SIZE.LARGE,
         },
         {
-            text: t("As wide as possible"),
-            value: EDITOR_SIZE.AS_WIDE_AS_POSSIBLE
-        }
+            text: t('As wide as possible'),
+            value: EDITOR_SIZE.AS_WIDE_AS_POSSIBLE,
+        },
     ];
 
     const setTo = (width: EDITOR_SIZE) => {
         close();
         if (data?.id) {
             mutateNote(data.id, {
-                editorsize: width
-            })
-                .catch((v) => console.error("Error whilst switching editor size", v));
+                editorsize: width,
+            }).catch((v) =>
+                console.error('Error whilst switching editor size', v)
+            );
         }
     };
 
@@ -57,13 +58,17 @@ const EditorWidthSelect: FC = () => {
                 paper: 'bg-gray-200 text-gray-800',
             }}
         >
-            {items.map((item) =>
+            {items.map((item) => (
                 <MenuItem key={item.value} onClick={() => setTo(item.value)}>
-                    <span className={`text-xs ${editorWidth == item.value ? 'font-bold' : ''}`}>
+                    <span
+                        className={`text-xs ${
+                            editorWidth == item.value ? 'font-bold' : ''
+                        }`}
+                    >
                         {item.text}
                     </span>
                 </MenuItem>
-            )}
+            ))}
         </Menu>
     );
 };

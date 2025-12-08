@@ -7,7 +7,7 @@ export const applyMisconfiguration: SSRMiddleware = async (req, _res, next) => {
     const collected = collectDebugInformation();
     req.props = {
         ...req.props,
-        debugInformation: collected
+        debugInformation: collected,
     };
 
     next();

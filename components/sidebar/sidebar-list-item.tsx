@@ -55,12 +55,16 @@ const SidebarListItem: FC<{
     const onAddNote = useCallback(
         (e: MouseEvent) => {
             e.preventDefault();
-            router.push(`/new?pid=` + item.id, undefined, { shallow: true })
-                ?.catch((v) => console.error('Error whilst pushing to router: %O', v));
+            router
+                .push(`/new?pid=` + item.id, undefined, { shallow: true })
+                ?.catch((v) =>
+                    console.error('Error whilst pushing to router: %O', v)
+                );
             mutateItem(item.id, {
                 isExpanded: true,
-            })
-                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
+            })?.catch((v) =>
+                console.error('Error whilst mutating item: %O', v)
+            );
         },
         [item.id, mutateItem]
     );
@@ -97,8 +101,10 @@ const SidebarListItem: FC<{
                 className={classNames(
                     'flex items-center group pr-2 overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-150',
                     {
-                        'shadow bg-gray-300 dark:bg-gray-600': snapshot.isDragging,
-                        'bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-200': query.id === item.id,
+                        'shadow bg-gray-300 dark:bg-gray-600':
+                            snapshot.isDragging,
+                        'bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-200':
+                            query.id === item.id,
                     }
                 )}
             >

@@ -46,7 +46,9 @@ export const EditContainer = () => {
                 try {
                     const result = await fetchNote(id);
                     if (!result) {
-                        await router.replace({ query: { ...router.query, new: 1 } });
+                        await router.replace({
+                            query: { ...router.query, new: 1 },
+                        });
                         return;
                     }
                 } catch (msg) {
@@ -89,8 +91,9 @@ export const EditContainer = () => {
 
     useEffect(() => {
         abortFindNote();
-        loadNoteById(id)
-            ?.catch((v) => console.error('Could not load note: %O', v));
+        loadNoteById(id)?.catch((v) =>
+            console.error('Could not load note: %O', v)
+        );
     }, [loadNoteById, abortFindNote, id]);
 
     useEffect(() => {

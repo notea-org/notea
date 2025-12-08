@@ -24,8 +24,9 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
 
     useEffect(() => {
         if (ua.isMobileOnly) {
-            Router.push('/new')
-                ?.catch((v) => console.error('Error whilst pushing /new route: %O', v));
+            Router.push('/new')?.catch((v) =>
+                console.error('Error whilst pushing /new route: %O', v)
+            );
         }
 
         const hour = new Date().getHours();
@@ -47,7 +48,6 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
         <LayoutMain tree={tree}>
             <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-900 overflow-y-auto">
                 <div className="flex-grow flex flex-col items-center justify-center p-6 space-y-12">
-                    
                     <div className="text-center space-y-2">
                         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">
                             {greeting}
@@ -60,37 +60,49 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
                     <MotivationalQuote />
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl">
-                        <button 
+                        <button
                             onClick={handleCreateNote}
                             className="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700 group"
                         >
                             <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
                                 <PlusIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">New Note</span>
-                            <span className="text-sm text-gray-500 mt-2">Start writing from scratch</span>
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
+                                New Note
+                            </span>
+                            <span className="text-sm text-gray-500 mt-2">
+                                Start writing from scratch
+                            </span>
                         </button>
 
-                        <button 
+                        <button
                             onClick={handleDailyNote}
                             className="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700 group"
                         >
                             <div className="p-4 bg-green-50 dark:bg-green-900/30 rounded-full mb-4 group-hover:bg-green-100 dark:group-hover:bg-green-900/50 transition-colors">
                                 <InboxIcon className="w-8 h-8 text-green-600 dark:text-green-400" />
                             </div>
-                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">Daily Note</span>
-                            <span className="text-sm text-gray-500 mt-2">Journal your day</span>
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
+                                Daily Note
+                            </span>
+                            <span className="text-sm text-gray-500 mt-2">
+                                Journal your day
+                            </span>
                         </button>
 
-                        <button 
+                        <button
                             onClick={search.open}
                             className="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700 group"
                         >
                             <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-full mb-4 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors">
                                 <SearchIcon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                             </div>
-                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">Search</span>
-                            <span className="text-sm text-gray-500 mt-2">Find existing notes</span>
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
+                                Search
+                            </span>
+                            <span className="text-sm text-gray-500 mt-2">
+                                Find existing notes
+                            </span>
                         </button>
                     </div>
 

@@ -16,32 +16,31 @@ export function DebugPage({ debugInformation }: ServerProps) {
     return (
         <div className="h-screen flex flex-col">
             <main className="flex flex-col space-y-4 mx-auto my-auto">
-                <h1 className="text-4xl font-bold my-auto mx-auto">Backup debugging page</h1>
+                <h1 className="text-4xl font-bold my-auto mx-auto">
+                    Backup debugging page
+                </h1>
                 <div className="flex flex-row my-auto mx-auto">
                     <DebugInfoCopyButton debugInfo={debugInformation} />
                 </div>
                 <div className="flex flex-row space-x-5 my-auto">
                     {issues.length > 0 && (
-                        <div className={"flex flex-col"}>
-                            <h2 className={"text-2xl"}>Issues</h2>
-                            <IssueList
-                                issues={debugInformation.issues}
-                            />
+                        <div className={'flex flex-col'}>
+                            <h2 className={'text-2xl'}>Issues</h2>
+                            <IssueList issues={debugInformation.issues} />
                         </div>
                     )}
-                    {logs.length > 0  && (
+                    {logs.length > 0 && (
                         <div>
-                            <h2 className={"text-2xl"}>Logs</h2>
-                            <Logs logs={logs}/>
+                            <h2 className={'text-2xl'}>Logs</h2>
+                            <Logs logs={logs} />
                         </div>
                     )}
                     {issues.length < 1 && logs.length < 1 && (
-                        <div className={"mx-auto text-lg"}>
+                        <div className={'mx-auto text-lg'}>
                             No debug information available.
                         </div>
                     )}
                 </div>
-
             </main>
             <footer className="flex flex-col my-auto mx-auto">
                 <div className="mx-auto">
@@ -77,14 +76,18 @@ export const getServerSideProps = async (ctx: SSRContext) => {
     // has to be cast to non-null
     const debugInformation = ctx.req.props.debugInformation as DebugInformation;
 
-
     const envAllowDebug = env.parseBool(env.getEnvRaw('ALLOW_DEBUG'), false);
 
     let redirect;
     // It's only allowed if ALLOW_DEBUG is true or if a fatal error was registered
     // Note that it doesn't work well with Vercel due to the serverless architecture
     // but some errors can still be detected
-    if (!envAllowDebug && !debugInformation.issues.some((v) => v.severity === IssueSeverity.FATAL_ERROR)) {
+    if (
+        !envAllowDebug &&
+        !debugInformation.issues.some(
+            (v) => v.severity === IssueSeverity.FATAL_ERROR
+        )
+    ) {
         redirect = {
             destination: '/',
             permanent: false,

@@ -109,7 +109,7 @@ const LayoutMain: FC<{
                 <PreviewModal />
                 <LinkToolbar />
                 <SidebarMenu />
-                <EditorWidthSelect/>
+                <EditorWidthSelect />
             </NoteState.Provider>
         </NoteTreeState.Provider>
     );

@@ -9,8 +9,9 @@ const Sidebar: FC = () => {
     const { initTree } = NoteTreeState.useContainer();
 
     useEffect(() => {
-        initTree()
-            ?.catch((v) => console.error('Error whilst initialising tree: %O', v));
+        initTree()?.catch((v) =>
+            console.error('Error whilst initialising tree: %O', v)
+        );
     }, [initTree]);
 
     return ua?.isMobileOnly ? <MobileSidebar /> : <BrowserSidebar />;

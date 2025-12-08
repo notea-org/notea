@@ -3,9 +3,9 @@ import pino from 'pino';
 import { isProbablyError } from 'libs/shared/util';
 
 export enum IssueCategory {
-    CONFIG = "config",
-    MISC = "misc",
-    STORE = "store",
+    CONFIG = 'config',
+    MISC = 'misc',
+    STORE = 'store',
 }
 export enum IssueSeverity {
     /**
@@ -26,9 +26,12 @@ export enum IssueSeverity {
     /**
      * Fatal errors are issues that must be resolved before Notea starts working.
      */
-    FATAL_ERROR = 3
+    FATAL_ERROR = 3,
 }
-export function getNameFromSeverity(severity: IssueSeverity, { t }: I18nContextProps) {
+export function getNameFromSeverity(
+    severity: IssueSeverity,
+    { t }: I18nContextProps
+) {
     switch (severity) {
         case IssueSeverity.SUGGESTION:
             return t('Suggestion');
@@ -44,9 +47,12 @@ export function getNameFromSeverity(severity: IssueSeverity, { t }: I18nContextP
 export enum IssueFixRecommendation {
     NEUTRAL,
     RECOMMENDED,
-    NOT_ADVISED
+    NOT_ADVISED,
 }
-export function getNameFromRecommendation(recommendation: IssueFixRecommendation, { t }: I18nContextProps) {
+export function getNameFromRecommendation(
+    recommendation: IssueFixRecommendation,
+    { t }: I18nContextProps
+) {
     switch (recommendation) {
         case IssueFixRecommendation.NEUTRAL:
             return t('Neutral');
@@ -107,6 +113,6 @@ export function toErrorLike(e: Error): ErrorLike {
     return {
         name: e.name,
         stack: e.stack,
-        message: e.message
+        message: e.message,
     };
 }

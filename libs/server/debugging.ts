@@ -3,7 +3,13 @@ import pino from 'pino';
 import pinoPretty from 'pino-pretty';
 import * as path from 'path';
 import * as fs from 'fs';
-import { coerceToValidCause, DebugInformation, Issue, IssueCategory, IssueSeverity } from 'libs/shared/debugging';
+import {
+    coerceToValidCause,
+    DebugInformation,
+    Issue,
+    IssueCategory,
+    IssueSeverity,
+} from 'libs/shared/debugging';
 import Logger = pino.Logger;
 
 export * from 'libs/shared/debugging'; // here's a lil' lesson in trickery
@@ -13,11 +19,14 @@ const keyedRuntimeIssues: Record<keyof any, Issue | undefined> = {};
 export function reportRuntimeIssue(issue: Issue) {
     const complete = {
         ...issue,
-        isRuntime: true
+        isRuntime: true,
     };
     serialRuntimeIssues.push(complete);
 }
-export function setKeyedRuntimeIssue(key: keyof typeof keyedRuntimeIssues, issue: Issue | null) {
+export function setKeyedRuntimeIssue(
+    key: keyof typeof keyedRuntimeIssues,
+    issue: Issue | null
+) {
     if (issue === null) {
         delete keyedRuntimeIssues[key];
     } else {
@@ -27,7 +36,8 @@ export function setKeyedRuntimeIssue(key: keyof typeof keyedRuntimeIssues, issue
 function getAllKeyedRuntimeIssues(): Array<Issue> {
     const values: Array<Issue> = [];
     Object.values(keyedRuntimeIssues).forEach((v) => {
-        if (v != undefined) { // non-strict equality because that's better for null checks
+        if (v != undefined) {
+            // non-strict equality because that's better for null checks
             values.push(v);
         }
     });
@@ -44,9 +54,9 @@ export function findIssues(): Array<Issue> {
         issues.push({
             severity: IssueSeverity.FATAL_ERROR,
             category: IssueCategory.CONFIG,
-            name: "Cannot load config",
+            name: 'Cannot load config',
             cause: coerceToValidCause(e),
-            fixes: []
+            fixes: [],
         });
     }
 
@@ -59,16 +69,19 @@ export function collectDebugInformation(): DebugInformation {
     const issues = findIssues();
     return {
         issues,
-        logs: []
+        logs: [],
     };
 }
 
 function getLogFile(name: string) {
-    const dir = path.resolve(process.cwd(), process.env.LOG_DIRECTORY ?? 'logs');
+    const dir = path.resolve(
+        process.cwd(),
+        process.env.LOG_DIRECTORY ?? 'logs'
+    );
 
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, {
-            recursive: true
+            recursive: true,
         });
     }
 
@@ -78,26 +91,29 @@ function getLogFile(name: string) {
 const loggerTransport: Parameters<typeof pino.multistream>[0] = [
     {
         stream: pinoPretty(),
-        level: "info"
-    }
+        level: 'info',
+    },
 ];
 try {
     loggerTransport.push({
         stream: fs.createWriteStream(getLogFile('debug'), { flags: 'a' }),
-        level: "debug"
+        level: 'debug',
     });
 } catch (e) {
     // well, whoops!
-    console.warn("No file logs: %O", e);
+    console.warn('No file logs: %O', e);
 }
 
 const multistream = pino.multistream(loggerTransport);
 
 export function createLogger(name: string): Logger {
-    return pino({
-        name,
-        level: "trace",
-    }, multistream);
+    return pino(
+        {
+            name,
+            level: 'trace',
+        },
+        multistream
+    );
 }
 
 export type { Logger };

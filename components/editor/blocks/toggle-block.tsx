@@ -23,7 +23,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
         const newTitle = evt.currentTarget.textContent || '';
         setTitle(newTitle);
         contentRef.current = newTitle;
-        
+
         if (onUpdate) {
             onUpdate({ text: newTitle, expanded: isExpanded });
         }
@@ -32,7 +32,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
     const handleToggle = () => {
         const newExpanded = !isExpanded;
         setIsExpanded(newExpanded);
-        
+
         if (onUpdate) {
             onUpdate({ text: title, expanded: newExpanded });
         }
@@ -40,7 +40,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
 
     const addChildBlock = useCallback(() => {
         createBlock(BlockType.PARAGRAPH, { text: '' }, block.id);
-        
+
         if (onUpdate) {
             onUpdate({ text: title, expanded: isExpanded });
         }
@@ -98,8 +98,8 @@ const ToggleBlock: FC<BlockComponentProps> = ({
             `}</style>
             <div
                 className={`toggle-block ${
-                    isSelected 
-                        ? 'bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700' 
+                    isSelected
+                        ? 'bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700'
                         : 'border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
                 } rounded-lg p-2 transition-colors`}
                 onClick={onSelect}
@@ -112,11 +112,22 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                         onClick={handleToggle}
                         disabled={!isEditable}
                     >
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                            <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                        <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M4.5 2L8.5 6L4.5 10"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                fill="none"
+                                strokeLinecap="round"
+                            />
                         </svg>
                     </button>
-                    
+
                     <div
                         contentEditable={isEditable}
                         onInput={handleTitleInput}
@@ -127,7 +138,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                         {title}
                     </div>
                 </div>
-                
+
                 {isExpanded && (
                     <div className="toggle-content ml-6 mt-1">
                         {block.children.map((child) => (
@@ -136,8 +147,12 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                                     block={child}
                                     isSelected={false}
                                     isEditable={isEditable}
-                                    onSelect={() => blockState.selectBlock(child.id)}
-                                    onUpdate={(data) => updateBlock(child.id, { data })}
+                                    onSelect={() =>
+                                        blockState.selectBlock(child.id)
+                                    }
+                                    onUpdate={(data) =>
+                                        updateBlock(child.id, { data })
+                                    }
                                     onDelete={() => deleteBlock(child.id)}
                                 />
                             </div>

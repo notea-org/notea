@@ -21,8 +21,9 @@ const SideBarList = () => {
         (id: string | number) => {
             mutateItem(String(id), {
                 isExpanded: true,
-            })
-                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
+            })?.catch((v) =>
+                console.error('Error whilst mutating item: %O', v)
+            );
         },
         [mutateItem]
     );
@@ -31,8 +32,9 @@ const SideBarList = () => {
         (id: string | number) => {
             mutateItem(String(id), {
                 isExpanded: false,
-            })
-                ?.catch((v) => console.error('Error whilst mutating item: %O', v));
+            })?.catch((v) =>
+                console.error('Error whilst mutating item: %O', v)
+            );
         },
         [mutateItem]
     );
@@ -64,8 +66,11 @@ const SideBarList = () => {
     );
 
     const onCreateNote = useCallback(() => {
-        router.push('/new', undefined, { shallow: true })
-            .catch((v) => console.error('Error whilst pushing to router: %O', v));
+        router
+            .push('/new', undefined, { shallow: true })
+            .catch((v) =>
+                console.error('Error whilst pushing to router: %O', v)
+            );
     }, []);
 
     return (

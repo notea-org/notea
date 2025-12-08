@@ -20,8 +20,11 @@ const MenuButton = () => {
     const onToggle = useCallback(
         (e: MouseEvent) => {
             e.stopPropagation();
-            sidebar.toggle()
-                ?.catch((v) => console.error('Error whilst toggling sidebar: %O', v));
+            sidebar
+                .toggle()
+                ?.catch((v) =>
+                    console.error('Error whilst toggling sidebar: %O', v)
+                );
         },
         [sidebar]
     );
@@ -167,8 +170,7 @@ const NoteNav = () => {
                     icon="WidthSize"
                     className="mr-2"
                     onClick={handleClickEditorWidth}
-                >
-                </IconButton>
+                ></IconButton>
             </HotkeyTooltip>
             <HotkeyTooltip text={t('Settings')}>
                 <IconButton

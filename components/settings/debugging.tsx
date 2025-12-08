@@ -6,12 +6,12 @@ import { DebugInformation, Issue } from 'libs/shared/debugging';
 export const Debugging: FC<{
     debugInfo: DebugInformation;
 }> = (props) => {
-    const issues: Array<Issue> = [...props.debugInfo.issues].sort((a, b) => b.severity - a.severity);
+    const issues: Array<Issue> = [...props.debugInfo.issues].sort(
+        (a, b) => b.severity - a.severity
+    );
     return (
         <div className="my-2">
-            <IssueList
-                issues={issues}
-            />
+            <IssueList issues={issues} />
             <div className={'flex flex-row my-2'}>
                 <DebugInfoCopyButton debugInfo={props.debugInfo} />
             </div>

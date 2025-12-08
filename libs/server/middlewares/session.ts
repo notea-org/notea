@@ -13,7 +13,9 @@ const sessionOptions = () => ({
 });
 
 let _useSession: Middleware<any, any>;
-export const useSession: Middleware<any, any> = (...args: [any, any, NextHandler]) => {
+export const useSession: Middleware<any, any> = (
+    ...args: [any, any, NextHandler]
+) => {
     _useSession ??= ironSession(sessionOptions());
     _useSession(...args);
 };

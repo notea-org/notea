@@ -87,8 +87,14 @@ const useEditor = (initNote?: NoteModel) => {
     const onClickLink = useCallback(
         (href: string) => {
             if (isNoteLink(href.replace(location.origin, ''))) {
-                router.push(href, undefined, { shallow: true })
-                    .catch((v) => console.error('Error whilst pushing href to router: %O', v));
+                router
+                    .push(href, undefined, { shallow: true })
+                    .catch((v) =>
+                        console.error(
+                            'Error whilst pushing href to router: %O',
+                            v
+                        )
+                    );
             } else {
                 window.open(href, '_blank');
             }
@@ -162,8 +168,11 @@ const useEditor = (initNote?: NoteModel) => {
 
     const onEditorChange = useCallback(
         (value: () => string): void => {
-            onNoteChange.callback({ content: value() })
-                ?.catch((v) => console.error('Error whilst updating note: %O', v));
+            onNoteChange
+                .callback({ content: value() })
+                ?.catch((v) =>
+                    console.error('Error whilst updating note: %O', v)
+                );
         },
         [onNoteChange]
     );

@@ -27,8 +27,9 @@ const ShareModal: FC = () => {
         (_event: unknown, checked: boolean) => {
             updateNote({
                 shared: checked ? NOTE_SHARED.PUBLIC : NOTE_SHARED.PRIVATE,
-            })
-                ?.catch((v) => console.error('Error whilst updating note: %O', v));
+            })?.catch((v) =>
+                console.error('Error whilst updating note: %O', v)
+            );
         },
         [updateNote]
     );

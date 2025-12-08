@@ -144,7 +144,7 @@ export function makeHierarchy(
 }
 
 export function cleanItemModel(model: Partial<TreeItemModel>): TreeItemModel {
-    if (!model.id) throw new Error("Missing id on tree model");
+    if (!model.id) throw new Error('Missing id on tree model');
 
     const children = model.children ?? [];
 
@@ -158,7 +158,7 @@ export function cleanItemModel(model: Partial<TreeItemModel>): TreeItemModel {
     };
 }
 export function cleanTreeModel(model: Partial<TreeModel>): TreeModel {
-    const items: TreeModel["items"] = {};
+    const items: TreeModel['items'] = {};
     if (model.items) {
         for (const itemId in model.items) {
             const item = model.items[itemId];
@@ -176,7 +176,7 @@ export function cleanTreeModel(model: Partial<TreeModel>): TreeModel {
 
             items[itemId] = {
                 ...cleanedItem,
-                children
+                children,
             };
         }
     }
@@ -184,7 +184,7 @@ export function cleanTreeModel(model: Partial<TreeModel>): TreeModel {
     return {
         ...model, // In case
         rootId: model.rootId ?? ROOT_ID,
-        items: items
+        items: items,
     };
 }
 
@@ -198,7 +198,7 @@ const TreeActions = {
     flattenTree,
     makeHierarchy,
     cleanTreeModel,
-    cleanItemModel
+    cleanItemModel,
 };
 
 export default TreeActions;

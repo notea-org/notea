@@ -41,11 +41,11 @@ export const DebugInfoCopyButton: FC<{
         if (debugInfo.logs.length > 0) {
             ensureNewline();
             for (const log of debugInfo.logs) {
-                data += `[${new Date(log.time).toISOString()} ${log.name}] ${logLevelToString(log.level)}: ${log.msg}`;
+                data += `[${new Date(log.time).toISOString()} ${
+                    log.name
+                }] ${logLevelToString(log.level)}: ${log.msg}`;
             }
         }
-
-
 
         return data;
     }

@@ -9,8 +9,9 @@ const Backlinks: FC = () => {
     const { t } = useI18n();
 
     useEffect(() => {
-        getBackLinks()
-            ?.catch((v) => console.error('Error whilst getting backlinks: %O', v));
+        getBackLinks()?.catch((v) =>
+            console.error('Error whilst getting backlinks: %O', v)
+        );
     }, [getBackLinks]);
 
     if (!backlinks?.length) {

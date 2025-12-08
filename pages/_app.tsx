@@ -125,9 +125,11 @@ const AppInner = ({
 };
 
 function MyApp(props: AppProps & { pageProps: ServerProps }) {
-    return <ThemeProvider attribute="class" storageKey="nightwind-mode">
-        <AppInner {...props} />
-    </ThemeProvider>;
+    return (
+        <ThemeProvider attribute="class" storageKey="nightwind-mode">
+            <AppInner {...props} />
+        </ThemeProvider>
+    );
 }
 
 export default MyApp;

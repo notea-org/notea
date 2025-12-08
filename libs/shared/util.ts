@@ -6,7 +6,7 @@ export function isProbablyError(e: any): e is Error {
 }
 
 export function errorToString(error: Error): string {
-    let str = "";
+    let str = '';
 
     if (error.stack) {
         return error.stack;
@@ -16,7 +16,7 @@ export function errorToString(error: Error): string {
         str += error.name;
     }
     if (error.message) {
-        str = ensureEndingUnlessEmpty(str, ": ") + error.message;
+        str = ensureEndingUnlessEmpty(str, ': ') + error.message;
     }
 
     return str;

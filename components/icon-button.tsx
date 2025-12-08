@@ -42,7 +42,9 @@ export const ICONS = {
     Puzzle: PuzzleIcon,
     ChevronDoubleUp: ChevronDoubleUpIcon,
     Refresh: RefreshIcon,
-    WidthSize: (props: any) => <SelectorIcon style={{ transform: 'rotate(90deg)' }} {...props}/>
+    WidthSize: (props: any) => (
+        <SelectorIcon style={{ transform: 'rotate(90deg)' }} {...props} />
+    ),
 };
 
 const IconButton = forwardRef<

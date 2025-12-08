@@ -30,8 +30,11 @@ const EditTitle: FC<{ readOnly?: boolean }> = ({ readOnly }) => {
     const onTitleChange = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {
             const title = event.target.value;
-            onNoteChange.callback({ title })
-                ?.catch((v) => console.error('Error whilst changing title: %O', v));
+            onNoteChange
+                .callback({ title })
+                ?.catch((v) =>
+                    console.error('Error whilst changing title: %O', v)
+                );
         },
         [onNoteChange]
     );

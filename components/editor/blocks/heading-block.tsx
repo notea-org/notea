@@ -1,7 +1,6 @@
 import { FC, useState, useRef, useEffect } from 'react';
 import { BlockComponentProps } from './block-renderer';
 import { BlockType } from 'libs/shared/block';
- 
 
 const HeadingBlock: FC<BlockComponentProps> = ({
     block,
@@ -33,14 +32,12 @@ const HeadingBlock: FC<BlockComponentProps> = ({
         }
     };
 
-    
-
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-      if (onAddBlock) {
-        onAddBlock(BlockType.PARAGRAPH);
-      }
+            if (onAddBlock) {
+                onAddBlock(BlockType.PARAGRAPH);
+            }
             return;
         }
 
@@ -54,9 +51,6 @@ const HeadingBlock: FC<BlockComponentProps> = ({
 
         if (e.key === 'Tab') {
             e.preventDefault();
-            
-
-            
 
             return;
         }
@@ -68,11 +62,11 @@ const HeadingBlock: FC<BlockComponentProps> = ({
         }
     };
 
-  
-
     return (
         <div
-            className={`heading-block heading-${getHeadingLevel()} ${isSelected ? 'selected' : ''}`}
+            className={`heading-block heading-${getHeadingLevel()} ${
+                isSelected ? 'selected' : ''
+            }`}
             onFocus={handleFocus}
         >
             <style jsx>{`
@@ -87,9 +81,15 @@ const HeadingBlock: FC<BlockComponentProps> = ({
                     word-break: break-word;
                     font-weight: 600;
                 }
-                .heading-block.heading-1 .heading-content { font-size: 1.75rem; }
-                .heading-block.heading-2 .heading-content { font-size: 1.5rem; }
-                .heading-block.heading-3 .heading-content { font-size: 1.25rem; }
+                .heading-block.heading-1 .heading-content {
+                    font-size: 1.75rem;
+                }
+                .heading-block.heading-2 .heading-content {
+                    font-size: 1.5rem;
+                }
+                .heading-block.heading-3 .heading-content {
+                    font-size: 1.25rem;
+                }
                 .heading-content:empty:before {
                     content: attr(data-placeholder);
                     color: #9ca3af;

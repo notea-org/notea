@@ -11,7 +11,7 @@ import {
     IssueCategory,
     IssueFixRecommendation,
     IssueSeverity,
-    setKeyedRuntimeIssue
+    setKeyedRuntimeIssue,
 } from 'libs/server/debugging';
 
 const SYM_ISSUE_CANNOT_GET_SETTINGS = Symbol();
@@ -21,22 +21,20 @@ export async function getSettings(store: StoreProvider): Promise<Settings> {
     let settings;
     try {
         if (await store.hasObject(settingsPath)) {
-            settings = tryJSON<Settings>(
-                await store.getObject(settingsPath)
-            );
+            settings = tryJSON<Settings>(await store.getObject(settingsPath));
         }
     } catch (e) {
         setKeyedRuntimeIssue(SYM_ISSUE_CANNOT_GET_SETTINGS, {
             category: IssueCategory.STORE,
             severity: IssueSeverity.FATAL_ERROR,
-            name: "Could not get settings",
+            name: 'Could not get settings',
             cause: coerceToValidCause(e),
             fixes: [
                 {
-                    description: "Make sure Notea can connect to the store.",
-                    recommendation: IssueFixRecommendation.RECOMMENDED
-                }
-            ]
+                    description: 'Make sure Notea can connect to the store.',
+                    recommendation: IssueFixRecommendation.RECOMMENDED,
+                },
+            ],
         });
         throw e;
     }
@@ -50,9 +48,9 @@ export async function getSettings(store: StoreProvider): Promise<Settings> {
             setKeyedRuntimeIssue(SYM_ISSUE_CANNOT_PUT_SETTINGS, {
                 category: IssueCategory.STORE,
                 severity: IssueSeverity.ERROR,
-                name: "Could not put settings",
+                name: 'Could not put settings',
                 cause: coerceToValidCause(e),
-                fixes: []
+                fixes: [],
             });
         }
         return formatted;
