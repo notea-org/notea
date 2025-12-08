@@ -10,6 +10,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
     onSelect,
     onUpdate,
     onDelete,
+    onAddBlock,
 }) => {
     const blockState = BlockState.useContainer();
     const { createBlock, updateBlock, deleteBlock } = blockState;
@@ -37,10 +38,27 @@ const ToggleBlock: FC<BlockComponentProps> = ({
         }
     };
 
+    const addChildBlock = useCallback(() => {
+        createBlock(BlockType.PARAGRAPH, { text: '' }, block.id);
+        
+        if (onUpdate) {
+            onUpdate({ text: title, expanded: isExpanded });
+        }
+    }, [createBlock, block.id, title, isExpanded, onUpdate]);
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // Create new paragraph block after toggle
+            if (isExpanded) {
+                addChildBlock();
+            } else if (onAddBlock) {
+                onAddBlock(BlockType.PARAGRAPH);
+            }
+            return;
+        }
+
+        if (e.key === '/' && title === '') {
+            e.preventDefault();
             return;
         }
 
@@ -58,14 +76,6 @@ const ToggleBlock: FC<BlockComponentProps> = ({
             return;
         }
     };
-
-    const addChildBlock = useCallback(() => {
-        createBlock(BlockType.PARAGRAPH, { text: '' }, block.id);
-        
-        if (onUpdate) {
-            onUpdate({ text: title, expanded: isExpanded });
-        }
-    }, [createBlock, block.id, title, isExpanded, onUpdate]);
 
     return (
         <>
@@ -87,12 +97,6 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                 }
                 .toggle-child {
                     margin-left: 1.75rem;
-                }
-                .add-child-btn {
-                    transition: all 0.2s ease;
-                }
-                .add-child-btn:hover {
-                    background-color: rgba(0, 0, 0, 0.05);
                 }
             `}</style>
             <div
@@ -141,15 +145,6 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                                 />
                             </div>
                         ))}
-                        
-                        {isEditable && (
-                            <button
-                                className="add-child-btn text-sm text-gray-500 hover:text-gray-700 p-2 rounded hover:bg-gray-100"
-                                onClick={addChildBlock}
-                            >
-                                + Add content
-                            </button>
-                        )}
                     </div>
                 )}
             </div>
