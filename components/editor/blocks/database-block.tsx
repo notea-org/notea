@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BlockComponentProps } from './block-renderer';
 import BlockState from 'libs/web/state/block';
-import { DatabaseBlock as DatabaseBlockInterface, DatabaseProperty, PropertyType, BlockType } from 'libs/shared/block';
+import { DatabaseBlock as DatabaseBlockInterface, DatabaseProperty, PropertyType, BlockType, SelectOption } from 'libs/shared/block';
 import { PlusIcon } from '@heroicons/react/solid';
 import { nanoid } from 'nanoid';
 
@@ -87,8 +87,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                         <td key={prop.id} className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-b border-gray-100">
                                             <Cell 
                                                 block={row} 
-                                                propertyId={prop.id} 
-                                                type={prop.type}
+                                                property={prop}
                                                 onUpdate={(value) => {
                                                     const currentProps = row.data.properties || {};
                                                     updateBlock(row.id, {
@@ -100,6 +99,10 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                             }
                                                         }
                                                     });
+                                                }}
+                                                onPropertyUpdate={(updatedProp) => {
+                                                    const newProperties = properties.map(p => p.id === updatedProp.id ? updatedProp : p);
+                                                    onUpdate?.({ properties: newProperties });
                                                 }}
                                             />
                                         </td>
@@ -139,17 +142,17 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
 
 const Cell: FC<{
     block: any;
-    propertyId: string;
-    type: PropertyType;
+    property: DatabaseProperty;
     onUpdate: (value: any) => void;
-}> = ({ block, propertyId, type, onUpdate }) => {
-    const value = block.data.properties?.[propertyId];
+    onPropertyUpdate?: (property: DatabaseProperty) => void;
+}> = ({ block, property, onUpdate, onPropertyUpdate }) => {
+    const value = block.data.properties?.[property.id];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         onUpdate(e.target.value);
     };
 
-    switch (type) {
+    switch (property.type) {
         case PropertyType.TEXT:
         case PropertyType.URL:
         case PropertyType.EMAIL:
@@ -164,7 +167,7 @@ const Cell: FC<{
                 />
             );
         case PropertyType.NUMBER:
-            return (
+             return (
                 <input 
                     type="number" 
                     className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
@@ -173,6 +176,128 @@ const Cell: FC<{
                     placeholder="Empty"
                 />
             );
+        case PropertyType.DATE:
+            return (
+                <input 
+                    type="date" 
+                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
+                    value={value || ''}
+                    onChange={handleChange}
+                />
+            );
+        case PropertyType.CHECKBOX:
+            return (
+                <div className="flex justify-center">
+                    <input 
+                        type="checkbox" 
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                        checked={!!value}
+                        onChange={(e) => onUpdate(e.target.checked)}
+                    />
+                </div>
+            );
+        case PropertyType.SELECT: {
+            const optionMap = new Map(property.options?.map(o => [o.id, o]) || []);
+            const selectedOption = optionMap.get(value);
+            const displayValue = selectedOption ? selectedOption.name : (value || '');
+            const dataListId = `datalist-${property.id}`;
+
+            const handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                const newValue = e.target.value;
+                // Check if it matches an existing option name
+                const existingOption = property.options?.find(o => o.name === newValue);
+                
+                if (existingOption) {
+                    onUpdate(existingOption.id);
+                } else {
+                    // Create new option?
+                    // For now, let's just create it if it's not empty
+                    if (newValue.trim()) {
+                         const newOption = {
+                             id: nanoid(),
+                             name: newValue,
+                             color: 'gray' // default color
+                         };
+                         // Update property with new option
+                         onPropertyUpdate?.({
+                             ...property,
+                             options: [...(property.options || []), newOption]
+                         });
+                         // Update cell value
+                         onUpdate(newOption.id);
+                    } else {
+                        onUpdate('');
+                    }
+                }
+            };
+
+            return (
+                <div className="relative w-full">
+                    <input 
+                        list={dataListId}
+                        className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
+                        value={displayValue}
+                        onChange={handleSelectChange}
+                        placeholder="Select or type..."
+                    />
+                    <datalist id={dataListId}>
+                        {property.options?.map(opt => (
+                            <option key={opt.id} value={opt.name} />
+                        ))}
+                    </datalist>
+                </div>
+            );
+        }
+        case PropertyType.MULTI_SELECT: {
+             const selectedIds = (Array.isArray(value) ? value : []) as string[];
+             const selectedNames = selectedIds.map(id => {
+                 return property.options?.find(o => o.id === id)?.name || id;
+             }).join(', ');
+             
+             const handleMultiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                 const text = e.target.value;
+                 const parts = text.split(',').map(s => s.trim()).filter(Boolean);
+                 
+                 const newIds: string[] = [];
+                 const newOptions: SelectOption[] = [];
+                 const currentOptions = [...(property.options || [])];
+                 
+                 parts.forEach(part => {
+                     const existing = currentOptions.find(o => o.name === part);
+                     if (existing) {
+                         newIds.push(existing.id);
+                     } else {
+                         // Create new
+                         const newOpt = {
+                             id: nanoid(),
+                             name: part,
+                             color: 'gray'
+                         };
+                         currentOptions.push(newOpt);
+                         newOptions.push(newOpt);
+                         newIds.push(newOpt.id);
+                     }
+                 });
+                 
+                 if (newOptions.length > 0 && onPropertyUpdate) {
+                      onPropertyUpdate({
+                          ...property,
+                          options: currentOptions
+                      });
+                 }
+                 onUpdate(newIds);
+             };
+
+             return (
+                 <input 
+                    type="text"
+                    className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"
+                    value={selectedNames}
+                    onChange={handleMultiChange}
+                    placeholder="Type tags separated by comma..."
+                 />
+             );
+        }
         default:
             return <span className="text-gray-400 text-sm">{String(value || '')}</span>;
     }

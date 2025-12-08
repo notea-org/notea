@@ -1,6 +1,9 @@
 import { FC, useState, useRef, useEffect } from 'react';
 import { BlockComponentProps } from './block-renderer';
 import { BlockType } from 'libs/shared/block';
+import BlockState from 'libs/web/state/block';
+import SlashMenu from './slash-menu';
+import { createPortal } from 'react-dom';
 
 const ParagraphBlock: FC<BlockComponentProps> = ({
     block,
@@ -11,7 +14,12 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
     onDelete,
     onAddBlock,
 }) => {
+    const { updateBlock } = BlockState.useContainer();
     const [content, setContent] = useState(block.data.text || '');
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuQuery, setMenuQuery] = useState('');
+    const [menuPos, setMenuPos] = useState({ x: 0, y: 0 });
+    
     const contentRef = useRef(block.data.text || '');
     const editableRef = useRef<HTMLDivElement>(null);
 
@@ -19,10 +27,29 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
         contentRef.current = content;
     }, [content]);
 
+    // Close menu if clicked outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuOpen && editableRef.current && !editableRef.current.contains(e.target as Node)) {
+                setMenuOpen(false);
+            }
+        };
+        window.addEventListener('click', handleClickOutside);
+        return () => window.removeEventListener('click', handleClickOutside);
+    }, [menuOpen]);
+
     const handleInput = (evt: React.FormEvent<HTMLDivElement>) => {
         const newContent = evt.currentTarget.textContent || '';
         setContent(newContent);
         contentRef.current = newContent;
+
+        if (menuOpen) {
+            if (!newContent.startsWith('/')) {
+                setMenuOpen(false);
+            } else {
+                setMenuQuery(newContent.substring(1));
+            }
+        }
 
         if (onUpdate) {
             onUpdate({ text: newContent });
@@ -30,8 +57,31 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (menuOpen) {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Enter') {
+                // Let SlashMenu handle these via its window listener or we need to coordinate
+                // Since SlashMenu uses window listener, we just prevent default here to stop cursor movement
+                if (e.key !== 'Enter') e.preventDefault(); 
+                return;
+            }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                setMenuOpen(false);
+                return;
+            }
+        }
+
         if (e.key === '/' && content === '') {
-            e.preventDefault();
+            // Trigger menu
+            const selection = window.getSelection();
+            if (selection && selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                setMenuPos({ x: rect.left, y: rect.bottom });
+                setMenuOpen(true);
+                setMenuQuery('');
+            }
+            // Allow the '/' to be typed
             return;
         }
 
@@ -55,6 +105,15 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
             e.preventDefault();
             return;
         }
+    };
+
+    const handleMenuSelect = (type: BlockType) => {
+        // Convert this block to the selected type
+        updateBlock(block.id, { 
+            type, 
+            data: { ...block.data, text: '' } // Clear text (remove the slash)
+        });
+        setMenuOpen(false);
     };
 
     const handleFocus = () => {
@@ -95,6 +154,16 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
             >
                 {content}
             </div>
+            {menuOpen && typeof document !== 'undefined' && createPortal(
+                <SlashMenu 
+                    isOpen={menuOpen}
+                    position={menuPos}
+                    onClose={() => setMenuOpen(false)}
+                    onSelect={handleMenuSelect}
+                    query={menuQuery}
+                />,
+                document.body
+            )}
         </div>
     );
 };
