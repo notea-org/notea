@@ -88,7 +88,7 @@ const IconButton = forwardRef<
                         rounded,
                         'cursor-not-allowed opacity-20': disabled,
                     },
-                    !disabled && 'hover:bg-gray-400',
+                    !disabled && 'hover:bg-gray-200 dark:hover:bg-gray-600',
                     className
                 )}
             >

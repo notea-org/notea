@@ -49,7 +49,7 @@ export const Favorites: FC = () => {
 
     return (
         <>
-            <div className="group p-2 text-gray-500 flex items-center sticky top-0 bg-gray-100 z-10">
+            <div className="group p-2 text-gray-500 flex items-center sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 backdrop-filter backdrop-blur-sm bg-opacity-90">
                 <div className="flex-auto flex items-center">
                     <span>{t('Favorites')}</span>
                 </div>

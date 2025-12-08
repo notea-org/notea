@@ -25,7 +25,7 @@ const ButtonItem = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
                 {...attrs}
                 ref={ref}
                 className={classNames(
-                    'block m-3 text-gray-500 hover:text-gray-800 cursor-pointer',
+                    'block m-3 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer transition-colors',
                     className
                 )}
             >
@@ -143,7 +143,7 @@ const SidebarTool = () => {
     const mounted = useMounted();
 
     return (
-        <aside className="h-full flex flex-col w-12  md:w-11 flex-none bg-gray-200">
+        <aside className="h-full flex flex-col w-12  md:w-11 flex-none bg-gray-100 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
             <ButtonSearch />
             <ButtonTrash />
             <ButtonDailyNotes />

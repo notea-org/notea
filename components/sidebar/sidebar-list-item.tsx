@@ -95,10 +95,10 @@ const SidebarListItem: FC<{
                 {...attrs}
                 ref={innerRef}
                 className={classNames(
-                    'flex items-center group pr-2 overflow-hidden hover:bg-gray-300 text-gray-700',
+                    'flex items-center group pr-2 overflow-hidden hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors duration-150',
                     {
-                        'shadow bg-gray-300': snapshot.isDragging,
-                        'bg-gray-200': query.id === item.id,
+                        'shadow bg-gray-300 dark:bg-gray-600': snapshot.isDragging,
+                        'bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-200': query.id === item.id,
                     }
                 )}
             >
