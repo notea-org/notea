@@ -68,6 +68,23 @@ const ParagraphBlock: FC<BlockComponentProps> = ({
             className={`paragraph-block ${isSelected ? 'selected' : ''}`}
             onFocus={handleFocus}
         >
+            <style jsx>{`
+                .paragraph-content {
+                    min-height: 1.5rem;
+                    line-height: 1.5rem;
+                    outline: none;
+                    border: 0;
+                    background: transparent;
+                    width: 100%;
+                    white-space: pre-wrap;
+                    word-break: break-word;
+                }
+                .paragraph-content:empty:before {
+                    content: attr(data-placeholder);
+                    color: #9ca3af;
+                    pointer-events: none;
+                }
+            `}</style>
             <div
                 ref={editableRef}
                 contentEditable={isEditable}

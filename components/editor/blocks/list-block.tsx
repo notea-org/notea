@@ -156,6 +156,39 @@ const ListBlock: FC<BlockComponentProps> = ({
             className={`list-block ${getListType()}-list ${isSelected ? 'selected' : ''}`}
             onClick={onSelect}
         >
+            <style jsx>{`
+                .list-item {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 0.5rem;
+                }
+                .list-item-marker {
+                    width: 1.25rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-shrink: 0;
+                }
+                .list-item-content {
+                    min-height: 1.5rem;
+                    line-height: 1.5rem;
+                    outline: none;
+                    border: 0;
+                    background: transparent;
+                    white-space: pre-wrap;
+                    word-break: break-word;
+                    flex: 1;
+                }
+                .list-item-content:empty:before {
+                    content: 'List item';
+                    color: #9ca3af;
+                    pointer-events: none;
+                }
+                .list-item-content.checked {
+                    text-decoration: line-through;
+                    color: #6b7280;
+                }
+            `}</style>
             {items.map((item, index) => renderListItem(item, index))}
         </div>
     );

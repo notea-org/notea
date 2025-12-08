@@ -75,23 +75,44 @@ const HeadingBlock: FC<BlockComponentProps> = ({
             className={`heading-block heading-${getHeadingLevel()} ${isSelected ? 'selected' : ''}`}
             onFocus={handleFocus}
         >
-      <div
-        ref={editableRef}
-        contentEditable={isEditable}
-        onInput={(evt: React.FormEvent<HTMLDivElement>) => {
-          const newContent = evt.currentTarget.textContent || '';
-          setContent(newContent);
-          contentRef.current = newContent;
-          if (onUpdate) {
-            onUpdate({ text: newContent });
-          }
-        }}
-        onKeyDown={handleKeyDown}
-        className="heading-content"
-        data-placeholder={`Heading ${getHeadingLevel()}`}
-      >
-        {content}
-      </div>
+            <style jsx>{`
+                .heading-content {
+                    min-height: 1.75rem;
+                    line-height: 1.75rem;
+                    outline: none;
+                    border: 0;
+                    background: transparent;
+                    width: 100%;
+                    white-space: pre-wrap;
+                    word-break: break-word;
+                    font-weight: 600;
+                }
+                .heading-block.heading-1 .heading-content { font-size: 1.75rem; }
+                .heading-block.heading-2 .heading-content { font-size: 1.5rem; }
+                .heading-block.heading-3 .heading-content { font-size: 1.25rem; }
+                .heading-content:empty:before {
+                    content: attr(data-placeholder);
+                    color: #9ca3af;
+                    pointer-events: none;
+                }
+            `}</style>
+            <div
+                ref={editableRef}
+                contentEditable={isEditable}
+                onInput={(evt: React.FormEvent<HTMLDivElement>) => {
+                    const newContent = evt.currentTarget.textContent || '';
+                    setContent(newContent);
+                    contentRef.current = newContent;
+                    if (onUpdate) {
+                        onUpdate({ text: newContent });
+                    }
+                }}
+                onKeyDown={handleKeyDown}
+                className="heading-content"
+                data-placeholder={`Heading ${getHeadingLevel()}`}
+            >
+                {content}
+            </div>
         </div>
     );
 };
