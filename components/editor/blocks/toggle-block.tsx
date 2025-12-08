@@ -70,16 +70,12 @@ const ToggleBlock: FC<BlockComponentProps> = ({
     return (
         <>
             <style jsx>{`
-                .toggle-block.selected {
-                    background-color: #f3f4f6;
-                    border-color: #d1d5db;
-                }
                 .toggle-title {
                     min-height: 1.5rem;
                     line-height: 1.5rem;
                 }
                 .toggle-title:empty:before {
-                    content: attr(placeholder);
+                    content: attr(data-placeholder);
                     color: #9ca3af;
                     pointer-events: none;
                 }
@@ -87,7 +83,7 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                     transition: transform 0.2s ease;
                 }
                 .toggle-arrow:hover {
-                    background-color: #f3f4f6;
+                    background-color: rgba(0, 0, 0, 0.05);
                 }
                 .toggle-child {
                     margin-left: 1.75rem;
@@ -96,11 +92,15 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                     transition: all 0.2s ease;
                 }
                 .add-child-btn:hover {
-                    background-color: #f9fafb;
+                    background-color: rgba(0, 0, 0, 0.05);
                 }
             `}</style>
             <div
-                className={`toggle-block ${isSelected ? 'selected' : ''} border border-transparent hover:border-gray-200 rounded-lg p-2 transition-colors`}
+                className={`toggle-block ${
+                    isSelected 
+                        ? 'bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700' 
+                        : 'border border-transparent hover:border-gray-200 dark:hover:border-gray-700'
+                } rounded-lg p-2 transition-colors`}
                 onClick={onSelect}
             >
                 <div className="toggle-header flex items-center gap-2">

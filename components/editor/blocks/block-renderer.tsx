@@ -68,7 +68,7 @@ const BlockRenderer: FC<BlockComponentProps> = ({
 
   return (
     <div
-      className={`block-renderer ${isSelected ? 'selected' : ''} ${block.type}`}
+      className={`block-renderer w-full relative ${isSelected ? 'selected' : ''} ${block.type}`}
       onClick={onSelect}
     >
       <div className="block-content">
