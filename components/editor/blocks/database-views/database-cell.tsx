@@ -95,7 +95,7 @@ const MultiSelectCell: FC<CellProps> = ({ block, property, onUpdate, onPropertyU
             
             <div className="relative group inline-block">
                 <button className="text-gray-400 hover:text-gray-600 text-xs px-1">+</button>
-                    <div className="hidden group-hover:block absolute z-10 bg-white shadow-lg rounded p-2 border min-w-[200px] left-0 mt-1">
+                <div className="hidden group-hover:block absolute z-10 bg-white shadow-lg rounded p-2 border min-w-[200px] left-0 mt-1">
                     <div className="max-h-32 overflow-y-auto mb-2">
                         {property.options?.filter((o) => !selectedIds.includes(o.id)).map((opt) => (
                             <div 
@@ -185,7 +185,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                                 onUpdate(newSelectedIds);
                                 
                                 // Remove bidirectional linking
-                                const backRefProperty = relatedDb.data.properties.find(p => 
+                                const backRefProperty = relatedDb.data.properties.find((p) => 
                                     p.type === PropertyType.RELATION && p.relationId === block.parentId
                                 );
                                 if (backRefProperty && row.data.properties?.[backRefProperty.id]) {
@@ -242,7 +242,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                                     onUpdate(isMultiple ? newSelectedIds : row.id);
                                     
                                     // Add bidirectional linking - find back-reference property
-                                    const backRefProperty = relatedDb.data.properties.find(p => 
+                                    const backRefProperty = relatedDb.data.properties.find((p) => 
                                         p.type === PropertyType.RELATION && p.relationId === block.parentId
                                     );
                                     if (backRefProperty) {
@@ -286,7 +286,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                                     onUpdate(isMultiple ? newSelectedIds : newBlock.id);
                                     
                                     // Add bidirectional linking for newly created row
-                                    const backRefProperty = relatedDb.data.properties.find(p => 
+                                    const backRefProperty = relatedDb.data.properties.find((p) => 
                                         p.type === PropertyType.RELATION && p.relationId === block.parentId
                                     );
                                     if (backRefProperty) {
@@ -373,7 +373,7 @@ export const Cell: FC<CellProps> = (props) => {
                 />
             );
         case PropertyType.NUMBER:
-             return (
+            return (
                 <input 
                     type="number" 
                     className="w-full bg-transparent border-none focus:ring-0 p-0 text-sm"

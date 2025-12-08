@@ -26,7 +26,7 @@ export const DatabaseBoardView: FC<DatabaseBoardViewProps> = ({
     // Find valid group-by properties (Select or Multi-select)
     const groupableProperties = useMemo(() =>
         properties.filter((p) => p.type === PropertyType.SELECT || p.type === PropertyType.MULTI_SELECT),
-        [properties]
+    [properties]
     );
 
     // If no groupBy is provided, try to pick the first one
@@ -142,19 +142,19 @@ export const DatabaseBoardView: FC<DatabaseBoardViewProps> = ({
                                     properties={properties}
                                     groupPropertyId={groupedProperty.id}
                                     onOpenRow={onOpenRow}
-                            />
-                        ))}
-                        <button 
-                            className="w-full text-left p-2 text-gray-400 hover:bg-gray-100 rounded text-sm flex items-center"
-                            onClick={() => handleAddRow({ [groupedProperty.id]: groupedProperty.type === PropertyType.MULTI_SELECT ? [opt.id] : opt.id })}
-                        >
-                            <PlusIcon className="w-4 h-4 mr-1" /> New
-                        </button>
+                                />
+                            ))}
+                            <button 
+                                className="w-full text-left p-2 text-gray-400 hover:bg-gray-100 rounded text-sm flex items-center"
+                                onClick={() => handleAddRow({ [groupedProperty.id]: groupedProperty.type === PropertyType.MULTI_SELECT ? [opt.id] : opt.id })}
+                            >
+                                <PlusIcon className="w-4 h-4 mr-1" /> New
+                            </button>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
-    </div>
     );
 };
 
@@ -177,15 +177,15 @@ const BoardCard: FC<{
                 ) : 'Untitled'}
             </div>
             <div className="space-y-1">
-               {properties.slice(1).map((prop) => {
-                   if (prop.id === groupPropertyId) return null;
-                   const val = row.data.properties?.[prop.id];
-                   if (!val) return null;
-                   
-                   return (
-                       <div key={prop.id} className="text-xs text-gray-500 truncate">
+                {properties.slice(1).map((prop) => {
+                    if (prop.id === groupPropertyId) return null;
+                    const val = row.data.properties?.[prop.id];
+                    if (!val) return null;
+                    
+                    return (
+                        <div key={prop.id} className="text-xs text-gray-500 truncate">
                             <span className="mr-1 text-gray-400">{prop.name}:</span>
-                            {String(val)}
+                            {Array.isArray(val) ? val.join(', ') : String(val)}
                         </div>
                     );
                 })}

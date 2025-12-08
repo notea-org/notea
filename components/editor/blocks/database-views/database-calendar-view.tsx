@@ -21,9 +21,9 @@ export const DatabaseCalendarView: FC<DatabaseCalendarViewProps> = ({
     const [currentDate, setCurrentDate] = useState(dayjs());
 
     // Find the first Date property to use
-    const dateProperty = useMemo(() => 
+    const dateProperty = useMemo(() =>
         properties.find((p) => p.type === PropertyType.DATE),
-        [properties]
+    [properties]
     );
 
     // Group rows by date

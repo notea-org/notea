@@ -62,11 +62,11 @@ export const DatabaseGalleryView: FC<DatabaseGalleryViewProps> = ({
                             {/* Content */}
                             <div className="p-3 flex-1 flex flex-col space-y-2">
                                 <div className="font-medium text-gray-900 text-base">
-                                     {properties.length > 0 ? (
-                                         <span>
-                                             {row.data.properties?.[properties[0].id] || 'Untitled'}
-                                         </span>
-                                     ) : 'Untitled'}
+                                    {properties.length > 0 ? (
+                                        <span>
+                                            {row.data.properties?.[properties[0].id] || 'Untitled'}
+                                        </span>
+                                    ) : 'Untitled'}
                                 </div>
                                 
                                 <div className="space-y-1">

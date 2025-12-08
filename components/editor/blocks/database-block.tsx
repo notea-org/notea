@@ -329,7 +329,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                     {categoryTemplates.length}
                                                 </span>
                                             </div>
-                                            {categoryTemplates.map(template => (
+                                            {categoryTemplates.map((template) => (
                                                 <MenuItem 
                                                     key={template.id} 
                                                     onClick={() => handleInstantiateTemplate(template.id)}
@@ -361,7 +361,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                 })
                             ) : (
                                 // Show uncategorized templates
-                                templateBlocks.map(template => (
+                                templateBlocks.map((template) => (
                                     <MenuItem key={template.id} onClick={() => handleInstantiateTemplate(template.id)}>
                                         <ListItemText primary={template.data.text || 'Untitled Template'} />
                                         <div 
@@ -414,7 +414,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                     setFilterGroup({ ...filterGroup, conditions: newConditions });
                                 }}
                             >
-                                {properties.map(p => (
+                                {properties.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
                             </select>
@@ -499,15 +499,15 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                             <div className="mt-8">
                                 <div className="text-gray-400 mb-4 text-sm font-medium">Start with a template:</div>
                                 <div className="grid grid-cols-2 gap-4">
-                                     <div 
+                                    <div 
                                         className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
                                         onClick={() => createBlock(BlockType.PARAGRAPH, {}, editingBlockId)}
-                                     >
+                                    >
                                         <div className="font-medium mb-1">Empty Page</div>
                                         <div className="text-xs text-gray-400">Start writing from scratch</div>
-                                     </div>
-                                     {templateBlocks.map(template => (
-                                         <div 
+                                    </div>
+                                    {templateBlocks.map((template) => (
+                                        <div 
                                             key={template.id}
                                             className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
                                             onClick={() => {
@@ -516,12 +516,11 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                         duplicateBlock(child.id, editingBlockId);
                                                     });
                                                 }
-                                            }}
-                                         >
+                                            }}>
                                             <div className="font-medium mb-1">{template.data.text || 'Untitled Template'}</div>
                                             <div className="text-xs text-gray-400">Apply this layout</div>
-                                         </div>
-                                     ))}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -544,7 +543,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                     setSortConfig(newSorts);
                                 }}
                             >
-                                {properties.map(p => (
+                                {properties.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
                             </select>
@@ -612,7 +611,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                     {templateCategories.length > 0 && (
                         <div className="space-y-3">
                             <h4 className="text-sm font-medium text-gray-700">Categories</h4>
-                            {templateCategories.map(category => (
+                            {templateCategories.map((category) => (
                                 <div key={category.id} className="bg-white rounded-lg p-3 border">
                                     <div className="flex items-center justify-between mb-2">
                                         <div className="flex items-center space-x-2">
@@ -719,7 +718,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                     defaultValue=""
                                                 >
                                                     <option value="">Assign to category...</option>
-                                                    {templateCategories.map(cat => (
+                                                    {templateCategories.map((cat) => (
                                                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                                                     ))}
                                                 </select>
