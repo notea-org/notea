@@ -74,7 +74,7 @@ const BlockRenderer: FC<BlockComponentProps> = ({
       <div className="block-content">
         {renderBlock()}
       </div>
-      {block.children.length > 0 && (
+      {block.children.length > 0 && block.type !== BlockType.TOGGLE && (
         <div className="block-children">
           {block.children.map(child => (
             <BlockRenderer
@@ -90,6 +90,11 @@ const BlockRenderer: FC<BlockComponentProps> = ({
           ))}
         </div>
       )}
+      <style jsx>{`
+        .block-children {
+          margin-left: 1.5rem;
+        }
+      `}</style>
     </div>
   );
 };

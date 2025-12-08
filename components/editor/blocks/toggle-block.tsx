@@ -95,9 +95,6 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                 .toggle-arrow:hover {
                     background-color: rgba(0, 0, 0, 0.05);
                 }
-                .toggle-child {
-                    margin-left: 1.75rem;
-                }
             `}</style>
             <div
                 className={`toggle-block ${
@@ -132,9 +129,9 @@ const ToggleBlock: FC<BlockComponentProps> = ({
                 </div>
                 
                 {isExpanded && (
-                    <div className="toggle-content ml-7 mt-2">
+                    <div className="toggle-content ml-6 mt-1">
                         {block.children.map((child) => (
-                            <div key={child.id} className="toggle-child mb-2">
+                            <div key={child.id} className="toggle-child mb-1">
                                 <BlockRenderer
                                     block={child}
                                     isSelected={false}
