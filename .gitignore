@@ -45,3 +45,4 @@ tsconfig.tsbuildinfo
 # - IntelliJ IDEA
 .idea/
 *.iml
+notea.yml

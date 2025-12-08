@@ -316,7 +316,8 @@ export function loadConfigAndListErrors(): {
                 ],
             })
         );
-        store.bucket = env.getEnvRaw('STORE_BUCKET', false) ?? 'notea';
+        store.bucket =
+            env.getEnvRaw('STORE_BUCKET', false) ?? store.bucket ?? 'notea';
         store.forcePathStyle =
             env.parseBool(env.getEnvRaw('STORE_FORCE_PATH_STYLE', false)) ??
             store.forcePathStyle ??
@@ -324,8 +325,10 @@ export function loadConfigAndListErrors(): {
         tryElseAddError(
             () => {
                 store.endpoint =
-                    env.getEnvRaw('STORE_END_POINT', store.endpoint == null) ??
-                    store.endpoint;
+                    env.getEnvRaw(
+                        'STORE_END_POINT',
+                        store.endpoint == null && !store.endpoint
+                    ) ?? store.endpoint;
             },
             (e) => ({
                 name: 'Store endpoint was not provided',
