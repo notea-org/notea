@@ -4,6 +4,8 @@ import {
     ClipboardCopyIcon,
     StarIcon,
     TrashIcon,
+    DownloadIcon,
+    DocumentDuplicateIcon,
 } from '@heroicons/react/outline';
 import PortalState from 'libs/web/state/portal';
 import useI18n from 'libs/web/hooks/use-i18n';
@@ -28,6 +30,16 @@ const SidebarMenu: FC = () => {
                 text: t('Copy Link'),
                 icon: <ClipboardCopyIcon />,
                 handler: MENU_HANDLER_NAME.COPY_LINK,
+            },
+            {
+                text: t('Duplicate'),
+                icon: <DocumentDuplicateIcon />,
+                handler: MENU_HANDLER_NAME.DUPLICATE_NOTE,
+            },
+            {
+                text: t('Download Markdown'),
+                icon: <DownloadIcon />,
+                handler: MENU_HANDLER_NAME.DOWNLOAD_MARKDOWN,
             },
             {
                 text: t('Add to Favorites'),

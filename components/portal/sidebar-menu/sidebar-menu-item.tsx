@@ -1,4 +1,4 @@
-import { EDITOR_SIZE, NOTE_PINNED } from 'libs/shared/meta';
+import { EDITOR_SIZE, NOTE_PINNED, NOTE_DELETED, NOTE_SHARED } from 'libs/shared/meta';
 import { NoteModel } from 'libs/shared/note';
 import NoteState from 'libs/web/state/note';
 import PortalState from 'libs/web/state/portal';
@@ -12,6 +12,8 @@ export enum MENU_HANDLER_NAME {
     ADD_TO_FAVORITES,
     REMOVE_FROM_FAVORITES,
     SWITCH_EDITOR_WIDTH,
+    DOWNLOAD_MARKDOWN,
+    DUPLICATE_NOTE,
 }
 
 export interface Item {
@@ -30,7 +32,7 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
         const {
             settings: { settings },
         } = UIState.useContainer();
-        const { removeNote, mutateNote } = NoteState.useContainer();
+        const { removeNote, mutateNote, createNote } = NoteState.useContainer();
         const {
             menu: { close, data },
         } = PortalState.useContainer();
@@ -88,6 +90,36 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
             }
         }, [close, data, mutateNote, settings.editorsize]);
 
+        const doDownloadMarkdown = useCallback(() => {
+            close();
+            if (data) {
+                const blob = new Blob([data.content || ''], {
+                    type: 'text/markdown',
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${data.title || 'Untitled'}.md`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }, [close, data]);
+
+        const doDuplicate = useCallback(async () => {
+            close();
+            if (data) {
+                await createNote({
+                    ...data,
+                    id: undefined,
+                    title: `${data.title} (Copy)`,
+                    date: undefined,
+                    deleted: NOTE_DELETED.NORMAL,
+                    shared: NOTE_SHARED.PRIVATE,
+                    pinned: NOTE_PINNED.UNPINNED,
+                });
+            }
+        }, [close, data, createNote]);
+
         const MENU_HANDLER = useMemo(
             () => ({
                 [MENU_HANDLER_NAME.REMOVE_NOTE]: doRemoveNote,
@@ -95,8 +127,18 @@ export const SidebarMenuItem = forwardRef<HTMLLIElement, ItemProps>(
                 [MENU_HANDLER_NAME.ADD_TO_FAVORITES]: doPinned,
                 [MENU_HANDLER_NAME.REMOVE_FROM_FAVORITES]: doUnpinned,
                 [MENU_HANDLER_NAME.SWITCH_EDITOR_WIDTH]: switchEditorWidth,
+                [MENU_HANDLER_NAME.DOWNLOAD_MARKDOWN]: doDownloadMarkdown,
+                [MENU_HANDLER_NAME.DUPLICATE_NOTE]: doDuplicate,
             }),
-            [doCopyLink, doPinned, doRemoveNote, doUnpinned, switchEditorWidth]
+            [
+                doCopyLink,
+                doPinned,
+                doRemoveNote,
+                doUnpinned,
+                switchEditorWidth,
+                doDownloadMarkdown,
+                doDuplicate,
+            ]
         );
 
         return (

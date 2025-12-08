@@ -1,6 +1,7 @@
 import EditTitle from './edit-title';
 import Editor, { EditorProps } from './editor';
 import Backlinks from './backlinks';
+import EditorStats from './editor-stats';
 import EditorState from 'libs/web/state/editor';
 import UIState from 'libs/web/state/ui';
 import { FC } from 'react';
@@ -38,6 +39,7 @@ const MainEditor: FC<
             <article className={articleClassName}>
                 <EditTitle readOnly={props.readOnly} />
                 <Editor isPreview={isPreview} {...props} />
+                {!isPreview && <EditorStats />}
                 {!isPreview && <Backlinks />}
             </article>
         </EditorState.Provider>
