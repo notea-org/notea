@@ -1,5 +1,4 @@
 import 'tailwindcss/tailwind.css';
-import '@fontsource/noto-sans/latin.css';
 
 import UIState from 'libs/web/state/ui';
 import { AppProps } from 'next/app';
@@ -67,15 +66,32 @@ const AppInner = ({
                         type: resolvedTheme === 'dark' ? 'dark' : 'light',
                         primary: {
                             /**
-                             * colors https://tailwindcss.com/docs/customizing-colors
-                             * primary.main: blue 500
-                             * secondary.main: gray 500
+                             * Claude-inspired warm orange color palette
+                             * primary.main: warm orange 500
+                             * secondary.main: warm gray 500
                              */
-                            main: '#3B82F6',
+                            main: '#F97316',
                         },
                         secondary: {
-                            main: '#6B7280',
+                            main: '#78716C',
                         },
+                        background: {
+                            default: resolvedTheme === 'dark' ? '#1C1917' : '#FAFAF9',
+                            paper: resolvedTheme === 'dark' ? '#292524' : '#FFFFFF',
+                        },
+                    },
+                    typography: {
+                        fontFamily: [
+                            'ui-sans-serif',
+                            '-apple-system',
+                            'BlinkMacSystemFont',
+                            'Segoe UI',
+                            'Roboto',
+                            'Inter',
+                            'Helvetica Neue',
+                            'Arial',
+                            'sans-serif',
+                        ].join(','),
                     },
                 },
                 muiLocale[settings?.locale]

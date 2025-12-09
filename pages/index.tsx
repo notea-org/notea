@@ -62,10 +62,10 @@ const EditNotePage: NextPage<{ tree: TreeModel }> = ({ tree }) => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl">
                         <button
                             onClick={handleCreateNote}
-                            className="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700 group"
+                            className="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 group"
                         >
-                            <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
-                                <PlusIcon className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                            <div className="p-4 bg-primary-50 dark:bg-primary-900/30 rounded-full mb-4 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
+                                <PlusIcon className="w-8 h-8 text-primary-600 dark:text-primary-400" />
                             </div>
                             <span className="font-semibold text-gray-900 dark:text-gray-100 text-lg">
                                 New Note

@@ -12,9 +12,9 @@ const CALLOUT_ICONS = {
 
 const CALLOUT_COLORS = {
     info: {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        text: 'text-blue-800',
+        bg: 'bg-primary-50',
+        border: 'border-primary-200',
+        text: 'text-primary-800',
     },
     warning: {
         bg: 'bg-yellow-50',

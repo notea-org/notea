@@ -31,7 +31,7 @@ export const Bookmark: FC<EmbedProps> = ({ attrs: { href } }) => {
 
     return (
         <a
-            className="bookmark overflow-hidden border-gray-200 border rounded flex h-32 !no-underline hover:bg-blue-50"
+            className="bookmark overflow-hidden border-gray-200 border rounded flex h-32 !no-underline hover:bg-primary-50"
             href={url}
             target="_blank"
             rel="noreferrer"

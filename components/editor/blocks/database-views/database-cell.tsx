@@ -47,7 +47,7 @@ const SelectCell: FC<CellProps> = ({ block, property, onUpdate, onPropertyUpdate
                         placeholder="Option name"
                     />
                     <button 
-                        className="bg-blue-500 text-white text-xs px-2 py-1 rounded"
+                        className="bg-primary-500 text-white text-xs px-2 py-1 rounded"
                         onClick={() => {
                             if (!newOptionName) return;
                             const newOption: SelectOption = {
@@ -120,7 +120,7 @@ const MultiSelectCell: FC<CellProps> = ({ block, property, onUpdate, onPropertyU
                                 placeholder="Name"
                             />
                             <button 
-                                className="bg-blue-500 text-white text-xs px-2 py-1 rounded"
+                                className="bg-primary-500 text-white text-xs px-2 py-1 rounded"
                                 onClick={() => {
                                     if (!newOptionName) return;
                                     const newOption: SelectOption = {
@@ -177,7 +177,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                 const row = blocks[id];
                 if (!row) return null;
                 return (
-                    <span key={id} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                    <span key={id} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
                         {row.data.text || 'Untitled'}
                         <button 
                             onClick={() => {
@@ -212,7 +212,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                                     }
                                 }
                             }}
-                            className="ml-1 text-blue-400 hover:text-blue-600"
+                            className="ml-1 text-primary-400 hover:text-primary-600"
                         >
                             <XIcon className="w-3 h-3" />
                         </button>
@@ -279,7 +279,7 @@ const RelationCell: FC<CellProps> = ({ block, property, onUpdate }) => {
                         
                         {searchTerm && filteredRows.length === 0 && (
                             <div 
-                                className="cursor-pointer hover:bg-blue-50 text-blue-600 p-1 text-xs rounded font-medium"
+                                className="cursor-pointer hover:bg-primary-50 text-primary-600 p-1 text-xs rounded font-medium"
                                 onClick={() => {
                                     const newBlock = createBlock(BlockType.DATABASE_ROW, { text: searchTerm }, relatedDb.id);
                                     const newSelectedIds = isMultiple ? [...selectedIds, newBlock.id] : [newBlock.id];
@@ -403,7 +403,7 @@ export const Cell: FC<CellProps> = (props) => {
                     type="checkbox" 
                     checked={!!value}
                     onChange={(e) => onUpdate(e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500 h-4 w-4"
                 />
             );
         default:

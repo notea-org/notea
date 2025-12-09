@@ -103,7 +103,7 @@ const SidebarListItem: FC<{
                     {
                         'shadow bg-gray-300 dark:bg-gray-600':
                             snapshot.isDragging,
-                        'bg-blue-50 text-blue-600 dark:bg-blue-900/40 dark:text-blue-200':
+                        'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300':
                             query.id === item.id,
                     }
                 )}

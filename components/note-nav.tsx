@@ -160,7 +160,7 @@ const NoteNav = () => {
                     className="mr-2"
                     disabled={!note}
                     iconClassName={classNames({
-                        'text-blue-500': note?.shared === NOTE_SHARED.PUBLIC,
+                        'text-primary-500': note?.shared === NOTE_SHARED.PUBLIC,
                     })}
                     icon="Share"
                 />

@@ -21,9 +21,9 @@ class MyDocument extends Document {
                     />
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="mobile-web-app-capable" content="yes" />
-                    <meta name="msapplication-TileColor" content="#2B5797" />
+                    <meta name="msapplication-TileColor" content="#F97316" />
                     <meta name="msapplication-tap-highlight" content="no" />
-                    <meta name="theme-color" content="#ffffff" />
+                    <meta name="theme-color" content="#F97316" />
 
                     <link
                         rel="apple-touch-icon"

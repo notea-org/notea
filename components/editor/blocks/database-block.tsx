@@ -294,28 +294,28 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                     </span>
                     <div className="flex items-center bg-gray-100 rounded p-0.5 ml-4">
                         <button
-                            className={`p-1 rounded ${activeView === ViewType.TABLE ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`p-1 rounded ${activeView === ViewType.TABLE ? 'bg-white shadow text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
                             onClick={() => setActiveView(ViewType.TABLE)}
                             title="Table View"
                         >
                             <TableIcon className="w-4 h-4" />
                         </button>
                         <button
-                            className={`p-1 rounded ${activeView === ViewType.BOARD ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`p-1 rounded ${activeView === ViewType.BOARD ? 'bg-white shadow text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
                             onClick={() => setActiveView(ViewType.BOARD)}
                             title="Board View"
                         >
                             <ViewBoardsIcon className="w-4 h-4" />
                         </button>
                         <button
-                            className={`p-1 rounded ${activeView === ViewType.CALENDAR ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`p-1 rounded ${activeView === ViewType.CALENDAR ? 'bg-white shadow text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
                             onClick={() => setActiveView(ViewType.CALENDAR)}
                             title="Calendar View"
                         >
                             <CalendarIcon className="w-4 h-4" />
                         </button>
                         <button
-                            className={`p-1 rounded ${activeView === ViewType.GALLERY ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                            className={`p-1 rounded ${activeView === ViewType.GALLERY ? 'bg-white shadow text-primary-600' : 'text-gray-500 hover:text-gray-700'}`}
                             onClick={() => setActiveView(ViewType.GALLERY)}
                             title="Gallery View"
                         >
@@ -415,7 +415,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                 >
                                                     <ListItemText primary={template.data.text || 'Untitled Template'} />
                                                     <div 
-                                                        className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-500"
+                                                        className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-primary-500"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             setEditingBlockId(template.id);
@@ -443,7 +443,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                     <MenuItem key={template.id} onClick={() => handleInstantiateTemplate(template.id)}>
                                         <ListItemText primary={template.data.text || 'Untitled Template'} />
                                         <div 
-                                            className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-500"
+                                            className="ml-2 p-1 hover:bg-gray-100 rounded text-gray-400 hover:text-primary-500"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setEditingBlockId(template.id);
@@ -578,7 +578,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                 <div className="text-gray-400 mb-4 text-sm font-medium">Start with a template:</div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div 
-                                        className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
+                                        className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-primary-300 transition-all"
                                         onClick={() => createBlock(BlockType.PARAGRAPH, {}, editingBlockId)}
                                     >
                                         <div className="font-medium mb-1">Empty Page</div>
@@ -587,7 +587,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                     {templateBlocks.map((template) => (
                                         <div 
                                             key={template.id}
-                                            className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-blue-300 transition-all"
+                                            className="p-4 border rounded hover:shadow-md cursor-pointer hover:border-primary-300 transition-all"
                                             onClick={() => {
                                                 if (template.children) {
                                                     template.children.forEach((child: Block) => {
@@ -687,9 +687,9 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
 
             {/* Template Manager Panel */}
             {showTemplateManager && (
-                <div className="bg-blue-50 border-t border-b p-4 space-y-4">
+                <div className="bg-primary-50 border-t border-b p-4 space-y-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold text-blue-900">Template Manager</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">Template Manager</h3>
                         
                         {/* Search and Filter Controls */}
                         <div className="flex items-center space-x-3">
@@ -735,7 +735,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                 </select>
                                 <button
                                     onClick={() => setTemplateSortOrder(templateSortOrder === 'asc' ? 'desc' : 'asc')}
-                                    className="p-1 text-gray-600 hover:text-blue-600"
+                                    className="p-1 text-gray-600 hover:text-primary-600"
                                     title={`Sort ${templateSortOrder === 'asc' ? 'Descending' : 'Ascending'}`}
                                 >
                                     {templateSortOrder === 'asc' ? (
@@ -751,7 +751,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={() => handleCreateTemplateCategory()}
-                                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 flex items-center space-x-1"
+                                className="px-3 py-1 bg-primary-600 text-white rounded text-sm hover:bg-primary-700 flex items-center space-x-1"
                             >
                                 <PlusIcon className="w-4 h-4" />
                                 <span>Add Category</span>
@@ -806,7 +806,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                     <div className="flex items-center space-x-1">
                                                         <button
                                                             onClick={() => setEditingBlockId(template.id)}
-                                                            className="text-blue-500 hover:text-blue-700 p-1"
+                                                            className="text-primary-500 hover:text-primary-700 p-1"
                                                             title="Edit template"
                                                         >
                                                             <PencilIcon className="w-3 h-3" />
@@ -855,14 +855,14 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                             <div className="flex items-center space-x-1">
                                                 <button
                                                     onClick={() => setPreviewTemplateId(previewTemplateId === template.id ? null : template.id)}
-                                                    className={`p-1 ${previewTemplateId === template.id ? 'text-blue-600' : 'text-gray-400 hover:text-blue-500'}`}
+                                                    className={`p-1 ${previewTemplateId === template.id ? 'text-primary-600' : 'text-gray-400 hover:text-primary-500'}`}
                                                     title="Preview template"
                                                 >
                                                     <EyeIcon className="w-3 h-3" />
                                                 </button>
                                                 <button
                                                     onClick={() => setEditingBlockId(template.id)}
-                                                    className="text-blue-500 hover:text-blue-700 p-1"
+                                                    className="text-primary-500 hover:text-primary-700 p-1"
                                                     title="Edit template"
                                                 >
                                                     <PencilIcon className="w-3 h-3" />
@@ -932,7 +932,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                         <div className="space-y-1">
                                                             {template.children.slice(0, 5).map((child: Block) => (
                                                                 <div key={child.id} className="flex items-center space-x-2">
-                                                                    <div className="w-2 h-2 bg-blue-400 rounded-full" />
+                                                                    <div className="w-2 h-2 bg-primary-400 rounded-full" />
                                                                     <span className="truncate">
                                                                         {child.data.text || child.type || 'Block'}
                                                                     </span>
@@ -963,7 +963,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                 <p className="text-sm">No templates available</p>
                                 <button
                                     onClick={handleCreateTemplate}
-                                    className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+                                    className="mt-2 text-primary-600 hover:text-primary-800 text-sm"
                                 >
                                     Create your first template
                                 </button>

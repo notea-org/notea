@@ -134,7 +134,7 @@ export const DatabaseCalendarView: FC<DatabaseCalendarViewProps> = ({
                                 <div className="flex justify-between items-start mb-1">
                                     <span className={`
                                         text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full
-                                        ${isToday ? 'bg-blue-500 text-white' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'}
+                                        ${isToday ? 'bg-primary-500 text-white' : isCurrentMonth ? 'text-gray-700' : 'text-gray-400'}
                                     `}>
                                         {d.date()}
                                     </span>
