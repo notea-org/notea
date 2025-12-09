@@ -345,7 +345,7 @@ const useBlockSystem = () => {
         const targetParentId = parentId !== undefined ? parentId : blockToDuplicate.parentId;
         
         // If inserting as sibling, put it after the original
-        let targetOrder = index;
+        const targetOrder = index;
         if (targetOrder === undefined && targetParentId === blockToDuplicate.parentId) {
              // Sibling duplication: put after original
              // But since stateRef is stale, we can't trust getNextOrder to put it *immediately* after

@@ -2,7 +2,7 @@ import { FC, useState, useMemo, MouseEvent } from 'react';
 import { BlockComponentProps } from './block-renderer';
 import BlockState from 'libs/web/state/block';
 import { DatabaseBlock as DatabaseBlockInterface, DatabaseProperty, PropertyType, BlockType, FilterGroup, SortConfig, FilterOperator, ViewType, Block, TemplateCategory } from 'libs/shared/block';
-import { PlusIcon, FilterIcon, SortAscendingIcon, XIcon, TableIcon, ViewBoardsIcon, CalendarIcon, PhotographIcon, ChevronDownIcon, DocumentDuplicateIcon, PencilIcon, TrashIcon } from '@heroicons/react/solid';
+import { PlusIcon, FilterIcon, SortAscendingIcon, XIcon, TableIcon, ViewBoardsIcon, CalendarIcon, PhotographIcon, ChevronDownIcon, DocumentDuplicateIcon, PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/solid';
 import { Menu, MenuItem, ListItemIcon, ListItemText, Button, ButtonGroup, Dialog } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 
@@ -35,6 +35,11 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
     const [groupBy, setGroupBy] = useState<string | undefined>();
     const [editingBlockId, setEditingBlockId] = useState<string | null>(null);
     const [showTemplateManager, setShowTemplateManager] = useState(false);
+    const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+    const [templateSearchQuery, setTemplateSearchQuery] = useState('');
+    const [templateSortBy, setTemplateSortBy] = useState<'name' | 'date' | 'blocks'>('name');
+    const [templateSortOrder, setTemplateSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [templateFilterCategory, setTemplateFilterCategory] = useState<string>('all');
 
     // Get row blocks. Use children if available, otherwise fall back to rows array
     // We prefer children because createBlock automatically manages the parent-child relationship
@@ -203,6 +208,67 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
         onUpdate?.({ templateCategories: updatedCategories });
     };
 
+    // Template filtering and sorting functions
+    const getFilteredAndSortedTemplates = (templates: Block[]) => {
+        let filtered = templates;
+
+        // Apply category filter
+        if (templateFilterCategory !== 'all') {
+            if (templateFilterCategory === 'uncategorized') {
+                filtered = filtered.filter((template) => 
+                    !templateCategories.some((cat) => cat.templateIds.includes(template.id))
+                );
+            } else {
+                const category = templateCategories.find((cat) => cat.id === templateFilterCategory);
+                if (category) {
+                    filtered = filtered.filter((template) => 
+                        category.templateIds.includes(template.id)
+                    );
+                }
+            }
+        }
+
+        // Apply search filter
+        if (templateSearchQuery.trim()) {
+            const query = templateSearchQuery.toLowerCase().trim();
+            filtered = filtered.filter((template) => {
+                const title = (template.data.text || '').toLowerCase();
+                const blockTypes = template.children?.map((child: Block) => child.type?.toLowerCase() || '') || [];
+                
+                return title.includes(query) || blockTypes.some((type) => type.includes(query));
+            });
+        }
+
+        // Apply sorting
+        filtered.sort((a, b) => {
+            let aValue: any, bValue: any;
+            
+            switch (templateSortBy) {
+                case 'name':
+                    aValue = (a.data.text || 'Untitled Template').toLowerCase();
+                    bValue = (b.data.text || 'Untitled Template').toLowerCase();
+                    break;
+                case 'date':
+                    // Use creation time if available, otherwise use ID as fallback
+                    aValue = a.createdAt || a.id;
+                    bValue = b.createdAt || b.id;
+                    break;
+                case 'blocks':
+                    aValue = a.children?.length || 0;
+                    bValue = b.children?.length || 0;
+                    break;
+                default:
+                    return 0;
+            }
+
+            if (aValue < bValue) return templateSortOrder === 'asc' ? -1 : 1;
+            if (aValue > bValue) return templateSortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        return filtered;
+    };
+
     const handleDeleteTemplateCategory = (categoryId: string) => {
         const updatedCategories = templateCategories.filter((cat) => cat.id !== categoryId);
         onUpdate?.({ templateCategories: updatedCategories });
@@ -296,6 +362,18 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                         >
+                            {templateBlocks.length > 0 && (
+                                <div className="px-2 py-1">
+                                    <input
+                                        type="text"
+                                        placeholder="Search templates..."
+                                        value={templateSearchQuery}
+                                        onChange={(e) => setTemplateSearchQuery(e.target.value)}
+                                        className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                        onClick={(e) => e.stopPropagation()}
+                                    />
+                                </div>
+                            )}
                             <MenuItem onClick={() => { handleAddRow(); handleNewMenuClose(); }}>
                                 <ListItemIcon>
                                     <DocumentDuplicateIcon className="w-5 h-5" />
@@ -308,7 +386,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                             {templateCategories.length > 0 ? (
                                 // Show categorized templates
                                 templateCategories.map((category) => {
-                                    const categoryTemplates = templateBlocks.filter((t) => 
+                                    const categoryTemplates = getFilteredAndSortedTemplates(templateBlocks).filter((t) => 
                                         category.templateIds.includes(t.id)
                                     );
                                     if (categoryTemplates.length === 0) return null;
@@ -361,7 +439,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                 })
                             ) : (
                                 // Show uncategorized templates
-                                templateBlocks.map((template) => (
+                                getFilteredAndSortedTemplates(templateBlocks).map((template) => (
                                     <MenuItem key={template.id} onClick={() => handleInstantiateTemplate(template.id)}>
                                         <ListItemText primary={template.data.text || 'Untitled Template'} />
                                         <div 
@@ -518,7 +596,30 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                 }
                                             }}>
                                             <div className="font-medium mb-1">{template.data.text || 'Untitled Template'}</div>
-                                            <div className="text-xs text-gray-400">Apply this layout</div>
+                                            <div className="text-xs text-gray-400 mb-2">Apply this layout</div>
+                                            
+                                            {/* Template Preview */}
+                                            <div className="text-xs text-gray-600 bg-gray-50 rounded p-2 max-h-16 overflow-hidden">
+                                                {template.children && template.children.length > 0 ? (
+                                                    <div className="space-y-1">
+                                                        {template.children.slice(0, 2).map((child: Block) => (
+                                                            <div key={child.id} className="flex items-center space-x-1">
+                                                                <div className="w-2 h-2 bg-gray-300 rounded-full" />
+                                                                <span className="truncate text-xs">
+                                                                    {child.data.text || child.type || 'Block'}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                        {template.children.length > 2 && (
+                                                            <div className="text-gray-400 text-xs">
+                                                                +{template.children.length - 2} more
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <div className="text-gray-400 italic text-xs">Empty template</div>
+                                                )}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -589,6 +690,64 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                 <div className="bg-blue-50 border-t border-b p-4 space-y-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold text-blue-900">Template Manager</h3>
+                        
+                        {/* Search and Filter Controls */}
+                        <div className="flex items-center space-x-3">
+                            {/* Search Input */}
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="Search templates..."
+                                    value={templateSearchQuery}
+                                    onChange={(e) => setTemplateSearchQuery(e.target.value)}
+                                    className="pl-8 pr-3 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                />
+                                <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
+                                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            {/* Category Filter */}
+                            <select
+                                value={templateFilterCategory}
+                                onChange={(e) => setTemplateFilterCategory(e.target.value)}
+                                className="px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            >
+                                <option value="all">All Categories</option>
+                                {templateCategories.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                ))}
+                                <option value="uncategorized">Uncategorized</option>
+                            </select>
+                            
+                            {/* Sort Options */}
+                            <div className="flex items-center space-x-1">
+                                <select
+                                    value={templateSortBy}
+                                    onChange={(e) => setTemplateSortBy(e.target.value as 'name' | 'date' | 'blocks')}
+                                    className="px-2 py-1 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                >
+                                    <option value="name">Sort by Name</option>
+                                    <option value="date">Sort by Date</option>
+                                    <option value="blocks">Sort by Blocks</option>
+                                </select>
+                                <button
+                                    onClick={() => setTemplateSortOrder(templateSortOrder === 'asc' ? 'desc' : 'asc')}
+                                    className="p-1 text-gray-600 hover:text-blue-600"
+                                    title={`Sort ${templateSortOrder === 'asc' ? 'Descending' : 'Ascending'}`}
+                                >
+                                    {templateSortOrder === 'asc' ? (
+                                        <SortAscendingIcon className="w-4 h-4" />
+                                    ) : (
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
                         <div className="flex items-center space-x-2">
                             <button
                                 onClick={() => handleCreateTemplateCategory()}
@@ -639,7 +798,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                     </div>
 
                                     <div className="space-y-1">
-                                        {templateBlocks
+                                        {getFilteredAndSortedTemplates(templateBlocks)
                                             .filter((template) => category.templateIds.includes(template.id))
                                             .map((template) => (
                                                 <div key={template.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
@@ -663,7 +822,7 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                                 </div>
                                             ))
                                         }
-                                        {category.templateIds.length === 0 && (
+                                        {getFilteredAndSortedTemplates(templateBlocks).filter((template) => category.templateIds.includes(template.id)).length === 0 && (
                                             <div className="text-xs text-gray-400 p-2 text-center">
                                                 No templates in this category
                                             </div>
@@ -680,15 +839,27 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                             {templateCategories.length > 0 ? 'Uncategorized Templates' : 'All Templates'}
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {templateBlocks
+                            {getFilteredAndSortedTemplates(templateBlocks)
                                 .filter((template) => !templateCategories.some((cat) => cat.templateIds.includes(template.id)))
                                 .map((template) => (
-                                    <div key={template.id} className="bg-white rounded-lg p-3 border hover:shadow-md transition-shadow">
+                                    <div 
+                                        key={template.id} 
+                                        className="bg-white rounded-lg p-3 border hover:shadow-md transition-shadow relative"
+                                        onMouseEnter={() => setPreviewTemplateId(template.id)}
+                                        onMouseLeave={() => setPreviewTemplateId(null)}
+                                    >
                                         <div className="flex items-center justify-between mb-2">
                                             <h5 className="font-medium text-sm truncate">
                                                 {template.data.text || 'Untitled Template'}
                                             </h5>
                                             <div className="flex items-center space-x-1">
+                                                <button
+                                                    onClick={() => setPreviewTemplateId(previewTemplateId === template.id ? null : template.id)}
+                                                    className={`p-1 ${previewTemplateId === template.id ? 'text-blue-600' : 'text-gray-400 hover:text-blue-500'}`}
+                                                    title="Preview template"
+                                                >
+                                                    <EyeIcon className="w-3 h-3" />
+                                                </button>
                                                 <button
                                                     onClick={() => setEditingBlockId(template.id)}
                                                     className="text-blue-500 hover:text-blue-700 p-1"
@@ -725,14 +896,68 @@ const DatabaseBlock: FC<BlockComponentProps> = ({
                                             </div>
                                         )}
 
-                                        <div className="text-xs text-gray-500">
+                                        <div className="text-xs text-gray-500 mb-2">
                                             {template.children?.length || 0} blocks
                                         </div>
+                                        
+                                        {/* Template Preview */}
+                                        <div className="text-xs text-gray-600 bg-gray-50 rounded p-2 max-h-20 overflow-hidden">
+                                            {template.children && template.children.length > 0 ? (
+                                                <div className="space-y-1">
+                                                    {template.children.slice(0, 3).map((child: Block) => (
+                                                        <div key={child.id} className="flex items-center space-x-1">
+                                                            <div className="w-2 h-2 bg-gray-300 rounded-full" />
+                                                            <span className="truncate">
+                                                                {child.data.text || child.type || 'Block'}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                    {template.children.length > 3 && (
+                                                        <div className="text-gray-400 text-xs">
+                                                            +{template.children.length - 3} more blocks
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <div className="text-gray-400 italic">Empty template</div>
+                                            )}
+                                        </div>
+                                        
+                                        {/* Hover Preview Tooltip */}
+                                        {previewTemplateId === template.id && (
+                                            <div className="absolute z-10 bg-white border rounded-lg shadow-lg p-3 w-64 -top-2 left-full ml-2">
+                                                <div className="font-medium text-sm mb-2">{template.data.text || 'Untitled Template'}</div>
+                                                <div className="text-xs text-gray-600 max-h-32 overflow-y-auto">
+                                                    {template.children && template.children.length > 0 ? (
+                                                        <div className="space-y-1">
+                                                            {template.children.slice(0, 5).map((child: Block) => (
+                                                                <div key={child.id} className="flex items-center space-x-2">
+                                                                    <div className="w-2 h-2 bg-blue-400 rounded-full" />
+                                                                    <span className="truncate">
+                                                                        {child.data.text || child.type || 'Block'}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+                                                            {template.children.length > 5 && (
+                                                                <div className="text-gray-400 text-xs mt-1">
+                                                                    +{template.children.length - 5} more blocks
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="text-gray-400 italic">Empty template</div>
+                                                    )}
+                                                </div>
+                                                <div className="text-xs text-gray-500 mt-2 pt-2 border-t">
+                                                    {template.children?.length || 0} total blocks
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 ))
                             }
                         </div>
-                        {templateBlocks.filter((template) => !templateCategories.some((cat) => cat.templateIds.includes(template.id))).length === 0 && (
+                        {getFilteredAndSortedTemplates(templateBlocks).filter((template) => !templateCategories.some((cat) => cat.templateIds.includes(template.id))).length === 0 && (
                             <div className="text-center text-gray-500 py-8">
                                 <DocumentDuplicateIcon className="w-12 h-12 mx-auto mb-2 text-gray-300" />
                                 <p className="text-sm">No templates available</p>
